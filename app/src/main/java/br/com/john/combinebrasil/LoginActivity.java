@@ -121,7 +121,8 @@ public class LoginActivity extends Activity {
 
     public void changeColorEdit(EditText edit, String mensagem){
         edit.setBackground(getResources().getDrawable(R.drawable.background_edit_error));
-        Services.message("Dados Inválidos", mensagem, this);
+        Services.messageAlert(this, "DAdos Inválidos", mensagem);
+        //Services.message("Dados Inválidos", mensagem, this);
     }
 
     private String getString(EditText edit){
