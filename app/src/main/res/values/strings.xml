@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Combine Brasil</string>
+    <string name="User">Usuário</string>
+    <string name="Password">Senha</string>
+    <string name="Entrar">Entrar</string>
+    <string name="logando">Entrando na sua conta</string>
+</resources>
