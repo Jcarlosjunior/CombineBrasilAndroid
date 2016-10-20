@@ -8,7 +8,7 @@ import java.io.File;
  * Created by GTAC on 17/10/2016.
  */
 public class Constants {
-    public static final boolean debug = false;
+    public static final boolean debug = true;
 
     public static final String URL = "http://kc.gtacsolutions.com/";
 
@@ -56,16 +56,23 @@ public class Constants {
             EMAIL ="Email";
 
     //API CONSTANTS
-    public static final String CATEGORY = "Category";
-    public static final String CATEGORY_NAME = "CategoryName";
-    public static final String AREA = "Area";
-    public static final String AREA_NAME = "AreaName";
-    public static final String FACTORY = "Factory";
-    public static final String FACTORY_NAME = "FactoryName";
     public static final String OBSERVATION = "Observation";
     public static final String PROCESS_NAME = "ProcessName";
     public static final String ROUTE = "Route";
     public static final String ROUTE_NAME = "RouteName";
     public static final String TIME_STAMP = "TimeStamp";
     public static final String TURN = "Turn";
+    public static final String DESCRIPTION = "Description";
+    public static final String TYPE = "Type";
+
+
+    /*
+    **************************CHAMADAS DO VOLLEY***********************************
+    **/
+
+    public static final String CALLED_LOGIN = "calledLogin";
+    public static final String CALLED_GET_TESTS = "calledGetTests";
+    public static final String CALLED_POST_TESTS = "calledPostTests";
+    public static final String CALLED_GET_PLAYERS= "calledGetPlayers";
+    public static final String CALLED_POST_PLAYERS = "calledPostPlayers";
 }

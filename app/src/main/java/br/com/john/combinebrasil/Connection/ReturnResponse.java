@@ -11,6 +11,10 @@ import android.view.View;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import br.com.john.combinebrasil.LoginActivity;
+import br.com.john.combinebrasil.MainActivity;
+import br.com.john.combinebrasil.Services.Constants;
+
 
 public class ReturnResponse {
     public static String login;
@@ -31,11 +35,11 @@ public class ReturnResponse {
     public void goTo(String whoCalled, String response, boolean isList, Activity activity) {
         try {
             if (!response.equals(null) || response.length() <= 0) {
-                if (whoCalled.equals("calledLogin")) {
-                    //LoginActivity.afterLogin(response, isList, activity);
+                if (whoCalled.equals(Constants.CALLED_LOGIN)) {
+                    LoginActivity.afterLogin(response, isList, activity);
 
-                } else if (whoCalled.equals("calledMachines")) {
-                    //MainActivity.afterCalled(response, isList, activity);
+                } else if (whoCalled.equals(Constants.CALLED_GET_TESTS)) {
+                    MainActivity.afterCalled(response, isList, activity);
 
                 }else if (whoCalled.equals("")) {
 

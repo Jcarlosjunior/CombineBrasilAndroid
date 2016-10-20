@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,5 +61,11 @@ public class Services {
             Toast.makeText(act,"É necessário uma conexão com a internet.", Toast.LENGTH_LONG).show();
         }
         return false;
+    }
+
+    public static void changeColorEdit(EditText edit, String title, String mensagem, Activity act){
+        edit.setBackground(act.getResources().getDrawable(R.drawable.background_edit_error));
+        messageAlert(act, title, mensagem);
+        //Services.message("Dados Inválidos", mensagem, this);
     }
 }

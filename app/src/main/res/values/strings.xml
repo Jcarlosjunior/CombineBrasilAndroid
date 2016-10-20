@@ -4,4 +4,11 @@
     <string name="Password">Senha</string>
     <string name="Entrar">Entrar</string>
     <string name="logando">Entrando na sua conta</string>
+    <string name="carregando_testes">Os testes estão sendo carregados</string>
+
+    <!--
+    ************************************ MENSAGENS PADRÕES ************************************************
+    -->
+
+    <string name="erro_dados_invalidos">Dados Inválidos</string>
 </resources>

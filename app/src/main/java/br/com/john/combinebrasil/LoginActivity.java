@@ -3,6 +3,7 @@ package br.com.john.combinebrasil;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
@@ -14,7 +15,9 @@ import com.android.volley.Request;
 
 import java.util.HashMap;
 
+import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.Connection;
+import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.Services;
 import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
@@ -52,16 +55,35 @@ public class LoginActivity extends Activity {
     public View.OnClickListener onClickLoginListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            callLogin();
+            if(Constants.debug)
+                CalledFalseLogin();
+            else
+                callLogin();
         }
     };
+
+    private void CalledFalseLogin(){
+        if (verifyLogin()) {
+            linearProgress.setVisibility(View.VISIBLE);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(mainIntent);
+                    finish();
+                    linearProgress.setVisibility(View.GONE);
+                }
+            }, 2000);
+        }
+
+    }
 
     private void callLogin() {
         if (verifyLogin()) {
             if (Services.isOnline(this)) {
                 linearProgress.setVisibility(View.VISIBLE);
                 String url = Constants.URL + Constants.login;
-                Connection task = new Connection(url, Request.Method.POST, "calledLogin", false, this, loginData());
+                Connection task = new Connection(url, Request.Method.POST, Constants.CALLED_LOGIN, false, this, loginData());
                 task.callByJsonStringRequest();
             }
             else
@@ -74,7 +96,7 @@ public class LoginActivity extends Activity {
     }
 
     public void validaLogin(String response, boolean isList) {
-        /*DeserializerJsonElements des = new DeserializerJsonElements(response);
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
         User user = new User();
 
         if (!isList)
@@ -87,9 +109,9 @@ public class LoginActivity extends Activity {
             SharedPreferencesAdapter.setValueStringSharedPreferences(this, Constants.USERNAME, user.getUsername());
             SharedPreferencesAdapter.setValueStringSharedPreferences(this, Constants.NAME, user.getName());
         }
-        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        Intent i = new Intent(LoginActivity.this, LoginActivity.class);
         startActivity(i);
-        LoginActivity.this.finish();*/
+        LoginActivity.this.finish();
     }
 
     private HashMap<String, String> loginData() {
@@ -97,36 +119,6 @@ public class LoginActivity extends Activity {
         params.put("Username", editLogin.getText().toString());
         params.put("Password", editPassword.getText().toString());
         return params;
-    }
-
-    public boolean validateEmail(EditText edit){
-        boolean ver = false;
-        if(getString(edit).length()>=3){
-            ver = true;
-        }
-        else
-            changeColorEdit(edit, "Insira um usuário com válido");
-        return ver;
-    }
-
-    public boolean validatePassword(EditText edit){
-        boolean ver = false;
-        if(getString(edit).length()>=3){
-            ver = true;
-        }
-        else
-            changeColorEdit(edit, "Insira uma senha válida");
-       return ver;
-    }
-
-    public void changeColorEdit(EditText edit, String mensagem){
-        edit.setBackground(getResources().getDrawable(R.drawable.background_edit_error));
-        Services.messageAlert(this, "DAdos Inválidos", mensagem);
-        //Services.message("Dados Inválidos", mensagem, this);
-    }
-
-    private String getString(EditText edit){
-        return edit.getText().toString().trim().equals("") ? "" : edit.getText().toString();
     }
 
     private boolean verifyLogin(){
@@ -139,4 +131,27 @@ public class LoginActivity extends Activity {
         return ver;
     }
 
+    public boolean validateEmail(EditText edit){
+        boolean ver = false;
+        if(getString(edit).length()>=3){
+            ver = true;
+        }
+        else
+            Services.changeColorEdit(edit, this.getString(R.string.erro_dados_invalidos), "Insira um usuário com válido", this);
+        return ver;
+    }
+
+    public boolean validatePassword(EditText edit){
+        boolean ver = false;
+        if(getString(edit).length()>=3){
+            ver = true;
+        }
+        else
+            Services.changeColorEdit(edit,this.getString(R.string.erro_dados_invalidos), "Insira uma senha válida", this);
+       return ver;
+    }
+
+    private String getString(EditText edit){
+        return edit.getText().toString().trim().equals("") ? "" : edit.getText().toString();
+    }
 }
