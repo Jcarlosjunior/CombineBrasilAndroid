@@ -91,9 +91,9 @@ public class LoginActivity extends Activity {
         }
     }
 
-    public static void afterLogin(String response, boolean isList, Activity activity) {
-        ((LoginActivity) activity).validaLogin(response, isList);
-    }
+        public static void afterLogin(String response, boolean isList, Activity activity) {
+            ((LoginActivity) activity).validaLogin(response, isList);
+        }
 
     public void validaLogin(String response, boolean isList) {
         DeserializerJsonElements des = new DeserializerJsonElements(response);

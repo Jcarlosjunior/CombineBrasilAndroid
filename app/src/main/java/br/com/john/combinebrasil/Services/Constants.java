@@ -35,37 +35,21 @@ public class Constants {
             File.separator+"data"+File.separator+  AllActivities.mainActivity.getApplicationContext().getPackageName()).toString();
 
     public static final String PATH_DATABASE = PATH_DEFAULT+ File.separator+"database";
-    public static final String NAME_DATABASE = "KimberlyClark";
-    public static final String TABLES_ROUTES = "Routes";
-    public static final String ID = "Id";
-    public static final String CODE = "Code";
-    public static final String DATE = "Date";
-    public static final String PROCESS = "Process";
-    public static final String SYSTEM = "System";
-    public static final String MACHINE = "Machine";
-    public static final String GROUP = "Group";
-    public static final String STATUS = "Status";
+    public static final String NAME_DATABASE = "CombineBrasil";
+    public static final String TESTS = "Testes";
     public static final String USER = "User";
 
     //SHARED PREFERENCES
     public static final String TIMER_CHRONOMETER = "timer_chronometer",
+            ID = "Id",
             LOGGED="Logged",
             TOKEN="Token",
             USERNAME="Username",
             NAME="Name",
-            EMAIL ="Email";
-
-    //API CONSTANTS
-    public static final String OBSERVATION = "Observation";
-    public static final String PROCESS_NAME = "ProcessName";
-    public static final String ROUTE = "Route";
-    public static final String ROUTE_NAME = "RouteName";
-    public static final String TIME_STAMP = "TimeStamp";
-    public static final String TURN = "Turn";
-    public static final String DESCRIPTION = "Description";
-    public static final String TYPE = "Type";
-
-
+            PASSWORD = "password",
+            EMAIL ="Email",
+            DESCRIPTION = "Description",
+            TYPE = "Type";
     /*
     **************************CHAMADAS DO VOLLEY***********************************
     **/

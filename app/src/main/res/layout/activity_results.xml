@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_results"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.com.john.combinebrasil.ResultsActivity">
+
+    <LinearLayout
+        android:id="@+id/linear_progress_results"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_transparent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:clickable="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"></LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"></LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+                <ProgressBar
+                    android:id="@+id/progress_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.6"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.4"
+                    android:text="@string/logando"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:id="@+id/textView"
+                    android:gravity="center_vertical|center_horizontal" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"></LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"></LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/linear_progress_results"
+        android:layout_alignParentStart="true">
+        <include layout="@layout/toolbar_default" android:id="@+id/include"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_border"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10sp"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/text_name_player_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nome do Jogador"
+                        android:textColor="@color/black"
+                        android:gravity="center"
+                        android:textSize="18sp"
+                        android:padding="10sp" />
+
+                    <TextView
+                        android:id="@+id/text_name_test_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginBottom="10sp"
+                        android:text="Nome do Teste"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorPrimary"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10sp"
+                                android:text="@string/first_result"/>
+                            <EditText
+                                android:id="@+id/edit_first_result"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10sp"
+                                android:padding="5sp"
+                                android:textSize="18sp"
+                                android:text="teste"
+                                android:inputType="numberDecimal"
+                                android:background="@drawable/background_edit_border"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10sp"
+                                android:text="@string/second_result"/>
+                            <EditText
+                                android:id="@+id/edit_second_result"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10sp"
+                                android:padding="5sp"
+                                android:textSize="18sp"
+                                android:text="teste"
+                                android:inputType="numberDecimal"
+                                android:background="@drawable/background_edit_border"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </ScrollView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

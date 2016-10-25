@@ -34,11 +34,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // creating required tables
-        db.execSQL(getCreateClause(Constants.TABLES_ROUTES,
+        db.execSQL(getCreateClause(Constants.USER,
                 Constants.ID,
-                Constants.DATE,
-                Constants.PROCESS,
-                Constants.SYSTEM));
+                Constants.NAME,
+                Constants.USERNAME,
+                Constants.PASSWORD,
+                Constants.EMAIL,
+                Constants.TOKEN));
+
+        db.execSQL(getCreateClause(Constants.TESTS,
+                Constants.ID,
+                Constants.NAME,
+                Constants.TYPE,
+                Constants.DESCRIPTION,
+                Constants.USER));
     }
 
     private String getCreateClause(String TableName, String... fields) {
@@ -120,7 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteCestas() {
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(Constants.TABLES_ROUTES, null, null);
+        db.delete(Constants.TESTS, null, null);
         db.close();
     }
 

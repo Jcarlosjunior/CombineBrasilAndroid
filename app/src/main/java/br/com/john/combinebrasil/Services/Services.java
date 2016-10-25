@@ -2,6 +2,13 @@ package br.com.john.combinebrasil.Services;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
@@ -67,5 +74,39 @@ public class Services {
         edit.setBackground(act.getResources().getDrawable(R.drawable.background_edit_error));
         messageAlert(act, title, mensagem);
         //Services.message("Dados Inválidos", mensagem, this);
+    }
+
+    public static Bitmap getRoundedCornerBitmap(Bitmap pBitmap) {
+
+        int width = 220;
+        int height = pBitmap.getHeight() * 220 / pBitmap.getWidth();
+
+
+        Bitmap bitmap = Bitmap.createScaledBitmap(pBitmap, width, height, true);
+
+        int heightDiff = (width - height) / 4;
+        height = width;
+        Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xffffffff;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(2, 2, width, height);
+
+        final RectF rectF = new RectF(rect);
+        final float roundPx = width / 4;
+
+        paint.setAntiAlias(true);
+
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+
+        canvas.drawBitmap(bitmap, 2, heightDiff, paint);
+
+        return output;
+
     }
 }

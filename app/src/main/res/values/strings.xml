@@ -3,12 +3,20 @@
     <string name="User">Usuário</string>
     <string name="Password">Senha</string>
     <string name="Entrar">Entrar</string>
-    <string name="logando">Entrando na sua conta</string>
-    <string name="carregando_testes">Os testes estão sendo carregados</string>
+    <string name="testes">Testes</string>
+    <string name="first_result">Primeiro Resultado</string>
+    <string name="second_result">Segundo Resultado</string>
+
 
     <!--
     ************************************ MENSAGENS PADRÕES ************************************************
     -->
-
+    <string name="carregando_testes">Os testes estão sendo carregados</string>
     <string name="erro_dados_invalidos">Dados Inválidos</string>
+    <string name="logando">Entrando na sua conta</string>
+
+    <!--
+    *********************************** TÍTULOS COMBINE **************************************************
+    -->
+    <string name="combine_tests">Combine Brasil - Testes</string>
 </resources>

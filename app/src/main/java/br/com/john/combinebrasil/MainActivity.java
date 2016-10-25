@@ -1,6 +1,7 @@
 package br.com.john.combinebrasil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,12 +12,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerTests;
+import br.com.john.combinebrasil.Classes.Players;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
@@ -35,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        LinearLayout linearBacktoolbar = (LinearLayout) findViewById(R.id.linear_back_button);
+        linearBacktoolbar.setVisibility(View.GONE);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         linearProgress = (LinearLayout) findViewById(R.id.linear_progress_tests);
@@ -94,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
     private void callAllTests() {
             if (Services.isOnline(this)) {
                 linearProgress.setVisibility(View.VISIBLE);
@@ -138,4 +145,13 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));//numero de colunas
         mRecyclerView.setAdapter(adapterTests);
     }
+
+    public static void onClickItemList(Activity activity, int positionArray, String id){
+        ((MainActivity) activity).validaClick();
+    }
+    public void validaClick(){
+        Intent i = new Intent(MainActivity.this, PlayersActivity.class);
+        startActivity(i);
+    }
+
 }

@@ -7,6 +7,7 @@ package br.com.john.combinebrasil.AdapterList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,7 +21,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import br.com.john.combinebrasil.Classes.Players;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.MainActivity;
+import br.com.john.combinebrasil.PlayersActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.Services.Services;
 
@@ -101,8 +105,12 @@ public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTe
             public void onClick(View v) {
                 Log.v("clique no item da lista", "true");
                 Log.i("Elemento clicado", list.get(position).getId());
+                MainActivity.onClickItemList(getHomeActivity(), position, list.get(position).getId());
             }
         });
+
+            holder.imageIcon.setImageBitmap(Services.getRoundedCornerBitmap(((BitmapDrawable) context.getResources()
+                    .getDrawable(R.drawable.logo_combine)).getBitmap()));
     }
     //o metodo abaixo serve para remover um elemento da lista ao clicar no mesmo
 
