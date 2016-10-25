@@ -7,26 +7,6 @@
     tools:context="br.com.john.combinebrasil.PlayersActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <include layout="@layout/toolbar_default" android:id="@+id/include"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.9">
-            <ListView
-                android:id="@+id/list_players"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </ListView>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/linear_progress_players"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -79,6 +59,31 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.4"></LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_below="@+id/linear_progress_players"
+        android:layout_alignParentStart="true">
+        <include layout="@layout/toolbar_default" android:id="@+id/include"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9">
+            <ListView
+                android:id="@+id/list_players"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:dividerHeight="0dp">
+            </ListView>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

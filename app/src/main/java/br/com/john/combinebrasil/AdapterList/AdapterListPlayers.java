@@ -62,6 +62,10 @@ public class AdapterListPlayers  extends ArrayAdapter<String> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+        if(position%2==0)
+            viewHolder.linearBackground.setBackgroundResource(R.color.grey);
+        else
+            viewHolder.linearBackground.setBackgroundResource(R.color.white);
         viewHolder.linearBackground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

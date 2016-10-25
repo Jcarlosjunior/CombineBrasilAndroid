@@ -24,7 +24,7 @@
                 android:text="Nome do Jogador"
                 android:layout_marginBottom="10sp"
                 android:textColor="@color/black"
-                android:textSize="16sp"/>
+                android:textSize="18sp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,8 +55,12 @@
                 android:src="@drawable/check"
                 android:id="@+id/img_status_players" />
         </LinearLayout>
-
-
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:background="@color/black"></LinearLayout>
 
 </LinearLayout>
