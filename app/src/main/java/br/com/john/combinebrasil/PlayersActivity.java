@@ -1,5 +1,7 @@
 package br.com.john.combinebrasil;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -62,6 +64,19 @@ public class PlayersActivity extends AppCompatActivity {
             finish();
         }
     };
+
+    @Override
+    public void onBackPressed(){
+        finish();
+    }
+
+    public static void onClickItemList(Activity activity, int positionArray){
+        ((PlayersActivity) activity).validaClick();
+    }
+    public void validaClick(){
+        Intent i = new Intent(PlayersActivity.this, ResultsActivity.class);
+        startActivity(i);
+    }
 
 
 }

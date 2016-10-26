@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Players;
+import br.com.john.combinebrasil.PlayersActivity;
 import br.com.john.combinebrasil.R;
 
 /**
@@ -81,7 +82,7 @@ public class AdapterListPlayers  extends ArrayAdapter<String> {
 
     public void click(int position){
         //DetailsActivitiesActivity.linearInfoActivity.setVisibility(View.VISIBLE);
-        Log.i("position", position+"");
+        PlayersActivity.onClickItemList(activity, position);
     }
 
     public  void setActivity(Activity activity)
