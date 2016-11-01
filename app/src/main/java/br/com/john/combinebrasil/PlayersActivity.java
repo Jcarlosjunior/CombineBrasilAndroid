@@ -18,6 +18,7 @@ import br.com.john.combinebrasil.Classes.Players;
 public class PlayersActivity extends AppCompatActivity {
     ListView listViewPlayers;
     Toolbar toolbar;
+    ArrayList<Players> playersArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class PlayersActivity extends AppCompatActivity {
     }
 
     private void callAllFalseTests(){
-        ArrayList<Players> testsArrayList = new ArrayList<Players>();
+        playersArrayList = new ArrayList<Players>();
         String[] values = new String[12];
         for(int i=0; i<=11; i++){
             Players player = new Players();
@@ -44,11 +45,11 @@ public class PlayersActivity extends AppCompatActivity {
             player.setAge("Idade "+i);
             player.setDetails("descrição "+i);
             player.setIdSelective("");
-            testsArrayList.add(player);
+            playersArrayList.add(player);
             values[i]="Player "+i;
         }
 
-        inflateRecyclerView(testsArrayList, values);
+        inflateRecyclerView(playersArrayList, values);
     }
 
     private void inflateRecyclerView(ArrayList<Players> testsArrayList, String[] values){
@@ -71,10 +72,13 @@ public class PlayersActivity extends AppCompatActivity {
     }
 
     public static void onClickItemList(Activity activity, int positionArray){
-        ((PlayersActivity) activity).validaClick();
+        ((PlayersActivity) activity).validaClick(positionArray);
     }
-    public void validaClick(){
+    public void validaClick(int position){
         Intent i = new Intent(PlayersActivity.this, ResultsActivity.class);
+        Players player  = playersArrayList.get(position);
+        i.putExtra("id_player",player.getId());
+        i.putExtra("name_player",player.getName());
         startActivity(i);
     }
 

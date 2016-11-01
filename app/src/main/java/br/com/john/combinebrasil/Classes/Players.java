@@ -1,10 +1,14 @@
 package br.com.john.combinebrasil.Classes;
 
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+
 /**
  * Created by GTAC on 24/10/2016.
  */
 
-public class Players {
+public class Players{
     String id;
     String Name;
     String Age;

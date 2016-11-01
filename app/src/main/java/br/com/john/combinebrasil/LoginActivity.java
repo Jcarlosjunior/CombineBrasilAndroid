@@ -13,12 +13,15 @@ import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Services.Constants;
+import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Services;
 import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
 
@@ -41,6 +44,24 @@ public class LoginActivity extends Activity {
 
         btnLogin.setOnLongClickListener(onLongClickListener);
         btnLogin.setOnClickListener(onClickLoginListener);
+
+        DatabaseHelper db = new DatabaseHelper(this);
+        try {
+            db.createDataBase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void inflateDatabase(){
+        DatabaseHelper db = new DatabaseHelper(this);
+        try {
+            db.createDataBase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {

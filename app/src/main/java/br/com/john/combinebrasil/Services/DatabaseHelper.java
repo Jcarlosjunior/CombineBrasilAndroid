@@ -3,66 +3,96 @@ package br.com.john.combinebrasil.Services;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+
+import br.com.john.combinebrasil.Classes.Players;
+import br.com.john.combinebrasil.Classes.Results;
+import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Classes.User;
 
 /**
  * Created by GTAC on 17/10/2016.
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    static Context context;
+    String DB_PATH = null;
+    private static String DB_NAME = "Combine.db";
+    private SQLiteDatabase myDataBase;
+    private final Context myContext;
     // Database Version
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = Constants.PATH_DATABASE+ File.separator+Constants.NAME_DATABASE+".db";
+    public DatabaseHelper(Context myContext) {
+        super(myContext, DB_NAME, null, DATABASE_VERSION);
+        this.myContext = myContext;
+        this.DB_PATH = "/data/data/" + myContext.getPackageName() + "/" + "databases/";
+    }
 
-    public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
+    public void openDataBase() throws SQLException {
+        String myPath = DB_PATH + DB_NAME;
+        myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (newVersion > oldVersion)
+            try {
+                copyDataBase();
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
+    }
+
+    public void createDataBase() throws IOException {
+        boolean dbExist = checkDataBase();
+        if (dbExist) {
+        } else {
+            this.getReadableDatabase();
+            try {
+                copyDataBase();
+            } catch (IOException e) {
+                throw new Error("Error copying database");
+            }
+        }
+    }
+
+    private void copyDataBase() throws IOException {
+        InputStream myInput = myContext.getAssets().open(DB_NAME);
+        String outFileName = DB_PATH + DB_NAME;
+        OutputStream myOutput = new FileOutputStream(outFileName);
+        byte[] buffer = new byte[10];
+        int length;
+        while ((length = myInput.read(buffer)) > 0) {
+            myOutput.write(buffer, 0, length);
+        }
+        myOutput.flush();
+        myOutput.close();
+        myInput.close();
 
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // creating required tables
-        db.execSQL(getCreateClause(Constants.USER,
-                Constants.ID,
-                Constants.NAME,
-                Constants.USERNAME,
-                Constants.PASSWORD,
-                Constants.EMAIL,
-                Constants.TOKEN));
-
-        db.execSQL(getCreateClause(Constants.TESTS,
-                Constants.ID,
-                Constants.NAME,
-                Constants.TYPE,
-                Constants.DESCRIPTION,
-                Constants.USER));
-    }
-
-    private String getCreateClause(String TableName, String... fields) {
-        String createClause = "CREATE TABLE " + TableName + " ( " + fields[0] + " TEXT PRIMARY KEY ";
-        for (int i = 1; i < fields.length; i++) {
-            createClause += ", " + fields[i] + " TEXT ";
-        }
-        createClause += " ) ";
-        return createClause;
     }
 
     public boolean checkDataBase() {
         SQLiteDatabase checkDB = null;
         try {
-            checkDB = SQLiteDatabase.openDatabase(DATABASE_NAME, null,
+            checkDB = SQLiteDatabase.openDatabase(DB_NAME, null,
                     SQLiteDatabase.OPEN_READONLY);
             checkDB.close();
         } catch (SQLiteException e) {
@@ -103,35 +133,287 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void dropDatabase(){
-        context.deleteDatabase(DATABASE_NAME);
+        myContext.deleteDatabase(DB_NAME);
     }
 
-    /*****************************************TABLE ROUTES*****************************************************/
+    /*****************************************INSERT IN DATABASE*****************************************************/
 
-    /*public long addRoutes(ArrayList<Routes> listRoutes) {
+    public void addPlayers(ArrayList<Players> listPlayers) {
         long ret = 0;
-        for(Routes obj :listRoutes ){
-            SQLiteDatabase db = getWritableDatabase();
-            ContentValues values = new ContentValues();
+        try{
+            for (Players obj : listPlayers) {
+                SQLiteDatabase db = getWritableDatabase();
+                ContentValues values = new ContentValues();
 
-            values.put(Constants.ID, obj.getId());
-            values.put(Constants.DATE, obj.getDate());
-            values.put(Constants.PROCESS, obj.getProcess());
-            values.put(Constants.SYSTEM, obj.getSystem());
+                values.put(Constants.PLAYER_ID, obj.getId());
+                values.put(Constants.PLAYER_NAME, obj.getName());
+                values.put(Constants.PLAYER_AGE, obj.getAge());
+                values.put(Constants.PLAYER_DETAILS, obj.getDetails());
+                values.put(Constants.PLAYER_ID_SELECTIVE, obj.getIdSelective());
 
-            ret = db.insert(Constants.TABLES_ROUTES, null, values);
-
-            db.close();
+                ret = db.insert(Constants.TABLE_PLAYERS, null, values);
+            }
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
         }
+    }
 
-        return ret;
-    }*/
+    public void addResults(ArrayList<Results> listResults) {
+        long ret = 0;
+        try{
+            for (Results obj : listResults) {
+                SQLiteDatabase db = getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(Constants.RESULT_ID, obj.getId());
+                values.put(Constants.RESULT_ID_PLAYER, obj.getIdPlayer());
+                values.put(Constants.RESULT_ID_SELECTIVE, obj.getIdSelective());
+                values.put(Constants.RESULT_ID_TEST, obj.getIdTest());
+                values.put(Constants.RESULT_FIRST_VALUE, obj.getFirstValue());
+                values.put(Constants.RESULT_SECOND_VALUE, obj.getSecondValue());
+
+                ret = db.insert(Constants.TABLE_RESULTS, null, values);
+            }
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
+
+    public void addTests(ArrayList<Tests> listTests) {
+        long ret = 0;
+        try{
+            for (Tests obj : listTests) {
+                SQLiteDatabase db = getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(Constants.TEST_ID, obj.getId());
+                values.put(Constants.TEST_NAME, obj.getName());
+                values.put(Constants.TEST_DESCRIPTION, obj.getDescription());
+                values.put(Constants.TEST_CODE, obj.getCode());
+                values.put(Constants.TEST_TYPE, obj.getType());
+                values.put(Constants.TEST_ID_SELECTIVE, obj.getIdSelective());
+                values.put(Constants.TEST_ID_USER, obj.getIdUser());
+
+                ret = db.insert(Constants.TABLE_TEST, null, values);
+            }
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
+
+    public void addUsers(ArrayList<User> listUser) {
+        long ret = 0;
+        try{
+            for (User obj : listUser) {
+                SQLiteDatabase db = getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(Constants.USER_ID, obj.getId());
+                values.put(Constants.USER_NAME, obj.getName());
+                values.put(Constants.USER_USERNAME, obj.getUsername());
+                values.put(Constants.USER_PASSWORD, obj.getPassword());
+                values.put(Constants.USER_EMAIL, obj.getEmail());
+                values.put(Constants.USER_TOKEN, obj.getToken());
+
+                ret = db.insert(Constants.TABLE_USER, null, values);
+            }
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
 
     public void deleteCestas() {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(Constants.TESTS, null, null);
         db.close();
     }
+
+    /****************************************SELECT DATABASE********************************************************/
+
+    public ArrayList<Players> getPlayers() {
+        this.openDataBase();
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_PLAYERS;
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        ArrayList<Players> itens = new ArrayList<Players>();
+
+        if (c.getCount()>0) {
+            c.moveToFirst();
+            do {
+                Players obj = new Players(
+                        c.getString(c.getColumnIndex(Constants.PLAYER_ID)),
+                        c.getString(c.getColumnIndex(Constants.PLAYER_NAME)),
+                        c.getString(c.getColumnIndex(Constants.PLAYER_AGE)),
+                        c.getString(c.getColumnIndex(Constants.PLAYER_ID_SELECTIVE)),
+                        c.getString(c.getColumnIndex(Constants.PLAYER_DETAILS))
+                );
+
+                itens.add(obj);
+            } while (c.moveToNext());
+
+        } else {
+            itens = null;
+        }
+        c.close();
+        db.close();
+
+        return itens;
+    }
+
+    public ArrayList<Results> getResults() {
+        this.openDataBase();
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_RESULTS;
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        ArrayList<Results> itens = new ArrayList<Results>();
+
+        if (c.getCount()>0) {
+            c.moveToFirst();
+            do {
+                Results obj = new Results(
+                        c.getString(c.getColumnIndex(Constants.RESULT_ID)),
+                        c.getString(c.getColumnIndex(Constants.RESULT_ID_SELECTIVE)),
+                        c.getString(c.getColumnIndex(Constants.RESULT_ID_TEST)),
+                        c.getString(c.getColumnIndex(Constants.RESULT_ID_PLAYER)),
+                        c.getString(c.getColumnIndex(Constants.RESULT_STATUS)),
+                        c.getString(c.getColumnIndex(Constants.RESULT_FIRST_VALUE)),
+                        c.getString(c.getColumnIndex(Constants.RESULT_SECOND_VALUE))
+                );
+
+                itens.add(obj);
+            } while (c.moveToNext());
+
+        } else {
+            itens = null;
+        }
+        c.close();
+        db.close();
+
+        return itens;
+    }
+
+    public ArrayList<Tests> getTests() {
+        this.openDataBase();
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_TEST;
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        ArrayList<Tests> itens = new ArrayList<Tests>();
+
+        if (c.getCount()>0) {
+            c.moveToFirst();
+            do {
+                Tests obj = new Tests(
+                        c.getString(c.getColumnIndex(Constants.TEST_ID)),
+                        c.getString(c.getColumnIndex(Constants.TEST_NAME)),
+                        c.getString(c.getColumnIndex(Constants.TEST_TYPE)),
+                        c.getString(c.getColumnIndex(Constants.TEST_DESCRIPTION)),
+                        c.getString(c.getColumnIndex(Constants.TEST_ID_USER)),
+                        c.getString(c.getColumnIndex(Constants.TEST_ID_SELECTIVE)),
+                        c.getString(c.getColumnIndex(Constants.TEST_CODE))
+                );
+
+                itens.add(obj);
+            } while (c.moveToNext());
+
+        } else {
+            itens = null;
+        }
+        c.close();
+        db.close();
+
+        return itens;
+    }
+
+    public ArrayList<User> getUsres() {
+        this.openDataBase();
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_USER;
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        ArrayList<User> itens = new ArrayList<User>();
+
+        if (c.getCount()>0) {
+            c.moveToFirst();
+            do {
+                User obj = new User(
+                        c.getString(c.getColumnIndex(Constants.USER_ID)),
+                        c.getString(c.getColumnIndex(Constants.USER_NAME)),
+                        c.getString(c.getColumnIndex(Constants.USER_USERNAME)),
+                        c.getString(c.getColumnIndex(Constants.USER_PASSWORD)),
+                        c.getString(c.getColumnIndex(Constants.USER_EMAIL)),
+                        c.getString(c.getColumnIndex(Constants.USER_TOKEN))
+                );
+
+                itens.add(obj);
+            } while (c.moveToNext());
+
+        } else {
+            itens = null;
+        }
+        c.close();
+        db.close();
+
+        return itens;
+    }
+
+    public ArrayList<Players> getPlayerById(String idPlayer){
+        this.openDataBase();
+        String selectQuery = "SELECT DISTINCT * FROM "+ Constants.TABLE_PLAYERS +
+                " WHERE "+Constants.PLAYER_ID +" ='"+idPlayer+"'";
+
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+        ArrayList<Players> playerses = new ArrayList<Players>();
+
+        Players player = null;
+
+        if (c.moveToFirst()) {
+            player = new Players(
+                    c.getString(c.getColumnIndex(Constants.PLAYER_ID)),
+                    c.getString(c.getColumnIndex(Constants.PLAYER_NAME)),
+                    c.getString(c.getColumnIndex(Constants.PLAYER_AGE)),
+                    c.getString(c.getColumnIndex(Constants.PLAYER_ID_SELECTIVE)),
+                    c.getString(c.getColumnIndex(Constants.PLAYER_DETAILS))
+            );
+        } else {
+            playerses = null;
+        }
+        c.close();
+        this.close();
+        return playerses;
+    }
+
+    public User checkExistsUser(String userName, String password) {
+        String selectGetUser = "SELECT DISTINCT * FROM [" + Constants.TABLE_USER + "] WHERE Username = '" + userName +
+                "'" + " AND password ='" + password + "'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectGetUser, null);
+        User user = null;
+        if(c.moveToFirst()){
+            user = new User(
+                    c.getString(c.getColumnIndex(Constants.USER_ID)),
+                    c.getString(c.getColumnIndex(Constants.USER_NAME)),
+                    c.getString(c.getColumnIndex(Constants.USER_USERNAME)),
+                    c.getString(c.getColumnIndex(Constants.USER_PASSWORD)),
+                    c.getString(c.getColumnIndex(Constants.USER_EMAIL)),
+                    c.getString(c.getColumnIndex(Constants.USER_TOKEN))
+            );
+        }
+        return user;
+    }
+
+
+
+
 
     /*public ArrayList<Routes> searchRoutes(String search){
         SQLiteDatabase db = getWritableDatabase();

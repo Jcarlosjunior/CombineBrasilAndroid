@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public LinearLayoutManager mLayoutManager;
     private LinearLayout linearProgress;
     Toolbar toolbar;
+    ArrayList<Tests> testsArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void callAllFalseTests(){
-        ArrayList<Tests> testsArrayList = new ArrayList<Tests>();
+        testsArrayList = new ArrayList<Tests>();
         String[] values = new String[6];
         for(int i=0; i<=5; i++){
             Tests test = new Tests();
@@ -147,10 +148,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void onClickItemList(Activity activity, int positionArray, String id){
-        ((MainActivity) activity).validaClick();
+        ((MainActivity) activity).validaClick(positionArray);
     }
-    public void validaClick(){
+    public void validaClick(int position){
         Intent i = new Intent(MainActivity.this, PlayersActivity.class);
+        Tests test = testsArrayList.get(position);
+        i.putExtra("id_test", test.getId());
+        i.putExtra("name_test", test.getName());
+        i.putExtra("details_test", test.getDescription());
         startActivity(i);
     }
 

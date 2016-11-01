@@ -20,4 +20,8 @@
     *********************************** TÍTULOS COMBINE **************************************************
     -->
     <string name="combine_tests">Combine Brasil - Testes</string>
+
+    <string name="lorem">Aenean placerat. In vulputate urna eu arcu. Aliquam erat volutpat. Suspendisse potenti.
+        Morbi mattis felis at nunc. Duis viverra diam non justo. In nisl. Nullam sit amet magna in magna gravida vehicula.
+        Mauris tincidunt sem sed arcu. Nunc posuere. Nullam lectus justo,</string>
 </resources>
