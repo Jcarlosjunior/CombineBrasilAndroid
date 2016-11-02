@@ -9,4 +9,5 @@
     <color name="greyDark">#7d7d7d</color>
     <color name="red_status">#d71a06</color>
     <color name="grey_transparent">#47dddddd</color>
+    <color name="yellow">#ffde00</color>
 </resources>
