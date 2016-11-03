@@ -9,4 +9,6 @@ import android.content.Context;
 public class AllActivities {
     public static Context mainActivity;
     public static Activity detailsProcessActivity;
+
+    public static String type;
 }

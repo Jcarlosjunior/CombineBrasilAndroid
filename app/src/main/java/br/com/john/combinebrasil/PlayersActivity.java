@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import br.com.john.combinebrasil.AdapterList.AdapterListPlayers;
 import br.com.john.combinebrasil.Classes.Players;
+import br.com.john.combinebrasil.Services.AllActivities;
 
 public class PlayersActivity extends AppCompatActivity {
     ListView listViewPlayers;
@@ -75,7 +76,11 @@ public class PlayersActivity extends AppCompatActivity {
         ((PlayersActivity) activity).validaClick(positionArray);
     }
     public void validaClick(int position){
-        Intent i = new Intent(PlayersActivity.this, ResultsActivity.class);
+        Intent i;
+        if(AllActivities.type.equals("corrida"))
+            i = new Intent(PlayersActivity.this, CronometerActivity.class);
+        else
+            i = new Intent(PlayersActivity.this, ResultsActivity.class);
         Players player  = playersArrayList.get(position);
         i.putExtra("id_player",player.getId());
         i.putExtra("name_player",player.getName());

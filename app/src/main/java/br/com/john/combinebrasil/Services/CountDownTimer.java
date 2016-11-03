@@ -46,7 +46,7 @@ public class CountDownTimer {
                         }
                     }
                     try{
-                        timerThread.sleep(7);
+                        timerThread.sleep(10);
                     }catch (Exception e) {
                         // TODO: handle exception
                     }

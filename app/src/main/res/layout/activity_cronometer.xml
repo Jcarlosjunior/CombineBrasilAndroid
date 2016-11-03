@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_cronometer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.com.john.combinebrasil.CronometerActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar_default" android:id="@+id/include"/>
+
+        <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="0.9"
+           android:orientation="vertical">
+
+           <TextView
+               android:id="@+id/text_cronometer"
+               android:layout_width="match_parent"
+               android:layout_height="0sp"
+               android:layout_weight="0.5"
+               android:text="00:00"
+               android:textColor="@color/black"
+               android:textSize="80sp"
+               android:fontFamily="sans-serif-condensed"
+               android:gravity="center"
+               />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:id="@+id/linear_show_first_value"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Primeiro"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        />
+                    <TextView
+                        android:id="@+id/text_first_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00"
+                        android:textSize="30sp"
+                        android:textColor="@color/colorPrimary"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_show_second_value"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Seegundo"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        />
+                    <TextView
+                        android:id="@+id/text_second_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00"
+                        android:textSize="30sp"
+                        android:textColor="@color/colorPrimary"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+                android:layout_weight="0.2"
+               android:gravity="center|bottom"
+               android:animateLayoutChanges="true">
+
+               <ImageView
+                   android:id="@+id/image_reset"
+                   android:visibility="gone"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/reset_clock"
+                   android:layout_marginRight="30sp"/>
+
+               <LinearLayout
+                   android:id="@+id/linear_button_play"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/background_button_circle_green"
+                   android:orientation="horizontal"
+                   >
+                   <LinearLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="0.2"></LinearLayout>
+
+                   <ImageView
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="0.4"
+                       android:src="@drawable/icon_play"
+                       android:id="@+id/image_icon_button_play" />
+
+                   <LinearLayout
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="0.2"></LinearLayout>
+               </LinearLayout>
+
+               <ImageView
+                   android:id="@+id/image_pause"
+                   android:visibility="gone"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:src="@drawable/pause"
+                   android:layout_marginLeft="30sp"
+                   />
+           </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true">
+                <Button
+
+                    android:id="@+id/button_save_results"
+                    android:visibility="invisible"
+                    android:enabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginRight="20sp"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:text="@string/salvar_dados"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:background="@drawable/background_button_blue"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -24,6 +24,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Players;
+import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.CountDownTimer;
 import br.com.john.combinebrasil.Services.Services;
 
@@ -32,11 +33,9 @@ public class ResultsActivity extends AppCompatActivity {
     Button buttonAdd;
     EditText editFirstResult, editSecondResult;
     int contResults=0, contChrnometer=0;
-    TextView textNamePlayer, textNameTest, textNameTestDetails, textDetailsTest, textNamePlayerDetails, textDetailsPlayer, textCount;
+    TextView textNamePlayer, textNameTest, textNameTestDetails, textDetailsTest, textNamePlayerDetails, textDetailsPlayer;
     ImageView imgArrowTest, imgArrowPlayer;
     boolean arrowDownTest=true,arrowDownPlayer=true;
-    private final CountDownTimer countDownTimer = new CountDownTimer();
-    String type="";
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -58,7 +57,6 @@ public class ResultsActivity extends AppCompatActivity {
         textDetailsTest = (TextView) findViewById(R.id.text_details_test);
         textNamePlayerDetails = (TextView) findViewById(R.id.text_name_player_details);
         textDetailsPlayer = (TextView) findViewById(R.id.text_details_player);
-        textCount = (TextView) findViewById(R.id.text_count);
 
         imgArrowPlayer = (ImageView) findViewById(R.id.img_player_arrow);
         imgArrowTest = (ImageView) findViewById(R.id.img_test_arrow);
@@ -110,53 +108,7 @@ public class ResultsActivity extends AppCompatActivity {
             }
         });
     }
-        type = "corrida";
-        countDownTimer.setTextView(textCount);
-        if(type.equals("corrida")) {
-            textCount.setVisibility(View.VISIBLE);
-            enabledButtonAdd(true);
-            buttonAdd.setText("Iniciar");
-            contResults = 0;
-            editFirstResult.setEnabled(false);
-            editSecondResult.setEnabled(false);
 
-            buttonAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(contChrnometer==0) {
-                        countDownTimer.initCount();
-                        buttonAdd.setText("Parar");
-                        contChrnometer = contChrnometer + 1;
-                    }
-                    else if(contChrnometer == 1){
-                        contChrnometer = contChrnometer + 1;
-                        countDownTimer.pause();
-                        buttonAdd.setText("Salvar");
-                    }
-                    else if( contChrnometer ==2){
-                        message("Salvar","Deseja salvar no primeiro resultado?");
-                    }
-                    else if(contChrnometer==3){
-                        countDownTimer.initCount();
-                        buttonAdd.setText("Parar");
-                        contChrnometer = contChrnometer + 1;
-                    }
-                    else if(contChrnometer == 4){
-                        contChrnometer = contChrnometer + 1;
-                        countDownTimer.pause();
-                        buttonAdd.setText("Salvar");
-                    }
-                    else if( contChrnometer ==5){
-                        message("Salvar","Deseja salvar no segundo resultado?");
-                    }
-                    else if(contChrnometer==6){
-                        message("Salvar","Deseja salvar os resultado?");
-                    }
-
-
-                }
-            });
-        }
 
     }
 
@@ -213,10 +165,6 @@ public class ResultsActivity extends AppCompatActivity {
             builder.setTitle("Sair");
             builder.create().show();
         }
-        else{
-            countDownTimer.stop();
-            finish();
-        }
     }
 
     DialogInterface.OnClickListener dialogExit = new DialogInterface.OnClickListener() {
@@ -224,7 +172,6 @@ public class ResultsActivity extends AppCompatActivity {
         public void onClick(DialogInterface dialog, int which) {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
-                    countDownTimer.stop();
                     finish();
                     break;
 
@@ -250,10 +197,7 @@ public class ResultsActivity extends AppCompatActivity {
 
     public void message(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        if(type.equals("corrida"))
-            builder.setPositiveButton("Sim", dialogRunClickListener);
-        else
-            builder.setPositiveButton("Sim", dialogClickListener);
+        builder.setPositiveButton("Sim", dialogClickListener);
         builder.setNegativeButton("Não", null);
         builder.setMessage(message);
         builder.setTitle(title);
@@ -275,47 +219,6 @@ public class ResultsActivity extends AppCompatActivity {
             }
         }
     };
-
-    DialogInterface.OnClickListener dialogRunClickListener = new DialogInterface.OnClickListener() {
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    checkAndSaveRun();
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        }
-    };
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void checkAndSaveRun(){
-        if(contChrnometer==2){
-            contChrnometer = contChrnometer + 1;
-            editFirstResult.setText(textCount.getText());
-            textCount.setText("00:00");
-            buttonAdd.setText("Iniciar");
-            countDownTimer.stop();
-        }
-        else if(contChrnometer==5){
-            contChrnometer = contChrnometer + 1;
-            editSecondResult.setText(textCount.getText());
-            textCount.setText("00:00");
-            buttonAdd.setText("Salvar Resultados");
-            buttonAdd.setBackgroundColor(getColor(R.color.red_status));
-            countDownTimer.stop();
-        }
-        else if(contChrnometer==6){
-            Services.message("Aviso","Resultados Salvos!",this);
-            editFirstResult.setText("");
-            editSecondResult.setText("");
-            textCount.setText("00:00");
-        }
-
-    }
     private void checkAndSaveResults (){
         if(contResults==0){
             editFirstResult.setEnabled(true);
@@ -332,11 +235,10 @@ public class ResultsActivity extends AppCompatActivity {
                 editFirstResult.setEnabled(false);
                 editSecondResult.setEnabled(false);
                 buttonAdd.setText("Salvar os resultados");
+                buttonAdd.setOnClickListener(saveAll);
                 enabledButtonAdd(true);
-
         }
     }
-
     private void enabledButtonAdd(boolean enabled){
         if(enabled) {
             buttonAdd.setEnabled(true);
@@ -346,5 +248,38 @@ public class ResultsActivity extends AppCompatActivity {
             buttonAdd.setAlpha(.5f);
         }
     }
+
+    private View.OnClickListener saveAll = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            messageSaveAll();
+        }
+    };
+    private void messageSaveAll(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("Sim", dialogSaveAll);
+        builder.setNegativeButton("Não", null);
+        builder.setMessage("Certeza que deseja salvar esses resultados?");
+        builder.setTitle("SAlvar");
+        builder.create().show();
+    }
+
+    DialogInterface.OnClickListener dialogSaveAll = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    Services.messageSaveResults(ResultsActivity.this);
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+            }
+        }
+    };
+    public static void finished(Activity act){
+        ((ResultsActivity)act).finish();
+    }
+
 }
 

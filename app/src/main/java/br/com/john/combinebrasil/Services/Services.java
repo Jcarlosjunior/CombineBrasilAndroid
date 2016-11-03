@@ -2,6 +2,7 @@ package br.com.john.combinebrasil.Services;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -20,12 +21,15 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.R;
+import br.com.john.combinebrasil.ResultsActivity;
 
 /**
  * Created by GTAC on 18/10/2016.
  */
 public class Services {
+    private static Activity activity = null;
     private static AlertDialog alerta;
 
     public static void message(String title, String message, Activity act) {
@@ -35,6 +39,32 @@ public class Services {
         builder.setTitle(title);
         builder.create().show();
     }
+
+    public static void messageSaveResults(Activity act) {
+        activity = act;
+        AlertDialog.Builder builder = new AlertDialog.Builder(act);
+        builder.setPositiveButton("Ok", dialogSave);
+        builder.setMessage("Mensagem");
+        builder.setTitle("Resultados foram salvos!");
+        builder.create().show();
+    }
+
+    private static DialogInterface.OnClickListener dialogSave = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    if(activity.getClass().getSimpleName().equals("CronometerActivity"))
+                        CronometerActivity.finished(activity);
+                    else if(activity.getClass().getSimpleName().equals("ResultsActivity"))
+                        ResultsActivity.finished(activity);
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+            }
+        }
+    };
 
     public static void messageAlert(Activity act, String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(act);

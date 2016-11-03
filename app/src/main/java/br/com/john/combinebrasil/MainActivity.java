@@ -23,6 +23,7 @@ import br.com.john.combinebrasil.Classes.Players;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
+import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.Services;
 
@@ -151,6 +152,10 @@ public class MainActivity extends AppCompatActivity {
         ((MainActivity) activity).validaClick(positionArray);
     }
     public void validaClick(int position){
+        if(position==2 || position ==0)
+            AllActivities.type="corrida";
+        else
+            AllActivities.type="";
         Intent i = new Intent(MainActivity.this, PlayersActivity.class);
         Tests test = testsArrayList.get(position);
         i.putExtra("id_test", test.getId());
