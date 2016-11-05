@@ -44,8 +44,8 @@ public class Services {
         activity = act;
         AlertDialog.Builder builder = new AlertDialog.Builder(act);
         builder.setPositiveButton("Ok", dialogSave);
-        builder.setMessage("Mensagem");
-        builder.setTitle("Resultados foram salvos!");
+        builder.setMessage("Resultados foram salvos!");
+        builder.setTitle("Mensagem");
         builder.create().show();
     }
 

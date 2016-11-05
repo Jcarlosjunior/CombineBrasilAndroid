@@ -87,6 +87,7 @@ public class CountDownTimer {
         hourCounter =00;
         minuteCounter=00;
         secondCounter=00;
+        textView.setText("00:00");
         play=false;
         //SharedPreferencesAdapter.setTimeChronometer(AllActivitys.mainActivity, getTimeCount());
     }
@@ -108,7 +109,10 @@ public class CountDownTimer {
         if(milisecondCounter<10)
             milis = String.valueOf("0"+milisecondCounter);
 
-        return String.valueOf(minute+":"+second+":"+milis);
+        if(minuteCounter<10)
+            return String.valueOf(second+":"+milis);
+        else
+            return String.valueOf(minute+":"+second+":"+milis);
     }
 
     public void setTimeCount(String time){

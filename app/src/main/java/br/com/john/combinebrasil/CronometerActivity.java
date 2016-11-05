@@ -63,76 +63,122 @@ public class CronometerActivity extends AppCompatActivity {
         linearButtonPlay.setOnClickListener(clickedPlayAndStop);
     }
 
+    /*
+    ************************** MÉTODOS DO CRONÔMETRO ***********************************
+    */
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void playCronometer(){
+        init=true;
+        isPause=false;
+        countDownTimer.initCount();
+        imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.stop));
+        linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_red));
+        imgPause.setVisibility(View.VISIBLE);
+        imgReset.setVisibility(View.VISIBLE);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void stopCronometer(){
+        countDownTimer.stop();
+        init=false;
+        linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_red));
+        imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
+        imgPause.setVisibility(View.GONE);
+        imgReset.setVisibility(View.GONE);
+        imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
+        linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_green));
+        textCronometer.setText("00:00");
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void pauseCronometer(){
+        isPause=true;
+        countDownTimer.pause();
+        linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_green));
+        imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
+        imgPause.setVisibility(View.INVISIBLE);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void resetCrometer(){
+        isPause = true;
+        init=false;
+        countDownTimer.stop();
+        linearButtonPlay.setBackground(getDrawable(R.drawable.background_circle_green));
+        imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
+        imgPause.setVisibility(View.INVISIBLE);
+        imgReset.setVisibility(View.INVISIBLE);
+        textCronometer.setText("00:00");
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void checkAndSaveRun(){
+        if(firstValueSave==false){
+            firstValueSave=true;
+            textFirstResult.setText(textCronometer.getText());
+            linearFirstValue.setVisibility(View.VISIBLE);
+            stopCronometer();
+
+        }
+        else if(secondValueSalve==false){
+            secondValueSalve=true;
+            linearButtonPlay.setVisibility(View.GONE);
+            textSecondValue.setText(textCronometer.getText());
+            btnSave.setVisibility(View.VISIBLE);
+            btnSave.setEnabled(true);
+            stopCronometer();
+        }
+    }
+
+    private void saveResultMessage(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("Sim", dialogSave);
+        builder.setNegativeButton("Não", null);
+        builder.setMessage("Deseja salvar os resultados dos testes?");
+        builder.setTitle("Salvar");
+        builder.show();
+    }
+
+    /*
+    ****************************** MÉTODOS DE CLICK ******************************************
+    */
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void clickePause(){
+        if(!isPause){
+            pauseCronometer();
+        }
+    }
 
     private View.OnClickListener clickedPlayAndStop = new View.OnClickListener() {
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onClick(View v) {
             if(init==false){
-                if(firstValueSave==false){
-                    countDownTimer.initCount();
-                    imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.stop));
-                    linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_red));
-                    init=true;
-                    imgPause.setVisibility(View.VISIBLE);
-                    imgReset.setVisibility(View.VISIBLE);
-                    isPause=false;
-                }
-                else if(secondValueSalve==false){
-                    countDownTimer.initCount();
-                    init=true;
-                    imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.stop));
-                    linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_red));
-                    imgPause.setVisibility(View.VISIBLE);
-                    imgReset.setVisibility(View.VISIBLE);
-                    isPause=false;
-                }
+                if(firstValueSave==false)
+                    playCronometer();
+                else if(secondValueSalve==false)
+                    playCronometer();
             }
             else {
                 if(!isPause) {
-                    if (firstValueSave == false) {
-                        countDownTimer.pause();
-                        message("Salvar", "Deseja salvar no primeiro resultado?", false);
-                    } else if (secondValueSalve == false) {
-                        countDownTimer.pause();
-                        message("Salvar", "Deseja salvar no primeiro resultado?", false);
-                    }
+                    if (firstValueSave == false)
+                        message("Salvar", "Deseja salvar o primeiro resultado?", false);
+                     else if (secondValueSalve == false)
+                        message("Salvar", "Deseja salvar o segundo resultado?", false);
                 }
-                else{
-                    countDownTimer.initCount();
-                    imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.stop));
-                    linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_red));
-                    imgPause.setVisibility(View.VISIBLE);
-                    isPause=false;
-                }
+                else
+                    playCronometer();
             }
         }
     };
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void clickePause(){
-        if(!isPause){
-            isPause=true;
-            countDownTimer.pause();
-            linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_green));
-            imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
-            imgPause.setVisibility(View.INVISIBLE);
-            imgPause.setEnabled(false);
-        }
-        else{
-            isPause=false;
-            countDownTimer.initCount();
-            linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_red));
-            imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.stop));
-            imgPause.setVisibility(View.VISIBLE);
-            imgPause.setEnabled(true);
-        }
-    }
 
     private View.OnClickListener clickedPause = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.i("Log","clickedPause");
             clickePause();
         }
     };
@@ -140,12 +186,26 @@ public class CronometerActivity extends AppCompatActivity {
     private View.OnClickListener clickedReset = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            countDownTimer.pause();
             message("Mensagem","Deseja mesmo resetar a contagem", true);
         }
     };
 
+    private View.OnClickListener clickedSave = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            saveResultMessage();
+        }
+    };
+
+    private View.OnClickListener btnBackClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            exitActivity();
+        }
+    };
+
     public void message(String title, String message, boolean reset) {
+        pauseCronometer();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         if(reset==false)
             builder.setPositiveButton("Sim", dialogClickListener);
@@ -157,14 +217,18 @@ public class CronometerActivity extends AppCompatActivity {
         builder.create().show();
     }
 
+
+    /*
+    ********************************** DIALOG MESSAGES *********************************
+    */
+
     DialogInterface.OnClickListener dialogResetClickListener = new DialogInterface.OnClickListener() {
         @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onClick(DialogInterface dialog, int which) {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
-                    countDownTimer.stop();
-                    countDownTimer.initCount();
+                    resetCrometer();
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:
@@ -188,60 +252,29 @@ public class CronometerActivity extends AppCompatActivity {
         }
     };
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void checkAndSaveRun(){
-        if(firstValueSave==false){
-            imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
-            linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_green));
-            firstValueSave=true;
-            init=false;
-            imgPause.setVisibility(View.GONE);
-            imgReset.setVisibility(View.GONE);
-            textFirstResult.setText(textCronometer.getText());
-            textCronometer.setText("00:00");
-            linearFirstValue.setVisibility(View.VISIBLE);
-            countDownTimer.stop();
-        }
-        else if(secondValueSalve==false){
-            imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
-            linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_green));
-            secondValueSalve=true;
-            imgPause.setVisibility(View.GONE);
-            imgReset.setVisibility(View.GONE);
-            textSecondValue.setText(textCronometer.getText());
-            textCronometer.setText("00:00");
-            linearSecondValue.setVisibility(View.VISIBLE);
-            countDownTimer.stop();
-            init = false;
-            btnSave.setVisibility(View.VISIBLE);
-            btnSave.setEnabled(true);
-            linearButtonPlay.setVisibility(View.GONE);
-
-        }
-    }
-
-    private View.OnClickListener clickedSave = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            saveResultMessage();
-        }
-    };
-
-    private void saveResultMessage(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton("Sim", dialogSave);
-        builder.setNegativeButton("Não", null);
-        builder.setMessage("Deseja salvar os resultados dos testes?");
-        builder.setTitle("Salvar");
-        builder.show();
-    }
-
     DialogInterface.OnClickListener dialogSave = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
-                    Services.message("Mensagem","Resultados foram salvos!",CronometerActivity.this);
+                    Services.messageSaveResults(CronometerActivity.this);
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+            }
+        }
+    };
+
+    DialogInterface.OnClickListener dialogExit = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    try {
+                        stopCronometer();
+                    }catch (Exception e){
+                    }
                     finish();
                     break;
 
@@ -256,13 +289,6 @@ public class CronometerActivity extends AppCompatActivity {
         exitActivity();
     }
 
-    private View.OnClickListener btnBackClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            exitActivity();
-        }
-    };
-
     private void exitActivity() {
         if (init) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -273,29 +299,10 @@ public class CronometerActivity extends AppCompatActivity {
             builder.create().show();
         } else {
             if (countDownTimer.getPlay())
-                countDownTimer.stop();
+                stopCronometer();
             finish();
         }
     }
-
-    DialogInterface.OnClickListener dialogExit = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case DialogInterface.BUTTON_POSITIVE:
-                    try {
-                        countDownTimer.stop();
-                    }catch (Exception e){
-
-                    }
-                    finish();
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        }
-    };
 
     public static void finished(Activity act){
         ((CronometerActivity)act).finish();
