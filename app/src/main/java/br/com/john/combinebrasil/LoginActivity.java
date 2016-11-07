@@ -108,7 +108,7 @@ public class LoginActivity extends Activity {
                 task.callByJsonStringRequest();
             }
             else
-                Services.message("Aviso", "Sem conexão com a internet", this);
+                Services.messageAlert(this,"Aviso", "Sem conexão com a internet","hide");
         }
     }
 
@@ -154,9 +154,8 @@ public class LoginActivity extends Activity {
 
     public boolean validateEmail(EditText edit){
         boolean ver = false;
-        if(getString(edit).length()>=3){
+        if(getString(edit).length()>=3)
             ver = true;
-        }
         else
             Services.changeColorEdit(edit, this.getString(R.string.erro_dados_invalidos), "Insira um usuário com válido", this);
         return ver;
@@ -164,9 +163,8 @@ public class LoginActivity extends Activity {
 
     public boolean validatePassword(EditText edit){
         boolean ver = false;
-        if(getString(edit).length()>=3){
+        if(getString(edit).length()>=3)
             ver = true;
-        }
         else
             Services.changeColorEdit(edit,this.getString(R.string.erro_dados_invalidos), "Insira uma senha válida", this);
        return ver;

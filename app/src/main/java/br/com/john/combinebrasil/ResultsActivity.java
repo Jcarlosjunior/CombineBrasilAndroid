@@ -269,7 +269,7 @@ public class ResultsActivity extends AppCompatActivity {
         public void onClick(DialogInterface dialog, int which) {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
-                    Services.messageSaveResults(ResultsActivity.this);
+                    Services.messageAlert(ResultsActivity.this, "Mensagem","Os resultados foram salvos!", "DialogSaveResults");
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:

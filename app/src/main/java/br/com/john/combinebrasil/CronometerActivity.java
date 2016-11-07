@@ -257,7 +257,7 @@ public class CronometerActivity extends AppCompatActivity {
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
-                    Services.messageSaveResults(CronometerActivity.this);
+                    Services.messageAlert(CronometerActivity.this, "Mensagem","Os resultados foram salvos!","DIALOGSAVECRONOMETER");
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:

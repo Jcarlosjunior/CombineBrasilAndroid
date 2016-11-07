@@ -16,6 +16,8 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,61 +33,51 @@ import br.com.john.combinebrasil.ResultsActivity;
 public class Services {
     private static Activity activity = null;
     private static AlertDialog alerta;
+    private static String whoCalled="";
 
-    public static void message(String title, String message, Activity act) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(act);
-        builder.setPositiveButton("Ok", null);
-        builder.setMessage(message);
-        builder.setTitle(title);
-        builder.create().show();
-    }
-
-    public static void messageSaveResults(Activity act) {
-        activity = act;
-        AlertDialog.Builder builder = new AlertDialog.Builder(act);
-        builder.setPositiveButton("Ok", dialogSave);
-        builder.setMessage("Resultados foram salvos!");
-        builder.setTitle("Mensagem");
-        builder.create().show();
-    }
-
-    private static DialogInterface.OnClickListener dialogSave = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case DialogInterface.BUTTON_POSITIVE:
-                    if(activity.getClass().getSimpleName().equals("CronometerActivity"))
-                        CronometerActivity.finished(activity);
-                    else if(activity.getClass().getSimpleName().equals("ResultsActivity"))
-                        ResultsActivity.finished(activity);
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        }
-    };
-
-    public static void messageAlert(Activity act, String title, String message){
+    public static void messageAlert(Activity act, String title, String message, String whoCalled){
+        Services.whoCalled = whoCalled;
+        Services.activity=act;
         AlertDialog.Builder builder = new AlertDialog.Builder(act);
 
         View view = act.getLayoutInflater().inflate(R.layout.alert_message, null);
         builder.setView(view);
 
-        alerta = builder.create();
-        alerta.show();
         TextView textTitle = (TextView) view.findViewById(R.id.text_title_message);
         textTitle.setText(title);
 
         TextView textAlert = (TextView) view.findViewById(R.id.text_alert_message);
         textAlert.setText(message);
         Button nbutton = (Button) view.findViewById(R.id.button_ok_alert_message);
-        nbutton.setOnClickListener(new View.OnClickListener() {
+        LinearLayout linear = (LinearLayout) view.findViewById(R.id.linear_message_ok);
+
+        linear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 alerta.hide();
             }
         });
+        nbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickedOkAlert();
+            }
+        });
+        alerta = builder.create();
+        alerta.show();
+    }
+
+    private static void clickedOkAlert(){
+        if(whoCalled.toUpperCase().equals("HIDE") || whoCalled.equals(""))
+            alerta.hide();
+        else if(whoCalled.toUpperCase().equals("DIALOGSAVECRONOMETER")){
+            alerta.hide();
+            CronometerActivity.finished(activity);
+        }
+        else if(whoCalled.toUpperCase().equals("DIALOGSAVERESULTS")){
+            alerta.hide();
+            ResultsActivity.finished(activity);
+        }
     }
 
     public static boolean isOnline(Activity act) {
@@ -102,8 +94,7 @@ public class Services {
 
     public static void changeColorEdit(EditText edit, String title, String mensagem, Activity act){
         edit.setBackground(act.getResources().getDrawable(R.drawable.background_edit_error));
-        messageAlert(act, title, mensagem);
-        //Services.message("Dados Inválidos", mensagem, this);
+        messageAlert(act, title, mensagem, "hide");
     }
 
     public static Bitmap getRoundedCornerBitmap(Bitmap pBitmap) {

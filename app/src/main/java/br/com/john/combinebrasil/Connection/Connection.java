@@ -75,9 +75,9 @@ public class Connection extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         try {
                             if (error.networkResponse.statusCode == 400)
-                                Services.message("Erro!", "código 400\n requisição incorreta", getActivity());
+                                Services.messageAlert(getActivity(), "Erro!", "código 400\n requisição incorreta", "");
                             else if (error.networkResponse.statusCode == 401)
-                                Services.message("Erro!", "código 401\n requisição não autorizada", getActivity());
+                                Services.messageAlert(getActivity(),"Erro!", "código 401\n requisição não autorizada","");
                             else
                                 ReturnError.getInstance().goTo(whoCalled, getActivity(), getMessage(error));
                             //se voce estiver debugando altere essa variável
@@ -86,13 +86,13 @@ public class Connection extends AppCompatActivity {
                                 String mensagem = new String(error.networkResponse.data);
                                 String e = new String(String.valueOf(error));
                                 if (error.getMessage() == null)
-                                    Services.message("Erro", e, getActivity());
+                                    Services.messageAlert(getActivity(),"Erro", e, "");
                                 else
-                                    Services.message(statusCode + " - Erro!", error.getMessage(), getActivity());
-                                Services.message("Erro Mensagem", mensagem, getActivity());
+                                    Services.messageAlert(getActivity(),statusCode + " - Erro!", error.getMessage(), "");
+                                Services.messageAlert(getActivity(),"Erro Mensagem", mensagem, "");
                             }
                         }catch (Exception e){
-                            Services.message("API indisponível", "tente novamente mais tarde", activity);
+                            Services.messageAlert(activity, "API indisponível", "tente novamente mais tarde", "" );
                         }
                     }
                     public String getMessage(VolleyError error){

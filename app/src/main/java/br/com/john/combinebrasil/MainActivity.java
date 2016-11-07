@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 task.callByJsonStringRequest();
             }
             else
-                Services.messageAlert(this, "Aviso", "Sem conexão com a internet");
+                Services.messageAlert(this, "Aviso", "Sem conexão com a internet", "");
     }
 
     public static void afterCalled(String response, boolean isList, Activity activity) {
