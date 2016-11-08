@@ -25,6 +25,11 @@ public class Constants {
     public static final String TESTS = "Testes";
     public static final String USER = "User";
 
+    /****************************************NAMES ACTIVITYS**********************************/
+
+    public static final String CRONOMETER_ACTIVITY = "CronometerActivity";
+    public static final String RESULTS_ACTIVITY = "ResultsActivity";
+
     //SHARED PREFERENCES
     public static final String TIMER_CHRONOMETER = "timer_chronometer",
             ID = "Id",

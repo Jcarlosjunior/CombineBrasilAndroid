@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import br.com.john.combinebrasil.Services.CountDownTimer;
+import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.Services;
 
 public class CronometerActivity extends AppCompatActivity {
@@ -30,7 +31,6 @@ public class CronometerActivity extends AppCompatActivity {
 
     private final CountDownTimer countDownTimer = new CountDownTimer();
     private boolean init = false, firstValueSave = false, secondValueSalve = false, isPause=false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,13 +132,34 @@ public class CronometerActivity extends AppCompatActivity {
         }
     }
 
-    private void saveResultMessage(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton("Sim", dialogSave);
-        builder.setNegativeButton("Não", null);
-        builder.setMessage("Deseja salvar os resultados dos testes?");
-        builder.setTitle("Salvar");
-        builder.show();
+    /*
+    ********************************** MESSAGES *********************************
+    */
+    private void messageOption(String title, String message, String method){
+        pauseCronometer();
+        new MessageOptions(CronometerActivity.this, title, message, method);
+    }
+
+    public static void getMethodOutActivity(Activity act, String method){
+        ((CronometerActivity)act).calledFunctions(method);
+    }
+
+    private void calledFunctions(String method){
+        if(method.equals("exitCronometer")){
+            try {
+                stopCronometer();
+            }catch(Exception e){}
+            finish();
+        }
+        else if(method.equals("saveResult")){
+            checkAndSaveRun();
+        }
+        else if(method.equals("resetCronometer")){
+            resetCrometer();
+        }
+        else if(method.equals("saveAllResults")){
+            Services.messageAlert(CronometerActivity.this, "Mensagem","Os resultados foram salvos!","DIALOGSAVECRONOMETER");
+        }
     }
 
     /*
@@ -165,9 +186,10 @@ public class CronometerActivity extends AppCompatActivity {
             else {
                 if(!isPause) {
                     if (firstValueSave == false)
-                        message("Salvar", "Deseja salvar o primeiro resultado?", false);
+                        messageOption("Salvar","Deseja salvar o primeiro resultado?","saveResult");
                      else if (secondValueSalve == false)
-                        message("Salvar", "Deseja salvar o segundo resultado?", false);
+                        messageOption("Salvar","Deseja salvar o segundo resultado?","saveResult");
+
                 }
                 else
                     playCronometer();
@@ -186,14 +208,14 @@ public class CronometerActivity extends AppCompatActivity {
     private View.OnClickListener clickedReset = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            message("Mensagem","Deseja mesmo resetar a contagem", true);
+            messageOption("Mensagem","Deseja mesmo resetar a contagem", "resetCronometer");
         }
     };
 
     private View.OnClickListener clickedSave = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            saveResultMessage();
+            messageOption("Salvar", "Deseja salvar os resultados?", "saveAllResults");
         }
     };
 
@@ -204,86 +226,6 @@ public class CronometerActivity extends AppCompatActivity {
         }
     };
 
-    public void message(String title, String message, boolean reset) {
-        pauseCronometer();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        if(reset==false)
-            builder.setPositiveButton("Sim", dialogClickListener);
-        else if(reset==true)
-            builder.setPositiveButton("Sim", dialogResetClickListener);
-        builder.setNegativeButton("Não", null);
-        builder.setMessage(message);
-        builder.setTitle(title);
-        builder.create().show();
-    }
-
-
-    /*
-    ********************************** DIALOG MESSAGES *********************************
-    */
-
-    DialogInterface.OnClickListener dialogResetClickListener = new DialogInterface.OnClickListener() {
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    resetCrometer();
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        }
-    };
-
-    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    checkAndSaveRun();
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        }
-    };
-
-    DialogInterface.OnClickListener dialogSave = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case DialogInterface.BUTTON_POSITIVE:
-                    Services.messageAlert(CronometerActivity.this, "Mensagem","Os resultados foram salvos!","DIALOGSAVECRONOMETER");
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        }
-    };
-
-    DialogInterface.OnClickListener dialogExit = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case DialogInterface.BUTTON_POSITIVE:
-                    try {
-                        stopCronometer();
-                    }catch (Exception e){
-                    }
-                    finish();
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        }
-    };
-
     @Override
     public void onBackPressed(){
         exitActivity();
@@ -291,12 +233,7 @@ public class CronometerActivity extends AppCompatActivity {
 
     private void exitActivity() {
         if (init) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setPositiveButton("Sim", dialogExit);
-            builder.setNegativeButton("Não", null);
-            builder.setMessage("Tem certeza que deseja sair e abandonar o teste?");
-            builder.setTitle("Sair");
-            builder.create().show();
+            messageOption("Sair","Tem certeza que deseja sair e abandonar o teste?","exitCronometer");
         } else {
             if (countDownTimer.getPlay())
                 stopCronometer();

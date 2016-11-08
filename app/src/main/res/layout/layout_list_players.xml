@@ -8,23 +8,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10sp"
-        android:background="@color/grey"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp">
+        android:paddingTop="15sp"
+        android:paddingBottom="15sp"
+        android:paddingRight="10sp"
+        android:paddingLeft="10sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginRight="5sp"
+        android:layout_marginLeft="5sp"
+        android:background="@drawable/background_border_list">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.9"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/text_name_player_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nome do Jogador"
                 android:layout_marginBottom="10sp"
-                android:textColor="@color/black"
-                android:textSize="18sp"/>
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="22sp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,12 +40,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:text="Primeiro resultado: 1:02"/>
+                    android:text="Primeiro resultado: 1:02"
+                    android:textColor="@color/black"/>
                 <TextView
                     android:id="@+id/text_second_result_list"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
+                    android:textColor="@color/black"
                     android:text="Segundo resultado: 1:02"/>
             </LinearLayout>
 
@@ -56,11 +64,4 @@
                 android:id="@+id/img_status_players" />
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
-        android:background="@color/black"></LinearLayout>
-
 </LinearLayout>

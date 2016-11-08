@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.R;
+import br.com.john.combinebrasil.ResultsActivity;
 
 /**
  * Created by GTAC on 06/11/2016.
@@ -29,9 +31,7 @@ public class MessageOptions {
         View view = act.getLayoutInflater().inflate(R.layout.alert_message_option, null);
         builder.setView(view);
 
-
         TextView textTitle = (TextView) view.findViewById(R.id.text_title_message_option);
-
 
         TextView textAlert = (TextView) view.findViewById(R.id.text_alert_message_option);
 
@@ -69,11 +69,12 @@ public class MessageOptions {
     };
 
     private void methodPositive(){
-        if(whoCalled.equals("")){
-
+        alerta.hide();
+        if(act.getClass().getSimpleName().equals(Constants.CRONOMETER_ACTIVITY)){
+            CronometerActivity.getMethodOutActivity(act, whoCalled);
         }
-        else if(whoCalled.equals("")){
-
+        else if(act.getClass().getSimpleName().equals(Constants.RESULTS_ACTIVITY)){
+            ResultsActivity.getMethodOutResultsActivity(act, whoCalled);
         }
     }
 }

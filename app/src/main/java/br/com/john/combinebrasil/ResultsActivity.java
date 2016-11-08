@@ -24,15 +24,17 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Players;
+import br.com.john.combinebrasil.Classes.Results;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.CountDownTimer;
+import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.Services;
 
 public class ResultsActivity extends AppCompatActivity {
     Toolbar toolbar;
     Button buttonAdd;
     EditText editFirstResult, editSecondResult;
-    int contResults=0, contChrnometer=0;
+    int contResults=0;
     TextView textNamePlayer, textNameTest, textNameTestDetails, textDetailsTest, textNamePlayerDetails, textDetailsPlayer;
     ImageView imgArrowTest, imgArrowPlayer;
     boolean arrowDownTest=true,arrowDownPlayer=true;
@@ -74,7 +76,6 @@ public class ResultsActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.length()>2)
@@ -108,11 +109,7 @@ public class ResultsActivity extends AppCompatActivity {
             }
         });
     }
-
-
-    }
-
-
+}
     private View.OnClickListener clickedImgArrowTest = new View.OnClickListener() {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
@@ -128,7 +125,6 @@ public class ResultsActivity extends AppCompatActivity {
                 imgArrowTest.setImageDrawable(getDrawable(R.drawable.arrow_down));
                 textDetailsTest.setVisibility(View.GONE);
             }
-
         }
     };
 
@@ -151,74 +147,23 @@ public class ResultsActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    public void onBackPressed(){
-        exitActivity();
+    public static void getMethodOutResultsActivity(Activity act, String method){
+        ((ResultsActivity)act).calledMethod(method);
     }
 
-    private void exitActivity(){
-        if(contResults>0){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setPositiveButton("Sim", dialogExit);
-            builder.setNegativeButton("Não", null);
-            builder.setMessage("Tem certeza que deseja sair e abandonar o teste?");
-            builder.setTitle("Sair");
-            builder.create().show();
+    private void calledMethod(String method){
+        if(method.equals("checkAndSaveResults")){
+            contResults = contResults + 1;
+            checkAndSaveResults();
+        }
+        else if(method.equals("saveAllResults")){
+            Services.messageAlert(ResultsActivity.this, "Mensagem","Os resultados foram salvos!", "DialogSaveResults");
+        }
+        else if(method.equals("exitActivity")){
+            finish();
         }
     }
 
-    DialogInterface.OnClickListener dialogExit = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    finish();
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        }
-    };
-
-    private View.OnClickListener btnBackClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            exitActivity();
-        }
-    };
-
-    public View.OnClickListener clickSave = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            message("Salvar", "Deseja salvar o resultado?");
-        }
-    };
-
-    public void message(String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton("Sim", dialogClickListener);
-        builder.setNegativeButton("Não", null);
-        builder.setMessage(message);
-        builder.setTitle(title);
-        builder.create().show();
-    }
-
-    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    contResults= contResults+1;
-                    checkAndSaveResults();
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        }
-    };
     private void checkAndSaveResults (){
         if(contResults==0){
             editFirstResult.setEnabled(true);
@@ -232,13 +177,14 @@ public class ResultsActivity extends AppCompatActivity {
 
         }
         else if(contResults==2){
-                editFirstResult.setEnabled(false);
-                editSecondResult.setEnabled(false);
-                buttonAdd.setText("Salvar os resultados");
-                buttonAdd.setOnClickListener(saveAll);
-                enabledButtonAdd(true);
+            editFirstResult.setEnabled(false);
+            editSecondResult.setEnabled(false);
+            buttonAdd.setText("Salvar os resultados");
+            buttonAdd.setOnClickListener(saveAll);
+            enabledButtonAdd(true);
         }
     }
+
     private void enabledButtonAdd(boolean enabled){
         if(enabled) {
             buttonAdd.setEnabled(true);
@@ -249,37 +195,45 @@ public class ResultsActivity extends AppCompatActivity {
         }
     }
 
+    private void messageOption(String title, String message, String method){
+        new MessageOptions(ResultsActivity.this, title, message, method);
+    }
+
+    @Override
+    public void onBackPressed(){
+        exitActivity();
+    }
+
+    private View.OnClickListener btnBackClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            exitActivity();
+        }
+    };
+
+    private void exitActivity(){
+        if(contResults>0)
+            messageOption("Sair", "Tem certeza que deseja sair e abandonar o teste?","exitActivity");
+        else
+            finish();
+    }
+
+    public View.OnClickListener clickSave = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            messageOption("Salvar", "Deseja salvar o resultado?", "checkAndSaveResults");
+        }
+    };
+
     private View.OnClickListener saveAll = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            messageSaveAll();
+            messageOption("Salvar", "Certeza que deseja salvar os resultados?","saveAllResults");
         }
     };
-    private void messageSaveAll(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton("Sim", dialogSaveAll);
-        builder.setNegativeButton("Não", null);
-        builder.setMessage("Certeza que deseja salvar esses resultados?");
-        builder.setTitle("SAlvar");
-        builder.create().show();
-    }
 
-    DialogInterface.OnClickListener dialogSaveAll = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    Services.messageAlert(ResultsActivity.this, "Mensagem","Os resultados foram salvos!", "DialogSaveResults");
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    break;
-            }
-        }
-    };
     public static void finished(Activity act){
         ((ResultsActivity)act).finish();
     }
-
 }
 

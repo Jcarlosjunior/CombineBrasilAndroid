@@ -2,9 +2,11 @@
 <resources>
     <color name="colorPrimary">#004071</color>
     <color name="colorPrimaryDark">#00355d</color>
+    <color name="colorPrimaryLight">#8d00355d</color>
     <color name="black">#000</color>
     <color name="grey">#e2e2e2</color>
     <color name="white">#fff</color>
+    <color name="white_transparent">#bcffffff</color>
     <color name="whiteDark">#f4f4f4</color>
     <color name="greyDark">#7d7d7d</color>
     <color name="red_status">#d71a06</color>
