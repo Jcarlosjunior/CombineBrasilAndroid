@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import br.com.john.combinebrasil.Classes.Players;
+import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Results;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Classes.User;
@@ -138,20 +138,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /*****************************************INSERT IN DATABASE*****************************************************/
 
-    public void addPlayers(ArrayList<Players> listPlayers) {
+    public void addAthletes(ArrayList<Athletes> listAthletes) {
         long ret = 0;
         try{
-            for (Players obj : listPlayers) {
+            for (Athletes obj : listAthletes) {
                 SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
-                values.put(Constants.PLAYER_ID, obj.getId());
-                values.put(Constants.PLAYER_NAME, obj.getName());
-                values.put(Constants.PLAYER_AGE, obj.getAge());
-                values.put(Constants.PLAYER_DETAILS, obj.getDetails());
-                values.put(Constants.PLAYER_ID_SELECTIVE, obj.getIdSelective());
+                values.put(Constants.ATHLETES_ID, obj.getId());
+                values.put(Constants.ATHLETES_NAME, obj.getName());
+                values.put(Constants.ATHLETES_BIRTHDAY, obj.getBirthday());
+                values.put(Constants.ATHLETES_CPF, obj.getCPF());
+                values.put(Constants.ATHLETES_HEIGHT, obj.getHeight());
+                values.put(Constants.ATHLETES_WEIGHT, obj.getWeight());
+                values.put(Constants.ATHLETES_CREATEDAT, obj.getCreatedAt());
+                values.put(Constants.ATHLETES_UPDATEAT, obj.getUpdateAt());
 
-                ret = db.insert(Constants.TABLE_PLAYERS, null, values);
+                ret = db.insert(Constants.TABLE_ATHLETES, null, values);
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -230,26 +233,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /****************************************SELECT DATABASE********************************************************/
 
-    public ArrayList<Players> getPlayers() {
+    public ArrayList<Athletes> getAthletes() {
         this.openDataBase();
         SQLiteDatabase db = getWritableDatabase();
 
-        String selectQuery = "SELECT * FROM " + Constants.TABLE_PLAYERS;
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_ATHLETES;
         Cursor c = db.rawQuery(selectQuery, null);
 
-        ArrayList<Players> itens = new ArrayList<Players>();
+        ArrayList<Athletes> itens = new ArrayList<Athletes>();
 
         if (c.getCount()>0) {
             c.moveToFirst();
             do {
-                Players obj = new Players(
-                        c.getString(c.getColumnIndex(Constants.PLAYER_ID)),
-                        c.getString(c.getColumnIndex(Constants.PLAYER_NAME)),
-                        c.getString(c.getColumnIndex(Constants.PLAYER_AGE)),
-                        c.getString(c.getColumnIndex(Constants.PLAYER_ID_SELECTIVE)),
-                        c.getString(c.getColumnIndex(Constants.PLAYER_DETAILS))
+                Athletes obj = new Athletes(
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_ID)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_NAME)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_BIRTHDAY)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_CPF)),
+                        c.getInt(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
+                        c.getInt(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT))
                 );
-
                 itens.add(obj);
             } while (c.moveToNext());
 
@@ -365,23 +370,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return itens;
     }
 
-    public ArrayList<Players> getPlayerById(String idPlayer){
+    public ArrayList<Athletes> getPlayerById(String idPlayer){
         this.openDataBase();
-        String selectQuery = "SELECT DISTINCT * FROM "+ Constants.TABLE_PLAYERS +
-                " WHERE "+Constants.PLAYER_ID +" ='"+idPlayer+"'";
+        String selectQuery = "SELECT DISTINCT * FROM "+ Constants.TABLE_ATHLETES +
+                " WHERE "+Constants.ATHLETES_ID +" ='"+idPlayer+"'";
 
         Cursor c = myDataBase.rawQuery(selectQuery, null);
-        ArrayList<Players> playerses = new ArrayList<Players>();
+        ArrayList<Athletes> playerses = new ArrayList<Athletes>();
 
-        Players player = null;
+        Athletes athlete = null;
 
         if (c.moveToFirst()) {
-            player = new Players(
-                    c.getString(c.getColumnIndex(Constants.PLAYER_ID)),
-                    c.getString(c.getColumnIndex(Constants.PLAYER_NAME)),
-                    c.getString(c.getColumnIndex(Constants.PLAYER_AGE)),
-                    c.getString(c.getColumnIndex(Constants.PLAYER_ID_SELECTIVE)),
-                    c.getString(c.getColumnIndex(Constants.PLAYER_DETAILS))
+            athlete = new Athletes(
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_ID)),
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_NAME)),
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_BIRTHDAY)),
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_CPF)),
+                    c.getInt(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
+                    c.getInt(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT))
             );
         } else {
             playerses = null;

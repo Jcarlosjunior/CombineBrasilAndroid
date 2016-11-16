@@ -1,25 +1,27 @@
 package br.com.john.combinebrasil;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import br.com.john.combinebrasil.AdapterList.AdapterListPlayers;
-import br.com.john.combinebrasil.Classes.Players;
+import br.com.john.combinebrasil.AdapterList.AdapterListAthletes;
+import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Services.AllActivities;
+import br.com.john.combinebrasil.Services.DatabaseHelper;
 
-public class PlayersActivity extends AppCompatActivity {
+public class AthletesActivity extends AppCompatActivity {
     ListView listViewPlayers;
     Toolbar toolbar;
-    ArrayList<Players> playersArrayList;
+    ArrayList<Athletes> playersArrayList;
+    private static Context myContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,28 +35,28 @@ public class PlayersActivity extends AppCompatActivity {
 
         listViewPlayers = (ListView) findViewById(R.id.list_players);
 
-        callAllFalseTests();
+        myContext = AthletesActivity.this;
+        callInflateAthletes();
     }
 
-    private void callAllFalseTests(){
-        playersArrayList = new ArrayList<Players>();
-        String[] values = new String[12];
-        for(int i=0; i<=11; i++){
-            Players player = new Players();
-            player.setId(String.valueOf(i));
-            player.setName("Jogador "+i);
-            player.setAge("Idade "+i);
-            player.setDetails("descrição "+i);
-            player.setIdSelective("");
-            playersArrayList.add(player);
-            values[i]="Player "+i;
+    public static void afterSyncAthletes(Activity act){
+        ((AthletesActivity) act).callInflateAthletes();
+    }
+
+    private void callInflateAthletes(){
+        DatabaseHelper db = new DatabaseHelper(myContext);
+        db.openDataBase();
+        ArrayList<Athletes> athletesList = db.getAthletes();
+        if(!(athletesList == null || athletesList.size()==0)){
+            String[] values = new String[athletesList.size()];
+            for(int i=0; i <=athletesList.size()-1; i++){
+                values[i] = athletesList.get(i).getId();
+            }
+            inflateRecyclerView(athletesList, values);
         }
-
-        inflateRecyclerView(playersArrayList, values);
     }
-
-    private void inflateRecyclerView(ArrayList<Players> testsArrayList, String[] values){
-        AdapterListPlayers adapterTests = new AdapterListPlayers(this, values, testsArrayList);
+    private void inflateRecyclerView(ArrayList<Athletes> testsArrayList, String[] values){
+        AdapterListAthletes adapterTests = new AdapterListAthletes(this, values, testsArrayList);
         adapterTests.setActivity(this);
         listViewPlayers.setVisibility(View.VISIBLE);
         listViewPlayers.setAdapter(adapterTests);
@@ -73,15 +75,15 @@ public class PlayersActivity extends AppCompatActivity {
     }
 
     public static void onClickItemList(Activity activity, int positionArray){
-        ((PlayersActivity) activity).validaClick(positionArray);
+        ((AthletesActivity) activity).validaClick(positionArray);
     }
     public void validaClick(int position){
         Intent i;
         if(AllActivities.type.equals("corrida"))
-            i = new Intent(PlayersActivity.this, CronometerActivity.class);
+            i = new Intent(AthletesActivity.this, CronometerActivity.class);
         else
-            i = new Intent(PlayersActivity.this, ResultsActivity.class);
-        Players player  = playersArrayList.get(position);
+            i = new Intent(AthletesActivity.this, ResultsActivity.class);
+        Athletes player  = playersArrayList.get(position);
         i.putExtra("id_player",player.getId());
         i.putExtra("name_player",player.getName());
         startActivity(i);

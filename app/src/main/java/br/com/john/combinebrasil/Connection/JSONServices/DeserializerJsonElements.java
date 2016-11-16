@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Services.Constants;
@@ -84,5 +85,30 @@ public class DeserializerJsonElements {
             Log.i("JSON ERROR", jsonExc.toString());
         }
         return testsArrayList;
+    }
+
+    public ArrayList<Athletes> getAthletes() {
+        ArrayList<Athletes> AthletesList = new ArrayList<Athletes>();
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+
+            for (int i = 0; i <= jsonArray.length() - 1; i++) {
+                JSONObject json = new JSONObject(jsonArray.getString(i));
+                Athletes athletesEntity = new Athletes();
+                    athletesEntity.setId(json.getString(Constants.ATHLETES_ID));
+                    athletesEntity.setName(json.getString(Constants.ATHLETES_NAME));
+                    athletesEntity.setCPF(json.getString(Constants.ATHLETES_CPF ));
+                    athletesEntity.setBirthday(json.getString(Constants.ATHLETES_BIRTHDAY));
+                    athletesEntity.setHeight(json.getInt(Constants.ATHLETES_HEIGHT));
+                    athletesEntity.setWeight(json.getInt(Constants.ATHLETES_WEIGHT));
+                    athletesEntity.setCreatedAt(json.getString(Constants.ATHLETES_CREATEDAT));
+                    athletesEntity.setUpdateAt(json.getString(Constants.ATHLETES_UPDATEAT));
+                AthletesList.add(athletesEntity);
+            }
+
+        } catch (JSONException jsonExc) {
+            Log.i("JSON ERROR", jsonExc.toString());
+        }
+        return AthletesList;
     }
 }

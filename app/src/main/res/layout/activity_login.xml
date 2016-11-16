@@ -69,13 +69,17 @@
         android:background="@color/white"
         android:orientation="vertical"
         android:clickable="true"
-        android:layout_below="@+id/linear_progress_login"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"></LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.3"
+                android:layout_weight="0.4"
                 android:orientation="horizontal"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp">
@@ -100,13 +104,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.6"
+                android:layout_weight="0.5"
                 android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.3"></LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

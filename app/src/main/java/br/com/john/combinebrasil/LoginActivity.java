@@ -45,14 +45,12 @@ public class LoginActivity extends Activity {
         btnLogin.setOnLongClickListener(onLongClickListener);
         btnLogin.setOnClickListener(onClickLoginListener);
 
-        /*DatabaseHelper db = new DatabaseHelper(this);
+        DatabaseHelper db = new DatabaseHelper(this);
         try {
             db.createDataBase();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
-
-
+        }
     }
 
     private void inflateDatabase(){

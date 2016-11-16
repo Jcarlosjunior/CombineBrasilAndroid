@@ -7,7 +7,6 @@ package br.com.john.combinebrasil.AdapterList;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,10 +20,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import br.com.john.combinebrasil.Classes.Players;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.MainActivity;
-import br.com.john.combinebrasil.PlayersActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.Services.Services;
 

@@ -16,22 +16,25 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerTests;
-import br.com.john.combinebrasil.Classes.Players;
+import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.Services;
+import br.com.john.combinebrasil.Services.SyncDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
     public static RecyclerView mRecyclerView;
     public LinearLayoutManager mLayoutManager;
-    private LinearLayout linearProgress;
+    public static LinearLayout linearProgress;
+    public static TextView textProgress;
     Toolbar toolbar;
     ArrayList<Tests> testsArrayList;
     @Override
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         linearProgress = (LinearLayout) findViewById(R.id.linear_progress_tests);
+        textProgress = (TextView) findViewById(R.id.text_progress);
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -78,6 +82,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        try {
+            linearProgress.setVisibility(View.VISIBLE);
+            SyncDatabase sync = new SyncDatabase(MainActivity.this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if(Constants.debug)
             callAllFalseTests();
@@ -156,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
             AllActivities.type="corrida";
         else
             AllActivities.type="";
-        Intent i = new Intent(MainActivity.this, PlayersActivity.class);
+        Intent i = new Intent(MainActivity.this, AthletesActivity.class);
         Tests test = testsArrayList.get(position);
         i.putExtra("id_test", test.getId());
         i.putExtra("name_test", test.getName());

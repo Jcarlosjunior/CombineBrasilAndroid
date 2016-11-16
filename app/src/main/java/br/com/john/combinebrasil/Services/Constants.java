@@ -10,10 +10,15 @@ import java.io.File;
 public class Constants {
     public static final boolean debug = true;
 
-    public static final String URL = "http://kc.gtacsolutions.com/";
+    public static final String URL = "https://combine-api.herokuapp.com/";
 
     public static final String login = "Login/CheckCredentials";
 
+
+    public static final String API_ATHLETES = "api/athletes";
+    public static final String API_POSITIONS = "api/positions";
+    public static final String API_TEAMS = "api/teams";
+    public static final String API_TESTTYPES = "api/testTypes";
     public static final String user = "api/Users";
 
 
@@ -29,6 +34,7 @@ public class Constants {
 
     public static final String CRONOMETER_ACTIVITY = "CronometerActivity";
     public static final String RESULTS_ACTIVITY = "ResultsActivity";
+    public static final String MAIN_ACTIVITY = "MainActivity";
 
     //SHARED PREFERENCES
     public static final String TIMER_CHRONOMETER = "timer_chronometer",
@@ -48,20 +54,23 @@ public class Constants {
     public static final String CALLED_LOGIN = "calledLogin";
     public static final String CALLED_GET_TESTS = "calledGetTests";
     public static final String CALLED_POST_TESTS = "calledPostTests";
-    public static final String CALLED_GET_PLAYERS= "calledGetPlayers";
-    public static final String CALLED_POST_PLAYERS = "calledPostPlayers";
+    public static final String CALLED_GET_ATHLETES= "calledGetAthletes";
+    public static final String CALLED_POST_ATHLETES = "calledPostAthletes";
 
     /*
     ***************************DATABASES********************************************
     */
 
     /*****************************PLAYERS TABLE**********************************/
-    public static final String TABLE_PLAYERS = "Players";
-    public static final String PLAYER_ID = "Id";
-    public static final String PLAYER_NAME = "Name";
-    public static final String PLAYER_AGE = "Age";
-    public static final String PLAYER_ID_SELECTIVE = "IdSelective";
-    public static final String PLAYER_DETAILS = "Details";
+    public static final String TABLE_ATHLETES = "Athletes";
+    public static final String ATHLETES_ID = "_id";
+    public static final String ATHLETES_NAME = "name";
+    public static final String ATHLETES_BIRTHDAY = "birthday";
+    public static final String ATHLETES_CPF = "cpf";
+    public static final String ATHLETES_HEIGHT = "height";
+    public static final String ATHLETES_WEIGHT = "weight";
+    public static final String ATHLETES_CREATEDAT = "createdAt";
+    public static final String ATHLETES_UPDATEAT = "updatedAt";
 
     /*****************************RESULTS TABLE**********************************/
     public static final String TABLE_RESULTS = "Result";

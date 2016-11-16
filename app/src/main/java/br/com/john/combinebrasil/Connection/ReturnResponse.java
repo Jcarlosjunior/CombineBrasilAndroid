@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.Services.Constants;
+import br.com.john.combinebrasil.Services.SyncDatabase;
 
 
 public class ReturnResponse {
@@ -41,8 +42,8 @@ public class ReturnResponse {
                 } else if (whoCalled.equals(Constants.CALLED_GET_TESTS)) {
                     MainActivity.afterCalled(response, isList, activity);
 
-                }else if (whoCalled.equals("")) {
-
+                }else if (whoCalled.equals(Constants.CALLED_GET_ATHLETES)) {
+                    SyncDatabase.athletesResponse(response);
                 }
             }
         } catch (Exception e) {

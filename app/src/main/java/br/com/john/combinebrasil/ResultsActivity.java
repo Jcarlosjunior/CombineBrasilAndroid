@@ -23,10 +23,6 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-import br.com.john.combinebrasil.Classes.Players;
-import br.com.john.combinebrasil.Classes.Results;
-import br.com.john.combinebrasil.Services.AllActivities;
-import br.com.john.combinebrasil.Services.CountDownTimer;
 import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.Services;
 
