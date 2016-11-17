@@ -74,7 +74,9 @@ public class Connection extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            if (error.networkResponse.statusCode == 400)
+                            ReturnError.getInstance().goTo(whoCalled, getActivity(), getMessage(error));
+
+                            /*if (error.networkResponse.statusCode == 400)
                                 Services.messageAlert(getActivity(), "Erro!", "código 400\n requisição incorreta", "");
                             else if (error.networkResponse.statusCode == 401)
                                 Services.messageAlert(getActivity(),"Erro!", "código 401\n requisição não autorizada","");
@@ -90,7 +92,7 @@ public class Connection extends AppCompatActivity {
                                 else
                                     Services.messageAlert(getActivity(),statusCode + " - Erro!", error.getMessage(), "");
                                 Services.messageAlert(getActivity(),"Erro Mensagem", mensagem, "");
-                            }
+                            }*/
                         }catch (Exception e){
                             Services.messageAlert(activity, "API indisponível", "tente novamente mais tarde", "" );
                         }

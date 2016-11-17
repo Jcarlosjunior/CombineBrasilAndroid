@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerTests;
-import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
@@ -46,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout linearBacktoolbar = (LinearLayout) findViewById(R.id.linear_back_button);
         linearBacktoolbar.setVisibility(View.GONE);
+
+        LinearLayout linearAddAccount = (LinearLayout) findViewById(R.id.linear_add_account);
+        linearAddAccount.setOnClickListener(clickAddAccount);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         linearProgress = (LinearLayout) findViewById(R.id.linear_progress_tests);
@@ -109,10 +111,7 @@ public class MainActivity extends AppCompatActivity {
             testsArrayList.add(test);
             values[i]="Teste "+i;
         }
-
         inflateRecyclerView(testsArrayList, values);
-
-
     }
 
     private void callAllTests() {
@@ -176,4 +175,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    private View.OnClickListener clickAddAccount = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(MainActivity.this, CreateAccountAthlete.class);
+            startActivity(i);
+        }
+    };
 }

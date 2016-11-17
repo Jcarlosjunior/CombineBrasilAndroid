@@ -42,6 +42,10 @@ public class CronometerActivity extends AppCompatActivity {
         LinearLayout btnBack = (LinearLayout) findViewById(R.id.linear_back_button);
         btnBack.setOnClickListener(btnBackClickListener);
 
+        LinearLayout linearAddAccount = (LinearLayout) findViewById(R.id.linear_add_account);
+        linearAddAccount.setVisibility(View.GONE);
+        ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
+        imgSearch.setVisibility(View.GONE);
         linearButtonPlay = (LinearLayout) findViewById(R.id.linear_button_play);
         linearFirstValue = (LinearLayout) findViewById(R.id.linear_show_first_value);
         linearSecondValue = (LinearLayout) findViewById(R.id.linear_show_second_value);

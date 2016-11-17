@@ -11,6 +11,7 @@ import android.view.View;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.Services.Constants;
@@ -44,6 +45,9 @@ public class ReturnResponse {
 
                 }else if (whoCalled.equals(Constants.CALLED_GET_ATHLETES)) {
                     SyncDatabase.athletesResponse(response);
+                }
+                else if (whoCalled.equals(Constants.CALLED_POST_ATHLETES)) {
+                    CreateAccountAthlete.returnPostAthlete(activity, response);
                 }
             }
         } catch (Exception e) {

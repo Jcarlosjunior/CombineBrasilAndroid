@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -32,6 +33,10 @@ public class AthletesActivity extends AppCompatActivity {
 
         LinearLayout btnBack = (LinearLayout) findViewById(R.id.linear_back_button);
         btnBack.setOnClickListener(btnBackClickListener);
+        LinearLayout linearAddAccount = (LinearLayout) findViewById(R.id.linear_add_account);
+        linearAddAccount.setVisibility(View.GONE);
+        ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
+        imgSearch.setVisibility(View.GONE);
 
         listViewPlayers = (ListView) findViewById(R.id.list_players);
 

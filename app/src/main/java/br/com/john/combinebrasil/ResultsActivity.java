@@ -45,6 +45,8 @@ public class ResultsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         LinearLayout btnBack = (LinearLayout) findViewById(R.id.linear_back_button);
         btnBack.setOnClickListener(btnBackClickListener);
+        LinearLayout linearAddAccount = (LinearLayout) findViewById(R.id.linear_add_account);
+        linearAddAccount.setVisibility(View.GONE);
         editFirstResult = (EditText) findViewById(R.id.edit_first_result);
         editSecondResult = (EditText) findViewById(R.id.edit_second_result);
         buttonAdd = (Button) findViewById(R.id.button_add_results);

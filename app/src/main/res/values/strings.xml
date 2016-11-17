@@ -8,6 +8,15 @@
     <string name="second_result">Segundo Resultado</string>
     <string name="adicionar">Adicionar</string>
     <string name="salvar_dados">Salvar resultados</string>
+    <string name="nome">Nome</string>
+    <string name="cpf">CPF</string>
+    <string name="nascimento">Data de Nascimento</string>
+    <string name="dia">Dia</string>
+    <string name="mes">Mês</string>
+    <string name="ano">Ano</string>
+    <string name="altura">Altura</string>
+    <string name="peso">Peso</string>
+
 
 
     <!--
@@ -16,6 +25,7 @@
     <string name="carregando_testes">Os testes estão sendo carregados</string>
     <string name="erro_dados_invalidos">Dados Inválidos</string>
     <string name="logando">Entrando na sua conta</string>
+    <string name="add_account">Criando atleta</string>
 
     <!--
     *********************************** TÍTULOS COMBINE **************************************************

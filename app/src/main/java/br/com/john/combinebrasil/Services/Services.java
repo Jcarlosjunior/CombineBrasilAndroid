@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.ResultsActivity;
@@ -78,6 +79,10 @@ public class Services {
             alerta.hide();
             ResultsActivity.finished(activity);
         }
+        else if(whoCalled.toUpperCase().equals("POSTATHLETE")){
+            alerta.hide();
+            CreateAccountAthlete.finished(activity);
+        }
     }
 
     public static boolean isOnline(Activity act) {
@@ -128,6 +133,29 @@ public class Services {
         canvas.drawBitmap(bitmap, 2, heightDiff, paint);
 
         return output;
+    }
 
+    public static String unmask(String s) {
+        return s.replaceAll("[.]", "").replaceAll("[-]", "")
+                .replaceAll("[/]", "").replaceAll("[(]", "")
+                .replaceAll("[)]", "");
+    }
+
+    public static String mask(String format, String text){
+        String maskedText="";
+        int i =0;
+        for (char m : format.toCharArray()) {
+            if (m != '#') {
+                maskedText += m;
+                continue;
+            }
+            try {
+                maskedText += text.charAt(i);
+            } catch (Exception e) {
+                break;
+            }
+            i++;
+        }
+        return maskedText;
     }
 }

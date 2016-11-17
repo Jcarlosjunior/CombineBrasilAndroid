@@ -7,6 +7,9 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 
+import br.com.john.combinebrasil.CreateAccountAthlete;
+import br.com.john.combinebrasil.Services.Constants;
+
 public class ReturnError {
     public String message;
 
@@ -20,12 +23,11 @@ public class ReturnError {
     }
 
     public void goTo(String whoCalled, Activity activity, String message) {
-        switch (whoCalled) {
+            if(whoCalled.equals(Constants.CALLED_POST_ATHLETES)){
+                CreateAccountAthlete.returnPostAthlete(activity, message);
+            }
             //esse método é de retorno caso tenha dado certo a requisição
             //redireciona de volta para quem chamou
             //whocalled é importante para identificar quem  fez a requisição
-        }
-
-
     }
 }
