@@ -1,6 +1,7 @@
 package br.com.john.combinebrasil;
 
 import android.app.Activity;
+import android.app.Service;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import br.com.john.combinebrasil.Connection.Connection;
+import br.com.john.combinebrasil.Connection.Posts.PostAthleteAsyncTask;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.Mask;
 import br.com.john.combinebrasil.Services.Services;
@@ -70,19 +72,109 @@ public class CreateAccountAthlete extends AppCompatActivity {
         }
     };
     private void callAddAthlete(){
-        if(Services.isOnline(this)){
-            LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
-            linearProgress.setVisibility(View.VISIBLE);
-            String url = Constants.URL + Constants.API_ATHLETES;
-            Connection task = new Connection(url, Request.Method.POST, Constants.CALLED_POST_ATHLETES, false, CreateAccountAthlete.this, postData());
-            task.callByJsonStringRequest();
+       //if(verifyForm()) {
+            if (Services.isOnline(this)) {
+                LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
+                linearProgress.setVisibility(View.VISIBLE);
+                String url = Constants.URL + Constants.API_ATHLETES;
+
+                PostAthleteAsyncTask post = new PostAthleteAsyncTask();
+                post.setActivity(CreateAccountAthlete.this);
+                post.setObjPut(createObject());
+                post.execute(url);
+                //Connection task = new Connection(url, Request.Method.POST, Constants.CALLED_POST_ATHLETES, false, CreateAccountAthlete.this, postData());
+                //task.callByJsonStringRequest();
+            //}
         }
     }
 
-    public static void returnPostAthlete(Activity act, String response){
-        ((CreateAccountAthlete) act).afterPost(response);
+    private JSONObject createObject() {
+        JSONObject object = new JSONObject();
+        try {
+            double height = Double.parseDouble(editTextHeight.getText().toString().replaceAll(",","."));
+            double weight = Double.parseDouble(editTextWeihgt.getText().toString().replaceAll(",","."));
+            String birthday = spinnerYear.getText().toString()+"-"+chooseMonth(spinnerMonth.getText().toString())+"-"+spinnerDay.getText().toString();
+            object.put(Constants.ATHLETES_NAME, editTextName.getText().toString());
+            object.put(Constants.ATHLETES_CPF, editTextCPF.getText().toString());
+            object.put(Constants.ATHLETES_HEIGHT, height);
+            object.put(Constants.ATHLETES_WEIGHT, weight);
+            object.put(Constants.ATHLETES_BIRTHDAY, birthday);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
     }
-    private void afterPost(String response){
+
+    public static void afterSendAthlete(Activity act, String response, Object obj){
+        ((CreateAccountAthlete)act).afterPost(response, obj);
+    }
+    private boolean verifyForm(){
+        boolean ver = false;
+        if(validaName(editTextName)) {
+            if (validaCPF(editTextCPF)) {
+                if(validaBirthdauy()){
+                    if(validateText(editTextHeight)){
+                        if(validateText(editTextWeihgt))
+                            ver = true;
+                    }
+                }
+            }
+        }
+        return ver;
+    }
+    public boolean validaName(EditText edit){
+        boolean ver = false;
+        if(getString(edit).length()>=5)
+            ver = true;
+        else
+            Services.changeColorEdit(edit, this.getString(R.string.erro_dados_invalidos), "Insira um usuário com válido", this);
+        return ver;
+    }
+
+    public boolean validaCPF(EditText edit){
+        boolean ver = false;
+        if(getString(edit).length()>=14)
+            ver = true;
+        else
+            Services.changeColorEdit(edit, this.getString(R.string.erro_dados_invalidos), "Insira um usuário com válido", this);
+        return ver;
+    }
+
+    private boolean validaBirthdauy(){
+        boolean ver = false;
+        if(spinnerDay.getText().toString().equalsIgnoreCase(getString(R.string.dia)))
+            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Dia de nascimento inválido","");
+        else if(spinnerMonth.getText().toString().equalsIgnoreCase(getString(R.string.mes)))
+            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Mês de nascimento inválido","");
+        else if(spinnerYear.getText().toString().equalsIgnoreCase(getString(R.string.ano)))
+            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Mês de nascimento inválido","");
+        else
+            ver=true;
+        return ver;
+    }
+    private boolean validateText(EditText edit){
+        boolean ver = false;
+        if(getString(edit).length()>=3){
+            int cont=0;
+            for(int i=0; i<= edit.length()-1; i++)
+            {
+                String s = String.valueOf(edit.getText().toString().charAt(i));
+                if(s.equals(",") || s.equals("."))
+                    cont = cont+1;
+            }
+            if(cont<=1)
+                ver = true;
+        }
+        return ver;
+    }
+    private String getString(EditText edit){
+        return edit.getText().toString().trim().equals("") ? "" : edit.getText().toString();
+    }
+
+    public static void returnPostAthlete(Activity act, String response){
+        //((CreateAccountAthlete) act).afterPost(response);
+    }
+    private void afterPost(String response, Object obj){
         LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
         linearProgress.setVisibility(View.GONE);
         int codeResponse;
@@ -105,6 +197,10 @@ public class CreateAccountAthlete extends AppCompatActivity {
     }
 
     private HashMap<String, String> postData() {
+        Object obj = new Object();
+        obj = "fasdfasdf";
+        obj = 3;
+
         HashMap<String, String> params = new HashMap<>();
         double height = Double.parseDouble(editTextHeight.getText().toString().replaceAll(",","."));
         double weight = Double.parseDouble(editTextWeihgt.getText().toString().replaceAll(",","."));
