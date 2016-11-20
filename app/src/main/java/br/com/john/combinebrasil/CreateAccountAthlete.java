@@ -72,19 +72,21 @@ public class CreateAccountAthlete extends AppCompatActivity {
         }
     };
     private void callAddAthlete(){
-       //if(verifyForm()) {
-            if (Services.isOnline(this)) {
-                LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
-                linearProgress.setVisibility(View.VISIBLE);
-                String url = Constants.URL + Constants.API_ATHLETES;
+       if(verifyForm()) {
+           if(validaBirthday()) {
+               if (Services.isOnline(this)) {
+                   LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
+                   linearProgress.setVisibility(View.VISIBLE);
+                   String url = Constants.URL + Constants.API_ATHLETES;
 
-                PostAthleteAsyncTask post = new PostAthleteAsyncTask();
-                post.setActivity(CreateAccountAthlete.this);
-                post.setObjPut(createObject());
-                post.execute(url);
-                //Connection task = new Connection(url, Request.Method.POST, Constants.CALLED_POST_ATHLETES, false, CreateAccountAthlete.this, postData());
-                //task.callByJsonStringRequest();
-            //}
+                   PostAthleteAsyncTask post = new PostAthleteAsyncTask();
+                   post.setActivity(CreateAccountAthlete.this);
+                   post.setObjPut(createObject());
+                   post.execute(url);
+                   //Connection task = new Connection(url, Request.Method.POST, Constants.CALLED_POST_ATHLETES, false, CreateAccountAthlete.this, postData());
+                   //task.callByJsonStringRequest();
+               }
+           }
         }
     }
 
@@ -109,52 +111,69 @@ public class CreateAccountAthlete extends AppCompatActivity {
         ((CreateAccountAthlete)act).afterPost(response, obj);
     }
     private boolean verifyForm(){
-        boolean ver = false;
+        /*boolean ver = false;
         if(validaName(editTextName)) {
             if (validaCPF(editTextCPF)) {
                 if(validaBirthdauy()){
-                    if(validateText(editTextHeight)){
-                        if(validateText(editTextWeihgt))
+                    if(validateText(editTextHeight, "Altura inválido.")){
+                        if(validateText(editTextWeihgt,"Peso inválido"))
                             ver = true;
                     }
                 }
             }
-        }
+        }*/
+
+        boolean ver = true;
+        if(!validaName(editTextName))
+            ver = false;
+        if (!validaCPF(editTextCPF))
+            ver = false;
+        if(!validateText(editTextHeight, "Altura inválido."))
+            ver = false;
+        if(!validateText(editTextWeihgt,"Peso inválido"))
+            ver = false;
+
+        if(!ver)
+            Services.messageAlert(this, "Alerta","Dados inválidos, por favor, verifique para continuar.","");
         return ver;
     }
     public boolean validaName(EditText edit){
         boolean ver = false;
-        if(getString(edit).length()>=5)
+        if(getString(edit).length()>=5) {
+            Services.changeColorEditBorder(edit, this);
             ver = true;
+        }
         else
-            Services.changeColorEdit(edit, this.getString(R.string.erro_dados_invalidos), "Insira um usuário com válido", this);
+            Services.changeColorEditBorderError(edit, this);
         return ver;
     }
 
     public boolean validaCPF(EditText edit){
         boolean ver = false;
-        if(getString(edit).length()>=14)
+        if(getString(edit).length()>=14) {
+            Services.changeColorEditBorder(edit, this);
             ver = true;
+        }
         else
-            Services.changeColorEdit(edit, this.getString(R.string.erro_dados_invalidos), "Insira um usuário com válido", this);
+           Services.changeColorEditBorderError(edit, this);
         return ver;
     }
 
-    private boolean validaBirthdauy(){
+    private boolean validaBirthday(){
         boolean ver = false;
-        if(spinnerDay.getText().toString().equalsIgnoreCase(getString(R.string.dia)))
+        if(spinnerDay.getText().toString().equals(""))
             Services.messageAlert(CreateAccountAthlete.this, "Alerta","Dia de nascimento inválido","");
-        else if(spinnerMonth.getText().toString().equalsIgnoreCase(getString(R.string.mes)))
+        else if(spinnerMonth.getText().toString().equals(""))
             Services.messageAlert(CreateAccountAthlete.this, "Alerta","Mês de nascimento inválido","");
-        else if(spinnerYear.getText().toString().equalsIgnoreCase(getString(R.string.ano)))
+        else if(spinnerYear.getText().toString().equals(""))
             Services.messageAlert(CreateAccountAthlete.this, "Alerta","Mês de nascimento inválido","");
         else
             ver=true;
         return ver;
     }
-    private boolean validateText(EditText edit){
+    private boolean validateText(EditText edit, String msg){
         boolean ver = false;
-        if(getString(edit).length()>=3){
+        if(getString(edit).length()>=2){
             int cont=0;
             for(int i=0; i<= edit.length()-1; i++)
             {
@@ -162,9 +181,15 @@ public class CreateAccountAthlete extends AppCompatActivity {
                 if(s.equals(",") || s.equals("."))
                     cont = cont+1;
             }
-            if(cont<=1)
+            if(cont<=1) {
+                Services.changeColorEditBorder(edit, this);
                 ver = true;
+            }
+            else
+                Services.changeColorEditBorderError(edit, this);
         }
+        else
+            Services.changeColorEditBorderError(edit, this);
         return ver;
     }
     private String getString(EditText edit){
@@ -257,7 +282,11 @@ public class CreateAccountAthlete extends AppCompatActivity {
         String[] spinnerMonthValues  = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro","Novembro","Dezembro"};
         String[] spinnerYearsValues = new String[200];
         for(int i=0; i<=30;i++){
-            spinnerDayValues[i]=String.valueOf(i+1);
+            int num = i+1;
+            if(num<10)
+                spinnerDayValues[i] = String.valueOf("0"+num);
+            else
+                spinnerDayValues[i] = String.valueOf(num);
         }
         for(int x=199; x>=0; x--){
             spinnerYearsValues[x]=String.valueOf(year-x);

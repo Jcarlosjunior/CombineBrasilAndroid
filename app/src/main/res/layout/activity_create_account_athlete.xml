@@ -40,6 +40,8 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="15sp"
                         android:background="@drawable/background_edit_border"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
                         />
                     <EditText
                     android:id="@+id/edit_cpf_add"
@@ -54,6 +56,8 @@
                     android:textSize="16sp"
                     android:layout_marginBottom="15sp"
                     android:inputType="number"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
                     android:background="@drawable/background_edit_border"
                     />
 
@@ -133,6 +137,9 @@
                             android:textSize="16sp"
                             android:inputType="number"
                             android:digits="0123456789,"
+                            android:maxLength="4"
+                            android:singleLine="true"
+                            android:imeOptions="actionNext"
                             android:background="@drawable/background_edit_border"
                             />
 
@@ -151,6 +158,9 @@
                             android:textSize="16sp"
                             android:inputType="number"
                             android:digits="0123456789,"
+                            android:singleLine="true"
+                            android:maxLength="4"
+                            android:imeOptions="actionDone"
                             android:background="@drawable/background_edit_border"
                             />
 

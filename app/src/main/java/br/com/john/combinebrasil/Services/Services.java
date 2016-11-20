@@ -101,6 +101,16 @@ public class Services {
         edit.setBackground(act.getResources().getDrawable(R.drawable.background_edit_error));
         messageAlert(act, title, mensagem, "hide");
     }
+    public static void changeColorEditBorderError(EditText edit, Activity act){
+        edit.setBackground(act.getResources().getDrawable(R.drawable.background_edit_border_error));
+        edit.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.alert_circle, 0);
+
+    }
+    public static void changeColorEditBorder(EditText edit, Activity act){
+        edit.setBackground(act.getResources().getDrawable(R.drawable.background_edit_border));
+        edit.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+    }
 
     public static Bitmap getRoundedCornerBitmap(Bitmap pBitmap) {
 
