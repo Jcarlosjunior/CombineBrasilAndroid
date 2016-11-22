@@ -16,7 +16,8 @@
     <string name="ano">Ano</string>
     <string name="altura">Altura</string>
     <string name="peso">Peso</string>
-
+    <string name="tests">Testes</string>
+    <string name="players">Jogadores</string>
 
 
     <!--
@@ -35,4 +36,7 @@
     <string name="lorem">Aenean placerat. In vulputate urna eu arcu. Aliquam erat volutpat. Suspendisse potenti.
         Morbi mattis felis at nunc. Duis viverra diam non justo. In nisl. Nullam sit amet magna in magna gravida vehicula.
         Mauris tincidunt sem sed arcu. Nunc posuere. Nullam lectus justo,</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

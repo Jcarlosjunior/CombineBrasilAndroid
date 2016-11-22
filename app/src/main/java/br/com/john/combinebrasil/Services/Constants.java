@@ -35,6 +35,7 @@ public class Constants {
     public static final String CRONOMETER_ACTIVITY = "CronometerActivity";
     public static final String RESULTS_ACTIVITY = "ResultsActivity";
     public static final String MAIN_ACTIVITY = "MainActivity";
+    public static final String LOGIN_ACTIVITY = "LoginActivity";
 
     //SHARED PREFERENCES
     public static final String TIMER_CHRONOMETER = "timer_chronometer",

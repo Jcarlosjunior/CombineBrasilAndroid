@@ -24,12 +24,13 @@ import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Services;
 import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
+import br.com.john.combinebrasil.Services.SyncDatabase;
 
 public class LoginActivity extends Activity {
 
     EditText editPassword, editLogin;
     Button btnLogin;
-    LinearLayout linearProgress;
+    public static LinearLayout linearProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +75,9 @@ public class LoginActivity extends Activity {
     public View.OnClickListener onClickLoginListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(Constants.debug)
-                CalledFalseLogin();
-            else
+            //if(Constants.debug)
+              //  CalledFalseLogin();
+            //else
                 callLogin();
         }
     };
@@ -94,15 +95,15 @@ public class LoginActivity extends Activity {
                 }
             }, 2000);
         }
-
     }
 
     private void callLogin() {
         if (verifyLogin()) {
             if (Services.isOnline(this)) {
                 linearProgress.setVisibility(View.VISIBLE);
-                String url = Constants.URL + Constants.login;
-                Connection task = new Connection(url, Request.Method.POST, Constants.CALLED_LOGIN, false, this, loginData());
+                String url = Constants.URL + Constants.API_ATHLETES;
+                //Connection task = new Connection(url, Request.Method.POST, Constants.CALLED_LOGIN, false, this, loginData());
+                Connection task = new Connection(url, Request.Method.GET, Constants.CALLED_GET_ATHLETES, false, this);
                 task.callByJsonStringRequest();
             }
             else
@@ -115,7 +116,15 @@ public class LoginActivity extends Activity {
         }
 
     public void validaLogin(String response, boolean isList) {
-        DeserializerJsonElements des = new DeserializerJsonElements(response);
+            SyncDatabase syncDatabase = new SyncDatabase();
+            syncDatabase.setActivity(LoginActivity.this);
+            SyncDatabase.athletesResponse(response);
+
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+        finish();
+        linearProgress.setVisibility(View.GONE);
+        /*DeserializerJsonElements des = new DeserializerJsonElements(response);
         User user = new User();
 
         if (!isList)
@@ -130,7 +139,8 @@ public class LoginActivity extends Activity {
         }
         Intent i = new Intent(LoginActivity.this, LoginActivity.class);
         startActivity(i);
-        LoginActivity.this.finish();
+        LoginActivity.this.finish();*/
+
     }
 
     private HashMap<String, String> loginData() {

@@ -11,6 +11,7 @@ import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
+import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
 
 /**
@@ -21,10 +22,18 @@ public class SyncDatabase {
 
     private static Activity activity;
 
+    public static Activity getActivity() {
+        return activity;
+    }
+
+    public static void setActivity(Activity activity) {
+        SyncDatabase.activity = activity;
+    }
+
     public SyncDatabase(){}
     public SyncDatabase(Activity activity) throws IOException {
         this.activity = activity;
-        initSyncDatabase();
+        //initSyncDatabase();
     }
 
     private void initSyncDatabase() throws IOException {
@@ -45,6 +54,8 @@ public class SyncDatabase {
     public static void hideProgress(String nameActivity){
         if(nameActivity.toString().equals(Constants.MAIN_ACTIVITY))
             MainActivity.linearProgress.setVisibility(View.GONE);
+        else if(nameActivity.toString().equals(Constants.LOGIN_ACTIVITY))
+            LoginActivity.linearProgress.setVisibility(View.GONE);
     }
 
     public static void athletesResponse(String response) {

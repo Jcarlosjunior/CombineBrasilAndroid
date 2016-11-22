@@ -236,34 +236,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Athletes> getAthletes() {
         this.openDataBase();
         SQLiteDatabase db = getWritableDatabase();
-
-        String selectQuery = "SELECT * FROM " + Constants.TABLE_ATHLETES;
-        Cursor c = db.rawQuery(selectQuery, null);
-
         ArrayList<Athletes> itens = new ArrayList<Athletes>();
+        try {
+            String selectQuery = "SELECT * FROM " + Constants.TABLE_ATHLETES;
+            Cursor c = db.rawQuery(selectQuery, null);
 
-        if (c.getCount()>0) {
-            c.moveToFirst();
-            do {
-                Athletes obj = new Athletes(
-                        c.getString(c.getColumnIndex(Constants.ATHLETES_ID)),
-                        c.getString(c.getColumnIndex(Constants.ATHLETES_NAME)),
-                        c.getString(c.getColumnIndex(Constants.ATHLETES_BIRTHDAY)),
-                        c.getString(c.getColumnIndex(Constants.ATHLETES_CPF)),
-                        c.getInt(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
-                        c.getInt(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
-                        c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
-                        c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT))
-                );
-                itens.add(obj);
-            } while (c.moveToNext());
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                do {
+                    Athletes obj = new Athletes(
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_ID)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_NAME)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_BIRTHDAY)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_CPF)),
+                            c.getInt(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
+                            c.getInt(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT))
+                    );
+                    itens.add(obj);
+                } while (c.moveToNext());
 
-        } else {
-            itens = null;
+            } else {
+                itens = null;
+            }
+            c.close();
+            db.close();
+        }catch(Exception e){
+            e.printStackTrace();
         }
-        c.close();
-        db.close();
-
         return itens;
     }
 
