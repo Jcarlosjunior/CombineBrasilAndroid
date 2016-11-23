@@ -23,6 +23,8 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.Services;
 
@@ -47,6 +49,8 @@ public class ResultsActivity extends AppCompatActivity {
         btnBack.setOnClickListener(btnBackClickListener);
         LinearLayout linearAddAccount = (LinearLayout) findViewById(R.id.linear_add_account);
         linearAddAccount.setVisibility(View.GONE);
+        ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
+        imgSearch.setVisibility(View.GONE);
         editFirstResult = (EditText) findViewById(R.id.edit_first_result);
         editSecondResult = (EditText) findViewById(R.id.edit_second_result);
         buttonAdd = (Button) findViewById(R.id.button_add_results);
@@ -67,6 +71,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
+            showInfoAthlete(extras.getString("id_player"), extras.getString("name_test"), extras.getString("details_test"));
             checkAndSaveResults();
 
             editFirstResult.addTextChangedListener(new TextWatcher() {
@@ -108,6 +113,18 @@ public class ResultsActivity extends AppCompatActivity {
         });
     }
 }
+
+    private void showInfoAthlete(String id,  String nameText, String detailText){
+        DatabaseHelper db  = new DatabaseHelper(ResultsActivity.this);
+        db.openDataBase();
+        Athletes athlete = db.getAthleteById(id);
+        textNamePlayer.setText(athlete.getName());
+        textNamePlayerDetails.setText(athlete.getName());
+        textNameTest.setText(nameText);
+        textNameTestDetails.setText(nameText);
+        textDetailsTest.setText(detailText);
+    }
+
     private View.OnClickListener clickedImgArrowTest = new View.OnClickListener() {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override

@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.AthletesActivity;
+import br.com.john.combinebrasil.MainActivity;
+import br.com.john.combinebrasil.PlayersFragment;
 import br.com.john.combinebrasil.R;
 
 /**
@@ -78,7 +80,11 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
 
     public void click(int position){
         //DetailsActivitiesActivity.linearInfoActivity.setVisibility(View.VISIBLE);
-        AthletesActivity.onClickItemList(activity, position);
+        if(activity.getClass().getSimpleName().equals("AthletesActivity"))
+            AthletesActivity.onClickItemList(activity, position);
+        else
+            MainActivity.onClickItemList(activity, position);
+
     }
 
     public  void setActivity(Activity activity)

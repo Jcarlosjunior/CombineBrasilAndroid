@@ -93,13 +93,13 @@ public class PlayersFragment extends Fragment {
     private void callInflateAthletes(){
         DatabaseHelper db = new DatabaseHelper(AllActivities.mainActivity);
         db.openDataBase();
-        ArrayList<Athletes> athletesList = db.getAthletes();
-        if(!(athletesList == null || athletesList.size()==0)){
-            String[] values = new String[athletesList.size()];
-            for(int i=0; i <=athletesList.size()-1; i++){
-                values[i] = athletesList.get(i).getId();
+        playersArrayList = db.getAthletes();
+        if(!(playersArrayList == null || playersArrayList.size()==0)){
+            String[] values = new String[playersArrayList.size()];
+            for(int i=0; i <=playersArrayList.size()-1; i++){
+                values[i] = playersArrayList.get(i).getId();
             }
-            inflateRecyclerView(athletesList, values);
+            inflateRecyclerView(playersArrayList, values);
         }
     }
     private void inflateRecyclerView(ArrayList<Athletes> testsArrayList, String[] values){
@@ -108,7 +108,6 @@ public class PlayersFragment extends Fragment {
         listViewPlayers.setVisibility(View.VISIBLE);
         listViewPlayers.setAdapter(adapterTests);
     }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

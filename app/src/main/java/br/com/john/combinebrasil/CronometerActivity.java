@@ -46,6 +46,7 @@ public class CronometerActivity extends AppCompatActivity {
         linearAddAccount.setVisibility(View.GONE);
         ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
         imgSearch.setVisibility(View.GONE);
+
         linearButtonPlay = (LinearLayout) findViewById(R.id.linear_button_play);
         linearFirstValue = (LinearLayout) findViewById(R.id.linear_show_first_value);
         linearSecondValue = (LinearLayout) findViewById(R.id.linear_show_second_value);

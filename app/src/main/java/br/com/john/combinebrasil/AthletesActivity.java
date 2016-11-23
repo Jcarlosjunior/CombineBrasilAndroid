@@ -23,6 +23,7 @@ public class AthletesActivity extends AppCompatActivity {
     Toolbar toolbar;
     ArrayList<Athletes> playersArrayList;
     private static Context myContext;
+    private String nameTest="", detailsTest="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,12 @@ public class AthletesActivity extends AppCompatActivity {
 
         myContext = AthletesActivity.this;
         callInflateAthletes();
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            nameTest = extras.getString("name_test");
+            detailsTest = extras.getString("details_test");
+        }
     }
 
     public static void afterSyncAthletes(Activity act){
@@ -51,13 +58,13 @@ public class AthletesActivity extends AppCompatActivity {
     private void callInflateAthletes(){
         DatabaseHelper db = new DatabaseHelper(myContext);
         db.openDataBase();
-        ArrayList<Athletes> athletesList = db.getAthletes();
-        if(!(athletesList == null || athletesList.size()==0)){
-            String[] values = new String[athletesList.size()];
-            for(int i=0; i <=athletesList.size()-1; i++){
-                values[i] = athletesList.get(i).getId();
+        playersArrayList = db.getAthletes();
+        if(!(playersArrayList == null || playersArrayList.size()==0)){
+            String[] values = new String[playersArrayList.size()];
+            for(int i=0; i <=playersArrayList.size()-1; i++){
+                values[i] = playersArrayList.get(i).getId();
             }
-            inflateRecyclerView(athletesList, values);
+            inflateRecyclerView(playersArrayList, values);
         }
     }
     private void inflateRecyclerView(ArrayList<Athletes> testsArrayList, String[] values){
@@ -91,6 +98,8 @@ public class AthletesActivity extends AppCompatActivity {
         Athletes player  = playersArrayList.get(position);
         i.putExtra("id_player",player.getId());
         i.putExtra("name_player",player.getName());
+        i.putExtra("name_test",nameTest);
+        i.putExtra("details_test",detailsTest);
         startActivity(i);
     }
 

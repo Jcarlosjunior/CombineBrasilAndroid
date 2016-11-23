@@ -371,15 +371,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return itens;
     }
 
-    public ArrayList<Athletes> getPlayerById(String idPlayer){
+    public Athletes getAthleteById(String idPlayer){
         this.openDataBase();
         String selectQuery = "SELECT DISTINCT * FROM "+ Constants.TABLE_ATHLETES +
                 " WHERE "+Constants.ATHLETES_ID +" ='"+idPlayer+"'";
 
         Cursor c = myDataBase.rawQuery(selectQuery, null);
-        ArrayList<Athletes> playerses = new ArrayList<Athletes>();
 
-        Athletes athlete = null;
+        Athletes athlete = new Athletes();
 
         if (c.moveToFirst()) {
             athlete = new Athletes(
@@ -393,11 +392,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT))
             );
         } else {
-            playerses = null;
+            athlete = null;
         }
         c.close();
         this.close();
-        return playerses;
+        return athlete;
     }
 
     public User checkExistsUser(String userName, String password) {

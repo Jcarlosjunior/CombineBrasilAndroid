@@ -27,7 +27,8 @@
         <activity android:name=".AthletesActivity" />
         <activity android:name=".ResultsActivity" />
         <activity android:name=".CronometerActivity" />
-        <activity android:name=".CreateAccountAthlete"></activity>
+        <activity android:name=".CreateAccountAthlete" />
+        <activity android:name=".DetailsAthletes"></activity>
     </application>
 
 </manifest>

@@ -102,14 +102,9 @@ public class MainActivity extends AppCompatActivity {
         ((MainActivity)activity).validaClickAthlete(positionArray);
     }
     public void validaClickAthlete(int position){
-        Intent i;
-        if(AllActivities.type.equals("corrida"))
-            i = new Intent(MainActivity.this, CronometerActivity.class);
-        else
-            i = new Intent(MainActivity.this, ResultsActivity.class);
+        Intent i = new Intent(MainActivity.this, DetailsAthletes.class);
         Athletes player  = PlayersFragment.playersArrayList.get(position);
         i.putExtra("id_player",player.getId());
-        i.putExtra("name_player",player.getName());
         startActivity(i);
     }
 
