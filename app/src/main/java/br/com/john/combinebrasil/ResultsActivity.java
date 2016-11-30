@@ -17,7 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -30,12 +32,14 @@ import br.com.john.combinebrasil.Services.Services;
 
 public class ResultsActivity extends AppCompatActivity {
     Toolbar toolbar;
-    Button buttonAdd;
+    Button buttonAdd, btnReady;
     EditText editFirstResult, editSecondResult;
     int contResults=0;
-    TextView textNamePlayer, textNameTest, textNameTestDetails, textDetailsTest, textNamePlayerDetails, textDetailsPlayer;
+    TextView textNamePlayer, textNameTest, textNameTestDetails, textDetailsTest, textNamePlayerDetails, textDetailsPlayer, textShowRating;
     ImageView imgArrowTest, imgArrowPlayer;
     boolean arrowDownTest=true,arrowDownPlayer=true;
+    LinearLayout linearRating;
+    RatingBar ratingBar;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -51,9 +55,13 @@ public class ResultsActivity extends AppCompatActivity {
         linearAddAccount.setVisibility(View.GONE);
         ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
         imgSearch.setVisibility(View.GONE);
+
+        linearRating = (LinearLayout) findViewById(R.id.linear_rating_results);
+
         editFirstResult = (EditText) findViewById(R.id.edit_first_result);
         editSecondResult = (EditText) findViewById(R.id.edit_second_result);
         buttonAdd = (Button) findViewById(R.id.button_add_results);
+        btnReady = (Button) findViewById(R.id.button_ready_results);
 
         textNamePlayer = (TextView) findViewById(R.id.text_name_player_result);
         textNameTest = (TextView) findViewById(R.id.text_name_test_result);
@@ -61,11 +69,14 @@ public class ResultsActivity extends AppCompatActivity {
         textDetailsTest = (TextView) findViewById(R.id.text_details_test);
         textNamePlayerDetails = (TextView) findViewById(R.id.text_name_player_details);
         textDetailsPlayer = (TextView) findViewById(R.id.text_details_player);
+        textShowRating = (TextView) findViewById(R.id.text_show_qualify_results);
 
         imgArrowPlayer = (ImageView) findViewById(R.id.img_player_arrow);
         imgArrowTest = (ImageView) findViewById(R.id.img_test_arrow);
         imgArrowTest.setOnClickListener(clickedImgArrowTest);
         imgArrowPlayer.setOnClickListener(clickedImgArrowPlayer);
+
+        ratingBar = (RatingBar) findViewById(R.id.rating_results);
 
         buttonAdd.setOnClickListener(clickSave);
 
@@ -172,11 +183,41 @@ public class ResultsActivity extends AppCompatActivity {
             checkAndSaveResults();
         }
         else if(method.equals("saveAllResults")){
-            Services.messageAlert(ResultsActivity.this, "Mensagem","Os resultados foram salvos!", "DialogSaveResults");
+            showRating();
         }
         else if(method.equals("exitActivity")){
             finish();
         }
+    }
+
+    private void showRating(){
+        linearRating.setVisibility(View.VISIBLE);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if(rating > 0.0) {
+                    btnReady.setEnabled(true);
+                    btnReady.setAlpha(1f);
+                    textShowRating.setVisibility(View.VISIBLE);
+                }
+                else {
+                    btnReady.setEnabled(false);
+                    btnReady.setAlpha(.5f);
+                }
+                textShowRating.setText(Services.verifyQualification(rating));
+            }
+        });
+
+        btnReady.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ResultsActivity.this,
+                        String.valueOf(Services.verifyQualification(ratingBar.getRating())),
+                        Toast.LENGTH_SHORT).show();
+                linearRating.setVisibility(View.GONE);
+                Services.messageAlert(ResultsActivity.this, "Mensagem","Os resultados foram salvos!", "DialogSaveResults");
+            }
+        });
     }
 
     private void checkAndSaveResults (){

@@ -7,9 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -24,6 +26,12 @@ public class AthletesActivity extends AppCompatActivity {
     ArrayList<Athletes> playersArrayList;
     private static Context myContext;
     private String nameTest="", detailsTest="";
+    private TextView textSearch, textOptionName, textOptionCode;
+    private ImageView imgOrder;
+    private Button btnCancel;
+    private LinearLayout linearOrder;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,29 @@ public class AthletesActivity extends AppCompatActivity {
         imgSearch.setVisibility(View.GONE);
 
         listViewPlayers = (ListView) findViewById(R.id.list_players);
+
+        linearOrder = (LinearLayout) findViewById(R.id.linear_order_by);
+
+        textSearch = (TextView) findViewById(R.id.text_search);
+        textOptionName = (TextView) findViewById(R.id.text_option_order_name);
+        textOptionCode = (TextView) findViewById(R.id.text_option_order_code);
+
+        btnCancel= (Button) findViewById(R.id.btn_cancel_order);
+
+        imgOrder = (ImageView) findViewById(R.id.img_order);
+
+        imgOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearOrder.setVisibility(View.VISIBLE);
+            }
+        });
+        linearOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearOrder.setVisibility(View.GONE);
+            }
+        });
 
         myContext = AthletesActivity.this;
         callInflateAthletes();

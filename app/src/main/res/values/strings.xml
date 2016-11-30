@@ -6,6 +6,8 @@
     <string name="testes">Testes</string>
     <string name="first_result">Primeiro Resultado</string>
     <string name="second_result">Segundo Resultado</string>
+    <string name="first">Primeiro</string>
+    <string name="second">Segundo</string>
     <string name="adicionar">Adicionar</string>
     <string name="salvar_dados">Salvar resultados</string>
     <string name="nome">Nome</string>
@@ -18,6 +20,12 @@
     <string name="peso">Peso</string>
     <string name="tests">Testes</string>
     <string name="players">Jogadores</string>
+    <string name="message">Mensagem</string>
+    <string name="qualification">Qualificação</string>
+    <string name="ok">Ok</string>
+    <string name="ready">Pronto</string>
+    <string name="search">Buscar</string>
+    <string name="cancel">Cancelar</string>
 
 
     <!--
@@ -27,7 +35,14 @@
     <string name="erro_dados_invalidos">Dados Inválidos</string>
     <string name="logando">Entrando na sua conta</string>
     <string name="add_account">Criando atleta</string>
+    <string name="qualification_message">Qualifique a atuação do atleta no teste.</string>
 
+
+    <!-- ******************************** ITENS MENUS ****************************************************
+    -->
+    <string name="order_by">Ordenar por</string>
+    <string name="name">Nome</string>
+    <string name="code">Código</string>
     <!--
     *********************************** TÍTULOS COMBINE **************************************************
     -->

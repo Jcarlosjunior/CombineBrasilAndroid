@@ -16,18 +16,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Services.CountDownTimer;
+import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.Services;
 
 public class CronometerActivity extends AppCompatActivity {
     Toolbar toolbar;
-    TextView textFirstResult, textSecondValue, textCronometer;
-    LinearLayout linearButtonPlay, linearFirstValue, linearSecondValue;
-    ImageView imgIconButtonPlay, imgReset, imgPause;
-    Button btnSave;
+    TextView textFirstResult, textSecondValue, textCronometer, textShowQualify;
+    LinearLayout linearButtonPlay, linearFirstValue, linearSecondValue, linearRating;
+    ImageView imgIconButtonPlay, imgReset, imgPause, imgSave;
+    Button btnSave, btnReady;
+    RatingBar ratingBar;
+    private float ratingChosse=0f;
 
     private final CountDownTimer countDownTimer = new CountDownTimer();
     private boolean init = false, firstValueSave = false, secondValueSalve = false, isPause=false;
@@ -50,22 +58,42 @@ public class CronometerActivity extends AppCompatActivity {
         linearButtonPlay = (LinearLayout) findViewById(R.id.linear_button_play);
         linearFirstValue = (LinearLayout) findViewById(R.id.linear_show_first_value);
         linearSecondValue = (LinearLayout) findViewById(R.id.linear_show_second_value);
+        linearRating = (LinearLayout) findViewById(R.id.linear_rating_cronometer);
 
         textFirstResult = (TextView) findViewById(R.id.text_first_value);
         textSecondValue = (TextView) findViewById(R.id.text_second_value);
         textCronometer = (TextView) findViewById(R.id.text_cronometer);
+        textShowQualify = (TextView) findViewById(R.id.text_show_qualify_cronometer);
+        final TextView textNamePlayer = (TextView) findViewById(R.id.text_name_player_cronometer);
 
         imgIconButtonPlay = (ImageView) findViewById(R.id.image_icon_button_play);
         imgPause = (ImageView) findViewById(R.id.image_pause);
         imgReset = (ImageView) findViewById(R.id.image_reset);
+        imgSave = (ImageView) findViewById(R.id.image_save);
 
         btnSave = (Button) findViewById(R.id.button_save_results);
+        btnReady = (Button) findViewById(R.id.button_ready_cronometer);
+
+        ratingBar = (RatingBar) findViewById(R.id.rating_cronometer);
 
         countDownTimer.setTextView(textCronometer);
         btnSave.setOnClickListener(clickedSave);
         imgPause.setOnClickListener(clickedPause);
         imgReset.setOnClickListener(clickedReset);
+        imgSave.setOnClickListener(clickedSaveTime);
         linearButtonPlay.setOnClickListener(clickedPlayAndStop);
+
+        textShowQualify.setText("");
+        textShowQualify.setVisibility(View.GONE);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            String id = extras.getString("id_player");
+            DatabaseHelper db  = new DatabaseHelper(CronometerActivity.this);
+            db.openDataBase();
+            Athletes athlete = db.getAthleteById(id);
+            textNamePlayer.setText(athlete.getName());
+        }
     }
 
     /*
@@ -79,6 +107,7 @@ public class CronometerActivity extends AppCompatActivity {
         countDownTimer.initCount();
         imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.stop));
         linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_red));
+        imgSave.setVisibility(View.GONE);
         imgPause.setVisibility(View.VISIBLE);
         imgReset.setVisibility(View.VISIBLE);
     }
@@ -91,6 +120,7 @@ public class CronometerActivity extends AppCompatActivity {
         imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
         imgPause.setVisibility(View.GONE);
         imgReset.setVisibility(View.GONE);
+        imgSave.setVisibility(View.GONE);
         imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
         linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_green));
         textCronometer.setText("00:00");
@@ -103,7 +133,7 @@ public class CronometerActivity extends AppCompatActivity {
         countDownTimer.pause();
         linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_green));
         imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
-        imgPause.setVisibility(View.INVISIBLE);
+        imgPause.setVisibility(View.GONE);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -115,6 +145,7 @@ public class CronometerActivity extends AppCompatActivity {
         imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
         imgPause.setVisibility(View.INVISIBLE);
         imgReset.setVisibility(View.INVISIBLE);
+        imgSave.setVisibility(View.GONE);
         textCronometer.setText("00:00");
     }
 
@@ -163,8 +194,40 @@ public class CronometerActivity extends AppCompatActivity {
             resetCrometer();
         }
         else if(method.equals("saveAllResults")){
-            Services.messageAlert(CronometerActivity.this, "Mensagem","Os resultados foram salvos!","DIALOGSAVECRONOMETER");
+            showRating();
+
         }
+    }
+
+    private void showRating(){
+        linearRating.setVisibility(View.VISIBLE);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if(rating > 0.0) {
+                    btnReady.setEnabled(true);
+                    btnReady.setAlpha(1f);
+                    textShowQualify.setVisibility(View.VISIBLE);
+                }
+                else {
+                    btnReady.setEnabled(false);
+                    btnReady.setAlpha(.5f);
+                }
+                textShowQualify.setText(Services.verifyQualification(rating));
+            }
+        });
+
+        btnReady.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CronometerActivity.this,
+                        String.valueOf(Services.verifyQualification(ratingBar.getRating())),
+                        Toast.LENGTH_SHORT).show();
+                ratingChosse = ratingBar.getRating();
+                linearRating.setVisibility(View.GONE);
+                Services.messageAlert(CronometerActivity.this, "Mensagem","Os resultados foram salvos!","DIALOGSAVECRONOMETER");
+            }
+        });
     }
 
     /*
@@ -190,6 +253,7 @@ public class CronometerActivity extends AppCompatActivity {
             }
             else {
                 if(!isPause) {
+                    imgSave.setVisibility(View.VISIBLE);
                     if (firstValueSave == false)
                         messageOption("Salvar","Deseja salvar o primeiro resultado?","saveResult");
                      else if (secondValueSalve == false)
@@ -203,6 +267,15 @@ public class CronometerActivity extends AppCompatActivity {
     };
 
 
+    private View.OnClickListener clickedSaveTime = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (firstValueSave == false)
+                messageOption("Salvar","Deseja salvar o primeiro resultado?","saveResult");
+            else if (secondValueSalve == false)
+                messageOption("Salvar","Deseja salvar o segundo resultado?","saveResult");
+        }
+    };
     private View.OnClickListener clickedPause = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

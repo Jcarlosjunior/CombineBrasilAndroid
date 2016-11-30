@@ -5,10 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="br.com.john.combinebrasil.CronometerActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <include layout="@layout/toolbar_default" android:id="@+id/include"/>
 
@@ -18,11 +21,23 @@
            android:layout_weight="0.9"
            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/text_name_player_cronometer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:text="@string/testes"
+                android:textAlignment="center"
+                android:gravity="center"
+                />
+
            <TextView
                android:id="@+id/text_cronometer"
                android:layout_width="match_parent"
                android:layout_height="0sp"
-               android:layout_weight="0.5"
+               android:layout_weight="0.4"
                android:text="00:00"
                android:textColor="@color/black"
                android:textSize="80sp"
@@ -47,7 +62,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Primeiro"
+                        android:text="@string/first"
                         android:textSize="16sp"
                         android:textColor="@color/black"
                         />
@@ -71,7 +86,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Seegundo"
+                        android:text="@string/second"
                         android:textSize="16sp"
                         android:textColor="@color/black"
                         />
@@ -127,6 +142,14 @@
                        android:layout_weight="0.2"></LinearLayout>
                </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/image_save"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/save"
+                    android:layout_marginLeft="30sp"
+                    />
                <ImageView
                    android:id="@+id/image_pause"
                    android:visibility="gone"
@@ -135,6 +158,8 @@
                    android:src="@drawable/pause"
                    android:layout_marginLeft="30sp"
                    />
+
+
            </LinearLayout>
 
             <LinearLayout
@@ -142,7 +167,6 @@
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true">
                 <Button
-
                     android:id="@+id/button_save_results"
                     android:visibility="invisible"
                     android:enabled="false"
@@ -160,6 +184,107 @@
             </LinearLayout>
         </LinearLayout>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_rating_cronometer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_transparent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:clickable="true"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"></LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@drawable/background_border"
+                >
+                <TextView
+                    android:id="@+id/text_title_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/qualification"
+                    android:textColor="@color/white"
+                    android:background="@color/colorPrimary"
+                    android:layout_margin="1dp"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingLeft="25dp"
+                    android:textSize="18sp"
+                    android:gravity="left"/>
+                <TextView
+                    android:id="@+id/text_alert_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/qualification_message"
+                    android:textColor="@color/black"
+                    android:paddingBottom="30sp"
+                    android:paddingTop="30sp"
+                    android:layout_margin="1dp"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
+
+                <RatingBar
+                    android:id="@+id/rating_cronometer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:numStars="5"
+                    android:stepSize="1.0"
+                    />
+                
+                <TextView
+                    android:id="@+id/text_show_qualify_cronometer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:textColor="@color/black"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/button_ready_cronometer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_button_blue"
+                        android:textColor="@color/white"
+                        android:text="@string/ready"
+                        android:layout_marginBottom="20sp"
+                        android:layout_marginTop="15sp"
+                        android:paddingLeft="50sp"
+                        android:paddingRight="50sp"
+                        />
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"></LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

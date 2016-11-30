@@ -168,4 +168,22 @@ public class Services {
         }
         return maskedText;
     }
+
+    public static String verifyQualification(float rating){
+        int num = (int)rating;
+        String ret = "";
+        switch(num){
+            case 1: ret = "Péssimo";
+                break;
+            case 2: ret = "Ruim";
+                break;
+            case 3: ret = "Regular";
+                break;
+            case 4: ret = "Bom";
+                break;
+            case 5: ret = "Ótimo";
+                break;
+        }
+        return ret;
+    }
 }
