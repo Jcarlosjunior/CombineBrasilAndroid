@@ -17,11 +17,12 @@ public class Athletes{
     String UpdateAt;
     int Height;
     int Weight;
+    String Code;
 
     public Athletes(){}
 
     public Athletes(String id, String name, String birthday, String cpf, int height, int weight, String createdAt,
-                    String updateAt) {
+                    String updateAt, String code) {
         Id = id;
         Name = name;
         Birthday = birthday;
@@ -30,6 +31,7 @@ public class Athletes{
         this.UpdateAt = updateAt;
         this.Height = height;
         this.Weight = weight;
+        this.Code = code;
     }
 
     public String getId() {
@@ -94,5 +96,13 @@ public class Athletes{
 
     public void setWeight(int weight) {
         Weight = weight;
+    }
+
+    public String getCode() {
+        return Code;
+    }
+
+    public void setCode(String code) {
+        Code = code;
     }
 }

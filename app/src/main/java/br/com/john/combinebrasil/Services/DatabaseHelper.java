@@ -252,7 +252,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             c.getInt(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
                             c.getInt(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
                             c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
-                            c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT))
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
+                            null
                     );
                     itens.add(obj);
                 } while (c.moveToNext());
@@ -389,7 +390,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getInt(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
                     c.getInt(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
                     c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
-                    c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT))
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
+                    null
             );
         } else {
             athlete = null;
@@ -417,6 +419,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             );
         }
         return user;
+    }
+
+
+    /******************************** SEARCHS************************************************/
+
+    public ArrayList<Athletes> searchAthletes(String search){
+        this.openDataBase();
+        String selectQuery =  "SELECT DISTINCT * FROM "+Constants.TABLE_ATHLETES+" WHERE " +
+                "("+Constants.ATHLETES_NAME+" || \"\" || "+Constants.ATHLETES_CPF+") LIKE '%"+search+"%' GROUP BY "
+                +Constants.ATHLETES_NAME+", "+Constants.ATHLETES_CPF+"";
+
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+        ArrayList<Athletes> athletes = new ArrayList<Athletes>();
+
+
+        if(c.getCount()>0){
+            c.moveToFirst();
+            do{
+                Athletes athlete = new Athletes(
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_ID)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_NAME)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_BIRTHDAY)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_CPF)),
+                        c.getInt(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
+                        c.getInt(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
+                        null
+                );
+                athletes.add(athlete);
+            }while(c.moveToNext());
+        }
+
+
+        return athletes;
+
     }
 
 

@@ -36,8 +36,9 @@
     <string name="logando">Entrando na sua conta</string>
     <string name="add_account">Criando atleta</string>
     <string name="qualification_message">Qualifique a atuação do atleta no teste.</string>
-
-
+    <string name="not_find">
+                Ops... Não foi encontrado nenhum resultado para a busca
+    </string>
     <!-- ******************************** ITENS MENUS ****************************************************
     -->
     <string name="order_by">Ordenar por</string>

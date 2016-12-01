@@ -69,6 +69,14 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/icon_search"
                 android:layout_marginRight="10sp"
+                android:visibility="gone"
+                />
+
+
+            <com.miguelcatalan.materialsearchview.MaterialSearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 />
         </LinearLayout>
 

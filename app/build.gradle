@@ -26,6 +26,7 @@ dependencies {
     compile('com.mikepenz.materialdrawer:library:2.8.2@aar') {
         transitive = true
     }
+    compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
