@@ -24,7 +24,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.4"
+                android:layout_weight="0.3"
                 android:orientation="horizontal"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp">
@@ -37,7 +37,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"
-                    android:background="@drawable/logo_combine_small"></LinearLayout>
+                    android:background="@drawable/logo_combine"></LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -90,6 +90,7 @@
                             android:background="@drawable/background_edit"
                             android:maxLines="1"
                             android:singleLine="true"
+                            android:inputType="textEmailAddress"
                             />
                         <EditText
                             android:id="@+id/edit_password"

@@ -204,6 +204,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void addUser(User user) {
+        long ret = 0;
+        try{
+                SQLiteDatabase db = getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(Constants.USER_ID, user.getId());
+                values.put(Constants.USER_NAME, user.getName());
+                values.put(Constants.USER_EMAIL, user.getEmail());
+                values.put(Constants.USER_ISADMIN, Services.convertBoolInInt(user.getIsAdmin()));
+                values.put(Constants.USER_CANWRITE, Services.convertBoolInInt(user.getCanWrite()));
+                values.put(Constants.USER_TOKEN, user.getToken());
+
+                ret = db.insert(Constants.TABLE_USER, null, values);
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
+
     public void addUsers(ArrayList<User> listUser) {
         long ret = 0;
         try{
@@ -213,9 +232,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 values.put(Constants.USER_ID, obj.getId());
                 values.put(Constants.USER_NAME, obj.getName());
-                values.put(Constants.USER_USERNAME, obj.getUsername());
-                values.put(Constants.USER_PASSWORD, obj.getPassword());
                 values.put(Constants.USER_EMAIL, obj.getEmail());
+                values.put(Constants.USER_ISADMIN, Services.convertBoolInInt(obj.getIsAdmin()));
+                values.put(Constants.USER_CANWRITE, Services.convertBoolInInt(obj.getCanWrite()));
                 values.put(Constants.USER_TOKEN, obj.getToken());
 
                 ret = db.insert(Constants.TABLE_USER, null, values);
@@ -354,9 +373,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 User obj = new User(
                         c.getString(c.getColumnIndex(Constants.USER_ID)),
                         c.getString(c.getColumnIndex(Constants.USER_NAME)),
-                        c.getString(c.getColumnIndex(Constants.USER_USERNAME)),
-                        c.getString(c.getColumnIndex(Constants.USER_PASSWORD)),
                         c.getString(c.getColumnIndex(Constants.USER_EMAIL)),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.USER_ISADMIN))),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.USER_CANWRITE))),
                         c.getString(c.getColumnIndex(Constants.USER_TOKEN))
                 );
 
@@ -409,12 +428,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(selectGetUser, null);
         User user = null;
         if(c.moveToFirst()){
-            user = new User(
+            User obj = new User(
                     c.getString(c.getColumnIndex(Constants.USER_ID)),
                     c.getString(c.getColumnIndex(Constants.USER_NAME)),
-                    c.getString(c.getColumnIndex(Constants.USER_USERNAME)),
-                    c.getString(c.getColumnIndex(Constants.USER_PASSWORD)),
                     c.getString(c.getColumnIndex(Constants.USER_EMAIL)),
+                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.USER_ISADMIN))),
+                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.USER_CANWRITE))),
                     c.getString(c.getColumnIndex(Constants.USER_TOKEN))
             );
         }

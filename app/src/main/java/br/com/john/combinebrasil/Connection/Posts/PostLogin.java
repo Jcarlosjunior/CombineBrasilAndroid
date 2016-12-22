@@ -1,28 +1,23 @@
 package br.com.john.combinebrasil.Connection.Posts;
 
 /**
- * Created by GTAC on 17/11/2016.
+ * Created by GTAC on 21/12/2016.
  */
+
 
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
-
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -30,12 +25,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
-import br.com.john.combinebrasil.CreateAccountAthlete;
+import br.com.john.combinebrasil.LoginActivity;
 
-public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
+public class PostLogin extends AsyncTask<String, String, String> {
 
     Context context;
     String resp;
@@ -44,7 +37,9 @@ public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
     private JSONObject obj;
     private JSONObject objPut;
     int statusCode=0;
-    ;
+    String URL = "";
+    int ret = 0;
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -53,12 +48,10 @@ public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         InputStream inputStream = null;
-        String result = "";
-        String ret = "";
 
         final HttpParams httpParams = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
-        HttpConnectionParams.setSoTimeout(httpParams, 10000);
+        HttpConnectionParams.setConnectionTimeout(httpParams, 15000);
+        HttpConnectionParams.setSoTimeout(httpParams, 15000);
         HttpClient client;
 
         client = new DefaultHttpClient(httpParams);
@@ -79,37 +72,23 @@ public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
         try {
             response = client.execute(post);
             statusCode =response.getStatusLine().getStatusCode();
-            if(statusCode==201)
-                ret="OK";
-            else
-                ret="FAIL";
-
+            ret = statusCode;
             inputStream = response.getEntity().getContent();
 
-            result = convertInputStreamToString(inputStream);
-            try {
-                obj = new JSONObject(result);
-                setObj(obj);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Log.v("erro", "0");
-            }
-
+            resp = convertInputStreamToString(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
-            ret = "FAIL";
+            ret = 0;
         }
 
-        setResp(ret);
-        return ret;
+        return resp;
     }
 
     protected void onProgressUpdate(String... progress) { }
 
     @Override
     protected void onPostExecute(String status) {
-        CreateAccountAthlete.afterSendAthlete(getActivity(), getResp(), obj);
-
+        LoginActivity.afterLogin(resp, false, activity, ret);
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
@@ -126,23 +105,12 @@ public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
     public void setObjPut(JSONObject objPut){
         this.objPut = objPut;
     }
+
     public JSONObject getObjPut(){
         return objPut;
     }
-
-    public void setObj(JSONObject obj){
-        this.obj = obj;
-    }
     public JSONObject getObj(){
         return obj;
-    }
-
-    public String getResp() {
-        return resp;
-    }
-
-    public void setResp(String resp) {
-        this.resp = resp;
     }
 
     public Context getContext() {

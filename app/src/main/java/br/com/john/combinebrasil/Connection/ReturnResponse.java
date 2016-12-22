@@ -34,23 +34,23 @@ public class ReturnResponse {
     //esse método é de retorno quando à sucesso na requisição
     //redireciona de volta para quem chamou
     //whocalled é importante para identificar quem  fez a requisição e para onde os dados irão
-    public void goTo(String whoCalled, String response, boolean isList, Activity activity) {
+    public void goTo(String whoCalled, String response, boolean isList, Activity activity, int statuCode) {
         try {
             if (!response.equals(null) || response.length() <= 0) {
                 if (whoCalled.equals(Constants.CALLED_LOGIN)) {
-                    LoginActivity.afterLogin(response, isList, activity);
+                    LoginActivity.afterLogin(response, isList, activity, statuCode);
 
                 } else if (whoCalled.equals(Constants.CALLED_GET_TESTS)) {
-                    MainActivity.afterCalled(response, isList, activity);
+                    MainActivity.afterCalled(response, isList, activity, statuCode);
 
                 }else if (whoCalled.equals(Constants.CALLED_GET_ATHLETES)) {
                     if(activity.getClass().getSimpleName().equals("LoginActivity"))
-                        LoginActivity.afterLogin(response, isList, activity);
+                        LoginActivity.afterLogin(response, isList, activity, statuCode);
                     else
                         SyncDatabase.athletesResponse(response);
                 }
                 else if (whoCalled.equals(Constants.CALLED_POST_ATHLETES)) {
-                    CreateAccountAthlete.returnPostAthlete(activity, response);
+                    CreateAccountAthlete.returnPostAthlete(activity, response, statuCode);
                 }
             }
         } catch (Exception e) {

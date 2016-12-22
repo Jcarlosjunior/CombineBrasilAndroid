@@ -25,6 +25,21 @@
         android:orientation="horizontal"
         android:layout_gravity="left">
         <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/linear_menu_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:gravity="center_horizontal"
+            android:layout_marginLeft="10dp">
+            <ImageView
+                android:id="@+id/imgview_menu_toolbar_default"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/menu_42"
+                />
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/linear_back_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"

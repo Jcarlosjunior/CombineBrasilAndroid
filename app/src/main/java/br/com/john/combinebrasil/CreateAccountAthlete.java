@@ -196,7 +196,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
         return edit.getText().toString().trim().equals("") ? "" : edit.getText().toString();
     }
 
-    public static void returnPostAthlete(Activity act, String response){
+    public static void returnPostAthlete(Activity act, String response, int status){
         //((CreateAccountAthlete) act).afterPost(response);
     }
     private void afterPost(String response, Object obj){

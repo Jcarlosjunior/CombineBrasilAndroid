@@ -96,6 +96,11 @@ public class ResultsActivity extends AppCompatActivity {
                     enabledButtonAdd(true);
                 else
                     enabledButtonAdd(false);
+
+                if(s.length()==1){
+                     editFirstResult.setText(s.toString() + ",");
+                    editFirstResult.setSelection(s.length()+1);
+                }
             }
 
             @Override
@@ -192,6 +197,7 @@ public class ResultsActivity extends AppCompatActivity {
 
     private void showRating(){
         linearRating.setVisibility(View.VISIBLE);
+        btnReady.setEnabled(false);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {

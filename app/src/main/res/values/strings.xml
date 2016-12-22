@@ -44,6 +44,12 @@
     <string name="order_by">Ordenar por</string>
     <string name="name">Nome</string>
     <string name="code">Código</string>
+
+    <string name="create">Cadastrar Atleta</string>
+    <string name="sync">Sincronizar</string>
+    <string name="tests_athletes">Testes e atletas</string>
+    <string name="about">Sobre o Combine</string>
+    <string name="exit">Sair</string>
     <!--
     *********************************** TÍTULOS COMBINE **************************************************
     -->

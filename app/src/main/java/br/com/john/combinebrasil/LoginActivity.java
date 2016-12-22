@@ -13,13 +13,19 @@ import android.widget.LinearLayout;
 
 import com.android.volley.Request;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import br.com.john.combinebrasil.Classes.Login;
 import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
+import br.com.john.combinebrasil.Connection.Posts.PostAthleteAsyncTask;
+import br.com.john.combinebrasil.Connection.Posts.PostLogin;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Services;
@@ -66,8 +72,8 @@ public class LoginActivity extends Activity {
     public View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            editLogin.setText("Combine");
-            editPassword.setText("combine123");
+            editLogin.setText("teste@teste.com.br");
+            editPassword.setText("teste");
             return true;
         }
     };
@@ -75,50 +81,46 @@ public class LoginActivity extends Activity {
     public View.OnClickListener onClickLoginListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //if(Constants.debug)
-              //  CalledFalseLogin();
-            //else
-                callLogin();
+               callLogin();
         }
     };
-
-    private void CalledFalseLogin(){
-        if (verifyLogin()) {
-            linearProgress.setVisibility(View.VISIBLE);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(mainIntent);
-                    finish();
-                    linearProgress.setVisibility(View.GONE);
-                }
-            }, 2000);
-        }
-    }
 
     private void callLogin() {
         if (verifyLogin()) {
             if (Services.isOnline(this)) {
                 linearProgress.setVisibility(View.VISIBLE);
-                String url = Constants.URL + Constants.API_ATHLETES;
-                //Connection task = new Connection(url, Request.Method.POST, Constants.CALLED_LOGIN, false, this, loginData());
-                Connection task = new Connection(url, Request.Method.GET, Constants.CALLED_GET_ATHLETES, false, this);
-                task.callByJsonStringRequest();
+                String url = Constants.URL + Constants.login;
+                PostLogin post = new PostLogin();
+                post.setActivity(LoginActivity.this);
+                post.setObjPut(loginData());
+                post.execute(url);
+
+
+               // Connection task = new Connection(Constants.URL + Constants.login, Request.Method.POST, Constants.CALLED_LOGIN, false, this, loginData());
+                //Connection task = new Connection(url, Request.Method.GET, Constants.CALLED_GET_ATHLETES, false, this);
+               //task.callByJsonStringRequest();
             }
             else
                 Services.messageAlert(this,"Aviso", "Sem conexão com a internet","hide");
         }
     }
 
-        public static void afterLogin(String response, boolean isList, Activity activity) {
-            ((LoginActivity) activity).validaLogin(response, isList);
+        public static void afterLogin(String response, boolean isList, Activity activity, int statusCode) {
+            if(statusCode == 200)
+                ((LoginActivity) activity).validaLogin(response, isList);
+            else
+                ((LoginActivity) activity).errorLogin(response, statusCode);
         }
 
     public void validaLogin(String response, boolean isList) {
-            SyncDatabase syncDatabase = new SyncDatabase();
-            syncDatabase.setActivity(LoginActivity.this);
-            SyncDatabase.athletesResponse(response);
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        User user = des.getObjectsUser();
+        DatabaseHelper db = new DatabaseHelper(LoginActivity.this);
+        db.addUser(user);
+
+        SyncDatabase syncDatabase = new SyncDatabase();
+        syncDatabase.setActivity(LoginActivity.this);
+        SyncDatabase.athletesResponse(response);
 
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainIntent);
@@ -143,11 +145,31 @@ public class LoginActivity extends Activity {
 
     }
 
-    private HashMap<String, String> loginData() {
-        HashMap<String, String> params = new HashMap<>();
-        params.put("Username", editLogin.getText().toString());
-        params.put("Password", editPassword.getText().toString());
-        return params;
+    private void errorLogin(String response, int statusCode){
+        linearProgress.setVisibility(View.GONE);
+        String message = "";
+        if(statusCode == 400) {
+            message = "";
+            JSONObject json = null;
+            try {
+                json = new JSONObject(response);
+                message = json.optString("message", "Usuário ou senha inválida");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        Services.messageAlert(LoginActivity.this, "Aviso", message, "");
+    }
+
+    private JSONObject loginData() {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("email",  editLogin.getText().toString());
+            object.put("password", editPassword.getText().toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
     }
 
     private boolean verifyLogin(){

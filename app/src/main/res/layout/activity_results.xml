@@ -84,7 +84,9 @@
                                     android:layout_margin="10sp"
                                     android:padding="10sp"
                                     android:textSize="18sp"
-                                    android:inputType="numberDecimal"
+                                    android:maxLength="4"
+                                    android:digits="0123456789,"
+                                    android:inputType="number"
                                     android:background="@drawable/background_edit_border"/>
 
                             </LinearLayout>
@@ -105,7 +107,9 @@
                                     android:layout_margin="10sp"
                                     android:padding="10sp"
                                     android:textSize="18sp"
-                                    android:inputType="numberDecimal"
+                                    android:maxLength="4"
+                                    android:digits="0123456789,"
+                                    android:inputType="number"
                                     android:background="@drawable/background_edit_border"/>
 
                             </LinearLayout>
@@ -376,6 +380,8 @@
                     android:layout_gravity="center"
                     android:numStars="5"
                     android:stepSize="1.0"
+                    android:progressTint="@color/yellow"
+                    android:secondaryProgressTint="@color/yellow"
                     />
 
                 <TextView

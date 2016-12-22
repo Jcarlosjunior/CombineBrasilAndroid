@@ -66,7 +66,7 @@ public class Connection extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        ReturnResponse.getInstance().goTo(whoCalled, response, isList, getActivity());
+                        ReturnResponse.getInstance().goTo(whoCalled, response, isList, getActivity(), 200);
                     }
                 },
                 new Response.ErrorListener() {
@@ -74,7 +74,7 @@ public class Connection extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         try {
-                            ReturnError.getInstance().goTo(whoCalled, getActivity(), getMessage(error));
+                            ReturnError.getInstance().goTo(whoCalled, getActivity(), getMessage(error), error.networkResponse.statusCode);
 
                             /*if (error.networkResponse.statusCode == 400)
                                 Services.messageAlert(getActivity(), "Erro!", "código 400\n requisição incorreta", "");
@@ -144,7 +144,7 @@ public class Connection extends AppCompatActivity {
                         -1,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
         request.setRetryPolicy(new DefaultRetryPolicy(
-                5000,
+                7000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         request.setTag("tag");

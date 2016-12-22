@@ -12,14 +12,23 @@ public class Constants {
 
     public static final String URL = "https://combine-api.herokuapp.com/";
 
-    public static final String login = "Login/CheckCredentials";
+    public static final String login = "api/login";
+
+    public static final String LOGIN_EMAIL = "email";
+    public static final String LOGIN_ISADMIN = "isAdmin";
+    public static final String LOGIN_CANWRITE = "canWrite";
+
 
 
     public static final String API_ATHLETES = "api/athletes";
     public static final String API_POSITIONS = "api/positions";
     public static final String API_TEAMS = "api/teams";
     public static final String API_TESTTYPES = "api/testTypes";
-    public static final String user = "api/Users";
+    public static final String API_SELECTIVEATHLETES = "api/selectiveAthletes";
+    public static final String API_SELECTIVES = "api/selectives";
+    public static final String API_TEAMUSERS = "api/teamUsers";
+    public static final String API_TESTS = "api/tests";
+    public static final String API_USERS = "api/Users";
 
 
     public static final String PATH_DEFAULT = new File(Environment.getExternalStorageDirectory(), File.separator+ "Android" +
@@ -40,14 +49,7 @@ public class Constants {
     //SHARED PREFERENCES
     public static final String TIMER_CHRONOMETER = "timer_chronometer",
             ID = "Id",
-            LOGGED="Logged",
-            TOKEN="Token",
-            USERNAME="Username",
-            NAME="Name",
-            PASSWORD = "password",
-            EMAIL ="Email",
-            DESCRIPTION = "Description",
-            TYPE = "Type";
+            LOGGED="Logged";
     /*
     **************************CHAMADAS DO VOLLEY***********************************
     **/
@@ -95,17 +97,59 @@ public class Constants {
     public static final String TEST_CODE = "Code";
 
     /*****************************TYPES TABLE**********************************/
-    public static final String TABLE_TYPE = "type";
+    public static final String  TABLE_TYPE = "type";
     public static final String  TYPE_ID = "Id";
     public static final String  TYPE_NAME = "Name";
     public static final String  TYPE_DESCRIPTION = "Description";
 
     /*******************************USER TABLE ***********************************/
     public static final String TABLE_USER = "User";
-    public static final String USER_ID = "Id";
-    public static final String USER_NAME = "Name";
-    public static final String USER_USERNAME = "Username";
-    public static final String USER_PASSWORD = "Password";
-    public static final String USER_EMAIL = "Email";
-    public static final String USER_TOKEN = "Token";
+    public static final String USER_ID = "_id";
+    public static final String USER_NAME = "name";
+    public static final String USER_PASSWORD = "password";
+    public static final String USER_EMAIL = "email";
+    public static final String USER_SALT = "salt";
+    public static final String USER_ISADMIN = "isAdmin";
+    public static final String USER_CANWRITE = "canWrite";
+    public static final String USER_TOKEN = "token";
+
+    /********************************POSITIONS TABLE ******************************/
+
+    public static final String TABLE_POSITIONS = "Positions";
+    public static final String POSITIONS_ID = "_id";
+    public static final String POSITIONS_NAME = "name";
+    public static final String POSITIONS_DESCRIPTIONS = "description";
+
+    /***********************************SELECTIVES ATHLETES TABLE ******************/
+    public static final String TABLE_SELECTIVEATHLETES = "SelectiveAthletes";
+    public static final String SELECTIVEATHLETES_ID = "_id";
+    public static final String SELECTIVEATHLETES_ATHLETE = "athlete";
+    public static final String SELECTIVEATHLETES_SELECTIVE = "selective";
+    public static final String SELECTIVEATHLETES_INSCRIPTIONNUMBER = "inscriptionNumber";
+    public static final String SELECTIVEATHLETES_PRESENCE = "presence";
+
+    /****************************** TEAM TABLE***************************************/
+
+    public static final String TABLE_TEAM= "Team";
+    public static final String TEAM_ID = "_id";
+    public static final String TEAM_TYPE = "Type";
+    public static final String TEAM_ATHLETE = "Athlete";
+    public static final String TEAM_VALUE = "Value";
+    public static final String TEAM_RATING = "Rating";
+
+    /****************************** TEAM USERS TABLE***************************************/
+
+    public static final String TABLE_TEAMUSERS = "TeamUsers";
+    public static final String TEAMUSERS_ID = "_id";
+    public static final String TEAMUSERS_USER = "User";
+    public static final String TEAMUSERS_TEAM = "Team";
+
+    /****************************** TEAM TYPES TABLE***************************************/
+
+    public static final String TABLE_TESTTYPES = "TestTypes";
+    public static final String TESTTYPES_ID = "_id";
+    public static final String TESTTYPES_NAME = "Name";
+    public static final String TESTTYPES_DESCRIPTION = "Description";
+    public static final String TESTTYPES_ATTEMPTSLIMIT = "attemptsLimit";
+    public static final String TESTTYPES_VISIBLETOREPORT = "visibleToReport";
 }

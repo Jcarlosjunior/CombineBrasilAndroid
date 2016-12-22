@@ -17,6 +17,7 @@ import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.AppSectionsPagerAdapter;
+import br.com.john.combinebrasil.Services.NavigationDrawer;
 
 public class MainActivity extends AppCompatActivity {
     private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
@@ -24,12 +25,19 @@ public class MainActivity extends AppCompatActivity {
     public static LinearLayout linearProgress;
     public static TextView textProgress;
     Toolbar toolbar;
+    NavigationDrawer navigationDrawer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar = (Toolbar) findViewById(R.id.include);
         setSupportActionBar(toolbar);
+
+        AllActivities.mainActivity = MainActivity.this;
+
+        navigationDrawer = new NavigationDrawer(savedInstanceState, toolbar, true);
+        navigationDrawer.createNavigationAccess();
 
         LinearLayout linearBacktoolbar = (LinearLayout) findViewById(R.id.linear_back_button);
         linearBacktoolbar.setVisibility(View.GONE);
@@ -37,10 +45,17 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout linearAddAccount = (LinearLayout) findViewById(R.id.linear_add_account);
         linearAddAccount.setOnClickListener(clickAddAccount);
 
+        LinearLayout linearMenu = (LinearLayout) findViewById(R.id.linear_menu_button);
+        linearMenu.setVisibility(View.VISIBLE);
+        linearMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationDrawer.navigationDrawerLeft.openDrawer();
+            }
+        });
+
         linearProgress = (LinearLayout) findViewById(R.id.linear_progress_tests);
         textProgress = (TextView) findViewById(R.id.text_progress);
-
-        AllActivities.mainActivity = MainActivity.this;
 
         Fragment fragments[] = new Fragment[]{new TestsFragment(),
                 new PlayersFragment()};
@@ -76,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void afterCalled(String response, boolean isList, Activity activity) {
+    public static void afterCalled(String response, boolean isList, Activity activity, int statuCode) {
         TestsFragment.ShowTests(response, isList);
     }
 
@@ -118,11 +133,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        int position = mViewPagerHome.getCurrentItem();
-        if (position == 0) {
-            MainActivity.this.finish();
-        } else {
-            mViewPagerHome.setCurrentItem(0);
+        if (NavigationDrawer.navigationDrawerLeft.isDrawerOpen())
+            NavigationDrawer.navigationDrawerLeft.closeDrawer();
+        else {
+            int position = mViewPagerHome.getCurrentItem();
+            if (position == 0) {
+                MainActivity.this.finish();
+            } else {
+                mViewPagerHome.setCurrentItem(0);
+            }
         }
     }
 }

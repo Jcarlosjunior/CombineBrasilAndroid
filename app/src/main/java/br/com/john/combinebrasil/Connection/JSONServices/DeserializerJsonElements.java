@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.Login;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Services.Constants;
@@ -29,6 +30,19 @@ public class DeserializerJsonElements {
         this.response = response;
     }
 
+    public Login getLogin(){
+        Login login = new Login();
+        try{
+            JSONObject json = new JSONObject(this.response);
+            login.setEmail(json.getString(Constants.LOGIN_EMAIL));
+            login.setIsAdmin(json.getBoolean(Constants.LOGIN_ISADMIN));
+            login.setCanWrite(json.getBoolean(Constants.LOGIN_CANWRITE));
+        }catch (JSONException jsonExc){
+            Log.i("JSON ERROR", jsonExc.toString());
+        }
+        return login;
+    }
+
     /*
     ***********************************DESERIALIZER USER********************************************
     **/
@@ -36,9 +50,11 @@ public class DeserializerJsonElements {
         User user = new User();
         try{
             JSONObject json = new JSONObject(this.response);
-            user.setToken(json.getString(Constants.TOKEN));
-            user.setUsername(json.getString(Constants.USERNAME));
-            user.setName(json.getString(Constants.NAME));
+            user.setName(json.optString(Constants.USER_NAME));
+            user.setEmail(json.optString(Constants.USER_EMAIL));
+            user.setIsAdmin(json.optBoolean(Constants.LOGIN_ISADMIN));
+            user.setCanWrite(json.optBoolean(Constants.LOGIN_CANWRITE));
+            user.setToken(json.optString(Constants.USER_TOKEN));
 
         }catch (JSONException jsonExc){
             Log.i("JSON ERROR", jsonExc.toString());
@@ -56,9 +72,9 @@ public class DeserializerJsonElements {
         try{
             JSONObject json = new JSONObject(response);
             test.setId(json.getString(Constants.ID));
-            test.setName(json.getString(Constants.NAME));
-            test.setType(json.getString(Constants.TYPE));
-            test.setDescription(json.getString(Constants.DESCRIPTION));
+            test.setName(json.getString(Constants.TEST_NAME));
+            test.setType(json.getString(Constants.TEST_TYPE));
+            test.setDescription(json.getString(Constants.TEST_DESCRIPTION));
         }catch (JSONException jsonExc){
             Log.i("JSON ERROR", jsonExc.toString());
         }
@@ -75,9 +91,9 @@ public class DeserializerJsonElements {
                 JSONObject json = new JSONObject(jsonArray.getString(i));
                 Tests test = new Tests();
                 test.setId(json.getString(Constants.ID));
-                test.setName(json.getString(Constants.NAME));
-                test.setType(json.getString(Constants.TYPE));
-                test.setDescription(json.getString(Constants.DESCRIPTION));
+                test.setName(json.getString(Constants.TEST_NAME));
+                test.setType(json.getString(Constants.TEST_TYPE));
+                test.setDescription(json.getString(Constants.TEST_DESCRIPTION));
                 testsArrayList.add(test);
             }
 

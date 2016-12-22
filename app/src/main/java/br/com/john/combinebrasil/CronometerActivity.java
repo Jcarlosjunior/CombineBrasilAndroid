@@ -86,6 +86,7 @@ public class CronometerActivity extends AppCompatActivity {
         textShowQualify.setText("");
         textShowQualify.setVisibility(View.GONE);
 
+
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             String id = extras.getString("id_player");
@@ -201,6 +202,7 @@ public class CronometerActivity extends AppCompatActivity {
 
     private void showRating(){
         linearRating.setVisibility(View.VISIBLE);
+        btnReady.setEnabled(false);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {

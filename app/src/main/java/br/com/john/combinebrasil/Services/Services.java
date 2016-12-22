@@ -186,4 +186,11 @@ public class Services {
         }
         return ret;
     }
+
+    public static boolean convertIntInBool(int value){
+        return (value == 1) ? true : false;
+    }
+    public  static int convertBoolInInt(boolean value){
+        return (value == true) ? 1 : 0;
+    }
 }

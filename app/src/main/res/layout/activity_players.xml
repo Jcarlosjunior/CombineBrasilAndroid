@@ -171,9 +171,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_white_normal"
+            android:background="@drawable/background_white_corner"
             android:orientation="vertical"
-            android:animateLayoutChanges="true">
+            android:animateLayoutChanges="true"
+            android:padding="2sp">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
