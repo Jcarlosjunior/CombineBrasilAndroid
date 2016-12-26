@@ -96,9 +96,6 @@ public class LoginActivity extends Activity {
                 post.execute(url);
 
 
-               // Connection task = new Connection(Constants.URL + Constants.login, Request.Method.POST, Constants.CALLED_LOGIN, false, this, loginData());
-                //Connection task = new Connection(url, Request.Method.GET, Constants.CALLED_GET_ATHLETES, false, this);
-               //task.callByJsonStringRequest();
             }
             else
                 Services.messageAlert(this,"Aviso", "Sem conexão com a internet","hide");
@@ -117,15 +114,11 @@ public class LoginActivity extends Activity {
         User user = des.getObjectsUser();
         DatabaseHelper db = new DatabaseHelper(LoginActivity.this);
         db.addUser(user);
-
-        SyncDatabase syncDatabase = new SyncDatabase();
-        syncDatabase.setActivity(LoginActivity.this);
-        SyncDatabase.athletesResponse(response);
-
+        linearProgress.setVisibility(View.GONE);
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(mainIntent);
         finish();
-        linearProgress.setVisibility(View.GONE);
+
         /*DeserializerJsonElements des = new DeserializerJsonElements(response);
         User user = new User();
 

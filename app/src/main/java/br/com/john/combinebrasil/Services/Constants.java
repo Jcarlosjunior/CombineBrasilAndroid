@@ -75,16 +75,6 @@ public class Constants {
     public static final String ATHLETES_CREATEDAT = "createdAt";
     public static final String ATHLETES_UPDATEAT = "updatedAt";
 
-    /*****************************RESULTS TABLE**********************************/
-    public static final String TABLE_RESULTS = "Result";
-    public static final String RESULT_ID = "Id";
-    public static final String RESULT_ID_SELECTIVE = "IdSelective";
-    public static final String RESULT_ID_TEST = "IdTest";
-    public static final String RESULT_ID_PLAYER = "IdPlayer";
-    public static final String RESULT_STATUS = "Status";
-    public static final String RESULT_FIRST_VALUE = "FirstValue";
-    public static final String RESULT_SECOND_VALUE = "SecondValue";
-
 
     /*****************************TESTS TABLE**********************************/
     public static final String TABLE_TEST = "Tests";
@@ -123,19 +113,15 @@ public class Constants {
     /***********************************SELECTIVES ATHLETES TABLE ******************/
     public static final String TABLE_SELECTIVEATHLETES = "SelectiveAthletes";
     public static final String SELECTIVEATHLETES_ID = "_id";
-    public static final String SELECTIVEATHLETES_ATHLETE = "athlete";
-    public static final String SELECTIVEATHLETES_SELECTIVE = "selective";
     public static final String SELECTIVEATHLETES_INSCRIPTIONNUMBER = "inscriptionNumber";
-    public static final String SELECTIVEATHLETES_PRESENCE = "presence";
 
     /****************************** TEAM TABLE***************************************/
 
-    public static final String TABLE_TEAM= "Team";
+    public static final String TABLE_TEAM= "team";
     public static final String TEAM_ID = "_id";
-    public static final String TEAM_TYPE = "Type";
-    public static final String TEAM_ATHLETE = "Athlete";
-    public static final String TEAM_VALUE = "Value";
-    public static final String TEAM_RATING = "Rating";
+    public static final String TEAM_NAME = "name";
+    public static final String TEAM_CITY = "city";
+    public static final String TEAM_MODALITY = "modality";
 
     /****************************** TEAM USERS TABLE***************************************/
 

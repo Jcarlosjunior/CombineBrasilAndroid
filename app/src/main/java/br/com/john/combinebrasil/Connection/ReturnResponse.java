@@ -44,9 +44,9 @@ public class ReturnResponse {
                     MainActivity.afterCalled(response, isList, activity, statuCode);
 
                 }else if (whoCalled.equals(Constants.CALLED_GET_ATHLETES)) {
-                    if(activity.getClass().getSimpleName().equals("LoginActivity"))
-                        LoginActivity.afterLogin(response, isList, activity, statuCode);
-                    else
+                    //if(activity.getClass().getSimpleName().equals("LoginActivity"))
+                      //  LoginActivity.afterLogin(response, isList, activity, statuCode);
+                    //else
                         SyncDatabase.athletesResponse(response);
                 }
                 else if (whoCalled.equals(Constants.CALLED_POST_ATHLETES)) {

@@ -13,11 +13,14 @@ import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import java.io.IOException;
+
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.AppSectionsPagerAdapter;
 import br.com.john.combinebrasil.Services.NavigationDrawer;
+import br.com.john.combinebrasil.Services.SyncDatabase;
 
 public class MainActivity extends AppCompatActivity {
     private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
@@ -88,6 +91,18 @@ public class MainActivity extends AppCompatActivity {
         if (mAppSectionsPagerAdapter != null) {
             for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
             }
+        }
+    }
+
+    public static void callSync(Activity act){
+        ((MainActivity)act).syncAll();
+    }
+    private void syncAll(){
+        try {
+            SyncDatabase syncDatabase = new SyncDatabase(MainActivity.this);
+            syncDatabase.initSyncDatabase();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

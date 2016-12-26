@@ -31,16 +31,15 @@ public class SyncDatabase {
     }
 
     public SyncDatabase(){}
+
     public SyncDatabase(Activity activity) throws IOException {
         this.activity = activity;
         //initSyncDatabase();
     }
 
-    private void initSyncDatabase() throws IOException {
-        if (Services.isOnline(activity)) {
-            DatabaseHelper db = new DatabaseHelper(activity);
-            db.createDataBase();
-            MainActivity.textProgress.setText("Sincronizando atletas");
+    public void initSyncDatabase() throws IOException {
+        if (Services.isOnline(this.activity)) {
+             //MainActivity.textProgress.setText("Sincronizando atletas");
             callFunc(Constants.URL + Constants.API_ATHLETES, Constants.CALLED_GET_ATHLETES, false);
         }
     }
