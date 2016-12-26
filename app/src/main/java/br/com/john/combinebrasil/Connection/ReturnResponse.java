@@ -37,18 +37,28 @@ public class ReturnResponse {
     public void goTo(String whoCalled, String response, boolean isList, Activity activity, int statuCode) {
         try {
             if (!response.equals(null) || response.length() <= 0) {
-                if (whoCalled.equals(Constants.CALLED_LOGIN)) {
+                if (whoCalled.equals(Constants.CALLED_LOGIN))
                     LoginActivity.afterLogin(response, isList, activity, statuCode);
-
-                } else if (whoCalled.equals(Constants.CALLED_GET_TESTS)) {
-                    MainActivity.afterCalled(response, isList, activity, statuCode);
-
-                }else if (whoCalled.equals(Constants.CALLED_GET_ATHLETES)) {
+                else if (whoCalled.equals(Constants.CALLED_GET_ATHLETES))
+                    SyncDatabase.athletesResponse(response);
                     //if(activity.getClass().getSimpleName().equals("LoginActivity"))
                       //  LoginActivity.afterLogin(response, isList, activity, statuCode);
                     //else
-                        SyncDatabase.athletesResponse(response);
-                }
+                else if (whoCalled.equals(Constants.CALLED_GET_POSITIONS))
+                    SyncDatabase.positionsResponse(response);
+                else if (whoCalled.equals(Constants.CALLED_GET_SELECTIVEATHLETES))
+                    SyncDatabase.selectiveAthletesResponse(response);
+                else if (whoCalled.equals(Constants.CALLED_GET_SELECTIVE))
+                    SyncDatabase.selectiveResponse(response);
+                else if (whoCalled.equals(Constants.CALLED_GET_TEAMUSERS))
+                    SyncDatabase.teamUsersResponse(response);
+                else if (whoCalled.equals(Constants.CALLED_GET_TEAM))
+                    SyncDatabase.teamResponse(response);
+                else if (whoCalled.equals(Constants.CALLED_GET_TESTTYPES))
+                    SyncDatabase.testTypesResponse(response);
+                else if (whoCalled.equals(Constants.CALLED_GET_TESTS))
+                    SyncDatabase.testResponse(response);
+
                 else if (whoCalled.equals(Constants.CALLED_POST_ATHLETES)) {
                     CreateAccountAthlete.returnPostAthlete(activity, response, statuCode);
                 }

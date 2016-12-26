@@ -92,12 +92,14 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
             }
         }
+        this.syncAll();
     }
 
     public static void callSync(Activity act){
         ((MainActivity)act).syncAll();
     }
     private void syncAll(){
+        linearProgress.setVisibility(View.VISIBLE);
         try {
             SyncDatabase syncDatabase = new SyncDatabase(MainActivity.this);
             syncDatabase.initSyncDatabase();
@@ -106,9 +108,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void afterCalled(String response, boolean isList, Activity activity, int statuCode) {
-        TestsFragment.ShowTests(response, isList);
+    public static void finishSync(Activity act){
+        ((MainActivity)act).finishSync();
     }
+    private void finishSync(){
+        linearProgress.setVisibility(View.GONE);
+        PlayersFragment.callInflateAthletes();
+        TestsFragment.callInflateTests();
+    }
+
+   /* public static void afterCalled(String response, boolean isList, Activity activity, int statuCode) {
+        TestsFragment.ShowTests(response, isList);
+    }*/
 
     /************************** CLICK LIST **********************************/
     public static void onClickItemList(Activity activity, int positionArray, String id){
@@ -123,8 +134,8 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, AthletesActivity.class);
         Tests test = TestsFragment.testsArrayList.get(position);
         i.putExtra("id_test", test.getId());
-        i.putExtra("name_test", test.getName());
-        i.putExtra("details_test", test.getDescription());
+        //i.putExtra("name_test", test.getName());
+        //i.putExtra("details_test", test.getDescription());
         startActivity(i);
     }
 

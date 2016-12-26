@@ -14,21 +14,39 @@ public class Constants {
 
     public static final String login = "api/login";
 
-    public static final String LOGIN_EMAIL = "email";
-    public static final String LOGIN_ISADMIN = "isAdmin";
-    public static final String LOGIN_CANWRITE = "canWrite";
-
-
-
     public static final String API_ATHLETES = "api/athletes";
     public static final String API_POSITIONS = "api/positions";
+    public static final String API_SELECTIVEATHLETES = "api/selectiveAthletes";
     public static final String API_TEAMS = "api/teams";
     public static final String API_TESTTYPES = "api/testTypes";
-    public static final String API_SELECTIVEATHLETES = "api/selectiveAthletes";
+
     public static final String API_SELECTIVES = "api/selectives";
     public static final String API_TEAMUSERS = "api/teamUsers";
     public static final String API_TESTS = "api/tests";
     public static final String API_USERS = "api/Users";
+
+      /*
+    **************************CHAMADAS DO VOLLEY***********************************
+    **/
+
+    public static final String CALLED_LOGIN = "calledLogin";
+    public static final String CALLED_GET_TESTS = "getTests";
+    public static final String CALLED_GET_ATHLETES= "calledGetAthletes";
+    public static final String CALLED_GET_POSITIONS= "getPositions";
+    public static final String CALLED_GET_SELECTIVEATHLETES= "getSelectiveAthletes";
+    public static final String CALLED_GET_SELECTIVE= "getSelective";
+    public static final String CALLED_GET_TEAMUSERS= "getTeamUsers";
+    public static final String CALLED_GET_TEAM= "getTeam";
+    public static final String CALLED_GET_TESTTYPES= "getTestTypes";
+
+    public static final String CALLED_POST_TESTS = "calledPostTests";
+
+    public static final String CALLED_POST_ATHLETES = "calledPostAthletes";
+
+
+    public static final String LOGIN_EMAIL = "email";
+    public static final String LOGIN_ISADMIN = "isAdmin";
+    public static final String LOGIN_CANWRITE = "canWrite";
 
 
     public static final String PATH_DEFAULT = new File(Environment.getExternalStorageDirectory(), File.separator+ "Android" +
@@ -50,15 +68,6 @@ public class Constants {
     public static final String TIMER_CHRONOMETER = "timer_chronometer",
             ID = "Id",
             LOGGED="Logged";
-    /*
-    **************************CHAMADAS DO VOLLEY***********************************
-    **/
-
-    public static final String CALLED_LOGIN = "calledLogin";
-    public static final String CALLED_GET_TESTS = "calledGetTests";
-    public static final String CALLED_POST_TESTS = "calledPostTests";
-    public static final String CALLED_GET_ATHLETES= "calledGetAthletes";
-    public static final String CALLED_POST_ATHLETES = "calledPostAthletes";
 
     /*
     ***************************DATABASES********************************************
@@ -75,30 +84,11 @@ public class Constants {
     public static final String ATHLETES_CREATEDAT = "createdAt";
     public static final String ATHLETES_UPDATEAT = "updatedAt";
 
-
-    /*****************************TESTS TABLE**********************************/
-    public static final String TABLE_TEST = "Tests";
-    public static final String TEST_ID = "Id";
-    public static final String TEST_NAME = "Name";
-    public static final String TEST_TYPE = "Type";
-    public static final String TEST_DESCRIPTION = "Description";
-    public static final String TEST_ID_USER = "IdUser";
-    public static final String TEST_ID_SELECTIVE = "IdSelective";
-    public static final String TEST_CODE = "Code";
-
-    /*****************************TYPES TABLE**********************************/
-    public static final String  TABLE_TYPE = "type";
-    public static final String  TYPE_ID = "Id";
-    public static final String  TYPE_NAME = "Name";
-    public static final String  TYPE_DESCRIPTION = "Description";
-
     /*******************************USER TABLE ***********************************/
     public static final String TABLE_USER = "User";
     public static final String USER_ID = "_id";
     public static final String USER_NAME = "name";
-    public static final String USER_PASSWORD = "password";
     public static final String USER_EMAIL = "email";
-    public static final String USER_SALT = "salt";
     public static final String USER_ISADMIN = "isAdmin";
     public static final String USER_CANWRITE = "canWrite";
     public static final String USER_TOKEN = "token";
@@ -113,7 +103,17 @@ public class Constants {
     /***********************************SELECTIVES ATHLETES TABLE ******************/
     public static final String TABLE_SELECTIVEATHLETES = "SelectiveAthletes";
     public static final String SELECTIVEATHLETES_ID = "_id";
+    public static final String SELECTIVEATHLETES_ATHLETE = "athlete";
+    public static final String SELECTIVEATHLETES_SELECTIVE = "selective";
+    public static final String SELECTIVEATHLETES_PRESENCE = "presence";
     public static final String SELECTIVEATHLETES_INSCRIPTIONNUMBER = "inscriptionNumber";
+
+    /***********************************SELECTIVES ATHLETES TABLE ******************/
+    public static final String TABLE_SELECTIVES = "Selectives";
+    public static final String SELECTIVES_ID = "_id";
+    public static final String SELECTIVES_TITLE = "title";
+    public static final String SELECTIVES_TEAM = "team";
+    public static final String SELECTIVES_DATE = "date";
 
     /****************************** TEAM TABLE***************************************/
 
@@ -127,15 +127,23 @@ public class Constants {
 
     public static final String TABLE_TEAMUSERS = "TeamUsers";
     public static final String TEAMUSERS_ID = "_id";
-    public static final String TEAMUSERS_USER = "User";
-    public static final String TEAMUSERS_TEAM = "Team";
+    public static final String TEAMUSERS_USER = "user";
+    public static final String TEAMUSERS_TEAM = "team";
 
     /****************************** TEAM TYPES TABLE***************************************/
 
     public static final String TABLE_TESTTYPES = "TestTypes";
     public static final String TESTTYPES_ID = "_id";
-    public static final String TESTTYPES_NAME = "Name";
-    public static final String TESTTYPES_DESCRIPTION = "Description";
+    public static final String TESTTYPES_NAME = "name";
     public static final String TESTTYPES_ATTEMPTSLIMIT = "attemptsLimit";
     public static final String TESTTYPES_VISIBLETOREPORT = "visibleToReport";
+
+    /************************************TESTS*******************************************/
+    public static final String TABLE_TESTS = "Tests";
+    public static final String TESTS_ID = "_id";
+    public static final String TESTS_TYPE = "type";
+    public static final String TESTS_ATHLETE = "athlete";
+    public static final String TESTS_VALUE = "value";
+    public static final String TESTS_RATING = "rating";
+
 }

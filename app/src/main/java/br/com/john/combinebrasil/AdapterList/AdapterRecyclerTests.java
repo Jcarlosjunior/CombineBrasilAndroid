@@ -94,8 +94,8 @@ public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTe
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.txtHeader.setText(list.get(position).getName());
-        holder.txtFooter.setText(list.get(position).getDescription());
+        //holder.txtHeader.setText(list.get(position).getName());
+        //holder.txtFooter.setText(list.get(position).getDescription());
 
         holder.listItem.setOnClickListener(new OnClickListener() {
             @Override

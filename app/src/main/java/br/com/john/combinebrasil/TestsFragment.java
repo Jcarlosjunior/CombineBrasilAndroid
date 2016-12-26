@@ -29,6 +29,7 @@ import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
+import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Services;
 import br.com.john.combinebrasil.Services.SyncDatabase;
 
@@ -141,13 +142,26 @@ public class TestsFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if(Constants.debug)
+        /*if(Constants.debug)
             callAllFalseTests();
-        else
-            callAllTests();
+        else*/
+        callInflateTests();
     }
 
-    private void callAllFalseTests(){
+    public static void callInflateTests(){
+        DatabaseHelper db = new DatabaseHelper(AllActivities.mainActivity);
+        db.openDataBase();
+        testsArrayList = db.getTests();
+        if(!(testsArrayList == null || testsArrayList.size()==0)){
+            String[] values = new String[testsArrayList.size()];
+            for(int i=0; i <=testsArrayList.size()-1; i++){
+                values[i] = testsArrayList.get(i).getId();
+            }
+            inflateRecyclerView(testsArrayList, values);
+        }
+    }
+
+    /*private void callAllFalseTests(){
         testsArrayList = new ArrayList<Tests>();
         String[] values = new String[6];
         for(int i=0; i<=5; i++){
@@ -160,9 +174,9 @@ public class TestsFragment extends Fragment {
             values[i]="Teste "+i;
         }
         inflateRecyclerView(testsArrayList, values);
-    }
+    }*/
 
-    private void callAllTests() {
+   /* private void callAllTests() {
         if (Services.isOnline(AllActivities.mainActivity)) {
             MainActivity.linearProgress.setVisibility(View.VISIBLE);
             String url = Constants.URL + Constants.login;
@@ -171,7 +185,7 @@ public class TestsFragment extends Fragment {
         }
         else
             Services.messageAlert(AllActivities.mainActivity, "Aviso", "Sem conexão com a internet", "");
-    }
+    }*/
 
     private static void inflateRecyclerView(ArrayList<Tests> testsArrayList, String[] values){
         AdapterRecyclerTests adapterTests = new AdapterRecyclerTests(AllActivities.mainActivity,testsArrayList, values);
@@ -182,7 +196,7 @@ public class TestsFragment extends Fragment {
         mRecyclerView.setAdapter(adapterTests);
     }
 
-    public static void ShowTests(String response, boolean isList){
+    /*public static void ShowTests(String response, boolean isList){
         MainActivity.linearProgress.setVisibility(View.GONE);
         DeserializerJsonElements des = new DeserializerJsonElements(response);
         Tests tests;
@@ -201,7 +215,7 @@ public class TestsFragment extends Fragment {
         if (!response.equals("")) {
             //Guarda em memória do cel
         }
-    }
+    }*/
 
 
 

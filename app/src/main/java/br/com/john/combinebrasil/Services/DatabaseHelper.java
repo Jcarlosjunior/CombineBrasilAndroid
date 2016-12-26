@@ -1,5 +1,6 @@
 package br.com.john.combinebrasil.Services;
 
+import android.app.Service;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,7 +18,13 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.Positions;
 import br.com.john.combinebrasil.Classes.Results;
+import br.com.john.combinebrasil.Classes.Selective;
+import br.com.john.combinebrasil.Classes.SelectiveAthletes;
+import br.com.john.combinebrasil.Classes.Team;
+import br.com.john.combinebrasil.Classes.TeamUsers;
+import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Classes.User;
 
@@ -161,43 +168,133 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addResults(ArrayList<Results> listResults) {
+    public void addPositions(ArrayList<Positions> positions) {
         long ret = 0;
         try{
-            for (Results obj : listResults) {
+            for (Positions obj : positions) {
                 SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
-                values.put(Constants.RESULT_ID, obj.getId());
-                values.put(Constants.RESULT_ID_PLAYER, obj.getIdPlayer());
-                values.put(Constants.RESULT_ID_SELECTIVE, obj.getIdSelective());
-                values.put(Constants.RESULT_ID_TEST, obj.getIdTest());
-                values.put(Constants.RESULT_FIRST_VALUE, obj.getFirstValue());
-                values.put(Constants.RESULT_SECOND_VALUE, obj.getSecondValue());
+                values.put(Constants.POSITIONS_ID, obj.getID());
+                values.put(Constants.POSITIONS_NAME, obj.getNAME());
+                values.put(Constants.POSITIONS_DESCRIPTIONS, obj.getDESCRIPTION());
 
-                ret = db.insert(Constants.TABLE_RESULTS, null, values);
+                ret = db.insert(Constants.TABLE_POSITIONS, null, values);
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
         }
     }
 
-    public void addTests(ArrayList<Tests> listTests) {
+    public void addSelectivesAthletes(ArrayList<SelectiveAthletes> selectiveAthletes) {
         long ret = 0;
         try{
-            for (Tests obj : listTests) {
+            for (SelectiveAthletes obj : selectiveAthletes) {
                 SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
-                values.put(Constants.TEST_ID, obj.getId());
-                values.put(Constants.TEST_NAME, obj.getName());
-                values.put(Constants.TEST_DESCRIPTION, obj.getDescription());
-                values.put(Constants.TEST_CODE, obj.getCode());
-                values.put(Constants.TEST_TYPE, obj.getType());
-                values.put(Constants.TEST_ID_SELECTIVE, obj.getIdSelective());
-                values.put(Constants.TEST_ID_USER, obj.getIdUser());
+                values.put(Constants.SELECTIVEATHLETES_ID, obj.getId());
+                values.put(Constants.SELECTIVEATHLETES_ATHLETE, obj.getAthlete());
+                values.put(Constants.SELECTIVEATHLETES_SELECTIVE, obj.getSelective());
+                values.put(Constants.SELECTIVEATHLETES_PRESENCE, Services.convertBoolInInt(obj.getPresence()));
+                values.put(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER, obj.getInscriptionNumber());
 
-                ret = db.insert(Constants.TABLE_TEST, null, values);
+                ret = db.insert(Constants.TABLE_SELECTIVEATHLETES, null, values);
+            }
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
+
+    public void addSelectives(ArrayList<Selective> selectives) {
+        long ret = 0;
+        try{
+            for (Selective obj : selectives) {
+                SQLiteDatabase db = getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(Constants.SELECTIVES_ID, obj.getId());
+                values.put(Constants.SELECTIVES_TITLE, obj.getTitle());
+                values.put(Constants.SELECTIVES_TEAM, obj.getTeam());
+                values.put(Constants.SELECTIVES_DATE, obj.getDate());
+
+                ret = db.insert(Constants.TABLE_SELECTIVES, null, values);
+            }
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
+
+    public void addTeamUsers(ArrayList<TeamUsers> teamUserses) {
+        long ret = 0;
+        try{
+            for (TeamUsers obj : teamUserses) {
+                SQLiteDatabase db = getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(Constants.TEAMUSERS_ID, obj.getId());
+                values.put(Constants.TEAMUSERS_USER, obj.getUser());
+                values.put(Constants.TEAMUSERS_TEAM, obj.getTeam());
+
+                ret = db.insert(Constants.TABLE_TEAMUSERS, null, values);
+            }
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
+
+    public void addTeam(ArrayList<Team> teams) {
+        long ret = 0;
+        try{
+            for (Team obj : teams) {
+                SQLiteDatabase db = getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(Constants.TEAM_ID, obj.getId());
+                values.put(Constants.TEAM_NAME, obj.getName());
+                values.put(Constants.TEAM_CITY, obj.getCity());
+                values.put(Constants.TEAM_MODALITY, obj.getModality());
+
+                ret = db.insert(Constants.TABLE_TEAM, null, values);
+            }
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
+
+    public void addTestTypes(ArrayList<TestTypes> testTypes) {
+        long ret = 0;
+        try{
+            for (TestTypes obj : testTypes) {
+                SQLiteDatabase db = getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(Constants.TESTTYPES_ID, obj.getId());
+                values.put(Constants.TESTTYPES_NAME, obj.getName());
+                values.put(Constants.TESTTYPES_ATTEMPTSLIMIT, obj.getAttemptsLimit());
+                values.put(Constants.TESTTYPES_VISIBLETOREPORT, obj.getVisibleToReport());
+
+                ret = db.insert(Constants.TABLE_TESTTYPES, null, values);
+            }
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
+
+    public void addTests(ArrayList<Tests> tests) {
+        long ret = 0;
+        try{
+            for (Tests obj : tests) {
+                SQLiteDatabase db = getWritableDatabase();
+                ContentValues values = new ContentValues();
+
+                values.put(Constants.TESTS_ID, obj.getId());
+                values.put(Constants.TESTS_TYPE, obj.getType());
+                values.put(Constants.TESTS_ATHLETE, obj.getAthlete());
+                values.put(Constants.TESTS_VALUE, obj.getValue());
+                values.put(Constants.TESTS_RATING, obj.getRating());
+
+                ret = db.insert(Constants.TABLE_TESTS, null, values);
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -288,46 +385,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return itens;
     }
 
-    public ArrayList<Results> getResults() {
-        this.openDataBase();
-        SQLiteDatabase db = getWritableDatabase();
-
-        String selectQuery = "SELECT * FROM " + Constants.TABLE_RESULTS;
-        Cursor c = db.rawQuery(selectQuery, null);
-
-        ArrayList<Results> itens = new ArrayList<Results>();
-
-        if (c.getCount()>0) {
-            c.moveToFirst();
-            do {
-                Results obj = new Results(
-                        c.getString(c.getColumnIndex(Constants.RESULT_ID)),
-                        c.getString(c.getColumnIndex(Constants.RESULT_ID_SELECTIVE)),
-                        c.getString(c.getColumnIndex(Constants.RESULT_ID_TEST)),
-                        c.getString(c.getColumnIndex(Constants.RESULT_ID_PLAYER)),
-                        c.getString(c.getColumnIndex(Constants.RESULT_STATUS)),
-                        c.getString(c.getColumnIndex(Constants.RESULT_FIRST_VALUE)),
-                        c.getString(c.getColumnIndex(Constants.RESULT_SECOND_VALUE))
-                );
-
-                itens.add(obj);
-            } while (c.moveToNext());
-
-        } else {
-            itens = null;
-        }
-        c.close();
-        db.close();
-
-        return itens;
-    }
-
     public ArrayList<Tests> getTests() {
         this.openDataBase();
 
         SQLiteDatabase db = getWritableDatabase();
 
-        String selectQuery = "SELECT * FROM " + Constants.TABLE_TEST;
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_TESTS;
         Cursor c = db.rawQuery(selectQuery, null);
 
         ArrayList<Tests> itens = new ArrayList<Tests>();
@@ -336,13 +399,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             c.moveToFirst();
             do {
                 Tests obj = new Tests(
-                        c.getString(c.getColumnIndex(Constants.TEST_ID)),
-                        c.getString(c.getColumnIndex(Constants.TEST_NAME)),
-                        c.getString(c.getColumnIndex(Constants.TEST_TYPE)),
-                        c.getString(c.getColumnIndex(Constants.TEST_DESCRIPTION)),
-                        c.getString(c.getColumnIndex(Constants.TEST_ID_USER)),
-                        c.getString(c.getColumnIndex(Constants.TEST_ID_SELECTIVE)),
-                        c.getString(c.getColumnIndex(Constants.TEST_CODE))
+                        c.getString(c.getColumnIndex(Constants.TESTS_ID)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_TYPE)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_ATHLETE)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_VALUE)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_RATING))
                 );
 
                 itens.add(obj);
@@ -439,7 +500,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return user;
     }
-
 
     /******************************** SEARCHS************************************************/
 

@@ -41,7 +41,7 @@ public class PlayersFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    ListView listViewPlayers;
+    static ListView listViewPlayers;
 
     public static ArrayList<Athletes> playersArrayList;
 
@@ -90,7 +90,7 @@ public class PlayersFragment extends Fragment {
 
     }
 
-    private void callInflateAthletes(){
+    public static void callInflateAthletes(){
         DatabaseHelper db = new DatabaseHelper(AllActivities.mainActivity);
         db.openDataBase();
         playersArrayList = db.getAthletes();
@@ -102,7 +102,7 @@ public class PlayersFragment extends Fragment {
             inflateRecyclerView(playersArrayList, values);
         }
     }
-    private void inflateRecyclerView(ArrayList<Athletes> testsArrayList, String[] values){
+    private static void inflateRecyclerView(ArrayList<Athletes> testsArrayList, String[] values){
         AdapterListAthletes adapterTests = new AdapterListAthletes(AllActivities.mainActivity, values, testsArrayList);
         adapterTests.setActivity(AllActivities.mainActivity);
         listViewPlayers.setVisibility(View.VISIBLE);

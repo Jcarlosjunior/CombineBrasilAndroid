@@ -5,80 +5,59 @@ package br.com.john.combinebrasil.Classes;
  */
 
 public class Tests {
-    String id;
-    String name;
-    String type;
-    String description;
-    String idUser;
-    String idSelective;
-    String code;
+  private String Id;
+    private String Type;
+    private String Athlete;
+    private String Value;
+    private String Rating;
 
-    public Tests(){
-    }
+    public Tests(){}
 
-    public Tests(String id, String name, String type, String description, String idUser, String idSelective, String code) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.description = description;
-        this. idUser = idUser;
-        this.idSelective = idSelective;
-        this.code = code;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getIdSelective() {
-        return idSelective;
-    }
-
-    public void setIdSelective(String idSelective) {
-        this.idSelective = idSelective;
-    }
-
-    public String getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
+    public Tests(String id, String type, String athlete, String value, String rating) {
+        Id = id;
+        Type = type;
+        Athlete = athlete;
+        Value = value;
+        Rating = rating;
     }
 
     public String getId() {
-        return id;
+        return Id;
     }
 
     public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        Id = id;
     }
 
     public String getType() {
-        return type;
+        return Type;
     }
 
     public void setType(String type) {
-        this.type = type;
+        Type = type;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAthlete() {
+        return Athlete;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAthlete(String athlete) {
+        Athlete = athlete;
+    }
+
+    public String getValue() {
+        return Value;
+    }
+
+    public void setValue(String value) {
+        Value = value;
+    }
+
+    public String getRating() {
+        return Rating;
+    }
+
+    public void setRating(String rating) {
+        Rating = rating;
     }
 }
