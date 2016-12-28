@@ -96,15 +96,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // creating required tables
     }
 
-    public boolean checkDataBase() {
+    private boolean checkDataBase() {
         SQLiteDatabase checkDB = null;
         try {
-            checkDB = SQLiteDatabase.openDatabase(DB_NAME, null,
-                    SQLiteDatabase.OPEN_READONLY);
-            checkDB.close();
+            String myPath = DB_PATH + DB_NAME;
+            checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
         } catch (SQLiteException e) {
-            // database doesn't exist yet.
         }
+
+        if (checkDB != null)
+            myDataBase = checkDB;
+
         return checkDB != null ? true : false;
     }
 
@@ -147,9 +149,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addAthletes(ArrayList<Athletes> listAthletes) {
         long ret = 0;
+        this.openDataBase();
         try{
             for (Athletes obj : listAthletes) {
-                SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
                 values.put(Constants.ATHLETES_ID, obj.getId());
@@ -161,7 +163,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.ATHLETES_CREATEDAT, obj.getCreatedAt());
                 values.put(Constants.ATHLETES_UPDATEAT, obj.getUpdateAt());
 
-                ret = db.insert(Constants.TABLE_ATHLETES, null, values);
+                ret = myDataBase.insert(Constants.TABLE_ATHLETES, null, values);
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -170,16 +172,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addPositions(ArrayList<Positions> positions) {
         long ret = 0;
+        this.openDataBase();
         try{
             for (Positions obj : positions) {
-                SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
                 values.put(Constants.POSITIONS_ID, obj.getID());
                 values.put(Constants.POSITIONS_NAME, obj.getNAME());
                 values.put(Constants.POSITIONS_DESCRIPTIONS, obj.getDESCRIPTION());
 
-                ret = db.insert(Constants.TABLE_POSITIONS, null, values);
+                ret = myDataBase.insert(Constants.TABLE_POSITIONS, null, values);
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -188,9 +190,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addSelectivesAthletes(ArrayList<SelectiveAthletes> selectiveAthletes) {
         long ret = 0;
+        this.openDataBase();
         try{
             for (SelectiveAthletes obj : selectiveAthletes) {
-                SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
                 values.put(Constants.SELECTIVEATHLETES_ID, obj.getId());
@@ -199,7 +201,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.SELECTIVEATHLETES_PRESENCE, Services.convertBoolInInt(obj.getPresence()));
                 values.put(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER, obj.getInscriptionNumber());
 
-                ret = db.insert(Constants.TABLE_SELECTIVEATHLETES, null, values);
+                ret = myDataBase.insert(Constants.TABLE_SELECTIVEATHLETES, null, values);
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -208,9 +210,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addSelectives(ArrayList<Selective> selectives) {
         long ret = 0;
+        this.openDataBase();
         try{
             for (Selective obj : selectives) {
-                SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
                 values.put(Constants.SELECTIVES_ID, obj.getId());
@@ -218,7 +220,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.SELECTIVES_TEAM, obj.getTeam());
                 values.put(Constants.SELECTIVES_DATE, obj.getDate());
 
-                ret = db.insert(Constants.TABLE_SELECTIVES, null, values);
+                ret = myDataBase.insert(Constants.TABLE_SELECTIVES, null, values);
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -227,16 +229,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addTeamUsers(ArrayList<TeamUsers> teamUserses) {
         long ret = 0;
+        this.openDataBase();
         try{
             for (TeamUsers obj : teamUserses) {
-                SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
                 values.put(Constants.TEAMUSERS_ID, obj.getId());
                 values.put(Constants.TEAMUSERS_USER, obj.getUser());
                 values.put(Constants.TEAMUSERS_TEAM, obj.getTeam());
 
-                ret = db.insert(Constants.TABLE_TEAMUSERS, null, values);
+                ret = myDataBase.insert(Constants.TABLE_TEAMUSERS, null, values);
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -245,17 +247,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addTeam(ArrayList<Team> teams) {
         long ret = 0;
+        this.openDataBase();
         try{
             for (Team obj : teams) {
-                SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
                 values.put(Constants.TEAM_ID, obj.getId());
                 values.put(Constants.TEAM_NAME, obj.getName());
                 values.put(Constants.TEAM_CITY, obj.getCity());
-                values.put(Constants.TEAM_MODALITY, obj.getModality());
+                values.put(Constants.TEAM_MODALITY, "");
 
-                ret = db.insert(Constants.TABLE_TEAM, null, values);
+                ret = myDataBase.insert(Constants.TABLE_TEAM, null, values);
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -264,17 +266,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addTestTypes(ArrayList<TestTypes> testTypes) {
         long ret = 0;
+        this.openDataBase();
         try{
             for (TestTypes obj : testTypes) {
-                SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
                 values.put(Constants.TESTTYPES_ID, obj.getId());
                 values.put(Constants.TESTTYPES_NAME, obj.getName());
                 values.put(Constants.TESTTYPES_ATTEMPTSLIMIT, obj.getAttemptsLimit());
-                values.put(Constants.TESTTYPES_VISIBLETOREPORT, obj.getVisibleToReport());
+                values.put(Constants.TESTTYPES_VISIBLETOREPORT, Services.convertBoolInInt(obj.getVisibleToReport()));
 
-                ret = db.insert(Constants.TABLE_TESTTYPES, null, values);
+                ret = myDataBase.insert(Constants.TABLE_TESTTYPES, null, values);
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -283,9 +285,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addTests(ArrayList<Tests> tests) {
         long ret = 0;
+        this.openDataBase();
         try{
             for (Tests obj : tests) {
-                SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
                 values.put(Constants.TESTS_ID, obj.getId());
@@ -294,8 +296,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTS_VALUE, obj.getValue());
                 values.put(Constants.TESTS_RATING, obj.getRating());
 
-                ret = db.insert(Constants.TABLE_TESTS, null, values);
+                ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
             }
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
+
+    public void addTest(Tests test) {
+        long ret = 0;
+        this.openDataBase();
+        try{
+                ContentValues values = new ContentValues();
+
+                values.put(Constants.TESTS_ID, test.getId());
+                values.put(Constants.TESTS_TYPE, test.getType());
+                values.put(Constants.TESTS_ATHLETE, test.getAthlete());
+                values.put(Constants.TESTS_VALUE, test.getValue());
+                values.put(Constants.TESTS_RATING, test.getRating());
+
+                ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
+
         }catch (Exception e){
             Log.i("Error", e.getMessage());
         }
@@ -303,8 +324,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addUser(User user) {
         long ret = 0;
+        this.openDataBase();
         try{
-                SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
                 values.put(Constants.USER_ID, user.getId());
@@ -314,7 +335,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.USER_CANWRITE, Services.convertBoolInInt(user.getCanWrite()));
                 values.put(Constants.USER_TOKEN, user.getToken());
 
-                ret = db.insert(Constants.TABLE_USER, null, values);
+                ret = myDataBase.insert(Constants.TABLE_USER, null, values);
         }catch (Exception e){
             Log.i("Error", e.getMessage());
         }
@@ -322,9 +343,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void addUsers(ArrayList<User> listUser) {
         long ret = 0;
+        this.openDataBase();
         try{
             for (User obj : listUser) {
-                SQLiteDatabase db = getWritableDatabase();
                 ContentValues values = new ContentValues();
 
                 values.put(Constants.USER_ID, obj.getId());
@@ -334,7 +355,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.USER_CANWRITE, Services.convertBoolInInt(obj.getCanWrite()));
                 values.put(Constants.USER_TOKEN, obj.getToken());
 
-                ret = db.insert(Constants.TABLE_USER, null, values);
+                ret = myDataBase.insert(Constants.TABLE_USER, null, values);
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -351,11 +372,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Athletes> getAthletes() {
         this.openDataBase();
-        SQLiteDatabase db = getWritableDatabase();
         ArrayList<Athletes> itens = new ArrayList<Athletes>();
         try {
             String selectQuery = "SELECT * FROM " + Constants.TABLE_ATHLETES;
-            Cursor c = db.rawQuery(selectQuery, null);
+            Cursor c = myDataBase.rawQuery(selectQuery, null);
 
             if (c.getCount() > 0) {
                 c.moveToFirst();
@@ -378,7 +398,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 itens = null;
             }
             c.close();
-            db.close();
+            this.close();
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -388,10 +408,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Tests> getTests() {
         this.openDataBase();
 
-        SQLiteDatabase db = getWritableDatabase();
-
         String selectQuery = "SELECT * FROM " + Constants.TABLE_TESTS;
-        Cursor c = db.rawQuery(selectQuery, null);
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
 
         ArrayList<Tests> itens = new ArrayList<Tests>();
 
@@ -413,7 +431,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             itens = null;
         }
         c.close();
-        db.close();
+        this.close();
+
+        return itens;
+    }
+
+    public ArrayList<TestTypes> getTestsTypes() {
+        this.openDataBase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_TESTTYPES;
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+        ArrayList<TestTypes> itens = new ArrayList<TestTypes>();
+
+        if (c.getCount()>0) {
+            c.moveToFirst();
+            do {
+                TestTypes obj = new TestTypes(
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_ID)),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_NAME)),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_ATTEMPTSLIMIT)),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_VISIBLETOREPORT)))
+                );
+
+                itens.add(obj);
+            } while (c.moveToNext());
+
+        } else {
+            itens = null;
+        }
+        c.close();
+        this.close();
 
         return itens;
     }
@@ -479,6 +527,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         c.close();
         this.close();
         return athlete;
+    }
+
+    public TestTypes getTestTypeFromId(String id){
+        this.openDataBase();
+        String selectQuery = "SELECT DISTINCT * FROM "+ Constants.TABLE_TESTTYPES +
+                " WHERE "+Constants.TESTS_ID +" ='"+id+"'";
+
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+        TestTypes test;
+        try {
+            if (c.moveToFirst()) {
+                test = new TestTypes(
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_ID)),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_NAME)),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_ATTEMPTSLIMIT)),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_VISIBLETOREPORT)))
+                );
+            } else {
+                test = null;
+            }
+        }catch (Exception e){
+            test = null;
+        }
+        c.close();
+        this.close();
+        return test;
+    }
+
+    public Tests getTestFromAthleteAndType(String athlete, String type){
+        this.openDataBase();
+        String selectQuery = "SELECT DISTINCT * FROM "+ Constants.TABLE_TESTS +
+                " WHERE "+Constants.TESTS_ATHLETE +" ='"+athlete+"' AND "+Constants.TESTS_TYPE+" ='"+type+"'";
+
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+        Tests test;
+        try {
+            if (c.moveToFirst()) {
+                test = new Tests(
+                        c.getString(c.getColumnIndex(Constants.TESTS_ID)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_TYPE)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_ATHLETE)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_VALUE)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_RATING))
+                );
+            } else {
+                test = null;
+            }
+        }catch (Exception e){
+            test = null;
+        }
+        c.close();
+        this.close();
+        return test;
     }
 
     public User checkExistsUser(String userName, String password) {

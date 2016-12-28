@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerTests;
+import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
@@ -54,7 +55,7 @@ public class TestsFragment extends Fragment {
 
     public static RecyclerView mRecyclerView;
     public LinearLayoutManager mLayoutManager;
-    public static ArrayList<Tests> testsArrayList;
+    public static ArrayList<TestTypes> testsArrayList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -151,7 +152,7 @@ public class TestsFragment extends Fragment {
     public static void callInflateTests(){
         DatabaseHelper db = new DatabaseHelper(AllActivities.mainActivity);
         db.openDataBase();
-        testsArrayList = db.getTests();
+        testsArrayList = db.getTestsTypes();
         if(!(testsArrayList == null || testsArrayList.size()==0)){
             String[] values = new String[testsArrayList.size()];
             for(int i=0; i <=testsArrayList.size()-1; i++){
@@ -187,7 +188,7 @@ public class TestsFragment extends Fragment {
             Services.messageAlert(AllActivities.mainActivity, "Aviso", "Sem conexão com a internet", "");
     }*/
 
-    private static void inflateRecyclerView(ArrayList<Tests> testsArrayList, String[] values){
+    private static void inflateRecyclerView(ArrayList<TestTypes> testsArrayList, String[] values){
         AdapterRecyclerTests adapterTests = new AdapterRecyclerTests(AllActivities.mainActivity,testsArrayList, values);
         adapterTests.setHomeActivity(AllActivities.mainActivity);
         MainActivity.linearProgress.setVisibility(View.GONE);

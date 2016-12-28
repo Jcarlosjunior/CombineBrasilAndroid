@@ -16,6 +16,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import java.io.IOException;
 
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.AppSectionsPagerAdapter;
@@ -123,19 +124,18 @@ public class MainActivity extends AppCompatActivity {
 
     /************************** CLICK LIST **********************************/
     public static void onClickItemList(Activity activity, int positionArray, String id){
-        ((MainActivity)activity).validaClick(positionArray);
+        ((MainActivity)activity).validaClick(positionArray, id);
     }
 
-    public void validaClick(int position){
-        if(position==2 || position ==0)
+    public void validaClick(int position, String id){
+        if(position == 0)
             AllActivities.type="corrida";
         else
             AllActivities.type="";
         Intent i = new Intent(MainActivity.this, AthletesActivity.class);
-        Tests test = TestsFragment.testsArrayList.get(position);
+        TestTypes test = TestsFragment.testsArrayList.get(position);
+        AllActivities.testSelected = id;
         i.putExtra("id_test", test.getId());
-        //i.putExtra("name_test", test.getName());
-        //i.putExtra("details_test", test.getDescription());
         startActivity(i);
     }
 

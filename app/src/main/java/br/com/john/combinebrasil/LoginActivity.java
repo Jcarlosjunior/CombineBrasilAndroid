@@ -113,6 +113,7 @@ public class LoginActivity extends Activity {
         DeserializerJsonElements des = new DeserializerJsonElements(response);
         User user = des.getObjectsUser();
         DatabaseHelper db = new DatabaseHelper(LoginActivity.this);
+        db.openDataBase();
         db.addUser(user);
         linearProgress.setVisibility(View.GONE);
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);

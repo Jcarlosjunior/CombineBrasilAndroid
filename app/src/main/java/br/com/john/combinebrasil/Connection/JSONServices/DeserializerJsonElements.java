@@ -114,7 +114,7 @@ public class DeserializerJsonElements {
                     JSONObject json = new JSONObject(jsonArray.getString(i));
                     Positions obj = new Positions(json.getString(Constants.POSITIONS_ID),
                             json.getString(Constants.POSITIONS_NAME),
-                            json.getString(Constants.POSITIONS_DESCRIPTIONS));
+                           "");
 
                     positions.add(obj);
                 }
@@ -216,8 +216,7 @@ public class DeserializerJsonElements {
                     Team obj = new Team(
                             json.getString(Constants.TEAM_ID),
                             json.getString(Constants.TEAM_NAME),
-                            json.getString(Constants.TEAM_CITY),
-                            json.getString(Constants.TEAM_MODALITY)
+                            json.getString(Constants.TEAM_CITY), ""
                     );
 
                     teams.add(obj);
@@ -225,7 +224,7 @@ public class DeserializerJsonElements {
             }
         }catch (JSONException e){
             teams  = null;
-            Log.i("ERROR: getPositions", e.getMessage());
+            Log.i("ERROR: getTeam", e.getMessage());
         }
         return teams;
     }
@@ -243,7 +242,7 @@ public class DeserializerJsonElements {
                             json.getString(Constants.TESTTYPES_ID),
                             json.getString(Constants.TESTTYPES_NAME),
                             json.getString(Constants.TESTTYPES_ATTEMPTSLIMIT),
-                            json.getString(Constants.TESTTYPES_VISIBLETOREPORT)
+                            json.getBoolean(Constants.TESTTYPES_VISIBLETOREPORT)
                     );
 
                     teams.add(obj);

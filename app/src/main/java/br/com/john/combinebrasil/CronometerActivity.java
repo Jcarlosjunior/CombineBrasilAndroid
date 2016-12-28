@@ -9,6 +9,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,7 +24,11 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.UUID;
+
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.CountDownTimer;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.MessageOptions;
@@ -35,7 +41,8 @@ public class CronometerActivity extends AppCompatActivity {
     ImageView imgIconButtonPlay, imgReset, imgPause, imgSave;
     Button btnSave, btnReady;
     RatingBar ratingBar;
-    private float ratingChosse=0f;
+    private float ratingValue;
+    String idAthlete = "";
 
     private final CountDownTimer countDownTimer = new CountDownTimer();
     private boolean init = false, firstValueSave = false, secondValueSalve = false, isPause=false;
@@ -77,11 +84,7 @@ public class CronometerActivity extends AppCompatActivity {
         ratingBar = (RatingBar) findViewById(R.id.rating_cronometer);
 
         countDownTimer.setTextView(textCronometer);
-        btnSave.setOnClickListener(clickedSave);
-        imgPause.setOnClickListener(clickedPause);
-        imgReset.setOnClickListener(clickedReset);
-        imgSave.setOnClickListener(clickedSaveTime);
-        linearButtonPlay.setOnClickListener(clickedPlayAndStop);
+
 
         textShowQualify.setText("");
         textShowQualify.setVisibility(View.GONE);
@@ -89,11 +92,36 @@ public class CronometerActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
-            String id = extras.getString("id_player");
+            idAthlete = extras.getString("id_player");
+            verifyTest();
             DatabaseHelper db  = new DatabaseHelper(CronometerActivity.this);
             db.openDataBase();
-            Athletes athlete = db.getAthleteById(id);
+            Athletes athlete = db.getAthleteById(idAthlete);
             textNamePlayer.setText(athlete.getName());
+        }
+    }
+
+    private void verifyTest(){
+        DatabaseHelper db = new DatabaseHelper(CronometerActivity.this);
+        db.openDataBase();
+        Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
+        if(test != null){
+            String firstValue = test.getValue().substring(0, 5);
+            String secondValue = test.getValue().substring(6, test.getValue().length());
+
+            textFirstResult.setText(firstValue);
+            textSecondValue.setText(secondValue);
+
+            btnSave.setVisibility(View.INVISIBLE);
+            btnReady.setVisibility(View.GONE);
+        }
+        else{
+            btnSave.setOnClickListener(clickedSave);
+            imgPause.setOnClickListener(clickedPause);
+            imgReset.setOnClickListener(clickedReset);
+            imgSave.setOnClickListener(clickedSaveTime);
+            linearButtonPlay.setOnClickListener(clickedPlayAndStop);
+
         }
     }
 
@@ -225,11 +253,26 @@ public class CronometerActivity extends AppCompatActivity {
                 Toast.makeText(CronometerActivity.this,
                         String.valueOf(Services.verifyQualification(ratingBar.getRating())),
                         Toast.LENGTH_SHORT).show();
-                ratingChosse = ratingBar.getRating();
+                ratingValue = ratingBar.getRating();
+                saveTest();
                 linearRating.setVisibility(View.GONE);
                 Services.messageAlert(CronometerActivity.this, "Mensagem","Os resultados foram salvos!","DIALOGSAVECRONOMETER");
             }
         });
+    }
+
+    private void saveTest(){
+        DatabaseHelper db = new DatabaseHelper(CronometerActivity.this);
+        db.openDataBase();
+        String values = textFirstResult.getText().toString() + "|" + textSecondValue.getText().toString();
+        Tests test = new Tests(
+                UUID.randomUUID().toString(),
+                AllActivities.testSelected,
+                idAthlete,
+                values,
+                Services.verifyQualification(ratingValue));
+
+        db.addTest(test);
     }
 
     /*

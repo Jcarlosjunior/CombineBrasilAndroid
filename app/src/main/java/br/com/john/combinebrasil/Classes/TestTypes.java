@@ -8,11 +8,11 @@ public class TestTypes {
     private String Id;
     private String Name;
     private String AttemptsLimit;
-    private String VisibleToReport;
+    private boolean VisibleToReport;
 
     public TestTypes(){}
 
-    public TestTypes(String id, String name, String attemptsLimit, String visibleToReport) {
+    public TestTypes(String id, String name, String attemptsLimit, boolean visibleToReport) {
         Id = id;
         Name = name;
         AttemptsLimit = attemptsLimit;
@@ -43,11 +43,11 @@ public class TestTypes {
         AttemptsLimit = attemptsLimit;
     }
 
-    public String getVisibleToReport() {
+    public boolean getVisibleToReport() {
         return VisibleToReport;
     }
 
-    public void setVisibleToReport(String visibleToReport) {
+    public void setVisibleToReport(boolean visibleToReport) {
         VisibleToReport = visibleToReport;
     }
 }

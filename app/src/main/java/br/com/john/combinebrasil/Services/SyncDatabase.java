@@ -2,6 +2,7 @@ package br.com.john.combinebrasil.Services;
 
 import android.app.Activity;
 import android.database.SQLException;
+import android.util.Log;
 import android.view.View;
 
 import junit.framework.Test;
@@ -55,6 +56,7 @@ public class SyncDatabase {
 
     private static  void callFunc(String url, String methodName, boolean isPost) {
         int methodType = isPost ? 1 : 0;
+        Log.i("Sync DataBase", methodName + "\n\n "+url);
         Connection task = new Connection(url, methodType, methodName, false, activity);
         task.callByJsonStringRequest();
     }
@@ -114,7 +116,7 @@ public class SyncDatabase {
 
     public static void selectiveAthletesResponse(String response) {
         DeserializerJsonElements des = new DeserializerJsonElements(response);
-        ArrayList<SelectiveAthletes> positions = des.getSelectiveAthletes();
+        ArrayList<SelectiveAthletes> selectiveAthletes = des.getSelectiveAthletes();
         DatabaseHelper db = new DatabaseHelper(activity);
         try {
             db.createDataBase();
@@ -124,7 +126,7 @@ public class SyncDatabase {
         }
         try {
             db.openDataBase();
-            db.addSelectivesAthletes(positions);
+            db.addSelectivesAthletes(selectiveAthletes);
             db.close();
             //hideProgress(activity.getClass().getSimpleName());
             callFunc(Constants.URL + Constants.API_SELECTIVES, Constants.CALLED_GET_SELECTIVE,  false);

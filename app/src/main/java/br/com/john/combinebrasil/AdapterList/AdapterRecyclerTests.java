@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.R;
@@ -27,13 +28,13 @@ import br.com.john.combinebrasil.Services.Services;
 
 public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTests.ViewHolder> {
     private String[] values;
-    private ArrayList<Tests> list;
+    private ArrayList<TestTypes> list;
     private Context context;
     Activity homeActivity;
     private LayoutInflater inflater;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AdapterRecyclerTests(Context context, ArrayList<Tests> list, String[] values) {
+    public AdapterRecyclerTests(Context context, ArrayList<TestTypes> list, String[] values) {
         this.list = list;
         this.values = values;
         this.context = context;
@@ -44,15 +45,15 @@ public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTe
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView txtHeader;
-        public TextView txtFooter;
+        public TextView txtName;
+        public TextView txtDesc;
         public LinearLayout listItem;
         public ImageView imageIcon;
 
         public ViewHolder(View v) {
             super(v);
-            txtHeader = (TextView) v.findViewById(R.id.firstLine);
-            txtFooter = (TextView) v.findViewById(R.id.secondLine);
+            txtName = (TextView) v.findViewById(R.id.firstLine);
+            txtDesc = (TextView) v.findViewById(R.id.secondLine);
             imageIcon = (ImageView) v.findViewById(R.id.icon);
             listItem = (LinearLayout)v.findViewById(R.id.linear_list);
 
@@ -96,6 +97,8 @@ public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTe
     public void onBindViewHolder(ViewHolder holder, final int position) {
         //holder.txtHeader.setText(list.get(position).getName());
         //holder.txtFooter.setText(list.get(position).getDescription());
+
+        holder.txtName.setText(list.get(position).getName());
 
         holder.listItem.setOnClickListener(new OnClickListener() {
             @Override

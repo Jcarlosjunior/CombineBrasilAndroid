@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:id="@+id/linear_list"
     android:layout_height="wrap_content"
     android:background="@drawable/background_border"
@@ -18,15 +19,16 @@
         android:gravity="center"
         android:layout_marginRight= "6dp"
         android:padding="10dp"
-        android:src= "@drawable/creatina" />
+        android:src= "@drawable/logo_combine_small" />
 
     <TextView
         android:layout_marginLeft="10sp"
         android:layout_marginRight="10sp"
-        android:id= "@+id/secondLine"
+        android:id= "@+id/firstLine"
         android:layout_width= "match_parent"
         android:layout_height= "wrap_content"
-        android:text="Texto 1"
+        android:singleLine="false"
+        android:text=""
         android:background="@drawable/background_line_list"
         android:gravity="left"
         android:layout_toRightOf= "@id/icon"
@@ -37,10 +39,10 @@
 
     <TextView
         android:layout_marginLeft="10sp"
-        android:id= "@+id/firstLine"
+        android:id= "@+id/secondLine"
         android:layout_width= "match_parent"
         android:layout_height= "wrap_content"
-        android:text="Texto 1"
+        android:text=""
         android:layout_above= "@id/secondLine"
         android:layout_toRightOf= "@id/icon"
         android:textSize="13sp"

@@ -11,4 +11,5 @@ public class AllActivities {
     public static Activity detailsProcessActivity;
 
     public static String type;
+    public static String testSelected;
 }

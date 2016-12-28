@@ -36,12 +36,13 @@ public class AthletesActivity extends AppCompatActivity {
     Toolbar toolbar;
     ArrayList<Athletes> athletesArrayList;
     private static Context myContext;
-    private String nameTest="", detailsTest="";
+    //private String nameTest="", detailsTest="";
     private TextView textOptionName, textOptionCode;
     private EditText editSearch;
     private ImageView imgOrder;
     private Button btnCancel;
     private LinearLayout linearOrder, linearNotSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,13 +80,6 @@ public class AthletesActivity extends AppCompatActivity {
         linearOrder.setOnClickListener(hideOptionsOrder);
 
         myContext = AthletesActivity.this;
-        callInflateAthletes();
-
-        Bundle extras = getIntent().getExtras();
-        if(extras != null) {
-            nameTest = extras.getString("name_test");
-            detailsTest = extras.getString("details_test");
-        }
 
         hideKeyboard();
 
@@ -117,10 +111,13 @@ public class AthletesActivity extends AppCompatActivity {
                 }
             }
         });
+        callInflateAthletes();
     }
 
-    public static void afterSyncAthletes(Activity act){
-        ((AthletesActivity) act).callInflateAthletes();
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        callInflateAthletes();
     }
 
     private void callInflateAthletes(){
@@ -139,6 +136,7 @@ public class AthletesActivity extends AppCompatActivity {
             inflateRecyclerView(arrayAthletes, values);
         }
     }
+
     private void inflateRecyclerView(ArrayList<Athletes> testsArrayList, String[] values){
         AdapterListAthletes adapterTests = new AdapterListAthletes(this, values, testsArrayList);
         adapterTests.setActivity(this);
@@ -161,6 +159,7 @@ public class AthletesActivity extends AppCompatActivity {
     public static void onClickItemList(Activity activity, int positionArray){
         ((AthletesActivity) activity).validaClick(positionArray);
     }
+
     public void validaClick(int position){
         Intent i;
         if(AllActivities.type.equals("corrida"))
@@ -169,9 +168,6 @@ public class AthletesActivity extends AppCompatActivity {
             i = new Intent(AthletesActivity.this, ResultsActivity.class);
         Athletes player  = athletesArrayList.get(position);
         i.putExtra("id_player",player.getId());
-        i.putExtra("name_player",player.getName());
-        i.putExtra("name_test",nameTest);
-        i.putExtra("details_test",detailsTest);
         startActivity(i);
     }
 

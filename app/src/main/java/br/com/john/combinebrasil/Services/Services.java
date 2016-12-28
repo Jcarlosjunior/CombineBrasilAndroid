@@ -114,8 +114,8 @@ public class Services {
 
     public static Bitmap getRoundedCornerBitmap(Bitmap pBitmap) {
 
-        int width = 220;
-        int height = pBitmap.getHeight() * 220 / pBitmap.getWidth();
+        int width = 250;
+        int height = pBitmap.getHeight() * 250 / pBitmap.getWidth();
 
 
         Bitmap bitmap = Bitmap.createScaledBitmap(pBitmap, width, height, true);

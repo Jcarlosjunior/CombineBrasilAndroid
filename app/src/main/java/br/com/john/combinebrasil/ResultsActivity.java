@@ -24,8 +24,12 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.TestTypes;
+import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.Services;
@@ -40,6 +44,8 @@ public class ResultsActivity extends AppCompatActivity {
     boolean arrowDownTest=true,arrowDownPlayer=true;
     LinearLayout linearRating;
     RatingBar ratingBar;
+    String idAthlete = "";
+    float ratingValue;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -81,64 +87,89 @@ public class ResultsActivity extends AppCompatActivity {
         buttonAdd.setOnClickListener(clickSave);
 
         Bundle extras = getIntent().getExtras();
+
         if(extras != null){
-            showInfoAthlete(extras.getString("id_player"), extras.getString("name_test"), extras.getString("details_test"));
+            idAthlete = extras.getString("id_player");
+            showInfoAthlete();
             checkAndSaveResults();
-
-            editFirstResult.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length()>2)
-                    enabledButtonAdd(true);
-                else
-                    enabledButtonAdd(false);
-
-                if(s.length()==1){
-                     editFirstResult.setText(s.toString() + ",");
-                    editFirstResult.setSelection(s.length()+1);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-            editSecondResult.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length()>2)
-                    enabledButtonAdd(true);
-                else
-                    enabledButtonAdd(false);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+            verifyTest();
     }
 }
 
-    private void showInfoAthlete(String id,  String nameText, String detailText){
+
+    private void verifyTest(){
+        DatabaseHelper db = new DatabaseHelper(ResultsActivity.this);
+        db.openDataBase();
+        Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
+        if(test != null){
+            String firstValue = test.getValue().substring(0, 4);
+            String secondValue = test.getValue().substring(5, test.getValue().length());
+            editFirstResult.setText(firstValue);
+            editSecondResult.setText(secondValue);
+            editFirstResult.setEnabled(false);
+            editSecondResult.setEnabled(false);
+            buttonAdd.setVisibility(View.GONE);
+            btnReady.setVisibility(View.GONE);
+        }
+        else{
+            editFirstResult.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if(s.length()>2)
+                        enabledButtonAdd(true);
+                    else
+                        enabledButtonAdd(false);
+
+                    if(s.length()==1){
+                        editFirstResult.setText(s.toString() + ",");
+                        editFirstResult.setSelection(s.length()+1);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            editSecondResult.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if(s.length()>2)
+                        enabledButtonAdd(true);
+                    else
+                        enabledButtonAdd(false);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        }
+    }
+
+    private void showInfoAthlete(){
         DatabaseHelper db  = new DatabaseHelper(ResultsActivity.this);
         db.openDataBase();
-        Athletes athlete = db.getAthleteById(id);
+        Athletes athlete = db.getAthleteById(idAthlete);
         textNamePlayer.setText(athlete.getName());
         textNamePlayerDetails.setText(athlete.getName());
-        textNameTest.setText(nameText);
-        textNameTestDetails.setText(nameText);
-        textDetailsTest.setText(detailText);
+
+        TestTypes test = db.getTestTypeFromId(AllActivities.testSelected);
+        if(test!=null) {
+            textNameTest.setText(test.getName());
+            textNameTestDetails.setText(test.getName());
+            //textDetailsTest.setText(detailText);
+        }
     }
 
     private View.OnClickListener clickedImgArrowTest = new View.OnClickListener() {
@@ -201,6 +232,7 @@ public class ResultsActivity extends AppCompatActivity {
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                ratingValue = rating;
                 if(rating > 0.0) {
                     btnReady.setEnabled(true);
                     btnReady.setAlpha(1f);
@@ -221,9 +253,24 @@ public class ResultsActivity extends AppCompatActivity {
                         String.valueOf(Services.verifyQualification(ratingBar.getRating())),
                         Toast.LENGTH_SHORT).show();
                 linearRating.setVisibility(View.GONE);
+                saveTest();
                 Services.messageAlert(ResultsActivity.this, "Mensagem","Os resultados foram salvos!", "DialogSaveResults");
             }
         });
+    }
+
+    private void saveTest(){
+        DatabaseHelper db = new DatabaseHelper(ResultsActivity.this);
+        db.openDataBase();
+        String values = editFirstResult.getText().toString() + "|" + editSecondResult.getText().toString();
+        Tests test = new Tests(
+                UUID.randomUUID().toString(),
+                AllActivities.testSelected,
+                idAthlete,
+                values,
+                Services.verifyQualification(ratingValue));
+
+        db.addTest(test);
     }
 
     private void checkAndSaveResults (){
