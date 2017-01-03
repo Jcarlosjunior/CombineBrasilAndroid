@@ -12,4 +12,6 @@ public class AllActivities {
 
     public static String type;
     public static String testSelected;
+
+    public static boolean isSync;
 }

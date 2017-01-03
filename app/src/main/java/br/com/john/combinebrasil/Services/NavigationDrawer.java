@@ -17,6 +17,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.R;
+import br.com.john.combinebrasil.SyncActivity;
 
 /**
  * Created by GTAC on 05/12/2016.
@@ -96,22 +97,24 @@ public class NavigationDrawer {
                 .withSelectedTextColor(AllActivities.mainActivity.getResources().getColor(R.color.black)));
     }
     private void getClickInNavigation(int position){
+        Intent intent;
         switch (position){
-            case 0:
+            case 0://Cadastrar Atletas
                 if(this.userIsAdmin) {
-                    Intent intent = new Intent(AllActivities.mainActivity, CreateAccountAthlete.class);
+                    intent =  new Intent(AllActivities.mainActivity, CreateAccountAthlete.class);
                     AllActivities.mainActivity.startActivity(intent);
                 }
 
                 break;
-            case 1:
+            case 1: // Atletas e Testes
 
-                //fale Conosco
-                break;
-            case 2:
 
                 break;
-            //Politica de cancelemento
+            case 2: //Sincronizar
+                intent =  new Intent(AllActivities.mainActivity, SyncActivity.class);
+                AllActivities.mainActivity.startActivity(intent);
+                break;
+
             case 3:
 
                 break;

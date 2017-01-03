@@ -193,4 +193,15 @@ public class Services {
     public  static int convertBoolInInt(boolean value){
         return (value == true) ? 1 : 0;
     }
+
+    public static boolean isConnectectInWifi(Activity act){
+        boolean ret = false;
+        ConnectivityManager connManager = (ConnectivityManager) act.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mWifi.isConnected()) {
+            ret = true;
+        }
+        return ret;
+    }
 }

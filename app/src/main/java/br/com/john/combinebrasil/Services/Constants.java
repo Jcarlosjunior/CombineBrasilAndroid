@@ -137,13 +137,16 @@ public class Constants {
     public static final String TESTTYPES_NAME = "name";
     public static final String TESTTYPES_ATTEMPTSLIMIT = "attemptsLimit";
     public static final String TESTTYPES_VISIBLETOREPORT = "visibleToReport";
+    public static final String TESTTYPES_DESCRIPTION = "description";
 
     /************************************TESTS*******************************************/
     public static final String TABLE_TESTS = "Tests";
     public static final String TESTS_ID = "_id";
     public static final String TESTS_TYPE = "type";
     public static final String TESTS_ATHLETE = "athlete";
-    public static final String TESTS_VALUE = "value";
+    public static final String TESTS_FIRST_VALUE = "firstValue";
+    public static final String TESTS_SECOND_VALUE = "secondValue";
     public static final String TESTS_RATING = "rating";
+    public static final String TESTS_SYNC = "sync";
 
 }

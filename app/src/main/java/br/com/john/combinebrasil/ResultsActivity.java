@@ -38,7 +38,7 @@ public class ResultsActivity extends AppCompatActivity {
     Toolbar toolbar;
     Button buttonAdd, btnReady;
     EditText editFirstResult, editSecondResult;
-    int contResults=0;
+    int contResults=0, position=0;
     TextView textNamePlayer, textNameTest, textNameTestDetails, textDetailsTest, textNamePlayerDetails, textDetailsPlayer, textShowRating;
     ImageView imgArrowTest, imgArrowPlayer;
     boolean arrowDownTest=true,arrowDownPlayer=true;
@@ -90,22 +90,20 @@ public class ResultsActivity extends AppCompatActivity {
 
         if(extras != null){
             idAthlete = extras.getString("id_player");
+            position = extras.getInt("position");
             showInfoAthlete();
             checkAndSaveResults();
             verifyTest();
     }
 }
 
-
     private void verifyTest(){
         DatabaseHelper db = new DatabaseHelper(ResultsActivity.this);
         db.openDataBase();
         Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
         if(test != null){
-            String firstValue = test.getValue().substring(0, 4);
-            String secondValue = test.getValue().substring(5, test.getValue().length());
-            editFirstResult.setText(firstValue);
-            editSecondResult.setText(secondValue);
+            editFirstResult.setText(test.getFirstValue());
+            editSecondResult.setText(test.getSecondValue());
             editFirstResult.setEnabled(false);
             editSecondResult.setEnabled(false);
             buttonAdd.setVisibility(View.GONE);
@@ -262,15 +260,16 @@ public class ResultsActivity extends AppCompatActivity {
     private void saveTest(){
         DatabaseHelper db = new DatabaseHelper(ResultsActivity.this);
         db.openDataBase();
-        String values = editFirstResult.getText().toString() + "|" + editSecondResult.getText().toString();
-        Tests test = new Tests(
+       Tests test = new Tests(
                 UUID.randomUUID().toString(),
                 AllActivities.testSelected,
                 idAthlete,
-                values,
-                Services.verifyQualification(ratingValue));
-
+                editFirstResult.getText().toString(),
+                editSecondResult.getText().toString(),
+                ratingValue,
+               Services.convertBoolInInt(false));
         db.addTest(test);
+        AthletesActivity.adapterTests.notifyItemChanged(position);
     }
 
     private void checkAndSaveResults (){

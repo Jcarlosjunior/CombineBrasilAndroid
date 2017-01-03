@@ -78,8 +78,8 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
             }
         });
         viewHolder.textNamePlayer.setText(list.get(position).getName());
-        viewHolder.textFirstResult.setText("Primeiro resultado");
-        viewHolder.textSecondResult.setText("Segundo resultado");
+        viewHolder.textFirstResult.setText("");
+        viewHolder.textSecondResult.setText("");
 
         DatabaseHelper db = new DatabaseHelper(activity);
         db.openDataBase();
@@ -93,12 +93,7 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
     }
 
     public void click(int position){
-        //DetailsActivitiesActivity.linearInfoActivity.setVisibility(View.VISIBLE);
-        if(activity.getClass().getSimpleName().equals("AthletesActivity"))
-            AthletesActivity.onClickItemList(activity, position);
-        else
-            MainActivity.onClickItemList(activity, position);
-
+        MainActivity.onClickItemList(activity, position);
     }
 
     public  void setActivity(Activity activity)

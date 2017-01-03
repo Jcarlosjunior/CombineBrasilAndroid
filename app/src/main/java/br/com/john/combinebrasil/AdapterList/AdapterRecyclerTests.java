@@ -31,7 +31,6 @@ public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTe
     private ArrayList<TestTypes> list;
     private Context context;
     Activity homeActivity;
-    private LayoutInflater inflater;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public AdapterRecyclerTests(Context context, ArrayList<TestTypes> list, String[] values) {
@@ -99,6 +98,7 @@ public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTe
         //holder.txtFooter.setText(list.get(position).getDescription());
 
         holder.txtName.setText(list.get(position).getName());
+        holder.txtDesc.setText(list.get(position).getDescription());
 
         holder.listItem.setOnClickListener(new OnClickListener() {
             @Override

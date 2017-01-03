@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import br.com.john.combinebrasil.AdapterList.AdapterListAthletes;
 import br.com.john.combinebrasil.Classes.Athletes;
@@ -103,6 +105,11 @@ public class PlayersFragment extends Fragment {
         }
     }
     private static void inflateRecyclerView(ArrayList<Athletes> testsArrayList, String[] values){
+        Collections.sort(testsArrayList, new Comparator<Athletes>() {
+            public int compare(Athletes v1, Athletes v2) {
+                return v1.getName().compareTo(v2.getName());
+            }
+        });
         AdapterListAthletes adapterTests = new AdapterListAthletes(AllActivities.mainActivity, values, testsArrayList);
         adapterTests.setActivity(AllActivities.mainActivity);
         listViewPlayers.setVisibility(View.VISIBLE);

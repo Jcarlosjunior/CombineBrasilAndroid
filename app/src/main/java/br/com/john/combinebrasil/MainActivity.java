@@ -93,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
             }
         }
-        this.syncAll();
+        if(AllActivities.isSync)
+            this.syncAll();
+        AllActivities.isSync = false;
     }
 
     public static void callSync(Activity act){

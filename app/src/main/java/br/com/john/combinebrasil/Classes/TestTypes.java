@@ -9,14 +9,16 @@ public class TestTypes {
     private String Name;
     private String AttemptsLimit;
     private boolean VisibleToReport;
+    private String Description;
 
     public TestTypes(){}
 
-    public TestTypes(String id, String name, String attemptsLimit, boolean visibleToReport) {
+    public TestTypes(String id, String name, String attemptsLimit, boolean visibleToReport, String description) {
         Id = id;
         Name = name;
         AttemptsLimit = attemptsLimit;
         VisibleToReport = visibleToReport;
+        Description = description;
     }
 
     public String getId() {
@@ -49,5 +51,13 @@ public class TestTypes {
 
     public void setVisibleToReport(boolean visibleToReport) {
         VisibleToReport = visibleToReport;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
     }
 }

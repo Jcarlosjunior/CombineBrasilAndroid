@@ -15,20 +15,40 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashScreenActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".SplashScreenActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".MainActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".AthletesActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ResultsActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".CronometerActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".CreateAccountAthlete" android:screenOrientation="portrait"/>
-        <activity android:name=".DetailsAthletes" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AthletesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ResultsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CronometerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CreateAccountAthlete"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DetailsAthletes"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SyncActivity"
+            android:label="@string/title_activity_sync"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

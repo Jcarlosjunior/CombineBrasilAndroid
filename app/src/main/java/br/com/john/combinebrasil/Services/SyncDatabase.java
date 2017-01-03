@@ -84,6 +84,7 @@ public class SyncDatabase {
             db.close();
             //hideProgress(activity.getClass().getSimpleName());
             callFunc(Constants.URL + Constants.API_POSITIONS, Constants.CALLED_GET_POSITIONS,  false);
+            MainActivity.textProgress.setText("Sincronizando Posições");
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
             SyncDatabase.hideProgress(activity.getClass().getSimpleName());
@@ -107,6 +108,7 @@ public class SyncDatabase {
             db.close();
             //hideProgress(activity.getClass().getSimpleName());
             callFunc(Constants.URL + Constants.API_SELECTIVEATHLETES, Constants.CALLED_GET_SELECTIVEATHLETES,  false);
+            MainActivity.textProgress.setText("Sincronizando seletiva");
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
             SyncDatabase.hideProgress(activity.getClass().getSimpleName());
@@ -152,6 +154,7 @@ public class SyncDatabase {
             db.addSelectives(selectives);
             db.close();
             callFunc(Constants.URL + Constants.API_TEAMUSERS, Constants.CALLED_GET_TEAMUSERS,  false);
+            MainActivity.textProgress.setText("Sincronizando avaliadores");
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
             SyncDatabase.hideProgress(activity.getClass().getSimpleName());
@@ -174,6 +177,7 @@ public class SyncDatabase {
             db.addTeamUsers(teamUserses);
             db.close();
             callFunc(Constants.URL + Constants.API_TEAMS, Constants.CALLED_GET_TEAM,  false);
+            MainActivity.textProgress.setText("Sincronizando equipe");
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
             SyncDatabase.hideProgress(activity.getClass().getSimpleName());
@@ -196,6 +200,7 @@ public class SyncDatabase {
             db.addTeam(teams);
             db.close();
             callFunc(Constants.URL + Constants.API_TESTTYPES, Constants.CALLED_GET_TESTTYPES,  false);
+            MainActivity.textProgress.setText("Sincronizando testes");
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
             SyncDatabase.hideProgress(activity.getClass().getSimpleName());
@@ -218,6 +223,7 @@ public class SyncDatabase {
             db.addTestTypes(testTypes);
             db.close();
             callFunc(Constants.URL + Constants.API_TESTS, Constants.CALLED_GET_TESTS,  false);
+            MainActivity.textProgress.setText("Sincronizando testes");
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
             SyncDatabase.hideProgress(activity.getClass().getSimpleName());

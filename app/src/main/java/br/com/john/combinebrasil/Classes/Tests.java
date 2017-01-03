@@ -8,17 +8,21 @@ public class Tests {
   private String Id;
     private String Type;
     private String Athlete;
-    private String Value;
-    private String Rating;
+    private String FirstValue;
+    private String SecondValue;
+    private float Rating;
+    private int Sync;
 
     public Tests(){}
 
-    public Tests(String id, String type, String athlete, String value, String rating) {
+    public Tests(String id, String type, String athlete, String firstValue, String secondValue, float rating, int sync) {
         Id = id;
         Type = type;
         Athlete = athlete;
-        Value = value;
+        FirstValue = firstValue;
+        SecondValue = secondValue;
         Rating = rating;
+        Sync = sync;
     }
 
     public String getId() {
@@ -45,19 +49,35 @@ public class Tests {
         Athlete = athlete;
     }
 
-    public String getValue() {
-        return Value;
+    public String getFirstValue() {
+        return FirstValue;
     }
 
-    public void setValue(String value) {
-        Value = value;
+    public void setFirstValue(String firstValue) {
+        FirstValue = firstValue;
     }
 
-    public String getRating() {
+    public String getSecondValue() {
+        return SecondValue;
+    }
+
+    public void setSecondValue(String secondValue) {
+        SecondValue = secondValue;
+    }
+
+    public float getRating() {
         return Rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(float rating) {
         Rating = rating;
+    }
+
+    public int getSync() {
+        return Sync;
+    }
+
+    public void setSync(int sync) {
+        Sync = sync;
     }
 }

@@ -7,6 +7,10 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,16 +31,19 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import br.com.john.combinebrasil.AdapterList.AdapterListAthletes;
+import br.com.john.combinebrasil.AdapterList.AdapterRecyclerAthletes;
+import br.com.john.combinebrasil.AdapterList.AdapterRecyclerTests;
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 
 public class AthletesActivity extends AppCompatActivity {
-    ListView listViewPlayers;
+    public static RecyclerView listViewPlayers;
+    public static AdapterRecyclerAthletes adapterTests;
+    public LinearLayoutManager mLayoutManager;
     Toolbar toolbar;
     ArrayList<Athletes> athletesArrayList;
     private static Context myContext;
-    //private String nameTest="", detailsTest="";
     private TextView textOptionName, textOptionCode;
     private EditText editSearch;
     private ImageView imgOrder;
@@ -58,7 +65,8 @@ public class AthletesActivity extends AppCompatActivity {
         ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
         imgSearch.setVisibility(View.GONE);
 
-        listViewPlayers = (ListView) findViewById(R.id.list_players);
+        listViewPlayers = (RecyclerView) findViewById(R.id.list_players);
+        listViewPlayers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         linearOrder = (LinearLayout) findViewById(R.id.linear_order_by);
         linearNotSearch = (LinearLayout) findViewById(R.id.linear_search_null);
@@ -111,6 +119,7 @@ public class AthletesActivity extends AppCompatActivity {
                 }
             }
         });
+
         callInflateAthletes();
     }
 
@@ -137,9 +146,14 @@ public class AthletesActivity extends AppCompatActivity {
         }
     }
 
-    private void inflateRecyclerView(ArrayList<Athletes> testsArrayList, String[] values){
-        AdapterListAthletes adapterTests = new AdapterListAthletes(this, values, testsArrayList);
-        adapterTests.setActivity(this);
+    private void inflateRecyclerView(ArrayList<Athletes> athletesArrayList, String[] values){
+        Collections.sort(athletesArrayList, new Comparator<Athletes>() {
+            public int compare(Athletes v1, Athletes v2) {
+                return v1.getName().compareTo(v2.getName());
+            }
+        });
+        adapterTests = new AdapterRecyclerAthletes(AthletesActivity.this, athletesArrayList, values);
+
         listViewPlayers.setVisibility(View.VISIBLE);
         listViewPlayers.setAdapter(adapterTests);
     }
@@ -157,10 +171,10 @@ public class AthletesActivity extends AppCompatActivity {
     }
 
     public static void onClickItemList(Activity activity, int positionArray){
-        ((AthletesActivity) activity).validaClick(positionArray);
+        ((AthletesActivity) activity).onClickItemList(positionArray);
     }
 
-    public void validaClick(int position){
+    public void onClickItemList(int position){
         Intent i;
         if(AllActivities.type.equals("corrida"))
             i = new Intent(AthletesActivity.this, CronometerActivity.class);
@@ -168,6 +182,7 @@ public class AthletesActivity extends AppCompatActivity {
             i = new Intent(AthletesActivity.this, ResultsActivity.class);
         Athletes player  = athletesArrayList.get(position);
         i.putExtra("id_player",player.getId());
+        i.putExtra("position",position);
         startActivity(i);
     }
 

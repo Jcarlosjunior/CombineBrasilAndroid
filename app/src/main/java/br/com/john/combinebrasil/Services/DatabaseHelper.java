@@ -275,6 +275,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTTYPES_NAME, obj.getName());
                 values.put(Constants.TESTTYPES_ATTEMPTSLIMIT, obj.getAttemptsLimit());
                 values.put(Constants.TESTTYPES_VISIBLETOREPORT, Services.convertBoolInInt(obj.getVisibleToReport()));
+                values.put(Constants.TESTTYPES_DESCRIPTION, obj.getDescription());
 
                 ret = myDataBase.insert(Constants.TABLE_TESTTYPES, null, values);
             }
@@ -293,7 +294,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTS_ID, obj.getId());
                 values.put(Constants.TESTS_TYPE, obj.getType());
                 values.put(Constants.TESTS_ATHLETE, obj.getAthlete());
-                values.put(Constants.TESTS_VALUE, obj.getValue());
+                values.put(Constants.TESTS_FIRST_VALUE, obj.getFirstValue());
+                values.put(Constants.TESTS_SECOND_VALUE, obj.getSecondValue());
                 values.put(Constants.TESTS_RATING, obj.getRating());
 
                 ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
@@ -312,7 +314,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTS_ID, test.getId());
                 values.put(Constants.TESTS_TYPE, test.getType());
                 values.put(Constants.TESTS_ATHLETE, test.getAthlete());
-                values.put(Constants.TESTS_VALUE, test.getValue());
+                values.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue());
+                values.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue());
                 values.put(Constants.TESTS_RATING, test.getRating());
 
                 ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
@@ -420,8 +423,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTS_ID)),
                         c.getString(c.getColumnIndex(Constants.TESTS_TYPE)),
                         c.getString(c.getColumnIndex(Constants.TESTS_ATHLETE)),
-                        c.getString(c.getColumnIndex(Constants.TESTS_VALUE)),
-                        c.getString(c.getColumnIndex(Constants.TESTS_RATING))
+                        c.getString(c.getColumnIndex(Constants.TESTS_FIRST_VALUE)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_SECOND_VALUE)),
+                        c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
+                        c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
                 );
 
                 itens.add(obj);
@@ -451,7 +456,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_ID)),
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_NAME)),
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_ATTEMPTSLIMIT)),
-                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_VISIBLETOREPORT)))
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_VISIBLETOREPORT))),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_DESCRIPTION))
                 );
 
                 itens.add(obj);
@@ -543,7 +549,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_ID)),
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_NAME)),
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_ATTEMPTSLIMIT)),
-                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_VISIBLETOREPORT)))
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_VISIBLETOREPORT))),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_DESCRIPTION))
                 );
             } else {
                 test = null;
@@ -570,8 +577,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTS_ID)),
                         c.getString(c.getColumnIndex(Constants.TESTS_TYPE)),
                         c.getString(c.getColumnIndex(Constants.TESTS_ATHLETE)),
-                        c.getString(c.getColumnIndex(Constants.TESTS_VALUE)),
-                        c.getString(c.getColumnIndex(Constants.TESTS_RATING))
+                        c.getString(c.getColumnIndex(Constants.TESTS_FIRST_VALUE)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_SECOND_VALUE)),
+                        c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
+                        c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
                 );
             } else {
                 test = null;
@@ -634,274 +643,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 athletes.add(athlete);
             }while(c.moveToNext());
         }
-
-
         return athletes;
 
     }
-
-
-
-
-
-    /*public ArrayList<Routes> searchRoutes(String search){
-        SQLiteDatabase db = getWritableDatabase();
-
-        String selectQuery = "SELECT DISTINCT * FROM "+constants.TABLE_CESTAS+" WHERE " +
-                "("+constants.NOME+" || \"\" || "+constants.VALOR+") LIKE '%"+search+"%' GROUP BY "
-                +constants.NOME+", "+constants.VALOR+"";
-
-        Cursor c = db.rawQuery(selectQuery, null);
-
-        ArrayList<ItemListCestas> cestas = new ArrayList<ItemListCestas>();
-
-        if (c.moveToFirst()) {
-            do {
-                ItemListCestas obj = new ItemListCestas();
-                obj.setId(c.getString(c.getColumnIndex(constants.ID)));
-                obj.setName(c.getString(c.getColumnIndex(constants.NOME)));
-                obj.setValue(c.getDouble(c.getColumnIndex(constants.VALOR)));
-                obj.setImage(c.getString(c.getColumnIndex(constants.IMAGEM)));
-                cestas.add(obj);
-            } while (c.moveToNext());
-
-        } else {
-            cestas = null;
-        }
-        c.close();
-        db.close();
-
-        return cestas;
-    }*/
-
-    /******************************************TABELA ATACADOS***********************************************************/
-
-    /*public long addAtacado(ItemListAtacados obj) {
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(constants.ID, obj.getId());
-        values.put(constants.NOME, obj.getName());
-        values.put(constants.VALOR, obj.getPrice());
-        values.put(constants.IMAGEM, obj.getImage());
-        long ret = db.insert(constants.TABLE_ATACADOS, null, values);
-
-        db.close();
-
-        return ret;
-    }
-
-    public void deleteTodosAtacados() {
-        SQLiteDatabase db = getWritableDatabase();
-        db.delete(constants.TABLE_ATACADOS, null, null);
-        db.close();
-    }
-
-    public ArrayList<ItemListAtacados> searchAtacados(String search){
-        SQLiteDatabase db = getWritableDatabase();
-
-        String selectQuery = "SELECT DISTINCT * FROM "+constants.TABLE_ATACADOS+" WHERE " +
-                "("+constants.NOME+" || \"\" || "+constants.VALOR+") LIKE '%"+search+"%' GROUP BY "
-                +constants.NOME+", "+constants.VALOR+"";
-
-        Cursor c = db.rawQuery(selectQuery, null);
-
-        ArrayList<ItemListAtacados> atacados = new ArrayList<ItemListAtacados>();
-
-        if (c.moveToFirst()) {
-            do {
-                ItemListAtacados obj = new ItemListAtacados();
-                obj.setId(c.getString(c.getColumnIndex(constants.ID)));
-                obj.setName(c.getString(c.getColumnIndex(constants.NOME)));
-                obj.setPrice(c.getDouble(c.getColumnIndex(constants.VALOR)));
-                obj.setImage(c.getString(c.getColumnIndex(constants.IMAGEM)));
-                atacados.add(obj);
-            } while (c.moveToNext());
-
-        } else {
-            atacados = null;
-        }
-        c.close();
-        db.close();
-
-        return atacados;
-    }*/
-
-    /***********************************TABELA CARRINHO***************************************/
-
-   /* public long addItemCarrinho(ItemListCarrinho obj) {
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(constants.ID, obj.getId());
-        values.put(constants.NOME, obj.getNome());
-        values.put(constants.VALOR, obj.getValor());
-        values.put(constants.IMAGEM, obj.getImage());
-        values.put(constants.PESO, obj.getPeso());
-        values.put(constants.QUANTIDADE, obj.getQtd());
-        values.put(constants.TOTAL, obj.getTotal());
-        long ret = db.insert(constants.TABLE_CARRINHO, null, values);
-
-        db.close();
-
-        return ret;
-    }
-
-    public void deleteTodosItensCarrinho() {
-        SQLiteDatabase db = getWritableDatabase();
-        db.delete(constants.TABLE_CARRINHO, null, null);
-        db.close();
-    }
-
-    public int contItensCarrinho(){
-        int itens = 0;
-        SQLiteDatabase db = getWritableDatabase();
-
-        String selectQuery = "SELECT * FROM " + constants.TABLE_CARRINHO;
-        Cursor c = db.rawQuery(selectQuery, null);
-
-
-        if (c.moveToFirst()) {
-            do {
-                itens=itens+1;
-            } while (c.moveToNext());
-
-        } else {
-            itens = 0;
-        }
-        c.close();
-        db.close();
-
-        return itens;
-    }
-
-    public ArrayList<ItemListCarrinho> getItensCarrinho() {
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        String selectQuery = "SELECT * FROM " + constants.TABLE_CARRINHO;
-        Cursor c = db.rawQuery(selectQuery, null);
-
-        ArrayList<ItemListCarrinho> itens = new ArrayList<ItemListCarrinho>();
-
-        if (c.moveToFirst()) {
-            do {
-                ItemListCarrinho obj = new ItemListCarrinho();
-                obj.setId(c.getString(c.getColumnIndex(constants.ID)));
-                obj.setNome(c.getString(c.getColumnIndex(constants.NOME)));
-                obj.setValor(c.getDouble(c.getColumnIndex(constants.VALOR)));
-                obj.setImage(c.getString(c.getColumnIndex(constants.IMAGEM)));
-                obj.setPeso(c.getString(c.getColumnIndex(constants.PESO)));
-                obj.setQtd(c.getInt(c.getColumnIndex(constants.QUANTIDADE)));
-                obj.setTotal(c.getDouble(c.getColumnIndex(constants.TOTAL)));
-                itens.add(obj);
-            } while (c.moveToNext());
-
-        } else {
-            itens = null;
-        }
-        c.close();
-        db.close();
-
-        return itens;
-    }
-
-    public ItemListCarrinho getItemCarrinhoById(String id) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        String selectQuery = "SELECT * FROM " + constants.TABLE_CARRINHO + " WHERE id = '" + id + "'";
-        Cursor c = db.rawQuery(selectQuery, null);
-
-        ItemListCarrinho obj = new ItemListCarrinho();
-        if (c.moveToFirst()) {
-            obj.setId(c.getString(c.getColumnIndex(constants.ID)));
-            obj.setNome(c.getString(c.getColumnIndex(constants.NOME)));
-            obj.setValor(c.getDouble(c.getColumnIndex(constants.VALOR)));
-            obj.setImage(c.getString(c.getColumnIndex(constants.IMAGEM)));
-            obj.setQtd(c.getInt(c.getColumnIndex(constants.QUANTIDADE)));
-            obj.setTotal(c.getDouble(c.getColumnIndex(constants.TOTAL)));
-            obj.setPeso(c.getString(c.getColumnIndex(constants.PESO)));
-        } else {
-            obj = null;
-        }
-        c.close();
-        db.close();
-
-        return obj;
-    }
-
-    public String getValorItemCarrinho(String id) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        String selectQuery = "SELECT * FROM " + constants.TABLE_CARRINHO + " WHERE id = '" + id + "'";
-        Cursor c = db.rawQuery(selectQuery, null);
-
-        String valor;
-        if (c.moveToFirst()) {
-            valor = String.valueOf(c.getDouble(c.getColumnIndex(constants.VALOR)));
-        } else {
-            valor = null;
-        }
-        c.close();
-        db.close();
-
-        return valor;
-    }
-
-    public long updateItemCarrinho(ItemListCarrinho obj) {
-        long ret = 0;
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(constants.ID, obj.getId());
-        values.put(constants.NOME, obj.getNome());
-        values.put(constants.VALOR, obj.getValor());
-        values.put(constants.TOTAL, obj.getTotal());
-        values.put(constants.PESO, obj.getPeso());
-        values.put(constants.IMAGEM, obj.getImage());
-        values.put(constants.QUANTIDADE, obj.getQtd());
-
-        ret = db.update(constants.TABLE_CARRINHO, values, "id = ?", new String[] {
-                String.valueOf(obj.getId())});
-
-        db.close();
-
-        return ret;
-    }
-
-    public long updatePrecoCarrinho(ItemListCarrinho obj) {
-        long ret = 0;
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(constants.ID, obj.getId());
-        values.put(constants.VALOR, obj.getValor());
-        values.put(constants.TOTAL, obj.getTotal());
-
-        ret = db.update(constants.TABLE_CARRINHO, values, "id = ?", new String[] {
-                String.valueOf(obj.getId())});
-
-        db.close();
-
-        return ret;
-    }
-
-    public boolean verificaItemCarrinho(String id){
-        SQLiteDatabase db = getWritableDatabase();
-        String selectQueryProduto = "SELECT DISTINCT "+constants.ID+" FROM " + constants.TABLE_CARRINHO + " WHERE id = '"+id+"'";
-        Log.i("select", selectQueryProduto);
-        Cursor c = db.rawQuery(selectQueryProduto, null);
-        if (!(c.moveToFirst())) {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }*/
-
 }

@@ -26,6 +26,7 @@ import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostAthleteAsyncTask;
 import br.com.john.combinebrasil.Connection.Posts.PostLogin;
+import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Services;
@@ -116,7 +117,9 @@ public class LoginActivity extends Activity {
         db.openDataBase();
         db.addUser(user);
         linearProgress.setVisibility(View.GONE);
+        SharedPreferencesAdapter.setLoggedSharedPreferences(LoginActivity.this, true);
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        AllActivities.isSync = true;
         startActivity(mainIntent);
         finish();
 
