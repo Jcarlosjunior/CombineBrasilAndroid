@@ -79,6 +79,8 @@ public class Constants {
     public static final String ATHLETES_NAME = "name";
     public static final String ATHLETES_BIRTHDAY = "birthday";
     public static final String ATHLETES_CPF = "cpf";
+    public static final String ATHLETES_ADDRESS = "address";
+    public static final String ATHLETES_DESIRABLE_POSITION = "desirablePosition";
     public static final String ATHLETES_HEIGHT = "height";
     public static final String ATHLETES_WEIGHT = "weight";
     public static final String ATHLETES_CREATEDAT = "createdAt";
@@ -138,6 +140,7 @@ public class Constants {
     public static final String TESTTYPES_ATTEMPTSLIMIT = "attemptsLimit";
     public static final String TESTTYPES_VISIBLETOREPORT = "visibleToReport";
     public static final String TESTTYPES_DESCRIPTION = "description";
+    public static final String TESTTYPES_VALUETYPES= "valueType";
 
     /************************************TESTS*******************************************/
     public static final String TABLE_TESTS = "Tests";

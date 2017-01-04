@@ -158,6 +158,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.ATHLETES_NAME, obj.getName());
                 values.put(Constants.ATHLETES_BIRTHDAY, obj.getBirthday());
                 values.put(Constants.ATHLETES_CPF, obj.getCPF());
+                values.put(Constants.ATHLETES_ADDRESS, obj.getAddress());
+                values.put(Constants.ATHLETES_DESIRABLE_POSITION, obj.getDesirablePosition());
                 values.put(Constants.ATHLETES_HEIGHT, obj.getHeight());
                 values.put(Constants.ATHLETES_WEIGHT, obj.getWeight());
                 values.put(Constants.ATHLETES_CREATEDAT, obj.getCreatedAt());
@@ -167,6 +169,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
+        }
+    }
+
+    public long addAthlete(Athletes athlete) {
+        long ret = 0;
+        this.openDataBase();
+        try{
+                ContentValues values = new ContentValues();
+
+                values.put(Constants.ATHLETES_ID, athlete.getId());
+                values.put(Constants.ATHLETES_NAME, athlete.getName());
+                values.put(Constants.ATHLETES_BIRTHDAY, athlete.getBirthday());
+                values.put(Constants.ATHLETES_CPF, athlete.getCPF());
+                values.put(Constants.ATHLETES_ADDRESS, athlete.getAddress());
+                values.put(Constants.ATHLETES_DESIRABLE_POSITION, athlete.getDesirablePosition());
+                values.put(Constants.ATHLETES_HEIGHT, athlete.getHeight());
+                values.put(Constants.ATHLETES_WEIGHT, athlete.getWeight());
+                values.put(Constants.ATHLETES_CREATEDAT, athlete.getCreatedAt());
+                values.put(Constants.ATHLETES_UPDATEAT, athlete.getUpdateAt());
+
+                return ret = myDataBase.insert(Constants.TABLE_ATHLETES, null, values);
+
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+            return 0;
         }
     }
 
@@ -276,6 +303,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTTYPES_ATTEMPTSLIMIT, obj.getAttemptsLimit());
                 values.put(Constants.TESTTYPES_VISIBLETOREPORT, Services.convertBoolInInt(obj.getVisibleToReport()));
                 values.put(Constants.TESTTYPES_DESCRIPTION, obj.getDescription());
+                values.put(Constants.TESTTYPES_VALUETYPES, obj.getValueType());
 
                 ret = myDataBase.insert(Constants.TABLE_TESTTYPES, null, values);
             }
@@ -388,8 +416,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             c.getString(c.getColumnIndex(Constants.ATHLETES_NAME)),
                             c.getString(c.getColumnIndex(Constants.ATHLETES_BIRTHDAY)),
                             c.getString(c.getColumnIndex(Constants.ATHLETES_CPF)),
-                            c.getInt(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
-                            c.getInt(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_ADDRESS)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_DESIRABLE_POSITION)),
+                            c.getDouble(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
+                            c.getDouble(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
                             c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
                             c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
                             null
@@ -457,7 +487,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_NAME)),
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_ATTEMPTSLIMIT)),
                         Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_VISIBLETOREPORT))),
-                        c.getString(c.getColumnIndex(Constants.TESTTYPES_DESCRIPTION))
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_DESCRIPTION)),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_VALUETYPES))
                 );
 
                 itens.add(obj);
@@ -521,8 +552,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getString(c.getColumnIndex(Constants.ATHLETES_NAME)),
                     c.getString(c.getColumnIndex(Constants.ATHLETES_BIRTHDAY)),
                     c.getString(c.getColumnIndex(Constants.ATHLETES_CPF)),
-                    c.getInt(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
-                    c.getInt(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_ADDRESS)),
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_DESIRABLE_POSITION)),
+                    c.getDouble(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
+                    c.getDouble(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
                     c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
                     c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
                     null
@@ -550,7 +583,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_NAME)),
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_ATTEMPTSLIMIT)),
                         Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_VISIBLETOREPORT))),
-                        c.getString(c.getColumnIndex(Constants.TESTTYPES_DESCRIPTION))
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_DESCRIPTION)),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_VALUETYPES))
                 );
             } else {
                 test = null;
@@ -634,8 +668,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.ATHLETES_NAME)),
                         c.getString(c.getColumnIndex(Constants.ATHLETES_BIRTHDAY)),
                         c.getString(c.getColumnIndex(Constants.ATHLETES_CPF)),
-                        c.getInt(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
-                        c.getInt(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_ADDRESS)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_DESIRABLE_POSITION)),
+                        c.getDouble(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
+                        c.getDouble(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
                         c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
                         c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
                         null

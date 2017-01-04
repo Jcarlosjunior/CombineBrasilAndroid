@@ -13,20 +13,24 @@ public class Athletes{
     String Name;
     String Birthday;
     String CPF;
+    String Address;
+    String DesirablePosition;
     String CreatedAt;
     String UpdateAt;
-    int Height;
-    int Weight;
+    double Height;
+    double Weight;
     String Code;
 
     public Athletes(){}
 
-    public Athletes(String id, String name, String birthday, String cpf, int height, int weight, String createdAt,
+    public Athletes(String id, String name, String birthday, String cpf, String address, String desirablePosition, double height, double weight, String createdAt,
                     String updateAt, String code) {
         Id = id;
         Name = name;
         Birthday = birthday;
         this.CPF = cpf;
+        this.Address = address;
+        this.DesirablePosition = desirablePosition;
         this.CreatedAt = createdAt;
         this.UpdateAt = updateAt;
         this.Height = height;
@@ -82,19 +86,19 @@ public class Athletes{
         UpdateAt = updateAt;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return Height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(double height) {
         Height = height;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return Weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         Weight = weight;
     }
 
@@ -104,5 +108,21 @@ public class Athletes{
 
     public void setCode(String code) {
         Code = code;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
+
+    public String getDesirablePosition() {
+        return DesirablePosition;
+    }
+
+    public void setDesirablePosition(String desirablePosition) {
+        DesirablePosition = desirablePosition;
     }
 }

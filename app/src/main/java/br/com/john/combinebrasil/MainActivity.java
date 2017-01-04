@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     public static TextView textProgress;
     Toolbar toolbar;
     NavigationDrawer navigationDrawer;
+
+    ImageView imgCloseMenu;
+    LinearLayout linearMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +45,17 @@ public class MainActivity extends AppCompatActivity {
 
         AllActivities.mainActivity = MainActivity.this;
 
-        navigationDrawer = new NavigationDrawer(savedInstanceState, toolbar, true);
-        navigationDrawer.createNavigationAccess();
+        /*navigationDrawer = new NavigationDrawer(savedInstanceState, toolbar, true);
+        navigationDrawer.createNavigationAccess();*/
+
+        imgCloseMenu = (ImageView) findViewById(R.id.btn_close_menu);
+        imgCloseMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearMenu.setVisibility(View.GONE);
+            }
+        });
+        linearMenu = (LinearLayout) findViewById(R.id.linear_menu);
 
         LinearLayout linearBacktoolbar = (LinearLayout) findViewById(R.id.linear_back_button);
         linearBacktoolbar.setVisibility(View.GONE);
@@ -49,14 +63,18 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout linearAddAccount = (LinearLayout) findViewById(R.id.linear_add_account);
         linearAddAccount.setOnClickListener(clickAddAccount);
 
-        LinearLayout linearMenu = (LinearLayout) findViewById(R.id.linear_menu_button);
-        linearMenu.setVisibility(View.VISIBLE);
-        linearMenu.setOnClickListener(new View.OnClickListener() {
+        final LinearLayout btnMenu = (LinearLayout) findViewById(R.id.linear_menu_button);
+        btnMenu.setVisibility(View.VISIBLE);
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavigationDrawer.navigationDrawerLeft.openDrawer();
+                linearMenu.setVisibility(View.VISIBLE);
+                //NavigationDrawer.navigationDrawerLeft.openDrawer();
             }
         });
+
+
+
 
         linearProgress = (LinearLayout) findViewById(R.id.linear_progress_tests);
         textProgress = (TextView) findViewById(R.id.text_progress);
@@ -120,20 +138,12 @@ public class MainActivity extends AppCompatActivity {
         TestsFragment.callInflateTests();
     }
 
-   /* public static void afterCalled(String response, boolean isList, Activity activity, int statuCode) {
-        TestsFragment.ShowTests(response, isList);
-    }*/
-
     /************************** CLICK LIST **********************************/
     public static void onClickItemList(Activity activity, int positionArray, String id){
         ((MainActivity)activity).validaClick(positionArray, id);
     }
 
     public void validaClick(int position, String id){
-        if(position == 0)
-            AllActivities.type="corrida";
-        else
-            AllActivities.type="";
         Intent i = new Intent(MainActivity.this, AthletesActivity.class);
         TestTypes test = TestsFragment.testsArrayList.get(position);
         AllActivities.testSelected = id;
@@ -171,5 +181,11 @@ public class MainActivity extends AppCompatActivity {
                 mViewPagerHome.setCurrentItem(0);
             }
         }
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        PlayersFragment.callInflateAthletes();
     }
 }

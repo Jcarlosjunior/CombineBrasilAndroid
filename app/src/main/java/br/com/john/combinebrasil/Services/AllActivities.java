@@ -10,7 +10,6 @@ public class AllActivities {
     public static Activity mainActivity;
     public static Activity detailsProcessActivity;
 
-    public static String type;
     public static String testSelected;
 
     public static boolean isSync;

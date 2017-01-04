@@ -34,6 +34,8 @@ import br.com.john.combinebrasil.AdapterList.AdapterListAthletes;
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerAthletes;
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerTests;
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.TestTypes;
+import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 
@@ -175,12 +177,16 @@ public class AthletesActivity extends AppCompatActivity {
     }
 
     public void onClickItemList(int position){
+        Athletes player  = athletesArrayList.get(position);
         Intent i;
-        if(AllActivities.type.equals("corrida"))
+        DatabaseHelper db = new DatabaseHelper(AthletesActivity.this);
+        db.openDataBase();
+        TestTypes testTypes = db.getTestTypeFromId(AllActivities.testSelected);
+        if(testTypes.getValueType().equals("corrida") || testTypes.getValueType().equals("tempo"))
             i = new Intent(AthletesActivity.this, CronometerActivity.class);
         else
             i = new Intent(AthletesActivity.this, ResultsActivity.class);
-        Athletes player  = athletesArrayList.get(position);
+
         i.putExtra("id_player",player.getId());
         i.putExtra("position",position);
         startActivity(i);

@@ -23,17 +23,21 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Connection.Connection;
+import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostAthleteAsyncTask;
 import br.com.john.combinebrasil.Services.Constants;
+import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Mask;
 import br.com.john.combinebrasil.Services.Services;
 
 public class CreateAccountAthlete extends AppCompatActivity {
     MaterialBetterSpinner spinnerDay, spinnerMonth, spinnerYear;
     Toolbar toolbar;
-    EditText editTextName, editTextCPF, editTextHeight, editTextWeihgt;
+    EditText editTextName, editTextCPF, editTextPosition, editTextAddress, editTextHeight, editTextWeihgt;
     private Button buttonAdd;
+    Athletes athlete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,8 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
         editTextName = (EditText) findViewById(R.id.edit_name_add);
         editTextCPF = (EditText) findViewById(R.id.edit_cpf_add);
+        editTextAddress = (EditText) findViewById(R.id.edit_address_add);
+        editTextPosition = (EditText) findViewById(R.id.edit_position_add);
         editTextHeight = (EditText) findViewById(R.id.edit_height_add);
         editTextWeihgt = (EditText) findViewById(R.id.edit_weight_add);
         buttonAdd = (Button) findViewById(R.id.button_add_athlete);
@@ -83,13 +89,32 @@ public class CreateAccountAthlete extends AppCompatActivity {
                    post.setActivity(CreateAccountAthlete.this);
                    post.setObjPut(createObject());
                    post.execute(url);
-                   //Connection task = new Connection(url, Request.Method.POST, Constants.CALLED_POST_ATHLETES, false, CreateAccountAthlete.this, postData());
-                   //task.callByJsonStringRequest();
                }
            }
         }
     }
 
+    private void createAthlete(String id){
+        double height = Double.parseDouble(editTextHeight.getText().toString().replaceAll(",","."));
+        double weight = Double.parseDouble(editTextWeihgt.getText().toString().replaceAll(",","."));
+        String birthday = spinnerYear.getText().toString()+"-"+
+                chooseMonth(spinnerMonth.getText().toString())+"-"+spinnerDay.getText().toString();
+
+        athlete = new Athletes(
+                id,
+                editTextName.getText().toString(),
+                birthday,
+                editTextCPF.getText().toString(),
+                editTextAddress.getText().toString(),
+                editTextPosition.getText().toString(),
+                height,
+                weight,
+                "",
+                "",
+                ""
+        );
+
+    }
     private JSONObject createObject() {
         JSONObject object = new JSONObject();
         try {
@@ -98,6 +123,8 @@ public class CreateAccountAthlete extends AppCompatActivity {
             String birthday = spinnerYear.getText().toString()+"-"+chooseMonth(spinnerMonth.getText().toString())+"-"+spinnerDay.getText().toString();
             object.put(Constants.ATHLETES_NAME, editTextName.getText().toString());
             object.put(Constants.ATHLETES_CPF, editTextCPF.getText().toString());
+            object.put(Constants.ATHLETES_ADDRESS, editTextAddress.getText().toString());
+            object.put(Constants.ATHLETES_DESIRABLE_POSITION, editTextPosition.getText().toString());
             object.put(Constants.ATHLETES_HEIGHT, height);
             object.put(Constants.ATHLETES_WEIGHT, weight);
             object.put(Constants.ATHLETES_BIRTHDAY, birthday);
@@ -107,26 +134,13 @@ public class CreateAccountAthlete extends AppCompatActivity {
         return object;
     }
 
-    public static void afterSendAthlete(Activity act, String response, Object obj){
-        ((CreateAccountAthlete)act).afterPost(response, obj);
-    }
     private boolean verifyForm(){
-        /*boolean ver = false;
-        if(validaName(editTextName)) {
-            if (validaCPF(editTextCPF)) {
-                if(validaBirthdauy()){
-                    if(validateText(editTextHeight, "Altura inválido.")){
-                        if(validateText(editTextWeihgt,"Peso inválido"))
-                            ver = true;
-                    }
-                }
-            }
-        }*/
-
         boolean ver = true;
         if(!validaName(editTextName))
             ver = false;
         if (!validaCPF(editTextCPF))
+            ver = false;
+        if (!validaName(editTextAddress))
             ver = false;
         if(!validateText(editTextHeight, "Altura inválido."))
             ver = false;
@@ -199,26 +213,46 @@ public class CreateAccountAthlete extends AppCompatActivity {
     public static void returnPostAthlete(Activity act, String response, int status){
         //((CreateAccountAthlete) act).afterPost(response);
     }
-    private void afterPost(String response, Object obj){
+    public static void afterSendAthlete(Activity act, String ret, String response){
+        ((CreateAccountAthlete)act).afterPost(ret, response);
+    }
+
+    private void afterPost(String ret, String response){
         LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
         linearProgress.setVisibility(View.GONE);
-        int codeResponse;
-        try {
-            JSONObject json = new JSONObject(response);
-            codeResponse = Integer.parseInt(json.getString("statusCode"));
-            if(codeResponse==400)
-                Services.messageAlert(CreateAccountAthlete.this, "Menasgem", "Atleta não cadastrado\n"+json.getString("error"), "" );
-            else if(codeResponse==401)
-                Services.messageAlert(CreateAccountAthlete.this, "Menasgem", "Atleta não cadastrado\n"+json.getString("error"), "" );
-            else if(codeResponse==200)
-                Services.messageAlert(CreateAccountAthlete.this, "Salvo", "Atleta cadastrado com sucesso", "POSTATHLETE" );
-        } catch (JSONException e) {
-            e.printStackTrace();
+            if(ret.equals("FAIL"))
+                Services.messageAlert(CreateAccountAthlete.this, "Menasgem", "Atleta não cadastrado\n"+response, "" );
+            else if(ret.equals("OK"))
+                saveAthlete(response);
+    }
+
+    private void saveAthlete(String response){
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        Athletes athlete = des.getAthlete();
+        DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+        long ret = db.addAthlete(athlete);
+        if(ret!=0){
+            Services.messageAlert(CreateAccountAthlete.this, "Salvo", "Atleta cadastrado com sucesso", "POSTATHLETE");
         }
     }
 
+    private void clearForm(){
+        editTextName.setText("");
+        editTextCPF.setText("");
+        editTextAddress.setText("");
+        editTextWeihgt.setText("");
+        editTextHeight.setText("");
+        editTextPosition.setText("");
+        spinnerMonth.setSelection(0);
+        spinnerYear.setSelection(0);
+        spinnerDay.setSelection(0);
+    }
+
     public static void finished(Activity act){
-        ((CreateAccountAthlete)act).finish();
+        ((CreateAccountAthlete)act).finished();
+    }
+    public void finished(){
+        clearForm();
     }
 
     private HashMap<String, String> postData() {

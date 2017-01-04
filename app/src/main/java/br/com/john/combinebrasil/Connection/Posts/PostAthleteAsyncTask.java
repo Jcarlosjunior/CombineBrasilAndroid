@@ -36,26 +36,18 @@ import java.util.List;
 import br.com.john.combinebrasil.CreateAccountAthlete;
 
 public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
-
-    Context context;
-    String resp;
     private Activity activity;
-    int status = 0;
-    private JSONObject obj;
     private JSONObject objPut;
     int statusCode=0;
-    ;
-    @Override
+    String resp = "";
+    String result = "";
+
     protected void onPreExecute() {
         super.onPreExecute();
     }
 
     @Override
     protected String doInBackground(String... params) {
-        InputStream inputStream = null;
-        String result = "";
-        String ret = "";
-
         final HttpParams httpParams = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
         HttpConnectionParams.setSoTimeout(httpParams, 10000);
@@ -66,10 +58,11 @@ public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
         HttpPost post = new HttpPost(params[0]); //strings[0] == url
 
         post.setHeader("content-type", "application/json");
+        post.setHeader("Accept", "application/json");
 
         StringEntity entity = null;
         try {
-            entity = new StringEntity(getObjPut().toString());
+            entity = new StringEntity(objPut.toString());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return e.getMessage();
@@ -79,37 +72,26 @@ public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
         try {
             response = client.execute(post);
             statusCode =response.getStatusLine().getStatusCode();
-            if(statusCode==201)
-                ret="OK";
+            if(statusCode==201 || statusCode ==200)
+                resp="OK";
             else
-                ret="FAIL";
+                resp="FAIL";
 
-            inputStream = response.getEntity().getContent();
+            InputStream inputStream  = response.getEntity().getContent();
 
             result = convertInputStreamToString(inputStream);
-            try {
-                obj = new JSONObject(result);
-                setObj(obj);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Log.v("erro", "0");
-            }
-
         } catch (IOException e) {
             e.printStackTrace();
-            ret = "FAIL";
+            resp = "FAIL";
         }
-
-        setResp(ret);
-        return ret;
+        return resp;
     }
 
     protected void onProgressUpdate(String... progress) { }
 
     @Override
     protected void onPostExecute(String status) {
-        CreateAccountAthlete.afterSendAthlete(getActivity(), getResp(), obj);
-
+        CreateAccountAthlete.afterSendAthlete(activity, resp, result);
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
@@ -126,45 +108,8 @@ public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
     public void setObjPut(JSONObject objPut){
         this.objPut = objPut;
     }
-    public JSONObject getObjPut(){
-        return objPut;
-    }
-
-    public void setObj(JSONObject obj){
-        this.obj = obj;
-    }
-    public JSONObject getObj(){
-        return obj;
-    }
-
-    public String getResp() {
-        return resp;
-    }
-
-    public void setResp(String resp) {
-        this.resp = resp;
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    public Activity getActivity() {
-        return activity;
-    }
 
     public void setActivity(Activity activity) {
         this.activity = activity;
-    }
-
-    private String checkIfNull(String string){
-        if(string == null) {
-            string = "";
-        }
-        return string;
     }
 }

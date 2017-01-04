@@ -61,6 +61,8 @@ public class DetailsAthletes extends AppCompatActivity {
 
         text.setText("Nascimento: "+ athlete.getBirthday()+ "\n"+
                      "CPF: "+athlete.getCPF() +"\n"+
+                     "Endereço: "+athlete.getAddress() +"\n"+
+                     "Posição Desejada: "+athlete.getDesirablePosition() +"\n"+
                      "Altura: "+athlete.getHeight() +"\n"+
                      "Peso: "+athlete.getWeight());
 
