@@ -3,35 +3,25 @@ package br.com.john.combinebrasil;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-
-import com.android.volley.Request;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-import br.com.john.combinebrasil.Classes.Login;
 import br.com.john.combinebrasil.Classes.User;
-import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
-import br.com.john.combinebrasil.Connection.Posts.PostAthleteAsyncTask;
 import br.com.john.combinebrasil.Connection.Posts.PostLogin;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Services;
 import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
-import br.com.john.combinebrasil.Services.SyncDatabase;
 
 public class LoginActivity extends Activity {
 
@@ -95,8 +85,6 @@ public class LoginActivity extends Activity {
                 post.setActivity(LoginActivity.this);
                 post.setObjPut(loginData());
                 post.execute(url);
-
-
             }
             else
                 Services.messageAlert(this,"Aviso", "Sem conexão com a internet","hide");
@@ -111,35 +99,16 @@ public class LoginActivity extends Activity {
         }
 
     public void validaLogin(String response, boolean isList) {
-        DeserializerJsonElements des = new DeserializerJsonElements(response);
-        User user = des.getObjectsUser();
-        DatabaseHelper db = new DatabaseHelper(LoginActivity.this);
-        db.openDataBase();
-        db.addUser(user);
         linearProgress.setVisibility(View.GONE);
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        User user = des.getLogin();
+
         SharedPreferencesAdapter.setLoggedSharedPreferences(LoginActivity.this, true);
+        SharedPreferencesAdapter.setValueStringSharedPreferences(LoginActivity.this, Constants.LOGIN_EMAIL, user.getEmail());
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         AllActivities.isSync = true;
         startActivity(mainIntent);
         finish();
-
-        /*DeserializerJsonElements des = new DeserializerJsonElements(response);
-        User user = new User();
-
-        if (!isList)
-            user = des.getObjectsUser();
-
-        linearProgress.setVisibility(View.GONE);
-        if (!response.equals("")) {
-            //Guarda em memória do cel
-            SharedPreferencesAdapter.setValueStringSharedPreferences(this, Constants.TOKEN, user.getToken());
-            SharedPreferencesAdapter.setValueStringSharedPreferences(this, Constants.USERNAME, user.getUsername());
-            SharedPreferencesAdapter.setValueStringSharedPreferences(this, Constants.NAME, user.getName());
-        }
-        Intent i = new Intent(LoginActivity.this, LoginActivity.class);
-        startActivity(i);
-        LoginActivity.this.finish();*/
-
     }
 
     private void errorLogin(String response, int statusCode){

@@ -19,6 +19,7 @@ import br.com.john.combinebrasil.Classes.Team;
 import br.com.john.combinebrasil.Classes.TeamUsers;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.LoginActivity;
@@ -47,13 +48,6 @@ public class SyncDatabase {
         //initSyncDatabase();
     }
 
-    public void initSyncDatabase() throws IOException {
-        if (Services.isOnline(this.activity)) {
-             MainActivity.textProgress.setText("Sincronizando atletas");
-            callFunc(Constants.URL + Constants.API_ATHLETES, Constants.CALLED_GET_ATHLETES, false);
-        }
-    }
-
     private static  void callFunc(String url, String methodName, boolean isPost) {
         int methodType = isPost ? 1 : 0;
         Log.i("Sync DataBase", methodName + "\n\n "+url);
@@ -66,11 +60,22 @@ public class SyncDatabase {
             MainActivity.linearProgress.setVisibility(View.GONE);
         else if(nameActivity.toString().equals(Constants.LOGIN_ACTIVITY))
             LoginActivity.linearProgress.setVisibility(View.GONE);
+
     }
 
-    public static void athletesResponse(String response) {
+    public void initSyncDatabase() throws IOException {
+        if (Services.isOnline(this.activity)) {
+            MainActivity.textProgress.setText("Verificando seu Usuário");
+            callFunc(Constants.URL + Constants.API_USERS+"?"+Constants.USER_EMAIL+"="+
+                            SharedPreferencesAdapter.getValueStringSharedPreferences(activity,Constants.LOGIN_EMAIL),
+                    Constants.CALLED_GET_USER,  false);
+        }
+    }
+
+    /**********************************************USER********************************************/
+    public static void userResponse(String response) {
         DeserializerJsonElements des = new DeserializerJsonElements(response);
-        ArrayList<Athletes> athletesList = des.getAthletes();
+        User user = des.getUsers();
         DatabaseHelper db = new DatabaseHelper(activity);
         try {
             db.createDataBase();
@@ -80,11 +85,12 @@ public class SyncDatabase {
         }
         try {
             db.openDataBase();
-            db.addAthletes(athletesList);
+            db.addUser(user);
             db.close();
-            //hideProgress(activity.getClass().getSimpleName());
-            callFunc(Constants.URL + Constants.API_POSITIONS, Constants.CALLED_GET_POSITIONS,  false);
-            MainActivity.textProgress.setText("Sincronizando Posições");
+            MainActivity.textProgress.setText("Sincronizando Equipe");
+            String url = Constants.URL + Constants.API_TEAMUSERS+"?"+Constants.TEAMUSERS_USER+"="+user.getId();
+            callFunc(url, Constants.CALLED_GET_TEAMUSERS,  false);
+
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
             SyncDatabase.hideProgress(activity.getClass().getSimpleName());
@@ -92,9 +98,11 @@ public class SyncDatabase {
         }
     }
 
-    public static void positionsResponse(String response) {
+    /*****************************************TEAM USER********************************************/
+    public static void teamUsersResponse(String response) {
         DeserializerJsonElements des = new DeserializerJsonElements(response);
-        ArrayList<Positions> positions = des.getPositions();
+        //ArrayList<TeamUsers> teamUserses = des.getTeamUsers();
+        TeamUsers teamUser = des.getTeamUser();
         DatabaseHelper db = new DatabaseHelper(activity);
         try {
             db.createDataBase();
@@ -104,11 +112,12 @@ public class SyncDatabase {
         }
         try {
             db.openDataBase();
-            db.addPositions(positions);
+            db.addTeamUser(teamUser);
             db.close();
-            //hideProgress(activity.getClass().getSimpleName());
-            callFunc(Constants.URL + Constants.API_SELECTIVEATHLETES, Constants.CALLED_GET_SELECTIVEATHLETES,  false);
-            MainActivity.textProgress.setText("Sincronizando seletiva");
+            MainActivity.textProgress.setText("Sincronizando Seletiva");
+            String url = Constants.URL + Constants.API_SELECTIVES+"?"+Constants.SELECTIVES_TEAM+"="+ teamUser.getTeam();
+            callFunc(url, Constants.CALLED_GET_SELECTIVE,  false);
+
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
             SyncDatabase.hideProgress(activity.getClass().getSimpleName());
@@ -116,29 +125,7 @@ public class SyncDatabase {
         }
     }
 
-    public static void selectiveAthletesResponse(String response) {
-        DeserializerJsonElements des = new DeserializerJsonElements(response);
-        ArrayList<SelectiveAthletes> selectiveAthletes = des.getSelectiveAthletes();
-        DatabaseHelper db = new DatabaseHelper(activity);
-        try {
-            db.createDataBase();
-        } catch (IOException ioe) {
-            Services.messageAlert(activity, "Mensagem", "Unable to create database", "");
-            throw new Error("Unable to create database");
-        }
-        try {
-            db.openDataBase();
-            db.addSelectivesAthletes(selectiveAthletes);
-            db.close();
-            //hideProgress(activity.getClass().getSimpleName());
-            callFunc(Constants.URL + Constants.API_SELECTIVES, Constants.CALLED_GET_SELECTIVE,  false);
-        } catch (SQLException sqle) {
-            Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
-            SyncDatabase.hideProgress(activity.getClass().getSimpleName());
-            throw sqle;
-        }
-    }
-
+    /******************************************SELECTIVE*******************************************/
     public static void selectiveResponse(String response) {
         DeserializerJsonElements des = new DeserializerJsonElements(response);
         ArrayList<Selective> selectives = des.getSelective();
@@ -153,7 +140,7 @@ public class SyncDatabase {
             db.openDataBase();
             db.addSelectives(selectives);
             db.close();
-            callFunc(Constants.URL + Constants.API_TEAMUSERS, Constants.CALLED_GET_TEAMUSERS,  false);
+            callFunc(Constants.URL + Constants.API_TEAMS, Constants.CALLED_GET_TEAM,  false);
             MainActivity.textProgress.setText("Sincronizando avaliadores");
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
@@ -162,29 +149,7 @@ public class SyncDatabase {
         }
     }
 
-    public static void teamUsersResponse(String response) {
-        DeserializerJsonElements des = new DeserializerJsonElements(response);
-        ArrayList<TeamUsers> teamUserses = des.getTeamUsers();
-        DatabaseHelper db = new DatabaseHelper(activity);
-        try {
-            db.createDataBase();
-        } catch (IOException ioe) {
-            Services.messageAlert(activity, "Mensagem", "Unable to create database", "");
-            throw new Error("Unable to create database");
-        }
-        try {
-            db.openDataBase();
-            db.addTeamUsers(teamUserses);
-            db.close();
-            callFunc(Constants.URL + Constants.API_TEAMS, Constants.CALLED_GET_TEAM,  false);
-            MainActivity.textProgress.setText("Sincronizando equipe");
-        } catch (SQLException sqle) {
-            Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
-            SyncDatabase.hideProgress(activity.getClass().getSimpleName());
-            throw sqle;
-        }
-    }
-
+    /**********************************************TEAM********************************************/
     public static void teamResponse(String response) {
         DeserializerJsonElements des = new DeserializerJsonElements(response);
         ArrayList<Team> teams = des.getTeam();
@@ -197,10 +162,21 @@ public class SyncDatabase {
         }
         try {
             db.openDataBase();
-            db.addTeam(teams);
+            ArrayList<Team> teamsAdd = new ArrayList<Team>();
+            Selective item = new Selective();
+            for(Team team : teams){
+                item = db.getSelectiveFromTeam(team.getId());
+                if(item!=null){
+                    teamsAdd.add(team);
+                    break;
+                }
+            }
+            db.addTeam(teamsAdd);
             db.close();
-            callFunc(Constants.URL + Constants.API_TESTTYPES, Constants.CALLED_GET_TESTTYPES,  false);
             MainActivity.textProgress.setText("Sincronizando testes");
+            String url = Constants.URL + Constants.API_SELECTIVEATHLETES+"?"+Constants.SELECTIVEATHLETES_SELECTIVE+"="+item.getId();
+            callFunc(url,
+                    Constants.CALLED_GET_SELECTIVEATHLETES,  false);
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
             SyncDatabase.hideProgress(activity.getClass().getSimpleName());
@@ -208,6 +184,87 @@ public class SyncDatabase {
         }
     }
 
+    /*************************************SELECTIVE ATHLETES***************************************/
+    public static void selectiveAthletesResponse(String response) {
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        ArrayList<SelectiveAthletes> selectiveAthletes = des.getSelectiveAthletes();
+        DatabaseHelper db = new DatabaseHelper(activity);
+        try {
+            db.createDataBase();
+        } catch (IOException ioe) {
+            Services.messageAlert(activity, "Mensagem", "Unable to create database", "");
+            throw new Error("Unable to create database");
+        }
+        try {
+            db.openDataBase();
+            db.addSelectivesAthletes(selectiveAthletes);
+            db.close();
+            callFunc(Constants.URL + Constants.API_ATHLETES, Constants.CALLED_GET_ATHLETES, false);
+        } catch (SQLException sqle) {
+            Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
+            SyncDatabase.hideProgress(activity.getClass().getSimpleName());
+            throw sqle;
+        }
+    }
+
+    /*******************************************ATHLETES*******************************************/
+    public static void athletesResponse(String response) {
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        ArrayList<Athletes> athletesList = des.getAthletes();
+        DatabaseHelper db = new DatabaseHelper(activity);
+        try {
+            db.createDataBase();
+        } catch (IOException ioe) {
+            Services.messageAlert(activity, "Mensagem", "Unable to create database", "");
+            throw new Error("Unable to create database");
+        }
+        try {
+            ArrayList<Athletes> athletesAdd = new ArrayList<Athletes>();
+            for(int i=0; i<=athletesList.size()-1; i++){
+                SelectiveAthletes item = db.getSelectiveAthletesFromAthlete(athletesList.get(i).getId());
+                if(item!=null){
+                    athletesList.get(i).setCode(item.getInscriptionNumber());
+                    athletesAdd.add(athletesList.get(i));
+                }
+
+            }
+            db.openDataBase();
+            db.addAthletes(athletesAdd);
+            db.close();
+            callFunc(Constants.URL + Constants.API_POSITIONS, Constants.CALLED_GET_POSITIONS,  false);
+            MainActivity.textProgress.setText("Sincronizando Posições");
+        } catch (SQLException sqle) {
+            Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
+            SyncDatabase.hideProgress(activity.getClass().getSimpleName());
+            throw sqle;
+        }
+    }
+
+    /******************************************POSITIONS*******************************************/
+    public static void positionsResponse(String response) {
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        ArrayList<Positions> positions = des.getPositions();
+        DatabaseHelper db = new DatabaseHelper(activity);
+        try {
+            db.createDataBase();
+        } catch (IOException ioe) {
+            Services.messageAlert(activity, "Mensagem", "Unable to create database", "");
+            throw new Error("Unable to create database");
+        }
+        try {
+            db.openDataBase();
+            db.addPositions(positions);
+            db.close();
+            callFunc(Constants.URL + Constants.API_TESTTYPES, Constants.CALLED_GET_TESTTYPES,  false);
+            MainActivity.textProgress.setText("Sincronizando seletiva");
+        } catch (SQLException sqle) {
+            Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
+            SyncDatabase.hideProgress(activity.getClass().getSimpleName());
+            throw sqle;
+        }
+    }
+
+    /*****************************************TEST TYPES********************************************/
     public static void testTypesResponse(String response) {
         DeserializerJsonElements des = new DeserializerJsonElements(response);
         ArrayList<TestTypes> testTypes = des.getTestTypes();
@@ -231,6 +288,7 @@ public class SyncDatabase {
         }
     }
 
+    /**********************************************TEST********************************************/
     public static void testResponse(String response) {
         DeserializerJsonElements des = new DeserializerJsonElements(response);
         ArrayList<Tests> test = des.getTest();
@@ -246,8 +304,6 @@ public class SyncDatabase {
             db.addTests(test);
             db.close();
             MainActivity.finishSync(activity);
-            //hideProgress(activity.getClass().getSimpleName());
-           // callFunc(Constants.URL + Constants.API_TESTS, Constants.CALLED_GET_TESTS,  false);
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
             SyncDatabase.hideProgress(activity.getClass().getSimpleName());

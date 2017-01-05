@@ -272,6 +272,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void addTeamUser(TeamUsers teamUserses) {
+        long ret = 0;
+        this.openDataBase();
+        try{
+            ContentValues values = new ContentValues();
+
+            values.put(Constants.TEAMUSERS_ID, teamUserses.getId());
+            values.put(Constants.TEAMUSERS_USER, teamUserses.getUser());
+            values.put(Constants.TEAMUSERS_TEAM, teamUserses.getTeam());
+
+            ret = myDataBase.insert(Constants.TABLE_TEAMUSERS, null, values);
+
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
+
     public void addTeam(ArrayList<Team> teams) {
         long ret = 0;
         this.openDataBase();
@@ -436,6 +453,80 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         return itens;
+    }
+
+    public SelectiveAthletes getSelectiveAthletesFromAthlete(String athlete) {
+        this.openDataBase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_SELECTIVEATHLETES +
+                " WHERE "+Constants.SELECTIVEATHLETES_ATHLETE+"='"+athlete+"'";
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+        SelectiveAthletes obj= new SelectiveAthletes();
+        if (c.moveToNext()) {
+            obj= new SelectiveAthletes(
+                c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_ID)),
+                c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_ATHLETE)),
+                c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_SELECTIVE)),
+                c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER)),
+                Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER)))
+                );
+
+        } else {
+            obj = null;
+        }
+        c.close();
+        this.close();
+
+        return obj;
+    }
+
+    public Selective getSelective() {
+        this.openDataBase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_SELECTIVES;
+
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+        Selective obj= new Selective();
+        if (c.getCount()>0) {
+            obj= new Selective(
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_ID)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_TITLE)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_TEAM)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_DATE))
+            );
+
+        } else {
+            obj = null;
+        }
+        c.close();
+        this.close();
+
+        return obj;
+    }
+
+    public Selective getSelectiveFromTeam(String team) {
+        this.openDataBase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_SELECTIVES +" WHERE "
+                +Constants.SELECTIVES_TEAM +"='"+team+"'" ;
+
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+        Selective obj= new Selective();
+        if ( c.moveToFirst()) {
+            obj= new Selective(
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_ID)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_TITLE)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_TEAM)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_DATE))
+            );
+
+        } else {
+            obj = null;
+        }
+        c.close();
+        this.close();
+
+        return obj;
     }
 
     public ArrayList<Tests> getTests() {

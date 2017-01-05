@@ -173,15 +173,15 @@ public class Services {
         int num = (int)rating;
         String ret = "";
         switch(num){
-            case 1: ret = "Péssimo";
+            case 1: ret = "Muito baixo";
                 break;
-            case 2: ret = "Ruim";
+            case 2: ret = "Baixo";
                 break;
-            case 3: ret = "Regular";
+            case 3: ret = "Medio";
                 break;
-            case 4: ret = "Bom";
+            case 4: ret = "Alto";
                 break;
-            case 5: ret = "Ótimo";
+            case 5: ret = "Muito Alto";
                 break;
         }
         return ret;

@@ -2,17 +2,13 @@ package br.com.john.combinebrasil.Connection.JSONServices;
 
 import android.util.Log;
 
-import junit.framework.Test;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Athletes;
-import br.com.john.combinebrasil.Classes.Login;
 import br.com.john.combinebrasil.Classes.Positions;
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.SelectiveAthletes;
@@ -39,8 +35,8 @@ public class DeserializerJsonElements {
         this.response = response;
     }
 
-    public Login getLogin() {
-        Login login = new Login();
+    public User getLogin() {
+        User login = new User();
         try {
             JSONObject json = new JSONObject(this.response);
             login.setEmail(json.optString(Constants.LOGIN_EMAIL));
@@ -55,6 +51,29 @@ public class DeserializerJsonElements {
     /*
     ***********************************DESERIALIZER USER********************************************
     **/
+    public User getUsers() {
+        User user = null;
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+
+            for(int i=0;i<=jsonArray.length()-1;i++) {
+                JSONObject json = new JSONObject(jsonArray.getString(i));
+
+                user = new User(
+                        json.optString(Constants.USER_ID),
+                        json.optString(Constants.USER_NAME),
+                        json.optString(Constants.USER_EMAIL),
+                        json.optBoolean(Constants.USER_ISADMIN),
+                        json.optBoolean(Constants.USER_CANWRITE),
+                        json.optString(Constants.USER_TOKEN)
+                );
+            }
+        } catch (JSONException jsonExc) {
+            Log.i("JSON ERROR", jsonExc.toString());
+        }
+        return user;
+    }
+
     public User getObjectsUser() {
         User user = null;
         try {
@@ -63,10 +82,9 @@ public class DeserializerJsonElements {
                     json.optString(Constants.USER_ID),
                     json.optString(Constants.USER_NAME),
                     json.optString(Constants.USER_EMAIL),
-                    json.optBoolean(Constants.LOGIN_ISADMIN),
-                    json.optBoolean(Constants.LOGIN_CANWRITE),
+                    json.optBoolean(Constants.USER_ISADMIN),
+                    json.optBoolean(Constants.USER_CANWRITE),
                     json.optString(Constants.USER_TOKEN)
-
             );
         } catch (JSONException jsonExc) {
             Log.i("JSON ERROR", jsonExc.toString());
@@ -241,6 +259,26 @@ public class DeserializerJsonElements {
         return teamUserses;
     }
 
+    public TeamUsers getTeamUser() {
+        TeamUsers team = new TeamUsers();
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+
+            for(int i=0; i<=jsonArray.length()-1; i++){
+                JSONObject json = new JSONObject(jsonArray.getString(i));
+                team = new TeamUsers(
+                        json.optString(Constants.TEAMUSERS_ID),
+                        json.optString(Constants.TEAMUSERS_USER),
+                        json.optString(Constants.TEAMUSERS_TEAM)
+                );
+            }
+        } catch (JSONException e) {
+            team = null;
+            Log.i("ERROR: getPositions", e.getMessage());
+        }
+        return team;
+    }
+
     /***************************************
      * TEAM
      ********************************************/
@@ -256,7 +294,7 @@ public class DeserializerJsonElements {
                             json.optString(Constants.TEAM_ID),
                             json.optString(Constants.TEAM_NAME),
                             json.optString(Constants.TEAM_CITY),
-                            ""
+                            json.optString(Constants.TEAM_MODALITY)
                     );
 
                     teams.add(obj);

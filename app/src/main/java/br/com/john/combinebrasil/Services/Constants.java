@@ -23,7 +23,7 @@ public class Constants {
     public static final String API_SELECTIVES = "api/selectives";
     public static final String API_TEAMUSERS = "api/teamUsers";
     public static final String API_TESTS = "api/tests";
-    public static final String API_USERS = "api/Users";
+    public static final String API_USERS = "api/users";
 
       /*
     **************************CHAMADAS DO VOLLEY***********************************
@@ -31,6 +31,7 @@ public class Constants {
 
     public static final String CALLED_LOGIN = "calledLogin";
     public static final String CALLED_GET_TESTS = "getTests";
+    public static final String CALLED_GET_USER = "getUser";
     public static final String CALLED_GET_ATHLETES= "calledGetAthletes";
     public static final String CALLED_GET_POSITIONS= "getPositions";
     public static final String CALLED_GET_SELECTIVEATHLETES= "getSelectiveAthletes";
