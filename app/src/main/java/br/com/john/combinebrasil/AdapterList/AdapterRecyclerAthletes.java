@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.AthletesActivity;
@@ -53,6 +55,7 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
         TextView textNamePlayer;
         TextView textFirstResult;
         TextView textSecondResult;
+        TextView textCode;
         ImageView imgStatus;
         public ViewHolder(View v) {
             super(v);
@@ -60,6 +63,7 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
             textNamePlayer = (TextView) v.findViewById(R.id.text_name_player_list);
             textFirstResult = (TextView) v.findViewById(R.id.text_first_result_list);
             textSecondResult = (TextView) v.findViewById(R.id.text_second_result_list);
+            textCode = (TextView) v.findViewById(R.id.text_code_list);
             imgStatus = (ImageView) v.findViewById(R.id.img_status_players);
         }
     }
@@ -88,6 +92,7 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
         holder.textNamePlayer.setText(list.get(position).getName());
         holder.textFirstResult.setText("");
         holder.textSecondResult.setText("");
+        holder.textCode.setText(list.get(position).getCode());
 
         DatabaseHelper db = new DatabaseHelper(activity);
         db.openDataBase();

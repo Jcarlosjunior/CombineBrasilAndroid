@@ -164,6 +164,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.ATHLETES_WEIGHT, obj.getWeight());
                 values.put(Constants.ATHLETES_CREATEDAT, obj.getCreatedAt());
                 values.put(Constants.ATHLETES_UPDATEAT, obj.getUpdateAt());
+                values.put(Constants.ATHLETES_CODE, obj.getCode());
 
                 ret = myDataBase.insert(Constants.TABLE_ATHLETES, null, values);
             }
@@ -188,6 +189,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.ATHLETES_WEIGHT, athlete.getWeight());
                 values.put(Constants.ATHLETES_CREATEDAT, athlete.getCreatedAt());
                 values.put(Constants.ATHLETES_UPDATEAT, athlete.getUpdateAt());
+                values.put(Constants.ATHLETES_CODE, athlete.getCode());
 
                 return ret = myDataBase.insert(Constants.TABLE_ATHLETES, null, values);
 
@@ -230,6 +232,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 ret = myDataBase.insert(Constants.TABLE_SELECTIVEATHLETES, null, values);
             }
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
+
+    public void addSelectiveAthlete(SelectiveAthletes selectiveAthlete) {
+        long ret = 0;
+        this.openDataBase();
+        try{
+                ContentValues values = new ContentValues();
+
+                values.put(Constants.SELECTIVEATHLETES_ID, selectiveAthlete.getId());
+                values.put(Constants.SELECTIVEATHLETES_ATHLETE, selectiveAthlete.getAthlete());
+                values.put(Constants.SELECTIVEATHLETES_SELECTIVE, selectiveAthlete.getSelective());
+                values.put(Constants.SELECTIVEATHLETES_PRESENCE, Services.convertBoolInInt(selectiveAthlete.getPresence()));
+                values.put(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER, selectiveAthlete.getInscriptionNumber());
+
+                ret = myDataBase.insert(Constants.TABLE_SELECTIVEATHLETES, null, values);
         }catch (Exception e){
             Log.i("Error", e.getMessage());
         }
@@ -299,7 +319,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TEAM_ID, obj.getId());
                 values.put(Constants.TEAM_NAME, obj.getName());
                 values.put(Constants.TEAM_CITY, obj.getCity());
-                values.put(Constants.TEAM_MODALITY, "");
+                values.put(Constants.TEAM_MODALITY, obj.getModality());
 
                 ret = myDataBase.insert(Constants.TABLE_TEAM, null, values);
             }
@@ -428,6 +448,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             if (c.getCount() > 0) {
                 c.moveToFirst();
                 do {
+                    String code = c.getString(c.getColumnIndex(Constants.ATHLETES_CODE));
+                    if(code == null)
+                        code = "";
                     Athletes obj = new Athletes(
                             c.getString(c.getColumnIndex(Constants.ATHLETES_ID)),
                             c.getString(c.getColumnIndex(Constants.ATHLETES_NAME)),
@@ -439,7 +462,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             c.getDouble(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
                             c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
                             c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
-                            null
+                            code
+                    );
+                    itens.add(obj);
+                } while (c.moveToNext());
+
+            } else {
+                itens = null;
+            }
+            c.close();
+            this.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return itens;
+    }
+
+    public ArrayList<SelectiveAthletes> getSelectivesAthletes() {
+        this.openDataBase();
+        ArrayList<SelectiveAthletes> itens = new ArrayList<SelectiveAthletes>();
+        try {
+            String selectQuery = "SELECT * FROM " + Constants.TABLE_SELECTIVEATHLETES;
+            Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                do {
+                    SelectiveAthletes obj = new SelectiveAthletes(
+                            c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_ID)),
+                            c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_ATHLETE)),
+                            c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_SELECTIVE)),
+                            c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER)),
+                            Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVEATHLETES_PRESENCE)))
                     );
                     itens.add(obj);
                 } while (c.moveToNext());
@@ -487,12 +541,65 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Cursor c = myDataBase.rawQuery(selectQuery, null);
         Selective obj= new Selective();
-        if (c.getCount()>0) {
+        if (c.moveToNext()) {
             obj= new Selective(
                     c.getString(c.getColumnIndex(Constants.SELECTIVES_ID)),
                     c.getString(c.getColumnIndex(Constants.SELECTIVES_TITLE)),
                     c.getString(c.getColumnIndex(Constants.SELECTIVES_TEAM)),
                     c.getString(c.getColumnIndex(Constants.SELECTIVES_DATE))
+            );
+
+        } else {
+            obj = null;
+        }
+        c.close();
+        this.close();
+
+        return obj;
+    }
+
+    public ArrayList<Positions> getPositions() {
+        this.openDataBase();
+        ArrayList<Positions> itens = new ArrayList<Positions>();
+        try {
+            String selectQuery = "SELECT * FROM " + Constants.TABLE_POSITIONS;
+            Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                do {
+                    Positions obj = new Positions(
+                            c.getString(c.getColumnIndex(Constants.POSITIONS_ID)),
+                            c.getString(c.getColumnIndex(Constants.POSITIONS_NAME)),
+                            c.getString(c.getColumnIndex(Constants.POSITIONS_DESCRIPTIONS))
+                    );
+                    itens.add(obj);
+                } while (c.moveToNext());
+
+            } else {
+                itens = null;
+            }
+            c.close();
+            this.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return itens;
+    }
+
+    public Team getTeam() {
+        this.openDataBase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_TEAM;
+
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+        Team obj= new Team();
+        if (c.getCount()>0) {
+            obj= new Team(
+                    c.getString(c.getColumnIndex(Constants.TEAM_ID)),
+                    c.getString(c.getColumnIndex(Constants.TEAM_NAME)),
+                    c.getString(c.getColumnIndex(Constants.TEAM_CITY)),
+                    c.getString(c.getColumnIndex(Constants.TEAM_MODALITY))
             );
 
         } else {
@@ -649,7 +756,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getDouble(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
                     c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
                     c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
-                    null
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_CODE))
             );
         } else {
             athlete = null;
@@ -718,6 +825,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return test;
     }
 
+    public Positions getPositiomById(String id){
+        this.openDataBase();
+        String selectQuery = "SELECT DISTINCT * FROM "+ Constants.TABLE_POSITIONS +
+                " WHERE "+Constants.POSITIONS_ID +" ='"+id+"'";
+
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+        Positions position = new Positions();
+
+        if (c.moveToFirst()) {
+            position = new Positions(
+                    c.getString(c.getColumnIndex(Constants.POSITIONS_ID)),
+                    c.getString(c.getColumnIndex(Constants.POSITIONS_NAME)),
+                    c.getString(c.getColumnIndex(Constants.POSITIONS_DESCRIPTIONS))
+            );
+        } else {
+            position = null;
+        }
+        c.close();
+        this.close();
+        return position;
+    }
+
     public User checkExistsUser(String userName, String password) {
         String selectGetUser = "SELECT DISTINCT * FROM [" + Constants.TABLE_USER + "] WHERE Username = '" + userName +
                 "'" + " AND password ='" + password + "'";
@@ -765,7 +895,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getDouble(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
                         c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
                         c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
-                        null
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_CODE))
                 );
                 athletes.add(athlete);
             }while(c.moveToNext());

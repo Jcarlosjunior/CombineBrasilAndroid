@@ -204,4 +204,23 @@ public class Services {
         }
         return ret;
     }
+
+    public static String convertDate(String date){
+        String dateNow = "";
+        try {
+            for (int i = 0; i <= date.length() - 1; i++) {
+                String c = date.substring(i, i + 1);
+                if (c.equals("T")) {
+                    break;
+                } else
+                    dateNow = dateNow.concat(c);
+            }
+            String year = dateNow.substring(0, 4);
+            String month = dateNow.substring(5, 7);
+            String day = dateNow.substring(8, 10);
+            return day + "/" + month + "/" + year;
+        }catch (Exception e){
+            return date;
+        }
+    }
 }

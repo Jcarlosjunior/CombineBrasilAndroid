@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     NavigationDrawer navigationDrawer;
 
-    ImageView imgCloseMenu;
+    ImageView imgCreateAthlete, imgUpdate, imgUpload, imgHelp, imgExit;
     LinearLayout linearMenu;
 
     @Override
@@ -47,15 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
         /*navigationDrawer = new NavigationDrawer(savedInstanceState, toolbar, true);
         navigationDrawer.createNavigationAccess();*/
-
-        imgCloseMenu = (ImageView) findViewById(R.id.btn_close_menu);
-        imgCloseMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                linearMenu.setVisibility(View.GONE);
-            }
-        });
-        linearMenu = (LinearLayout) findViewById(R.id.linear_menu);
 
         LinearLayout linearBacktoolbar = (LinearLayout) findViewById(R.id.linear_back_button);
         linearBacktoolbar.setVisibility(View.GONE);
@@ -73,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
+        createMenu();
 
         linearProgress = (LinearLayout) findViewById(R.id.linear_progress_tests);
         textProgress = (TextView) findViewById(R.id.text_progress);
@@ -187,5 +177,63 @@ public class MainActivity extends AppCompatActivity {
     public void onRestart(){
         super.onRestart();
         PlayersFragment.callInflateAthletes();
+    }
+
+    Intent intent = null;
+    private void createMenu(){
+        linearMenu = (LinearLayout) findViewById(R.id.linear_menu);
+        imgCreateAthlete = (ImageView) findViewById(R.id.img_create_menu);
+        imgUpdate = (ImageView) findViewById(R.id.img_update_menu);
+        imgUpload = (ImageView) findViewById(R.id.img_upload_menu);
+        imgHelp = (ImageView) findViewById(R.id.img_help_menu);
+        imgExit = (ImageView) findViewById(R.id.img_exit_menu);
+
+        linearMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearMenu.setVisibility(View.GONE);
+            }
+        });
+
+        imgCreateAthlete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearMenu.setVisibility(View.GONE);
+                intent = new Intent(MainActivity.this, CreateAccountAthlete.class);
+                startActivity(intent);
+            }
+        });
+
+        imgUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearMenu.setVisibility(View.GONE);
+            }
+        });
+
+        imgUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearMenu.setVisibility(View.GONE);
+                intent = new Intent(MainActivity.this, SyncActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        imgHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearMenu.setVisibility(View.GONE);
+            }
+        });
+
+        imgExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearMenu.setVisibility(View.GONE);
+            }
+        });
+
+
     }
 }

@@ -163,7 +163,7 @@ public class DeserializerJsonElements {
                     JSONObject json = new JSONObject(jsonArray.getString(i));
                     Positions obj = new Positions(json.optString(Constants.POSITIONS_ID),
                             json.optString(Constants.POSITIONS_NAME),
-                            "");
+                            json.optString(Constants.POSITIONS_DESCRIPTIONS));
 
                     positions.add(obj);
                 }
@@ -197,6 +197,24 @@ public class DeserializerJsonElements {
                     selectiveAthletes.add(obj);
                 }
             }
+        } catch (JSONException e) {
+            selectiveAthletes = null;
+            Log.i("ERROR: getPositions", e.getMessage());
+        }
+        return selectiveAthletes;
+    }
+
+    public SelectiveAthletes getSelectiveAthlete() {
+        SelectiveAthletes selectiveAthletes = new SelectiveAthletes();
+        try {
+            JSONObject json = new JSONObject(response);
+            selectiveAthletes = new SelectiveAthletes(
+                    json.optString(Constants.SELECTIVEATHLETES_ID),
+                    json.optString(Constants.SELECTIVEATHLETES_ATHLETE),
+                    json.optString(Constants.SELECTIVEATHLETES_SELECTIVE),
+                    json.optString(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER),
+                    json.optBoolean(Constants.SELECTIVEATHLETES_PRESENCE)
+            );
         } catch (JSONException e) {
             selectiveAthletes = null;
             Log.i("ERROR: getPositions", e.getMessage());

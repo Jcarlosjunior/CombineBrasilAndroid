@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -251,38 +252,38 @@ public class AthletesActivity extends AppCompatActivity {
         }
     };
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void orderName (){
-        if(!(athletesArrayList == null || athletesArrayList.size()==0)) {
+        try {
+            if (!(athletesArrayList == null || athletesArrayList.size() == 0)) {
 
-            Collections.sort(athletesArrayList, new Comparator<Athletes>() {
-            public int compare(Athletes v1, Athletes v2) {
-                return v1.getName().compareTo(v2.getName());
+                Collections.sort(athletesArrayList, new Comparator<Athletes>() {
+                    public int compare(Athletes v1, Athletes v2) {
+                        return v1.getName().toLowerCase().compareTo(v2.getName().toLowerCase());
+                    }
+                });
+
+                showList(athletesArrayList);
+                textOptionName.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.colorPrimary));
+                textOptionCode.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.black));
             }
-        });
-
-            showList(athletesArrayList);
-            textOptionName.setTextColor(getColor(R.color.primary));
-            textOptionCode.setTextColor(getColor(R.color.black));
-        }
+        }catch (Exception e){}
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void orderCode(){
         try {
             if(!(athletesArrayList == null || athletesArrayList.size()==0)) {
                 Collections.sort(athletesArrayList, new Comparator<Athletes>() {
                     public int compare(Athletes v1, Athletes v2) {
-                        return v1.getCode().compareTo(v2.getCode());
+                        return v1.getCode().toLowerCase().compareTo(v2.getCode().toLowerCase());
                     }
                 });
 
                 showList(athletesArrayList);
-                textOptionCode.setTextColor(getColor(R.color.primary));
-                textOptionName.setTextColor(getColor(R.color.black));
+                textOptionCode.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.colorPrimary));
+                textOptionName.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.black));
             }
         }catch (Exception e){
-
+            Log.i("Error ",e.getMessage());
         }
     }
 

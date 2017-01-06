@@ -25,7 +25,7 @@ public class ReturnError {
 
     public void goTo(String whoCalled, Activity activity, String message, int statusError) {
             if(whoCalled.equals(Constants.CALLED_POST_ATHLETES)){
-                CreateAccountAthlete.returnPostAthlete(activity, message, statusError);
+                //CreateAccountAthlete.returnPostAthlete(activity, message, statusError);
             }
         else if(whoCalled.equals(Constants.CALLED_LOGIN)){
                 LoginActivity.afterLogin(message, false, activity, statusError);

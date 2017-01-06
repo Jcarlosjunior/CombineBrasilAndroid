@@ -41,6 +41,7 @@ public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
     int statusCode=0;
     String resp = "";
     String result = "";
+    boolean isPlay;
 
     protected void onPreExecute() {
         super.onPreExecute();
@@ -91,7 +92,10 @@ public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String status) {
-        CreateAccountAthlete.afterSendAthlete(activity, resp, result);
+        if(isPlay)
+            CreateAccountAthlete.afterSendAthlete(activity, resp, result);
+        else
+            CreateAccountAthlete.afterSendSelectiveAthlete(activity, resp, result);
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
@@ -111,5 +115,13 @@ public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
 
     public void setActivity(Activity activity) {
         this.activity = activity;
+    }
+
+    public boolean isPlay() {
+        return isPlay;
+    }
+
+    public void setPlay(boolean play) {
+        isPlay = play;
     }
 }

@@ -1,5 +1,6 @@
 package br.com.john.combinebrasil;
 
+import android.app.Service;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,10 +14,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.Positions;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
+import br.com.john.combinebrasil.Services.Services;
 
 public class DetailsAthletes extends AppCompatActivity {
     Toolbar toolbar;
+    TextView textName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,8 @@ public class DetailsAthletes extends AppCompatActivity {
         linearAddAccount.setVisibility(View.GONE);
         ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
         imgSearch.setVisibility(View.GONE);
+
+        textName = (TextView) findViewById(R.id.text_name_details);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
@@ -59,12 +65,21 @@ public class DetailsAthletes extends AppCompatActivity {
 
         TextView text = (TextView) findViewById(R.id.text_details_athlete);
 
-        text.setText("Nascimento: "+ athlete.getBirthday()+ "\n"+
+        Positions positiom = db.getPositiomById(athlete.getDesirablePosition());
+
+        textName.setText(athlete.getName());
+        String pos = "";
+        if(positiom!=null){
+            pos = positiom.getNAME();
+        }
+        else
+            pos = athlete.getDesirablePosition();
+        text.setText("Nascimento: "+ Services.convertDate(athlete.getBirthday())+ "\n"+
                      "CPF: "+athlete.getCPF() +"\n"+
                      "Endereço: "+athlete.getAddress() +"\n"+
-                     "Posição Desejada: "+athlete.getDesirablePosition() +"\n"+
-                     "Altura: "+athlete.getHeight() +"\n"+
-                     "Peso: "+athlete.getWeight());
+                     "Posição Desejada: "+pos +"\n"+
+                     "Altura: "+String.format("%.2f", athlete.getHeight()).replace(".",",") +"\n"+
+                     "Peso: "+String.format("%.0f",athlete.getWeight()).replace(".",",")+" Kg");
 
 
 

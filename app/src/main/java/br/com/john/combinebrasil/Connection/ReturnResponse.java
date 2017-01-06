@@ -59,9 +59,6 @@ public class ReturnResponse {
                 else if (whoCalled.equals(Constants.CALLED_GET_TESTS))
                     SyncDatabase.testResponse(response);
 
-                else if (whoCalled.equals(Constants.CALLED_POST_ATHLETES)) {
-                    CreateAccountAthlete.returnPostAthlete(activity, response, statuCode);
-                }
             }
         } catch (Exception e) {
             Log.i("ERRO", e.toString());

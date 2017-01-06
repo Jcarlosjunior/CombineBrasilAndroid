@@ -86,6 +86,7 @@ public class Constants {
     public static final String ATHLETES_WEIGHT = "weight";
     public static final String ATHLETES_CREATEDAT = "createdAt";
     public static final String ATHLETES_UPDATEAT = "updatedAt";
+    public static final String ATHLETES_CODE = "code";
 
     /*******************************USER TABLE ***********************************/
     public static final String TABLE_USER = "User";

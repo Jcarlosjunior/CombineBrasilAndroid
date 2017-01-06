@@ -47,6 +47,7 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
         TextView textNamePlayer;
         TextView textFirstResult;
         TextView textSecondResult;
+        TextView textCode;
         ImageView imgStatus;
     }
 
@@ -65,6 +66,7 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
             viewHolder.textNamePlayer = (TextView) convertView.findViewById(R.id.text_name_player_list);
             viewHolder.textFirstResult = (TextView) convertView.findViewById(R.id.text_first_result_list);
             viewHolder.textSecondResult = (TextView) convertView.findViewById(R.id.text_second_result_list);
+            viewHolder.textCode = (TextView) convertView.findViewById(R.id.text_code_list);
             viewHolder.imgStatus = (ImageView) convertView.findViewById(R.id.img_status_players);
             convertView.setTag(viewHolder);
         } else {
@@ -80,6 +82,7 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
         viewHolder.textNamePlayer.setText(list.get(position).getName());
         viewHolder.textFirstResult.setText("");
         viewHolder.textSecondResult.setText("");
+        viewHolder.textCode.setText(list.get(position).getCode());
 
         DatabaseHelper db = new DatabaseHelper(activity);
         db.openDataBase();

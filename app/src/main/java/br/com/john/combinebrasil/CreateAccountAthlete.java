@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,10 +21,15 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.Positions;
+import br.com.john.combinebrasil.Classes.Selective;
+import br.com.john.combinebrasil.Classes.SelectiveAthletes;
+import br.com.john.combinebrasil.Classes.Team;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostAthleteAsyncTask;
@@ -33,11 +39,12 @@ import br.com.john.combinebrasil.Services.Mask;
 import br.com.john.combinebrasil.Services.Services;
 
 public class CreateAccountAthlete extends AppCompatActivity {
-    MaterialBetterSpinner spinnerDay, spinnerMonth, spinnerYear;
+    MaterialBetterSpinner spinnerDay, spinnerMonth, spinnerYear, spinnerPosition;
     Toolbar toolbar;
-    EditText editTextName, editTextCPF, editTextPosition, editTextAddress, editTextHeight, editTextWeihgt;
+    EditText editTextName, editTextCPF, editTextAddress, editTextHeight, editTextWeihgt;
     private Button buttonAdd;
     Athletes athlete;
+    ArrayList<Positions> positions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +61,6 @@ public class CreateAccountAthlete extends AppCompatActivity {
         editTextName = (EditText) findViewById(R.id.edit_name_add);
         editTextCPF = (EditText) findViewById(R.id.edit_cpf_add);
         editTextAddress = (EditText) findViewById(R.id.edit_address_add);
-        editTextPosition = (EditText) findViewById(R.id.edit_position_add);
         editTextHeight = (EditText) findViewById(R.id.edit_height_add);
         editTextWeihgt = (EditText) findViewById(R.id.edit_weight_add);
         buttonAdd = (Button) findViewById(R.id.button_add_athlete);
@@ -62,8 +68,10 @@ public class CreateAccountAthlete extends AppCompatActivity {
         spinnerDay  = (MaterialBetterSpinner) findViewById(R.id.spinner_day_birthday_add);
         spinnerMonth = (MaterialBetterSpinner) findViewById(R.id.spinner_month_birthday_add);
         spinnerYear = (MaterialBetterSpinner) findViewById(R.id.spinner_year_birthday_add);
+        spinnerPosition = (MaterialBetterSpinner) findViewById(R.id.spinner_positions_add);
 
         inflateSpinnerDay();
+        inflateSpinnerPosition();
 
         Mask maskCpf = new Mask("###.###.###-##", editTextCPF);
         editTextCPF.addTextChangedListener(maskCpf);
@@ -77,6 +85,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
             callAddAthlete();
         }
     };
+
     private void callAddAthlete(){
        if(verifyForm()) {
            if(validaBirthday()) {
@@ -88,35 +97,17 @@ public class CreateAccountAthlete extends AppCompatActivity {
                    PostAthleteAsyncTask post = new PostAthleteAsyncTask();
                    post.setActivity(CreateAccountAthlete.this);
                    post.setObjPut(createObject());
+                   post.setPlay(true);
                    post.execute(url);
                }
            }
         }
     }
 
-    private void createAthlete(String id){
-        double height = Double.parseDouble(editTextHeight.getText().toString().replaceAll(",","."));
-        double weight = Double.parseDouble(editTextWeihgt.getText().toString().replaceAll(",","."));
-        String birthday = spinnerYear.getText().toString()+"-"+
-                chooseMonth(spinnerMonth.getText().toString())+"-"+spinnerDay.getText().toString();
-
-        athlete = new Athletes(
-                id,
-                editTextName.getText().toString(),
-                birthday,
-                editTextCPF.getText().toString(),
-                editTextAddress.getText().toString(),
-                editTextPosition.getText().toString(),
-                height,
-                weight,
-                "",
-                "",
-                ""
-        );
-
-    }
     private JSONObject createObject() {
         JSONObject object = new JSONObject();
+        int position = getIndex(spinnerPosition);
+
         try {
             double height = Double.parseDouble(editTextHeight.getText().toString().replaceAll(",","."));
             double weight = Double.parseDouble(editTextWeihgt.getText().toString().replaceAll(",","."));
@@ -124,7 +115,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
             object.put(Constants.ATHLETES_NAME, editTextName.getText().toString());
             object.put(Constants.ATHLETES_CPF, editTextCPF.getText().toString());
             object.put(Constants.ATHLETES_ADDRESS, editTextAddress.getText().toString());
-            object.put(Constants.ATHLETES_DESIRABLE_POSITION, editTextPosition.getText().toString());
+            object.put(Constants.ATHLETES_DESIRABLE_POSITION, positions.get(position).getID());
             object.put(Constants.ATHLETES_HEIGHT, height);
             object.put(Constants.ATHLETES_WEIGHT, weight);
             object.put(Constants.ATHLETES_BIRTHDAY, birthday);
@@ -134,85 +125,29 @@ public class CreateAccountAthlete extends AppCompatActivity {
         return object;
     }
 
-    private boolean verifyForm(){
-        boolean ver = true;
-        if(!validaName(editTextName))
-            ver = false;
-        if (!validaCPF(editTextCPF))
-            ver = false;
-        if (!validaName(editTextAddress))
-            ver = false;
-        if(!validateText(editTextHeight, "Altura inválido."))
-            ver = false;
-        if(!validateText(editTextWeihgt,"Peso inválido"))
-            ver = false;
+    int index = 0;
+    private int getIndex(MaterialBetterSpinner spinner)
+    {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-        if(!ver)
-            Services.messageAlert(this, "Alerta","Dados inválidos, por favor, verifique para continuar.","");
-        return ver;
-    }
-    public boolean validaName(EditText edit){
-        boolean ver = false;
-        if(getString(edit).length()>=5) {
-            Services.changeColorEditBorder(edit, this);
-            ver = true;
-        }
-        else
-            Services.changeColorEditBorderError(edit, this);
-        return ver;
-    }
-
-    public boolean validaCPF(EditText edit){
-        boolean ver = false;
-        if(getString(edit).length()>=14) {
-            Services.changeColorEditBorder(edit, this);
-            ver = true;
-        }
-        else
-           Services.changeColorEditBorderError(edit, this);
-        return ver;
-    }
-
-    private boolean validaBirthday(){
-        boolean ver = false;
-        if(spinnerDay.getText().toString().equals(""))
-            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Dia de nascimento inválido","");
-        else if(spinnerMonth.getText().toString().equals(""))
-            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Mês de nascimento inválido","");
-        else if(spinnerYear.getText().toString().equals(""))
-            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Mês de nascimento inválido","");
-        else
-            ver=true;
-        return ver;
-    }
-    private boolean validateText(EditText edit, String msg){
-        boolean ver = false;
-        if(getString(edit).length()>=2){
-            int cont=0;
-            for(int i=0; i<= edit.length()-1; i++)
-            {
-                String s = String.valueOf(edit.getText().toString().charAt(i));
-                if(s.equals(",") || s.equals("."))
-                    cont = cont+1;
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                String seluniversity = (String) arg0.getSelectedItem();
+                index = position;
             }
-            if(cont<=1) {
-                Services.changeColorEditBorder(edit, this);
-                ver = true;
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
-            else
-                Services.changeColorEditBorderError(edit, this);
-        }
-        else
-            Services.changeColorEditBorderError(edit, this);
-        return ver;
+        });
+
+        return index;
     }
+
     private String getString(EditText edit){
         return edit.getText().toString().trim().equals("") ? "" : edit.getText().toString();
     }
 
-    public static void returnPostAthlete(Activity act, String response, int status){
-        //((CreateAccountAthlete) act).afterPost(response);
-    }
     public static void afterSendAthlete(Activity act, String ret, String response){
         ((CreateAccountAthlete)act).afterPost(ret, response);
     }
@@ -227,13 +162,69 @@ public class CreateAccountAthlete extends AppCompatActivity {
     }
 
     private void saveAthlete(String response){
+        LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
+        linearProgress.setVisibility(View.GONE);
+
         DeserializerJsonElements des = new DeserializerJsonElements(response);
-        Athletes athlete = des.getAthlete();
+        athlete = des.getAthlete();
+        createCode(athlete.getId());
+    }
+
+    private void createCode(String idAthlete){
+        String url = Constants.URL + Constants.API_SELECTIVEATHLETES;
+
+        PostAthleteAsyncTask post = new PostAthleteAsyncTask();
+        post.setActivity(CreateAccountAthlete.this);
+        post.setObjPut(createObjectSelectiveAthletes(idAthlete));
+        post.setPlay(false);
+        post.execute(url);
+    }
+
+    private JSONObject createObjectSelectiveAthletes(String athlete) {
         DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
-        long ret = db.addAthlete(athlete);
-        if(ret!=0){
-            Services.messageAlert(CreateAccountAthlete.this, "Salvo", "Atleta cadastrado com sucesso", "POSTATHLETE");
+        Selective selective = db.getSelective();
+        ArrayList<SelectiveAthletes> selectivesAthletes = db.getSelectivesAthletes();
+
+        int num = selectivesAthletes.size()+1;
+        String numCode = String.valueOf(num);
+        if(num<9)
+            numCode = "0"+num;
+
+        String nameSelective = selective.getTitle().toString().toUpperCase().substring(0,2)+"-"+numCode;
+
+        JSONObject object = new JSONObject();
+        try {
+            object.put(Constants.SELECTIVEATHLETES_ATHLETE, athlete);
+            object.put(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER, nameSelective);
+            object.put(Constants.SELECTIVEATHLETES_SELECTIVE, selective.getId());
+            object.put(Constants.SELECTIVEATHLETES_PRESENCE, true);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        return object;
+    }
+
+    public static void afterSendSelectiveAthlete(Activity act, String response, String result){
+        ((CreateAccountAthlete)act).afterSendSelectiveAthlete(response, result);
+    }
+    private void afterSendSelectiveAthlete(String response, String result){
+        LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
+        linearProgress.setVisibility(View.GONE);
+        if(response.equals("FAIL"))
+            Services.messageAlert(CreateAccountAthlete.this, "Menasgem", "Atleta não cadastrado\n"+result, "" );
+        else if(response.equals("OK")) {
+            DeserializerJsonElements des = new DeserializerJsonElements(result);
+            SelectiveAthletes item = des.getSelectiveAthlete();
+
+            DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+            db.addSelectiveAthlete(item);
+            athlete.setCode(item.getInscriptionNumber());
+            long ret = db.addAthlete(athlete);
+            if(ret!=0){
+                Services.messageAlert(CreateAccountAthlete.this, "Salvo", "Atleta cadastrado com sucesso", "POSTATHLETE");
+            }
+        }
+
     }
 
     private void clearForm(){
@@ -242,7 +233,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
         editTextAddress.setText("");
         editTextWeihgt.setText("");
         editTextHeight.setText("");
-        editTextPosition.setText("");
+        spinnerPosition.setText("");
         spinnerMonth.setSelection(0);
         spinnerYear.setSelection(0);
         spinnerDay.setSelection(0);
@@ -251,6 +242,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
     public static void finished(Activity act){
         ((CreateAccountAthlete)act).finished();
     }
+
     public void finished(){
         clearForm();
     }
@@ -308,6 +300,21 @@ public class CreateAccountAthlete extends AppCompatActivity {
         }
     };
 
+    private void inflateSpinnerPosition(){
+        DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+        positions = db.getPositions();
+
+        if(positions!=null){
+            String [] adapter = new String[positions.size()];
+            for(int i =0;i<=positions.size()-1;i++){
+                adapter[i] = positions.get(i).getNAME();
+            }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, adapter);
+            spinnerPosition.setAdapter(arrayAdapter);
+
+        }
+    }
+
     private void inflateSpinnerDay(){
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -331,7 +338,84 @@ public class CreateAccountAthlete extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapterYear = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerYearsValues);
 
         spinnerDay.setAdapter(arrayAdapterDay);
-        spinnerMonth.setAdapter(arrayAdapterMonth   );
+        spinnerMonth.setAdapter(arrayAdapterMonth);
         spinnerYear.setAdapter(arrayAdapterYear);
+    }
+
+    private boolean verifyForm(){
+        boolean ver = true;
+        if(!validaName(editTextName))
+            ver = false;
+        if (!validaCPF(editTextCPF))
+            ver = false;
+        if (!validaName(editTextAddress))
+            ver = false;
+        if(!validateText(editTextHeight, "Altura inválido."))
+            ver = false;
+        if(!validateText(editTextWeihgt,"Peso inválido"))
+            ver = false;
+
+        if(!ver)
+            Services.messageAlert(this, "Alerta","Dados inválidos, por favor, verifique para continuar.","");
+        return ver;
+    }
+
+    public boolean validaName(EditText edit) {
+        boolean ver = false;
+        if(getString(edit).length()>=5) {
+            Services.changeColorEditBorder(edit, this);
+            ver = true;
+        }
+        else
+            Services.changeColorEditBorderError(edit, this);
+        return ver;
+    }
+
+    public boolean validaCPF(EditText edit){
+        boolean ver = false;
+        if(getString(edit).length()>=14) {
+            Services.changeColorEditBorder(edit, this);
+            ver = true;
+        }
+        else
+            Services.changeColorEditBorderError(edit, this);
+        return ver;
+    }
+
+    private boolean validaBirthday(){
+        boolean ver = false;
+        if(spinnerDay.getText().toString().equals(""))
+            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Dia de nascimento inválido","");
+        else if(spinnerMonth.getText().toString().equals(""))
+            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Mês de nascimento inválido","");
+        else if(spinnerYear.getText().toString().equals(""))
+            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Mês de nascimento inválido","");
+        else if(spinnerPosition.getText().toString().equals(""))
+            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Selecione uma posição desejada","");
+        else
+            ver=true;
+        return ver;
+    }
+
+    private boolean validateText(EditText edit, String msg){
+        boolean ver = false;
+        if(getString(edit).length()>=2){
+            int cont=0;
+            for(int i=0; i<= edit.length()-1; i++)
+            {
+                String s = String.valueOf(edit.getText().toString().charAt(i));
+                if(s.equals(",") || s.equals("."))
+                    cont = cont+1;
+            }
+            if(cont<=1) {
+                Services.changeColorEditBorder(edit, this);
+                ver = true;
+            }
+            else
+                Services.changeColorEditBorderError(edit, this);
+        }
+        else
+            Services.changeColorEditBorderError(edit, this);
+        return ver;
     }
 }

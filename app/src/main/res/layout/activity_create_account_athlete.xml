@@ -84,21 +84,17 @@
                             android:background="@drawable/background_edit_border"
                             />
 
-                        <EditText
-                            android:id="@+id/edit_position_add"
+                        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                            android:id="@+id/spinner_positions_add"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.3"
                             android:hint="@string/position"
                             android:paddingLeft="10sp"
-                            android:paddingBottom="10sp"
-                            android:paddingTop="10sp"
                             android:textColor="@color/black"
                             android:textColorHint="@color/greyDark"
                             android:textSize="16sp"
                             android:layout_marginBottom="15sp"
-                            android:singleLine="true"
-                            android:imeOptions="actionNext"
                             android:background="@drawable/background_edit_border"
                             />
 
