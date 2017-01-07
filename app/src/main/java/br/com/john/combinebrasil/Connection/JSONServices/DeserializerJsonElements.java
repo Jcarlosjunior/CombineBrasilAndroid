@@ -385,4 +385,29 @@ public class DeserializerJsonElements {
         }
         return testses;
     }
+    public Tests getTestObject() {
+        Tests testses = new Tests();
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+
+            if (jsonArray.length() > 0) {
+                for (int i = 0; i <= jsonArray.length() - 1; i++) {
+                    JSONObject json = new JSONObject(jsonArray.getString(i));
+                    Tests obj = new Tests(
+                            json.optString(Constants.TESTS_ID),
+                            json.optString(Constants.TESTS_TYPE),
+                            json.optString(Constants.TESTS_ATHLETE),
+                            json.optString(Constants.TESTS_FIRST_VALUE),
+                            json.optString(Constants.TESTS_SECOND_VALUE),
+                            (float) (json.optDouble(Constants.TESTS_RATING)),
+                            Services.convertBoolInInt(true)
+                    );
+                }
+            }
+        } catch (JSONException e) {
+            testses = null;
+            Log.i("ERROR: getPositions", e.getMessage());
+        }
+        return testses;
+    }
 }

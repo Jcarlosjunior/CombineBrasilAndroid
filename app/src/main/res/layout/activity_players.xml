@@ -115,6 +115,16 @@
             android:layout_height="0dp"
             android:layout_weight="0.9"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/text_count_athletes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grey"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:text="02/50"
+                android:textStyle="bold"
+                />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list_players"
                 android:layout_width="match_parent"

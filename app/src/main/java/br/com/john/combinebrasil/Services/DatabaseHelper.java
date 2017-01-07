@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -362,6 +363,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTS_FIRST_VALUE, obj.getFirstValue());
                 values.put(Constants.TESTS_SECOND_VALUE, obj.getSecondValue());
                 values.put(Constants.TESTS_RATING, obj.getRating());
+                values.put(Constants.TESTS_SYNC, obj.getSync());
 
                 ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
             }
@@ -437,6 +439,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /****************************************SELECT DATABASE********************************************************/
+
+    public long getCountTable(String table){
+        this.openDataBase();
+       return  DatabaseUtils.longForQuery(myDataBase, "SELECT COUNT(*) FROM "+table, null);
+    }
+
+    public long getCountTest(String idTest){
+        this.openDataBase();
+        return  DatabaseUtils.longForQuery(myDataBase, "SELECT COUNT(*) FROM "+Constants.TABLE_TESTS +" WHERE "+Constants.TESTS_TYPE+" ='"+idTest+"'", null);
+    }
+
+    public long getCountTetsSync(String idTest){
+        this.openDataBase();
+        return  DatabaseUtils.longForQuery(myDataBase, "SELECT COUNT(*) FROM "+Constants.TABLE_TESTS +" " +
+                "WHERE "+Constants.TESTS_SYNC+" =1 and "+Constants.TESTS_TYPE+"='"+idTest+"'", null);
+    }
 
     public ArrayList<Athletes> getAthletes() {
         this.openDataBase();
@@ -669,6 +687,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return itens;
     }
 
+    public ArrayList<Tests> getTestsFromType(String idType) {
+        this.openDataBase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_TESTS +" WHERE "+Constants.TESTS_TYPE+" = '"+idType+"'";
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+        ArrayList<Tests> itens = new ArrayList<Tests>();
+
+        if (c.getCount()>0) {
+            c.moveToFirst();
+            do {
+                Tests obj = new Tests(
+                        c.getString(c.getColumnIndex(Constants.TESTS_ID)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_TYPE)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_ATHLETE)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_FIRST_VALUE)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_SECOND_VALUE)),
+                        c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
+                        c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
+                );
+
+                itens.add(obj);
+            } while (c.moveToNext());
+
+        } else {
+            itens = null;
+        }
+        c.close();
+        this.close();
+
+        return itens;
+    }
+
     public ArrayList<TestTypes> getTestsTypes() {
         this.openDataBase();
 
@@ -866,6 +917,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             );
         }
         return user;
+    }
+
+    public boolean updateSync(String rowId, boolean status) {
+        boolean ret = false;
+        try {
+            String selectQuery = "UPDATE " + Constants.TABLE_TESTS + " SET " + Constants.TESTS_ID + "=" +
+                    Services.convertBoolInInt(status) + " WHERE " + Constants.TESTS_ID + "='" + rowId + "'";
+
+            Cursor c = myDataBase.rawQuery(selectQuery, null);
+            c.getCount();
+
+        } catch (Exception e) {
+            Log.i("ERROR UPDATE", e.getMessage());
+        }
+        return ret;
     }
 
     /******************************** SEARCHS************************************************/

@@ -38,6 +38,7 @@ import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.AllActivities;
+import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 
 public class AthletesActivity extends AppCompatActivity {
@@ -47,7 +48,7 @@ public class AthletesActivity extends AppCompatActivity {
     Toolbar toolbar;
     ArrayList<Athletes> athletesArrayList;
     private static Context myContext;
-    private TextView textOptionName, textOptionCode;
+    private TextView textOptionName, textOptionCode,textCount;
     private EditText editSearch;
     private ImageView imgOrder;
     private Button btnCancel;
@@ -77,6 +78,7 @@ public class AthletesActivity extends AppCompatActivity {
         editSearch = (EditText) findViewById(R.id.edit_search);
         textOptionName = (TextView) findViewById(R.id.text_option_order_name);
         textOptionCode = (TextView) findViewById(R.id.text_option_order_code);
+        textCount = (TextView) findViewById(R.id.text_count_athletes);
 
         btnCancel= (Button) findViewById(R.id.btn_cancel_order);
 
@@ -122,7 +124,7 @@ public class AthletesActivity extends AppCompatActivity {
                 }
             }
         });
-
+        textCount.setText(getCountAthletes());
         callInflateAthletes();
     }
 
@@ -130,6 +132,11 @@ public class AthletesActivity extends AppCompatActivity {
     protected void onRestart(){
         super.onRestart();
         callInflateAthletes();
+    }
+
+    private String getCountAthletes(){
+        DatabaseHelper db = new DatabaseHelper(AthletesActivity.this);
+        return String.valueOf(db.getCountTest(AllActivities.testSelected)+"/"+db.getCountTable(Constants.TABLE_ATHLETES));
     }
 
     private void callInflateAthletes(){

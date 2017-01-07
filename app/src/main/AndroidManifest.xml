@@ -48,7 +48,8 @@
         <activity
             android:name=".SyncActivity"
             android:label="@string/title_activity_sync"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".SyncAthleteActivity"></activity>
     </application>
 
 </manifest>
