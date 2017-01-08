@@ -5,6 +5,7 @@ import android.app.Service;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
@@ -36,12 +37,13 @@ import br.com.john.combinebrasil.Connection.Posts.PostAthleteAsyncTask;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Mask;
+import br.com.john.combinebrasil.Services.MaskHeight;
 import br.com.john.combinebrasil.Services.Services;
 
 public class CreateAccountAthlete extends AppCompatActivity {
     MaterialBetterSpinner spinnerDay, spinnerMonth, spinnerYear, spinnerPosition;
     Toolbar toolbar;
-    EditText editTextName, editTextCPF, editTextAddress, editTextHeight, editTextWeihgt;
+    EditText editTextName, editTextCPF, editTextAddress, editTextHeight, editTextWeihgt, editEmail;
     private Button buttonAdd;
     Athletes athlete;
     ArrayList<Positions> positions;
@@ -63,6 +65,8 @@ public class CreateAccountAthlete extends AppCompatActivity {
         editTextAddress = (EditText) findViewById(R.id.edit_address_add);
         editTextHeight = (EditText) findViewById(R.id.edit_height_add);
         editTextWeihgt = (EditText) findViewById(R.id.edit_weight_add);
+        editEmail = (EditText) findViewById(R.id.edit_email_add);
+
         buttonAdd = (Button) findViewById(R.id.button_add_athlete);
 
         spinnerDay  = (MaterialBetterSpinner) findViewById(R.id.spinner_day_birthday_add);
@@ -75,6 +79,11 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
         Mask maskCpf = new Mask("###.###.###-##", editTextCPF);
         editTextCPF.addTextChangedListener(maskCpf);
+
+        TextWatcher mask = MaskHeight.insert("#,##", editTextHeight);
+        editTextHeight.addTextChangedListener(mask);
+        mask = MaskHeight.insert("##",editTextWeihgt);
+        editTextWeihgt.addTextChangedListener(mask);
 
         buttonAdd.setOnClickListener(addAthleteClicked);
     }
@@ -119,6 +128,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
             object.put(Constants.ATHLETES_HEIGHT, height);
             object.put(Constants.ATHLETES_WEIGHT, weight);
             object.put(Constants.ATHLETES_BIRTHDAY, birthday);
+            object.put(Constants.ATHLETES_EMAIL, editEmail.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -126,8 +136,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
     }
 
     int index = 0;
-    private int getIndex(MaterialBetterSpinner spinner)
-    {
+    private int getIndex(MaterialBetterSpinner spinner) {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -207,6 +216,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
     public static void afterSendSelectiveAthlete(Activity act, String response, String result){
         ((CreateAccountAthlete)act).afterSendSelectiveAthlete(response, result);
     }
+
     private void afterSendSelectiveAthlete(String response, String result){
         LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
         linearProgress.setVisibility(View.GONE);
@@ -346,13 +356,15 @@ public class CreateAccountAthlete extends AppCompatActivity {
         boolean ver = true;
         if(!validaName(editTextName))
             ver = false;
+        if(!isValidEmail(editEmail))
+            ver = false;
         if (!validaCPF(editTextCPF))
             ver = false;
         if (!validaName(editTextAddress))
             ver = false;
-        if(!validateText(editTextHeight, "Altura inválido."))
+        if(!validateHeight(editTextHeight))
             ver = false;
-        if(!validateText(editTextWeihgt,"Peso inválido"))
+        if(!validateWeight(editTextWeihgt))
             ver = false;
 
         if(!ver)
@@ -397,25 +409,42 @@ public class CreateAccountAthlete extends AppCompatActivity {
         return ver;
     }
 
-    private boolean validateText(EditText edit, String msg){
+    private boolean validateHeight(EditText edit){
         boolean ver = false;
-        if(getString(edit).length()>=2){
-            int cont=0;
-            for(int i=0; i<= edit.length()-1; i++)
-            {
-                String s = String.valueOf(edit.getText().toString().charAt(i));
-                if(s.equals(",") || s.equals("."))
-                    cont = cont+1;
-            }
-            if(cont<=1) {
-                Services.changeColorEditBorder(edit, this);
-                ver = true;
-            }
-            else
-                Services.changeColorEditBorderError(edit, this);
+        if(getString(edit).length()==3){
+            Services.changeColorEditBorder(edit, this);
+            ver = true;
         }
         else
             Services.changeColorEditBorderError(edit, this);
         return ver;
+    }
+
+    private boolean validateWeight(EditText edit){
+        boolean ver = false;
+        if(getString(edit).length()==2){
+            Services.changeColorEditBorder(edit, this);
+            ver = true;
+        }
+        else
+            Services.changeColorEditBorderError(edit, this);
+        return ver;
+    }
+
+    public final boolean isValidEmail(EditText edit) {
+        CharSequence target = edit.getText();
+        boolean ret = false;
+        if (TextUtils.isEmpty(target)) {
+            Services.changeColorEditBorderError(edit, this);
+            ret =  false;
+        } else {
+            ret =  android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+            if(!ret)
+                Services.changeColorEditBorderError(edit, this);
+            else
+                Services.changeColorEditBorder(edit, this);
+        }
+
+        return ret;
     }
 }

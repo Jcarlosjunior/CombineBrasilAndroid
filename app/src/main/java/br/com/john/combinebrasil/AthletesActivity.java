@@ -51,8 +51,8 @@ public class AthletesActivity extends AppCompatActivity {
     private TextView textOptionName, textOptionCode,textCount;
     private EditText editSearch;
     private ImageView imgOrder;
-    private Button btnCancel;
-    private LinearLayout linearOrder, linearNotSearch;
+    private Button btnCancel, buttonSync;
+    private LinearLayout linearOrder, linearNotSearch, linearSync;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +74,7 @@ public class AthletesActivity extends AppCompatActivity {
 
         linearOrder = (LinearLayout) findViewById(R.id.linear_order_by);
         linearNotSearch = (LinearLayout) findViewById(R.id.linear_search_null);
+        linearSync = (LinearLayout) findViewById(R.id.linear_sync);
 
         editSearch = (EditText) findViewById(R.id.edit_search);
         textOptionName = (TextView) findViewById(R.id.text_option_order_name);
@@ -81,6 +82,15 @@ public class AthletesActivity extends AppCompatActivity {
         textCount = (TextView) findViewById(R.id.text_count_athletes);
 
         btnCancel= (Button) findViewById(R.id.btn_cancel_order);
+        buttonSync=(Button) findViewById(R.id.button_sync);
+        buttonSync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(AthletesActivity.this, SyncAthleteActivity.class);
+                i.putExtra("testSelect", AllActivities.testSelected);
+                startActivity(i);
+            }
+        });
 
         imgOrder = (ImageView) findViewById(R.id.img_order);
 
@@ -137,7 +147,16 @@ public class AthletesActivity extends AppCompatActivity {
 
     private String getCountAthletes(){
         DatabaseHelper db = new DatabaseHelper(AthletesActivity.this);
-        return String.valueOf(db.getCountTest(AllActivities.testSelected)+"/"+db.getCountTable(Constants.TABLE_ATHLETES));
+        long numAthltes = db.getCountTable(Constants.TABLE_ATHLETES);
+        long numSync = db.getCountTestSync(AllActivities.testSelected);
+        long numTests = db.getCountTest(AllActivities.testSelected);
+       if(numTests==numAthltes){
+           if(numSync<numAthltes)
+               linearSync.setVisibility(View.VISIBLE);
+           else
+               linearSync.setVisibility(View.GONE);
+       }
+        return String.valueOf(numTests +"/"+numAthltes);
     }
 
     private void callInflateAthletes(){

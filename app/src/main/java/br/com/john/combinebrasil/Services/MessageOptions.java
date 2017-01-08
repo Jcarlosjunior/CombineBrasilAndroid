@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import br.com.john.combinebrasil.CronometerActivity;
+import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.ResultsActivity;
 
@@ -75,6 +76,9 @@ public class MessageOptions {
         }
         else if(act.getClass().getSimpleName().equals(Constants.RESULTS_ACTIVITY)){
             ResultsActivity.getMethodOutResultsActivity(act, whoCalled);
+        }
+        else if(act.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY)){
+                MainActivity.returnMessageOptions(act, whoCalled);
         }
     }
 }

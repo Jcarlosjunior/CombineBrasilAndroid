@@ -12,6 +12,16 @@ public class SharedPreferencesAdapter {
     private static SharedPreferences shared;
     private static SharedPreferences.Editor editor;
 
+    public static boolean clearData(Context ctx , String key){
+        shared = ctx.getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
+        return shared.edit().remove(key).commit();
+    }
+
+    public static void cleanAllShared(Context ctx){
+        shared = ctx.getSharedPreferences(MY_PREFERENCES, ctx.MODE_PRIVATE);
+        shared.edit().clear().commit();
+    }
+
     public static void setLoggedSharedPreferences (Context ctx, boolean logged){
         editor = ctx.getSharedPreferences(MY_PREFERENCES, ctx.MODE_PRIVATE).edit();
         editor.putBoolean(Constants.LOGGED, logged);

@@ -10,7 +10,9 @@
     <string name="second">Segundo</string>
     <string name="adicionar">Adicionar</string>
     <string name="salvar_dados">Salvar resultados</string>
+    <string name="inconclusive">Dado Incoclusivo</string>
     <string name="nome">Nome</string>
+    <string name="email">E-mail</string>
     <string name="cpf">CPF</string>
     <string name="address">Endereço</string>
     <string name="position">Posição</string>
@@ -30,6 +32,7 @@
     <string name="cancel">Cancelar</string>
     <string name="update_ok">Tudo atualizado</string>
     <string name="back_to_test">Voltar para o teste</string>
+    <string name="go_to_sync">Sincronizar teste</string>
 
 
     <!--

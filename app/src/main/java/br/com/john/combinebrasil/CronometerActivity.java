@@ -39,11 +39,12 @@ public class CronometerActivity extends AppCompatActivity {
     TextView textFirstResult, textSecondValue, textCronometer, textShowQualify;
     LinearLayout linearButtonPlay, linearFirstValue, linearSecondValue, linearRating;
     ImageView imgIconButtonPlay, imgReset, imgPause, imgSave;
-    Button btnSave, btnReady;
+    Button btnSave, btnReady, btnInconclusive;
     RatingBar ratingBar;
     private float ratingValue;
     String idAthlete = "";
-    int position = 0;
+    int position = 0, inconclusive=0;
+    boolean isSaveInconclusive=false;
 
     LinearLayout linearInsert, linearResultDone;
     TextView txtFistDone, txtSecondDone, txtNameResult, txtRating;
@@ -86,6 +87,7 @@ public class CronometerActivity extends AppCompatActivity {
 
         btnSave = (Button) findViewById(R.id.button_save_results);
         btnReady = (Button) findViewById(R.id.button_ready_cronometer);
+        btnInconclusive=(Button) findViewById(R.id.button_inconclusive_results);
 
         ratingBar = (RatingBar) findViewById(R.id.rating_cronometer);
 
@@ -140,15 +142,10 @@ public class CronometerActivity extends AppCompatActivity {
                     finish();
                 }
             });
-
-            /*textFirstResult.setText(test.getFirstValue());
-            textSecondValue.setText(test.getSecondValue());
-
-            btnSave.setVisibility(View.INVISIBLE);
-            btnReady.setVisibility(View.GONE);*/
         }
         else{
             btnSave.setOnClickListener(clickedSave);
+            btnInconclusive.setOnClickListener(btnResetClickListener);
             imgPause.setOnClickListener(clickedPause);
             imgReset.setOnClickListener(clickedReset);
             imgSave.setOnClickListener(clickedSaveTime);
@@ -194,11 +191,17 @@ public class CronometerActivity extends AppCompatActivity {
         countDownTimer.pause();
         linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_green));
         imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
-        imgPause.setVisibility(View.GONE);
+        if(imgSave.getVisibility()==View.VISIBLE)
+            imgPause.setVisibility(View.GONE);
+        else
+            imgPause.setVisibility(View.INVISIBLE);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void resetCrometer(){
+        inconclusive = inconclusive +1;
+        if(!isSaveInconclusive)
+            verifyInconclusive();
         isPause = true;
         init=false;
         countDownTimer.stop();
@@ -212,20 +215,25 @@ public class CronometerActivity extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void checkAndSaveRun(){
+        if(inconclusive >=2)
+            isSaveInconclusive=true;
         if(firstValueSave==false){
             firstValueSave=true;
             textFirstResult.setText(textCronometer.getText());
             linearFirstValue.setVisibility(View.VISIBLE);
             stopCronometer();
+            inconclusive=0;
 
         }
         else if(secondValueSalve==false){
             secondValueSalve=true;
+            inconclusive=0;
             linearButtonPlay.setVisibility(View.GONE);
             textSecondValue.setText(textCronometer.getText());
             btnSave.setVisibility(View.VISIBLE);
             btnSave.setEnabled(true);
             stopCronometer();
+
         }
     }
 
@@ -308,6 +316,13 @@ public class CronometerActivity extends AppCompatActivity {
         AthletesActivity.adapterTests.notifyItemChanged(position);
     }
 
+    private void verifyInconclusive(){
+        if(inconclusive>=2){
+            btnSave.setVisibility(View.GONE);
+            btnInconclusive.setVisibility(View.VISIBLE);
+        }
+    }
+
     /*
     ****************************** MÉTODOS DE CLICK ******************************************
     */
@@ -332,10 +347,14 @@ public class CronometerActivity extends AppCompatActivity {
             else {
                 if(!isPause) {
                     imgSave.setVisibility(View.VISIBLE);
-                    if (firstValueSave == false)
-                        messageOption("Salvar","Deseja salvar o primeiro resultado?","saveResult");
-                     else if (secondValueSalve == false)
-                        messageOption("Salvar","Deseja salvar o segundo resultado?","saveResult");
+                    if (firstValueSave == false) {
+                        messageOption("Salvar", "Deseja salvar o primeiro resultado?", "saveResult");
+                        imgPause.setVisibility(View.GONE);
+                    }
+                     else if (secondValueSalve == false) {
+                        messageOption("Salvar", "Deseja salvar o segundo resultado?", "saveResult");
+                        imgPause.setVisibility(View.GONE);
+                    }
 
                 }
                 else
@@ -379,6 +398,22 @@ public class CronometerActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             exitActivity();
+        }
+    };
+
+    private View.OnClickListener btnResetClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            btnInconclusive.setVisibility(View.GONE);
+            btnSave.setVisibility(View.INVISIBLE);
+            if (firstValueSave == false) {
+                textFirstResult.setText("00:00");
+                messageOption("Salvar", "Deseja salvar o primeiro resultado como inconclusivo?", "saveResult");
+            }
+            else if (secondValueSalve == false) {
+                textSecondValue.setText("00:00");
+                messageOption("Salvar", "Deseja salvar o segundo resultado como inconclusivo?", "saveResult");
+            }
         }
     };
 

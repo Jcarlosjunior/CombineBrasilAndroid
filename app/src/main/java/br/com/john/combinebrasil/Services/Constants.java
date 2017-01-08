@@ -81,6 +81,7 @@ public class Constants {
     public static final String ATHLETES_ID = "_id";
     public static final String ATHLETES_NAME = "name";
     public static final String ATHLETES_BIRTHDAY = "birthday";
+    public static final String ATHLETES_EMAIL = "email";
     public static final String ATHLETES_CPF = "cpf";
     public static final String ATHLETES_ADDRESS = "address";
     public static final String ATHLETES_DESIRABLE_POSITION = "desirablePosition";

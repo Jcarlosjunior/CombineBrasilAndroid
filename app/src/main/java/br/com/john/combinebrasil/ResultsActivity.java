@@ -31,6 +31,7 @@ import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
+import br.com.john.combinebrasil.Services.MaskHeight;
 import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.Services;
 
@@ -108,7 +109,13 @@ public class ResultsActivity extends AppCompatActivity {
             showInfoAthlete();
             checkAndSaveResults();
             verifyTest();
-    }
+        }
+
+        TextWatcher mask = MaskHeight.insert("#,##", editFirstResult);
+        editFirstResult.addTextChangedListener(mask);
+        mask = MaskHeight.insert("#,##", editSecondResult);
+        editSecondResult.addTextChangedListener(mask);
+
 }
 
     private void verifyTest(){
@@ -130,13 +137,6 @@ public class ResultsActivity extends AppCompatActivity {
             txtRating.setText(Services.verifyQualification(test.getRating()));
 
             buttonBack.setOnClickListener(btnBackClickListener);
-
-            /*editFirstResult.setText(test.getFirstValue());
-            editSecondResult.setText(test.getSecondValue());
-            editFirstResult.setEnabled(false);
-            editSecondResult.setEnabled(false);
-            buttonAdd.setVisibility(View.GONE);
-            btnReady.setVisibility(View.GONE);*/
         }
         else{
             editFirstResult.addTextChangedListener(new TextWatcher() {
@@ -151,10 +151,10 @@ public class ResultsActivity extends AppCompatActivity {
                     else
                         enabledButtonAdd(false);
 
-                    if(s.length()==1){
+                    /*if(s.length()==1){
                         editFirstResult.setText(s.toString() + ",");
                         editFirstResult.setSelection(s.length()+1);
-                    }
+                    }*/
                 }
 
                 @Override

@@ -44,6 +44,24 @@
                         android:imeOptions="actionNext"
                         />
                     <EditText
+                        android:id="@+id/edit_email_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email"
+                        android:paddingLeft="10sp"
+                        android:paddingBottom="10sp"
+                        android:paddingTop="10sp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/greyDark"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="15sp"
+                        android:background="@drawable/background_edit_border"
+                        android:singleLine="true"
+                        android:inputType="textEmailAddress"
+                        android:imeOptions="actionNext"
+                        />
+
+                    <EditText
                     android:id="@+id/edit_cpf_add"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

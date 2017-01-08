@@ -25,7 +25,10 @@ import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.AppSectionsPagerAdapter;
+import br.com.john.combinebrasil.Services.Constants;
+import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.NavigationDrawer;
+import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
 import br.com.john.combinebrasil.Services.SyncDatabase;
 
 public class MainActivity extends AppCompatActivity {
@@ -212,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 linearMenu.setVisibility(View.GONE);
+                new MessageOptions(MainActivity.this, "Aualizar", "Deseja atualizar todos dados do aplicativo?", "update");
             }
         });
 
@@ -219,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 linearMenu.setVisibility(View.GONE);
-                intent = new Intent(MainActivity.this, SyncActivity.class);
+                intent = new Intent(MainActivity.this, SyncAthleteActivity.class);
                 startActivity(intent);
             }
         });
@@ -235,9 +239,34 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 linearMenu.setVisibility(View.GONE);
+                new MessageOptions(MainActivity.this, "Logout", "Ao sair todos os dados serão excluídos do aplicativo, deseja realmente sair?", "exit");
             }
         });
+    }
 
+    public static void returnMessageOptions(Activity act, String whoCalled){
+        ((MainActivity)act).returnMessageOptions(whoCalled);
+    }
+
+    private void returnMessageOptions(String whoCalled){
+        if(whoCalled.equals("update")){
+            linearProgress.setVisibility(View.VISIBLE);
+            syncAll();
+        }
+
+        else if(whoCalled.equals("exit")){
+            exit();
+        }
+    }
+
+    private void exit(){
+        SharedPreferencesAdapter.cleanAllShared(this);
+        this.deleteDatabase(Constants.NAME_DATABASE);
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+        this.finish();
 
     }
+
+
 }
