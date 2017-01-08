@@ -14,11 +14,15 @@ import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.AppSectionsPagerAdapter;
 import br.com.john.combinebrasil.Services.NavigationDrawer;

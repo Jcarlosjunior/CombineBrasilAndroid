@@ -131,6 +131,7 @@ public class AthletesActivity extends AppCompatActivity {
     @Override
     protected void onRestart(){
         super.onRestart();
+        textCount.setText(getCountAthletes());
         callInflateAthletes();
     }
 

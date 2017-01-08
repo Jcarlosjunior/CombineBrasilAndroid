@@ -38,12 +38,15 @@
                     android:layout_gravity="bottom|end"
                     android:layout_margin="16sp"
                     android:padding="16sp"
-                    app:srcCompat="@drawable/icon_upload" />
+                    app:backgroundTint="@color/orange"
+                    app:srcCompat="@drawable/ic_upload" />
 
         </android.support.design.widget.CoordinatorLayout>
+=
+    </LinearLayout>
 
-        <LinearLayout
-        android:id="@+id/linear_progress_tests"
+    <LinearLayout
+        android:id="@+id/linear_progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grey_transparent"
@@ -79,7 +82,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.2"/>
                     <ProgressBar
-                        android:id="@+id/progress_login"
+                        android:id="@+id/progress"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.6"/>
@@ -93,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.4"
-                    android:text="@string/carregando_testes"
+                    android:text="@string/sync_now"
                     android:textStyle="bold"
                     android:textSize="16dp"
                     android:id="@+id/text_progress"
@@ -109,8 +112,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.4"></LinearLayout>
-    </LinearLayout>
-
     </LinearLayout>
 
 </RelativeLayout>

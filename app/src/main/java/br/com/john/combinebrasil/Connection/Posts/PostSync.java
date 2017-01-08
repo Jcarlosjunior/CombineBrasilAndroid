@@ -35,6 +35,7 @@ import java.util.List;
 
 import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.SyncActivity;
+import br.com.john.combinebrasil.SyncAthleteActivity;
 
 public class PostSync extends AsyncTask<String, String, String> {
     private Activity activity;
@@ -42,7 +43,7 @@ public class PostSync extends AsyncTask<String, String, String> {
     int statusCode=0;
     String resp = "";
     String result = "";
-    boolean isAll;
+    boolean isAll, isSyncAcitivity=false;
 
     protected void onPreExecute() {
         super.onPreExecute();
@@ -93,8 +94,12 @@ public class PostSync extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String status) {
-        if(isAll)
+        if(isSyncAcitivity){
             SyncActivity.returnPostSync(activity, resp, result);
+        }
+        else{
+            SyncAthleteActivity.returnPostTest(activity, resp, result);
+        }
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
@@ -118,5 +123,9 @@ public class PostSync extends AsyncTask<String, String, String> {
 
     public void setAll(boolean play) {
         isAll = isAll;
+    }
+
+    public void setSyncAcitivity(boolean syncAcitivity){
+        this.isSyncAcitivity = syncAcitivity;
     }
 }

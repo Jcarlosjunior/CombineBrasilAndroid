@@ -29,16 +29,19 @@
     <string name="search">Buscar</string>
     <string name="cancel">Cancelar</string>
     <string name="update_ok">Tudo atualizado</string>
+    <string name="back_to_test">Voltar para o teste</string>
 
 
     <!--
     ************************************ MENSAGENS PADRÕES ************************************************
     -->
     <string name="carregando_testes">Os testes estão sendo carregados</string>
+    <string name="sync_now">Os testes estão sendo sincronizados</string>
     <string name="erro_dados_invalidos">Dados Inválidos</string>
     <string name="logando">Entrando na sua conta</string>
     <string name="add_account">Criando atleta</string>
     <string name="qualification_message">Qualifique a atuação do atleta no teste.</string>
+    <string name="rating">Rendimento do atleta no exercício</string>
     <string name="not_find">
                 Ops... Não foi encontrado nenhum resultado para a busca
     </string>
@@ -54,6 +57,7 @@
     <string name="sync">Sincronizar</string>
     <string name="tests_athletes">Testes e atletas</string>
     <string name="about">Sobre o Combine</string>
+    <string name="test_done">Teste concluído!</string>
     <string name="exit">Sair</string>
     <!--
     *********************************** TÍTULOS COMBINE **************************************************

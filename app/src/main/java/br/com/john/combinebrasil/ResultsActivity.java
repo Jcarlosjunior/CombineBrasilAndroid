@@ -47,6 +47,11 @@ public class ResultsActivity extends AppCompatActivity {
     String idAthlete = "";
     float ratingValue;
 
+    LinearLayout linearInsert, linearResultDone;
+    TextView txtFistDone, txtSecondDone, txtNameResult, txtRating;
+    Button buttonBack;
+    RatingBar ratingDone;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,15 @@ public class ResultsActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
 
+        linearInsert = (LinearLayout) findViewById(R.id.linear_insert);
+        linearResultDone = (LinearLayout) findViewById(R.id.linear_results_done);
+        txtNameResult = (TextView) findViewById(R.id.txt_name_result);
+        txtFistDone = (TextView) findViewById(R.id.txt_first_result_done);
+        txtSecondDone = (TextView) findViewById(R.id.txt_second_result_done);
+        ratingDone = (RatingBar) findViewById(R.id.rating_result_done);
+        buttonBack = (Button) findViewById(R.id.button_back);
+        txtRating = (TextView) findViewById(R.id.txt_rating_done);
+
         if(extras != null){
             idAthlete = extras.getString("id_player");
             position = extras.getInt("position");
@@ -102,12 +116,27 @@ public class ResultsActivity extends AppCompatActivity {
         db.openDataBase();
         Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
         if(test != null){
-            editFirstResult.setText(test.getFirstValue());
+            linearInsert.setVisibility(View.GONE);
+            linearResultDone.setVisibility(View.VISIBLE);
+            txtFistDone.setText(test.getFirstValue());
+            txtSecondDone.setText(test.getSecondValue());
+
+            Athletes athlete = db.getAthleteById(idAthlete);
+            txtNameResult.setText(athlete.getName());
+
+            ratingDone.setRating(test.getRating());
+            ratingDone.setEnabled(false);
+
+            txtRating.setText(Services.verifyQualification(test.getRating()));
+
+            buttonBack.setOnClickListener(btnBackClickListener);
+
+            /*editFirstResult.setText(test.getFirstValue());
             editSecondResult.setText(test.getSecondValue());
             editFirstResult.setEnabled(false);
             editSecondResult.setEnabled(false);
             buttonAdd.setVisibility(View.GONE);
-            btnReady.setVisibility(View.GONE);
+            btnReady.setVisibility(View.GONE);*/
         }
         else{
             editFirstResult.addTextChangedListener(new TextWatcher() {

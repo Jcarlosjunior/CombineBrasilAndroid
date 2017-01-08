@@ -919,11 +919,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
-    public boolean updateSync(String rowId, boolean status) {
+    public boolean updateSync(String athlete, String type, String id) {
         boolean ret = false;
+        this.openDataBase();
         try {
-            String selectQuery = "UPDATE " + Constants.TABLE_TESTS + " SET " + Constants.TESTS_ID + "=" +
-                    Services.convertBoolInInt(status) + " WHERE " + Constants.TESTS_ID + "='" + rowId + "'";
+            String selectQuery = "UPDATE " + Constants.TABLE_TESTS + " SET " + Constants.TESTS_SYNC + "=" +
+                    Services.convertBoolInInt(true) + ", "+Constants.TESTS_ID+"='"+id+"' WHERE "
+                    + Constants.TESTS_ATHLETE + "='" + athlete + "' AND "+Constants.TESTS_TYPE+"='"+type+"'";
 
             Cursor c = myDataBase.rawQuery(selectQuery, null);
             c.getCount();

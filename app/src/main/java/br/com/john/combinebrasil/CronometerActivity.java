@@ -45,6 +45,11 @@ public class CronometerActivity extends AppCompatActivity {
     String idAthlete = "";
     int position = 0;
 
+    LinearLayout linearInsert, linearResultDone;
+    TextView txtFistDone, txtSecondDone, txtNameResult, txtRating;
+    Button buttonBack;
+    RatingBar ratingDone;
+
     private final CountDownTimer countDownTimer = new CountDownTimer();
     private boolean init = false, firstValueSave = false, secondValueSalve = false, isPause=false;
 
@@ -89,6 +94,15 @@ public class CronometerActivity extends AppCompatActivity {
         textShowQualify.setText("");
         textShowQualify.setVisibility(View.GONE);
 
+        linearInsert = (LinearLayout) findViewById(R.id.linear_insert);
+        linearResultDone = (LinearLayout) findViewById(R.id.linear_results_done);
+        txtNameResult = (TextView) findViewById(R.id.txt_name_result);
+        txtFistDone = (TextView) findViewById(R.id.txt_first_result_done);
+        txtSecondDone = (TextView) findViewById(R.id.txt_second_result_done);
+        ratingDone = (RatingBar) findViewById(R.id.rating_result_done);
+        buttonBack = (Button) findViewById(R.id.button_back);
+        txtRating = (TextView) findViewById(R.id.txt_rating_done);
+
 
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
@@ -107,11 +121,31 @@ public class CronometerActivity extends AppCompatActivity {
         db.openDataBase();
         Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
         if(test != null){
-            textFirstResult.setText(test.getFirstValue());
+            linearInsert.setVisibility(View.GONE);
+            linearResultDone.setVisibility(View.VISIBLE);
+            txtFistDone.setText(test.getFirstValue());
+            txtSecondDone.setText(test.getSecondValue());
+
+            Athletes athlete = db.getAthleteById(idAthlete);
+            txtNameResult.setText(athlete.getName());
+
+            ratingDone.setRating(test.getRating());
+            ratingDone.setEnabled(false);
+
+            txtRating.setText(Services.verifyQualification(test.getRating()));
+
+            buttonBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+
+            /*textFirstResult.setText(test.getFirstValue());
             textSecondValue.setText(test.getSecondValue());
 
             btnSave.setVisibility(View.INVISIBLE);
-            btnReady.setVisibility(View.GONE);
+            btnReady.setVisibility(View.GONE);*/
         }
         else{
             btnSave.setOnClickListener(clickedSave);

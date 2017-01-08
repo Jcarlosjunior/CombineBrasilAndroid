@@ -34,6 +34,7 @@ public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTe
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public AdapterRecyclerTests(Context context, ArrayList<TestTypes> list, String[] values) {
+        super();
         this.list = list;
         this.values = values;
         this.context = context;

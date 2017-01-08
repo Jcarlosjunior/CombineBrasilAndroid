@@ -10,6 +10,8 @@ import java.io.File;
 public class Constants {
     public static final boolean debug = true;
 
+    public static final int STATUS_NOT_INIT=0, STATUS_DONE=1, STATUS_PENDING=2;
+
     public static final String URL = "https://combine-api.herokuapp.com/";
 
     public static final String login = "api/login";
