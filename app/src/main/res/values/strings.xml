@@ -14,7 +14,7 @@
     <string name="nome">Nome</string>
     <string name="email">E-mail</string>
     <string name="cpf">CPF</string>
-    <string name="address">Endereço</string>
+    <string name="address_add">Endereço (Opcional)</string>
     <string name="phone">Telfone ex:(xx)xxxxx-xxxx</string>
     <string name="position">Posição</string>
     <string name="nascimento">Data de Nascimento</string>

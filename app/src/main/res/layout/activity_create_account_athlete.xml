@@ -62,6 +62,23 @@
                     android:background="@drawable/background_edit_border"
                     />
 
+                    <EditText
+                        android:id="@+id/edit_address_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/address_add"
+                        android:paddingLeft="10sp"
+                        android:paddingBottom="10sp"
+                        android:paddingTop="10sp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/greyDark"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="15sp"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:background="@drawable/background_edit_border"
+                        />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -304,6 +321,4 @@
             android:layout_height="0dp"
             android:layout_weight="0.4"></LinearLayout>
     </LinearLayout>
-
-
 </RelativeLayout>

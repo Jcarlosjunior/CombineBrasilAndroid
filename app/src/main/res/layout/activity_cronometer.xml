@@ -7,6 +7,109 @@
     tools:context="br.com.john.combinebrasil.CronometerActivity">
 
     <LinearLayout
+        android:id="@+id/linear_rating_cronometer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_transparent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:clickable="true"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"></LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@drawable/background_border"
+                >
+                <TextView
+                    android:id="@+id/text_title_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/qualification"
+                    android:textColor="@color/white"
+                    android:background="@color/colorPrimary"
+                    android:layout_margin="1dp"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingLeft="25dp"
+                    android:textSize="18sp"
+                    android:gravity="left"/>
+                <TextView
+                    android:id="@+id/text_alert_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/qualification_message"
+                    android:textColor="@color/black"
+                    android:paddingBottom="30sp"
+                    android:paddingTop="30sp"
+                    android:layout_margin="1dp"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
+
+                <RatingBar
+                    android:id="@+id/rating_cronometer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:numStars="5"
+                    android:stepSize="1.0"
+                    android:progressTint="@color/yellow"
+                    android:secondaryProgressTint="@color/yellow"
+                    />
+
+                <TextView
+                    android:id="@+id/text_show_qualify_cronometer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    android:textColor="@color/black"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/button_ready_cronometer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_button_blue"
+                        android:textColor="@color/white"
+                        android:text="@string/ready"
+                        android:layout_marginBottom="20sp"
+                        android:layout_marginTop="15sp"
+                        android:paddingLeft="50sp"
+                        android:paddingRight="50sp"
+                        />
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"></LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -22,15 +125,17 @@
            android:layout_weight="0.9"
            android:orientation="vertical"
             android:visibility="visible"
+            android:background="@color/white"
             android:animateLayoutChanges="true">
 
             <TextView
                 android:id="@+id/text_name_player_cronometer"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.1"
+                android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="18sp"
+                android:layout_marginTop="20sp"
+                android:layout_marginBottom="15sp"
                 android:text="@string/testes"
                 android:textAlignment="center"
                 android:gravity="center"
@@ -39,8 +144,8 @@
            <TextView
                android:id="@+id/text_cronometer"
                android:layout_width="match_parent"
-               android:layout_height="0sp"
-               android:layout_weight="0.4"
+               android:layout_height="wrap_content"
+               android:layout_weight="0.2"
                android:text="00:00"
                android:textColor="@color/black"
                android:textSize="80sp"
@@ -50,10 +155,41 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.1"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                >
+                android:layout_marginRight="15sp"
+                android:layout_marginLeft="15sp"
+                android:layout_marginBottom="15sp">
+                <Button
+                    android:id="@+id/btn_details_test"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:layout_marginRight="10sp"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/background_button_blue"/>
+
+                <Button
+                    android:id="@+id/btn_details_athletes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:layout_marginLeft="10sp"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/background_button_blue"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="15sp"
+                android:paddingTop="15sp">
 
                 <LinearLayout
                     android:id="@+id/linear_show_first_value"
@@ -107,8 +243,7 @@
 
             <LinearLayout
                android:layout_width="match_parent"
-               android:layout_height="0dp"
-                android:layout_weight="0.2"
+               android:layout_height="wrap_content"
                android:gravity="center|bottom"
                android:animateLayoutChanges="true">
 
@@ -351,109 +486,6 @@
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linear_rating_cronometer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/grey_transparent"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:clickable="true"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.3"></LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@drawable/background_border"
-                >
-                <TextView
-                    android:id="@+id/text_title_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/qualification"
-                    android:textColor="@color/white"
-                    android:background="@color/colorPrimary"
-                    android:layout_margin="1dp"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp"
-                    android:paddingLeft="25dp"
-                    android:textSize="18sp"
-                    android:gravity="left"/>
-                <TextView
-                    android:id="@+id/text_alert_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/qualification_message"
-                    android:textColor="@color/black"
-                    android:paddingBottom="30sp"
-                    android:paddingTop="30sp"
-                    android:layout_margin="1dp"
-                    android:textSize="16sp"
-                    android:gravity="center"
-                    android:layout_gravity="center"/>
-
-                <RatingBar
-                    android:id="@+id/rating_cronometer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:numStars="5"
-                    android:stepSize="1.0"
-                    android:progressTint="@color/yellow"
-                    android:secondaryProgressTint="@color/yellow"
-                    />
-
-                <TextView
-                    android:id="@+id/text_show_qualify_cronometer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="16sp"
-                    android:visibility="gone"
-                    android:textColor="@color/black"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
-
-                    <Button
-                        android:id="@+id/button_ready_cronometer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/background_button_blue"
-                        android:textColor="@color/white"
-                        android:text="@string/ready"
-                        android:layout_marginBottom="20sp"
-                        android:layout_marginTop="15sp"
-                        android:paddingLeft="50sp"
-                        android:paddingRight="50sp"
-                        />
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="0.3"></LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

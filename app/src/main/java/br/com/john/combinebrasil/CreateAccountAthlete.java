@@ -43,7 +43,7 @@ import br.com.john.combinebrasil.Services.Services;
 public class CreateAccountAthlete extends AppCompatActivity {
     MaterialBetterSpinner spinnerDay, spinnerMonth, spinnerYear, spinnerPosition;
     Toolbar toolbar;
-    EditText editTextName, editTextCPF, editTextPhone, editTextHeight, editTextWeihgt, editEmail;
+    EditText editTextName, editTextCPF, editTextPhone, editTextHeight, editTextWeihgt, editEmail, editAddress;
     private Button buttonAdd;
     Athletes athlete;
     ArrayList<Positions> positions;
@@ -66,6 +66,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
         editTextHeight = (EditText) findViewById(R.id.edit_height_add);
         editTextWeihgt = (EditText) findViewById(R.id.edit_weight_add);
         editEmail = (EditText) findViewById(R.id.edit_email_add);
+        editAddress = (EditText) findViewById(R.id.edit_address_add);
 
         buttonAdd = (Button) findViewById(R.id.button_add_athlete);
 
@@ -133,6 +134,10 @@ public class CreateAccountAthlete extends AppCompatActivity {
                 object.put(Constants.ATHLETES_WEIGHT, weight);
                 object.put(Constants.ATHLETES_BIRTHDAY, birthday);
                 object.put(Constants.ATHLETES_EMAIL, editEmail.getText().toString());
+                if(editAddress.getText().toString().trim().isEmpty())
+                    object.put(Constants.ATHLETES_ADDRESS, " ");
+                else
+                    object.put(Constants.ATHLETES_ADDRESS, editAddress.getText().toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -205,10 +210,15 @@ public class CreateAccountAthlete extends AppCompatActivity {
         Selective selective = db.getSelective();
         ArrayList<SelectiveAthletes> selectivesAthletes = db.getSelectivesAthletes();
 
-        int num = selectivesAthletes.size()+1;
-        String numCode = String.valueOf(num);
-        if(num<9)
-            numCode = "0"+num;
+        String numCode="";
+        if(selectivesAthletes!=null)
+            numCode = "01";
+        else{
+            int num = selectivesAthletes.size()+1;
+            numCode = String.valueOf(num);
+            if(num<9)
+                numCode = "0"+num;
+        }
 
         String nameSelective = selective.getTitle().toString().toUpperCase().substring(0,2)+"-"+numCode;
 
@@ -251,13 +261,15 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private void clearForm(){
         editTextName.setText("");
         editTextCPF.setText("");
+        editAddress.setText("");
+        editEmail.setText("");
         editTextPhone.setText("");
         editTextWeihgt.setText("");
         editTextHeight.setText("");
         spinnerPosition.setText("");
-        spinnerMonth.setSelection(0);
-        spinnerYear.setSelection(0);
-        spinnerDay.setSelection(0);
+        spinnerMonth.setText("");
+        spinnerYear.setText("");
+        spinnerDay.setText("");
     }
 
     public static void finished(Activity act){
@@ -311,7 +323,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
         if(positions!=null){
             String [] adapter = new String[positions.size()];
             for(int i =0;i<=positions.size()-1;i++){
-                adapter[i] = positions.get(i).getNAME();
+                adapter[i] = positions.get(i).getNAME() +" ("+positions.get(i).getDESCRIPTION()+")";
             }
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, adapter);
             spinnerPosition.setAdapter(arrayAdapter);
@@ -416,7 +428,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
     private boolean validateHeight(EditText edit){
         boolean ver = false;
-        if(getString(edit).length()==3){
+        if(getString(edit).length()>=3){
             Services.changeColorEditBorder(edit, this);
             ver = true;
         }
