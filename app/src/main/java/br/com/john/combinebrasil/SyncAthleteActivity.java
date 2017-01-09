@@ -178,8 +178,8 @@ public class SyncAthleteActivity extends AppCompatActivity {
         try {
             object.put(Constants.TESTS_ATHLETE, test.getAthlete());
             object.put(Constants.TESTS_TYPE, test.getType());
-            object.put(Constants.TESTS_FIRST_VALUE, Float.parseFloat(String.format(test.getFirstValue().replace(",","."))));
-            object.put(Constants.TESTS_SECOND_VALUE, Float.parseFloat(String.format(test.getSecondValue().replace(",","."))));
+            object.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue().replace(",","."));
+            object.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue().replace(",","."));
             object.put(Constants.TESTS_RATING, test.getRating());
         } catch (JSONException e) {
             e.printStackTrace();

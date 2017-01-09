@@ -109,17 +109,21 @@ public class DeserializerJsonElements {
 
             for (int i = 0; i <= jsonArray.length() - 1; i++) {
                 JSONObject json = new JSONObject(jsonArray.getString(i));
-                Athletes athletesEntity = new Athletes();
-                athletesEntity.setId(json.optString(Constants.ATHLETES_ID));
-                athletesEntity.setName(json.optString(Constants.ATHLETES_NAME));
-                athletesEntity.setCPF(json.optString(Constants.ATHLETES_CPF));
-                athletesEntity.setAddress(json.optString(Constants.ATHLETES_ADDRESS));
-                athletesEntity.setDesirablePosition(json.optString(Constants.ATHLETES_DESIRABLE_POSITION));
-                athletesEntity.setBirthday(json.optString(Constants.ATHLETES_BIRTHDAY));
-                athletesEntity.setHeight(json.optDouble(Constants.ATHLETES_HEIGHT));
-                athletesEntity.setWeight(json.optDouble(Constants.ATHLETES_WEIGHT));
-                athletesEntity.setCreatedAt(json.optString(Constants.ATHLETES_CREATEDAT));
-                athletesEntity.setUpdateAt(json.optString(Constants.ATHLETES_UPDATEAT));
+                Athletes athletesEntity = new Athletes(
+                        json.optString(Constants.ATHLETES_ID),
+                        json.optString(Constants.ATHLETES_NAME),
+                        json.optString(Constants.ATHLETES_BIRTHDAY),
+                        json.optString(Constants.ATHLETES_CPF),
+                        json.optString(Constants.ATHLETES_ADDRESS),
+                        json.optString(Constants.ATHLETES_DESIRABLE_POSITION),
+                        json.optDouble(Constants.ATHLETES_HEIGHT),
+                        json.optDouble(Constants.ATHLETES_WEIGHT),
+                        json.optString(Constants.ATHLETES_CREATEDAT),
+                        json.optString(Constants.ATHLETES_UPDATEAT),
+                        "",
+                        json.optString(Constants.ATHLETES_EMAIL),
+                        json.optString(Constants.ATHLETES_PHONE)
+                );
                 AthletesList.add(athletesEntity);
             }
 
@@ -133,16 +137,21 @@ public class DeserializerJsonElements {
         Athletes athlete = new Athletes();
         try {
             JSONObject json = new JSONObject(response);
-            athlete.setId(json.optString(Constants.ATHLETES_ID));
-            athlete.setName(json.optString(Constants.ATHLETES_NAME));
-            athlete.setCPF(json.optString(Constants.ATHLETES_CPF));
-            athlete.setAddress(json.optString(Constants.ATHLETES_ADDRESS));
-            athlete.setDesirablePosition(json.optString(Constants.ATHLETES_DESIRABLE_POSITION));
-            athlete.setBirthday(json.optString(Constants.ATHLETES_BIRTHDAY));
-            athlete.setHeight(json.optDouble(Constants.ATHLETES_HEIGHT));
-            athlete.setWeight(json.optDouble(Constants.ATHLETES_WEIGHT));
-            athlete.setCreatedAt(json.optString(Constants.ATHLETES_CREATEDAT));
-            athlete.setUpdateAt(json.optString(Constants.ATHLETES_UPDATEAT));
+            athlete = new Athletes(
+                    json.optString(Constants.ATHLETES_ID),
+                    json.optString(Constants.ATHLETES_NAME),
+                    json.optString(Constants.ATHLETES_BIRTHDAY),
+                    json.optString(Constants.ATHLETES_CPF),
+                    json.optString(Constants.ATHLETES_ADDRESS),
+                    json.optString(Constants.ATHLETES_DESIRABLE_POSITION),
+                    json.optDouble(Constants.ATHLETES_HEIGHT),
+                    json.optDouble(Constants.ATHLETES_WEIGHT),
+                    json.optString(Constants.ATHLETES_CREATEDAT),
+                    json.optString(Constants.ATHLETES_UPDATEAT),
+                    "",
+                    json.optString(Constants.ATHLETES_EMAIL),
+                    json.optString(Constants.ATHLETES_PHONE)
+            );
         } catch (JSONException jsonExc) {
             Log.i("JSON ERROR", jsonExc.toString());
             athlete = null;
@@ -373,6 +382,7 @@ public class DeserializerJsonElements {
                             json.optString(Constants.TESTS_FIRST_VALUE),
                             json.optString(Constants.TESTS_SECOND_VALUE),
                             (float) (json.optDouble(Constants.TESTS_RATING)),
+                            (float)(json.optDouble(Constants.TESTS_WINGSPAN)),
                             Services.convertBoolInInt(true)
                     );
 
@@ -396,6 +406,7 @@ public class DeserializerJsonElements {
                 String.valueOf(json.optLong(Constants.TESTS_FIRST_VALUE)),
                 String.valueOf(json.optLong(Constants.TESTS_SECOND_VALUE)),
                 (float) (json.optDouble(Constants.TESTS_RATING)),
+                (float)(json.optDouble(Constants.TESTS_WINGSPAN)),
                 Services.convertBoolInInt(true)
             );
         } catch (JSONException e) {

@@ -46,14 +46,12 @@ public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTe
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView txtName;
-        public TextView txtDesc;
         public LinearLayout listItem;
         public ImageView imageIcon;
 
         public ViewHolder(View v) {
             super(v);
             txtName = (TextView) v.findViewById(R.id.firstLine);
-            txtDesc = (TextView) v.findViewById(R.id.secondLine);
             imageIcon = (ImageView) v.findViewById(R.id.icon);
             listItem = (LinearLayout)v.findViewById(R.id.linear_list);
 
@@ -99,7 +97,6 @@ public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTe
         //holder.txtFooter.setText(list.get(position).getDescription());
 
         holder.txtName.setText(list.get(position).getName());
-        holder.txtDesc.setText(list.get(position).getDescription());
 
         holder.listItem.setOnClickListener(new OnClickListener() {
             @Override

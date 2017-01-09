@@ -9,13 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:paddingTop="15sp"
-        android:paddingBottom="15sp"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
         android:paddingRight="10sp"
         android:paddingLeft="10sp"
-        android:layout_marginTop="5sp"
-        android:layout_marginRight="5sp"
-        android:layout_marginLeft="5sp"
         android:background="@drawable/background_border_list">
         <LinearLayout
             android:layout_width="0dp"
@@ -34,7 +31,7 @@
                     android:text="Nome do Jogador"
                     android:layout_marginBottom="10sp"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="22sp"/>
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/text_code_list"
@@ -44,7 +41,7 @@
                     android:layout_marginBottom="10sp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textAlignment="textEnd"
-                    android:textSize="22sp"/>
+                    android:textSize="18sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -71,11 +68,19 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.1">
+            android:layout_weight="0.1"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.6"></LinearLayout>
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
                 android:src="@drawable/check"
                 android:id="@+id/img_status_players" />
         </LinearLayout>

@@ -166,6 +166,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.ATHLETES_CREATEDAT, obj.getCreatedAt());
                 values.put(Constants.ATHLETES_UPDATEAT, obj.getUpdateAt());
                 values.put(Constants.ATHLETES_CODE, obj.getCode());
+                values.put(Constants.ATHLETES_EMAIL, obj.getEmail());
+                values.put(Constants.ATHLETES_PHONE, obj.getPhoneNumber());
 
                 ret = myDataBase.insert(Constants.TABLE_ATHLETES, null, values);
             }
@@ -191,6 +193,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.ATHLETES_CREATEDAT, athlete.getCreatedAt());
                 values.put(Constants.ATHLETES_UPDATEAT, athlete.getUpdateAt());
                 values.put(Constants.ATHLETES_CODE, athlete.getCode());
+                values.put(Constants.ATHLETES_EMAIL, athlete.getEmail());
+                values.put(Constants.ATHLETES_PHONE, athlete.getPhoneNumber());
 
                 return ret = myDataBase.insert(Constants.TABLE_ATHLETES, null, values);
 
@@ -363,6 +367,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTS_FIRST_VALUE, obj.getFirstValue());
                 values.put(Constants.TESTS_SECOND_VALUE, obj.getSecondValue());
                 values.put(Constants.TESTS_RATING, obj.getRating());
+                values.put(Constants.TESTS_WINGSPAN, obj.getWingspan());
                 values.put(Constants.TESTS_SYNC, obj.getSync());
 
                 ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
@@ -383,6 +388,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTS_ATHLETE, test.getAthlete());
                 values.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue());
                 values.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue());
+                values.put(Constants.TESTS_WINGSPAN, test.getWingspan());
                 values.put(Constants.TESTS_RATING, test.getRating());
 
                 ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
@@ -486,7 +492,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             c.getDouble(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
                             c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
                             c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
-                            code
+                            code,
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_EMAIL)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_PHONE))
                     );
                     itens.add(obj);
                 } while (c.moveToNext());
@@ -678,6 +686,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTS_FIRST_VALUE)),
                         c.getString(c.getColumnIndex(Constants.TESTS_SECOND_VALUE)),
                         c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
+                        c.getFloat(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
                         c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
                 );
 
@@ -711,6 +720,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTS_FIRST_VALUE)),
                         c.getString(c.getColumnIndex(Constants.TESTS_SECOND_VALUE)),
                         c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
+                        c.getFloat(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
                         c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
                 );
 
@@ -813,7 +823,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getDouble(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
                     c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
                     c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
-                    c.getString(c.getColumnIndex(Constants.ATHLETES_CODE))
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_CODE)),
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_EMAIL)),
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_PHONE))
             );
         } else {
             athlete = null;
@@ -869,6 +881,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTS_FIRST_VALUE)),
                         c.getString(c.getColumnIndex(Constants.TESTS_SECOND_VALUE)),
                         c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
+                        c.getFloat(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
                         c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
                 );
             } else {
@@ -969,7 +982,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getDouble(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
                         c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
                         c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
-                        c.getString(c.getColumnIndex(Constants.ATHLETES_CODE))
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_CODE)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_EMAIL)),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_PHONE))
                 );
                 athletes.add(athlete);
             }while(c.moveToNext());

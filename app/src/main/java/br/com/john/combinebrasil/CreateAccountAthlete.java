@@ -43,7 +43,7 @@ import br.com.john.combinebrasil.Services.Services;
 public class CreateAccountAthlete extends AppCompatActivity {
     MaterialBetterSpinner spinnerDay, spinnerMonth, spinnerYear, spinnerPosition;
     Toolbar toolbar;
-    EditText editTextName, editTextCPF, editTextAddress, editTextHeight, editTextWeihgt, editEmail;
+    EditText editTextName, editTextCPF, editTextPhone, editTextHeight, editTextWeihgt, editEmail;
     private Button buttonAdd;
     Athletes athlete;
     ArrayList<Positions> positions;
@@ -62,7 +62,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
         editTextName = (EditText) findViewById(R.id.edit_name_add);
         editTextCPF = (EditText) findViewById(R.id.edit_cpf_add);
-        editTextAddress = (EditText) findViewById(R.id.edit_address_add);
+        editTextPhone = (EditText) findViewById(R.id.edit_phone_add);
         editTextHeight = (EditText) findViewById(R.id.edit_height_add);
         editTextWeihgt = (EditText) findViewById(R.id.edit_weight_add);
         editEmail = (EditText) findViewById(R.id.edit_email_add);
@@ -79,6 +79,9 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
         Mask maskCpf = new Mask("###.###.###-##", editTextCPF);
         editTextCPF.addTextChangedListener(maskCpf);
+
+        Mask maskPhone = new Mask("(##)#####-####", editTextPhone);
+        editTextPhone.addTextChangedListener(maskPhone);
 
         TextWatcher mask = MaskHeight.insert("#,##", editTextHeight);
         editTextHeight.addTextChangedListener(mask);
@@ -115,21 +118,25 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
     private JSONObject createObject() {
         JSONObject object = new JSONObject();
-        int position = getIndex(spinnerPosition);
-
         try {
-            double height = Double.parseDouble(editTextHeight.getText().toString().replaceAll(",","."));
-            double weight = Double.parseDouble(editTextWeihgt.getText().toString().replaceAll(",","."));
-            String birthday = spinnerYear.getText().toString()+"-"+chooseMonth(spinnerMonth.getText().toString())+"-"+spinnerDay.getText().toString();
-            object.put(Constants.ATHLETES_NAME, editTextName.getText().toString());
-            object.put(Constants.ATHLETES_CPF, editTextCPF.getText().toString());
-            object.put(Constants.ATHLETES_ADDRESS, editTextAddress.getText().toString());
-            object.put(Constants.ATHLETES_DESIRABLE_POSITION, positions.get(position).getID());
-            object.put(Constants.ATHLETES_HEIGHT, height);
-            object.put(Constants.ATHLETES_WEIGHT, weight);
-            object.put(Constants.ATHLETES_BIRTHDAY, birthday);
-            object.put(Constants.ATHLETES_EMAIL, editEmail.getText().toString());
-        } catch (JSONException e) {
+            int position = getIndex(spinnerPosition);
+
+            try {
+                double height = Double.parseDouble(editTextHeight.getText().toString().replaceAll(",", "."));
+                double weight = Double.parseDouble(editTextWeihgt.getText().toString().replaceAll(",", "."));
+                String birthday = spinnerYear.getText().toString() + "-" + chooseMonth(spinnerMonth.getText().toString()) + "-" + spinnerDay.getText().toString();
+                object.put(Constants.ATHLETES_NAME, editTextName.getText().toString());
+                object.put(Constants.ATHLETES_CPF, editTextCPF.getText().toString());
+                object.put(Constants.ATHLETES_PHONE, editTextPhone.getText().toString());
+                object.put(Constants.ATHLETES_DESIRABLE_POSITION, positions.get(position).getID());
+                object.put(Constants.ATHLETES_HEIGHT, height);
+                object.put(Constants.ATHLETES_WEIGHT, weight);
+                object.put(Constants.ATHLETES_BIRTHDAY, birthday);
+                object.put(Constants.ATHLETES_EMAIL, editEmail.getText().toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }catch(Exception e){
             e.printStackTrace();
         }
         return object;
@@ -137,18 +144,22 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
     int index = 0;
     private int getIndex(MaterialBetterSpinner spinner) {
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        try {
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                String seluniversity = (String) arg0.getSelectedItem();
-                index = position;
-            }
+                @Override
+                public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                    String seluniversity = (String) arg0.getSelectedItem();
+                    index = position;
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }catch (Exception e){
+            index = 0;
+        }
 
         return index;
     }
@@ -240,7 +251,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private void clearForm(){
         editTextName.setText("");
         editTextCPF.setText("");
-        editTextAddress.setText("");
+        editTextPhone.setText("");
         editTextWeihgt.setText("");
         editTextHeight.setText("");
         spinnerPosition.setText("");
@@ -255,23 +266,6 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
     public void finished(){
         clearForm();
-    }
-
-    private HashMap<String, String> postData() {
-        Object obj = new Object();
-        obj = "fasdfasdf";
-        obj = 3;
-
-        HashMap<String, String> params = new HashMap<>();
-        double height = Double.parseDouble(editTextHeight.getText().toString().replaceAll(",","."));
-        double weight = Double.parseDouble(editTextWeihgt.getText().toString().replaceAll(",","."));
-        String birthday = spinnerYear.getText().toString()+"-"+chooseMonth(spinnerMonth.getText().toString())+"-"+spinnerDay.getText().toString();
-        params.put(Constants.ATHLETES_NAME, editTextName.getText().toString());
-        params.put(Constants.ATHLETES_CPF, editTextCPF.getText().toString());
-        params.put(Constants.ATHLETES_HEIGHT, String.valueOf(height));
-        params.put(Constants.ATHLETES_WEIGHT, String.valueOf(weight));
-        params.put(Constants.ATHLETES_BIRTHDAY, birthday);
-        return params;
     }
 
     private String chooseMonth(String month){
@@ -360,7 +354,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
             ver = false;
         if (!validaCPF(editTextCPF))
             ver = false;
-        if (!validaName(editTextAddress))
+        if (!validaPhone(editTextPhone))
             ver = false;
         if(!validateHeight(editTextHeight))
             ver = false;
@@ -375,6 +369,17 @@ public class CreateAccountAthlete extends AppCompatActivity {
     public boolean validaName(EditText edit) {
         boolean ver = false;
         if(getString(edit).length()>=5) {
+            Services.changeColorEditBorder(edit, this);
+            ver = true;
+        }
+        else
+            Services.changeColorEditBorderError(edit, this);
+        return ver;
+    }
+
+    public boolean validaPhone(EditText edit) {
+        boolean ver = false;
+        if(getString(edit).length()>=12) {
             Services.changeColorEditBorder(edit, this);
             ver = true;
         }

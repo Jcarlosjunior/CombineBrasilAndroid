@@ -43,23 +43,6 @@
                         android:singleLine="true"
                         android:imeOptions="actionNext"
                         />
-                    <EditText
-                        android:id="@+id/edit_email_add"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/email"
-                        android:paddingLeft="10sp"
-                        android:paddingBottom="10sp"
-                        android:paddingTop="10sp"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/greyDark"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="15sp"
-                        android:background="@drawable/background_edit_border"
-                        android:singleLine="true"
-                        android:inputType="textEmailAddress"
-                        android:imeOptions="actionNext"
-                        />
 
                     <EditText
                     android:id="@+id/edit_cpf_add"
@@ -84,11 +67,11 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
                         <EditText
-                            android:id="@+id/edit_address_add"
+                            android:id="@+id/edit_email_add"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.7"
-                            android:hint="@string/address"
+                            android:layout_weight="0.5"
+                            android:hint="@string/email"
                             android:paddingLeft="10sp"
                             android:paddingBottom="10sp"
                             android:paddingTop="10sp"
@@ -97,26 +80,45 @@
                             android:textSize="16sp"
                             android:layout_marginRight="10sp"
                             android:layout_marginBottom="15sp"
-                            android:singleLine="true"
-                            android:imeOptions="actionNext"
                             android:background="@drawable/background_edit_border"
+                            android:singleLine="true"
+                            android:inputType="textEmailAddress"
+                            android:imeOptions="actionNext"
                             />
 
-                        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                            android:id="@+id/spinner_positions_add"
+                        <EditText
+                            android:id="@+id/edit_phone_add"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.3"
-                            android:hint="@string/position"
+                            android:layout_weight="0.5"
+                            android:hint="@string/phone"
                             android:paddingLeft="10sp"
+                            android:paddingBottom="10sp"
+                            android:paddingTop="10sp"
                             android:textColor="@color/black"
                             android:textColorHint="@color/greyDark"
                             android:textSize="16sp"
                             android:layout_marginBottom="15sp"
+                            android:singleLine="true"
+                            android:inputType="phone"
+                            android:imeOptions="actionNext"
                             android:background="@drawable/background_edit_border"
                             />
 
                     </LinearLayout>
+
+                    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                        android:id="@+id/spinner_positions_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/position"
+                        android:paddingLeft="10sp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/greyDark"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="15sp"
+                        android:background="@drawable/background_edit_border"
+                        />
 
 
                     <TextView

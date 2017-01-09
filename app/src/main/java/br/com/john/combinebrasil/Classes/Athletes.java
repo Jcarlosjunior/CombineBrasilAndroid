@@ -20,11 +20,14 @@ public class Athletes{
     double Height;
     double Weight;
     String Code;
+    String Email;
+    String PhoneNumber;
 
     public Athletes(){}
 
-    public Athletes(String id, String name, String birthday, String cpf, String address, String desirablePosition, double height, double weight, String createdAt,
-                    String updateAt, String code) {
+    public Athletes(String id, String name, String birthday, String cpf, String address, String desirablePosition,
+                    double height, double weight, String createdAt,
+                    String updateAt, String code, String email, String phoneNumber) {
         Id = id;
         Name = name;
         Birthday = birthday;
@@ -36,6 +39,8 @@ public class Athletes{
         this.Height = height;
         this.Weight = weight;
         this.Code = code;
+        this.Email = email;
+        this.PhoneNumber = phoneNumber;
     }
 
     public String getId() {
@@ -124,5 +129,21 @@ public class Athletes{
 
     public void setDesirablePosition(String desirablePosition) {
         DesirablePosition = desirablePosition;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public String getPhoneNumber() {
+        return PhoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber = phoneNumber;
     }
 }

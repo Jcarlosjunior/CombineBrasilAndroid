@@ -41,7 +41,7 @@ public class CronometerActivity extends AppCompatActivity {
     ImageView imgIconButtonPlay, imgReset, imgPause, imgSave;
     Button btnSave, btnReady, btnInconclusive;
     RatingBar ratingBar;
-    private float ratingValue;
+    private float ratingValue, wingspan=0;
     String idAthlete = "";
     int position = 0, inconclusive=0;
     boolean isSaveInconclusive=false;
@@ -310,6 +310,7 @@ public class CronometerActivity extends AppCompatActivity {
                 textFirstResult.getText().toString(),
                 textSecondValue.getText().toString(),
                 ratingValue,
+                wingspan,
                 Services.convertBoolInInt(false)
                 );
         db.addTest(test);

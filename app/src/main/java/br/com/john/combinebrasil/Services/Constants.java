@@ -83,6 +83,7 @@ public class Constants {
     public static final String ATHLETES_BIRTHDAY = "birthday";
     public static final String ATHLETES_EMAIL = "email";
     public static final String ATHLETES_CPF = "cpf";
+    public static final String ATHLETES_PHONE = "phoneNumber";
     public static final String ATHLETES_ADDRESS = "address";
     public static final String ATHLETES_DESIRABLE_POSITION = "desirablePosition";
     public static final String ATHLETES_HEIGHT = "height";
@@ -155,6 +156,7 @@ public class Constants {
     public static final String TESTS_FIRST_VALUE = "firstValue";
     public static final String TESTS_SECOND_VALUE = "secondValue";
     public static final String TESTS_RATING = "rating";
+    public static final String TESTS_WINGSPAN = "wingspan";
     public static final String TESTS_SYNC = "sync";
 
 }

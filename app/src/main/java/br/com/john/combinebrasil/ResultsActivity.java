@@ -46,7 +46,7 @@ public class ResultsActivity extends AppCompatActivity {
     LinearLayout linearRating;
     RatingBar ratingBar;
     String idAthlete = "";
-    float ratingValue;
+    float ratingValue, wingspan=0;
 
     LinearLayout linearInsert, linearResultDone;
     TextView txtFistDone, txtSecondDone, txtNameResult, txtRating;
@@ -296,6 +296,7 @@ public class ResultsActivity extends AppCompatActivity {
                 editFirstResult.getText().toString(),
                 editSecondResult.getText().toString(),
                 ratingValue,
+                wingspan,
                Services.convertBoolInInt(false));
         db.addTest(test);
         AthletesActivity.adapterTests.notifyItemChanged(position);
