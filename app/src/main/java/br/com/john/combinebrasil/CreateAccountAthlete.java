@@ -86,7 +86,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
         TextWatcher mask = MaskHeight.insert("#,##", editTextHeight);
         editTextHeight.addTextChangedListener(mask);
-        mask = MaskHeight.insert("##",editTextWeihgt);
+        mask = MaskHeight.insert("###",editTextWeihgt);
         editTextWeihgt.addTextChangedListener(mask);
 
         buttonAdd.setOnClickListener(addAthleteClicked);
@@ -318,13 +318,19 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
     private void inflateSpinnerPosition(){
         DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
-        positions = db.getPositions();
+        this.positions = new ArrayList<Positions>();
+        ArrayList<Positions> positions = db.getPositions();
 
         if(positions!=null){
-            String [] adapter = new String[positions.size()];
-            for(int i =0;i<=positions.size()-1;i++){
-                adapter[i] = positions.get(i).getNAME() +" ("+positions.get(i).getDESCRIPTION()+")";
+
+            Positions obj = new Positions(" ", "Sem uma posição desejável", " ");
+            this.positions.add(obj);
+            for(Positions pos : positions){
+                this.positions.add(pos);
             }
+            String [] adapter = new String[this.positions.size()];
+            for (int i=0; i<=this.positions.size()-1;i++)
+                adapter[i] = this.positions.get(i).getNAME();
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, adapter);
             spinnerPosition.setAdapter(arrayAdapter);
 
@@ -429,8 +435,13 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private boolean validateHeight(EditText edit){
         boolean ver = false;
         if(getString(edit).length()>=3){
-            Services.changeColorEditBorder(edit, this);
-            ver = true;
+            int num = Integer.parseInt(getString(edit).substring(0));
+            if(num>2)
+                Services.changeColorEditBorderError(edit, this);
+            else {
+                Services.changeColorEditBorder(edit, this);
+                ver = true;
+            }
         }
         else
             Services.changeColorEditBorderError(edit, this);
@@ -439,9 +450,14 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
     private boolean validateWeight(EditText edit){
         boolean ver = false;
-        if(getString(edit).length()==2){
-            Services.changeColorEditBorder(edit, this);
-            ver = true;
+        if(getString(edit).length()>=2){
+            int height = Integer.parseInt(getString(edit));
+            if(height>400)
+                Services.changeColorEditBorderError(edit, this);
+            else {
+                Services.changeColorEditBorder(edit, this);
+                ver = true;
+            }
         }
         else
             Services.changeColorEditBorderError(edit, this);

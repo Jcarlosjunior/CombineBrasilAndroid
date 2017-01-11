@@ -27,6 +27,8 @@ import org.w3c.dom.Text;
 import java.util.UUID;
 
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.Positions;
+import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.CountDownTimer;
@@ -36,15 +38,15 @@ import br.com.john.combinebrasil.Services.Services;
 
 public class CronometerActivity extends AppCompatActivity {
     Toolbar toolbar;
-    TextView textFirstResult, textSecondValue, textCronometer, textShowQualify;
-    LinearLayout linearButtonPlay, linearFirstValue, linearSecondValue, linearRating;
-    ImageView imgIconButtonPlay, imgReset, imgPause, imgSave;
+    TextView textFirstResult, textSecondValue, textCronometer, textShowQualify, textInfoNameAthlete, textInfoNameTest, textInfoDetailsAthlete, textInfoDetailsTest;
+    LinearLayout linearButtonPlay, linearFirstValue, linearSecondValue, linearRating, linearInfo;
+    ImageView imgIconButtonPlay, imgReset, imgPause, imgSave, imgTestArrow, imgAthleteArrow;
     Button btnSave, btnReady, btnInconclusive;
     RatingBar ratingBar;
-    private float ratingValue, wingspan=0;
+    private float ratingValue;
     String idAthlete = "";
     int position = 0, inconclusive=0;
-    boolean isSaveInconclusive=false;
+    boolean isSaveInconclusive=false, arrowDownTest=false, arrowDownPlayer=false;
 
     LinearLayout linearInsert, linearResultDone;
     TextView txtFistDone, txtSecondDone, txtNameResult, txtRating;
@@ -54,6 +56,7 @@ public class CronometerActivity extends AppCompatActivity {
     private final CountDownTimer countDownTimer = new CountDownTimer();
     private boolean init = false, firstValueSave = false, secondValueSalve = false, isPause=false;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +67,24 @@ public class CronometerActivity extends AppCompatActivity {
         LinearLayout btnBack = (LinearLayout) findViewById(R.id.linear_back_button);
         btnBack.setOnClickListener(btnBackClickListener);
 
-        LinearLayout linearAddAccount = (LinearLayout) findViewById(R.id.linear_add_account);
-        linearAddAccount.setVisibility(View.GONE);
+        ImageView imgInfo = (ImageView) findViewById(R.id.img_create_account);
+        imgInfo.setImageDrawable(CronometerActivity.this.getDrawable(R.drawable.ic_info));
+        imgInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInfo();
+            }
+        });
+
         ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
         imgSearch.setVisibility(View.GONE);
+
+        try {
+            TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
+            DatabaseHelper db = new DatabaseHelper(CronometerActivity.this);
+            db.getTestTypeFromId(AllActivities.testSelected).getName();
+            textTitle.setText(db.getTestTypeFromId(AllActivities.testSelected).getName());
+        }catch(Exception e){}
 
         linearButtonPlay = (LinearLayout) findViewById(R.id.linear_button_play);
         linearFirstValue = (LinearLayout) findViewById(R.id.linear_show_first_value);
@@ -84,6 +101,8 @@ public class CronometerActivity extends AppCompatActivity {
         imgPause = (ImageView) findViewById(R.id.image_pause);
         imgReset = (ImageView) findViewById(R.id.image_reset);
         imgSave = (ImageView) findViewById(R.id.image_save);
+        imgTestArrow = (ImageView)findViewById(R.id.img_test_arrow);
+        imgAthleteArrow = (ImageView)findViewById(R.id.img_player_arrow);
 
         btnSave = (Button) findViewById(R.id.button_save_results);
         btnReady = (Button) findViewById(R.id.button_ready_cronometer);
@@ -104,6 +123,11 @@ public class CronometerActivity extends AppCompatActivity {
         ratingDone = (RatingBar) findViewById(R.id.rating_result_done);
         buttonBack = (Button) findViewById(R.id.button_back);
         txtRating = (TextView) findViewById(R.id.txt_rating_done);
+
+        textInfoNameTest = (TextView) findViewById(R.id.text_info_name_test);
+        textInfoNameAthlete = (TextView) findViewById(R.id.text_info_name_athlete);
+        textInfoDetailsAthlete = (TextView) findViewById(R.id.text_info_details_athlete);
+        textInfoDetailsTest = (TextView) findViewById(R.id.text_info_details_test);
 
 
         Bundle extras = getIntent().getExtras();
@@ -310,7 +334,7 @@ public class CronometerActivity extends AppCompatActivity {
                 textFirstResult.getText().toString(),
                 textSecondValue.getText().toString(),
                 ratingValue,
-                wingspan,
+                " ",
                 Services.convertBoolInInt(false)
                 );
         db.addTest(test);
@@ -378,6 +402,8 @@ public class CronometerActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             clickePause();
+            imgSave.setVisibility(View.VISIBLE);
+            imgPause.setVisibility(View.GONE);
         }
     };
 
@@ -436,4 +462,85 @@ public class CronometerActivity extends AppCompatActivity {
     public static void finished(Activity act){
         ((CronometerActivity)act).finish();
     }
+
+    private void showInfo(){
+        linearInfo = (LinearLayout) findViewById(R.id.linear_info);
+        linearInfo.setVisibility(View.VISIBLE);
+        DatabaseHelper db  = new DatabaseHelper(CronometerActivity.this);
+        db.openDataBase();
+        TestTypes test = db.getTestTypeFromId(AllActivities.testSelected);
+        if(test!=null) {
+            textInfoNameTest.setText(test.getName());
+            String testDetail = test.getDescription();
+            testDetail = testDetail.replace(".",".\n");
+            testDetail = testDetail.replace(";",";\n");
+            testDetail = testDetail.replace("-","\n-");
+            textInfoDetailsTest.setText(testDetail);
+        }
+
+        Athletes athlete = db.getAthleteById(idAthlete);
+
+        if(athlete!=null){
+            Positions positiom = db.getPositiomById(athlete.getDesirablePosition());
+            String pos = "";
+            if(positiom!=null){
+                pos = positiom.getNAME();
+            }
+            textInfoNameAthlete.setText(athlete.getName());
+            textInfoDetailsAthlete.setText("Nascimento: "+ Services.convertDate(athlete.getBirthday())+ "\n"+
+                    "CPF: "+athlete.getCPF() +"\n"+
+                    "Endereço: "+athlete.getAddress() +"\n"+
+                    "Posição Desejada: "+pos +"\n"+
+                    "Altura: "+String.format("%.2f", athlete.getHeight()).replace(".",",") +"\n"+
+                    "Peso: "+String.format("%.0f",athlete.getWeight()).replace(".",",")+" Kg");
+        }
+
+        Button btnClose = (Button) findViewById(R.id.button_close_info);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linearInfo.setVisibility(View.GONE);
+            }
+        });
+
+        imgTestArrow.setOnClickListener(clickedImgArrowTest);
+        imgAthleteArrow.setOnClickListener(clickedImgArrowPlayer);
+    }
+
+    private View.OnClickListener clickedImgArrowTest = new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        public void onClick(View v) {
+            if(arrowDownTest)
+            {
+                arrowDownTest=false;
+                imgTestArrow.setImageDrawable(getDrawable(R.drawable.arrow_top));
+                textInfoDetailsTest.setVisibility(View.VISIBLE);
+            }
+            else{
+                arrowDownTest=true;
+                imgTestArrow.setImageDrawable(getDrawable(R.drawable.arrow_down));
+                textInfoDetailsTest.setVisibility(View.GONE);
+            }
+        }
+    };
+
+    private View.OnClickListener clickedImgArrowPlayer = new View.OnClickListener() {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        public void onClick(View v) {
+            if(arrowDownPlayer)
+            {
+                arrowDownPlayer=false;
+                imgAthleteArrow.setImageDrawable(getDrawable(R.drawable.arrow_top));
+                textInfoDetailsAthlete.setVisibility(View.VISIBLE);
+            }
+            else{
+                arrowDownPlayer = true;
+                imgAthleteArrow.setImageDrawable(getDrawable(R.drawable.arrow_down));
+                textInfoDetailsAthlete.setVisibility(View.GONE);
+            }
+
+        }
+    };
 }

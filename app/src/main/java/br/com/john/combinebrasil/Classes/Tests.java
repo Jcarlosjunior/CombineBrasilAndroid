@@ -11,12 +11,12 @@ public class Tests {
     private String FirstValue;
     private String SecondValue;
     private float Rating;
-    private float Wingspan;
+    private String Wingspan;
     private int Sync;
 
     public Tests(){}
 
-    public Tests(String id, String type, String athlete, String firstValue, String secondValue, float rating, float wingspan,int sync) {
+    public Tests(String id, String type, String athlete, String firstValue, String secondValue, float rating, String wingspan,int sync) {
         Id = id;
         Type = type;
         Athlete = athlete;
@@ -83,11 +83,11 @@ public class Tests {
         Sync = sync;
     }
 
-    public double getWingspan() {
+    public String getWingspan() {
         return Wingspan;
     }
 
-    public void setWingspan(float wingspan) {
+    public void setWingspan(String wingspan) {
         Wingspan = wingspan;
     }
 }

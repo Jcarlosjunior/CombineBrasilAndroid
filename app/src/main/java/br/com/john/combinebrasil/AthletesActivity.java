@@ -92,6 +92,13 @@ public class AthletesActivity extends AppCompatActivity {
             }
         });
 
+        try {
+            TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
+            DatabaseHelper db = new DatabaseHelper(AthletesActivity.this);
+            db.getTestTypeFromId(AllActivities.testSelected).getName();
+            textTitle.setText(db.getTestTypeFromId(AllActivities.testSelected).getName());
+        }catch(Exception e){}
+
         imgOrder = (ImageView) findViewById(R.id.img_order);
 
         imgOrder.setOnClickListener(new View.OnClickListener() {
@@ -210,7 +217,7 @@ public class AthletesActivity extends AppCompatActivity {
         DatabaseHelper db = new DatabaseHelper(AthletesActivity.this);
         db.openDataBase();
         TestTypes testTypes = db.getTestTypeFromId(AllActivities.testSelected);
-        if(testTypes.getValueType().equals("corrida") || testTypes.getValueType().equals("tempo"))
+        if(testTypes.getValueType().toLowerCase().equals("corrida") || testTypes.getValueType().toLowerCase().equals("tempo"))
             i = new Intent(AthletesActivity.this, CronometerActivity.class);
         else
             i = new Intent(AthletesActivity.this, ResultsActivity.class);

@@ -16,7 +16,7 @@
     <string name="cpf">CPF</string>
     <string name="address_add">Endereço (Opcional)</string>
     <string name="phone">Telfone ex:(xx)xxxxx-xxxx</string>
-    <string name="position">Posição</string>
+    <string name="position">Posição Desejável</string>
     <string name="nascimento">Data de Nascimento</string>
     <string name="dia">Dia</string>
     <string name="mes">Mês</string>
@@ -27,6 +27,7 @@
     <string name="players">Jogadores</string>
     <string name="message">Mensagem</string>
     <string name="qualification">Qualificação</string>
+    <string name="wingspan">Envergadura</string>
     <string name="ok">Ok</string>
     <string name="ready">Pronto</string>
     <string name="search">Buscar</string>
@@ -34,6 +35,8 @@
     <string name="update_ok">Tudo atualizado</string>
     <string name="back_to_test">Voltar para o teste</string>
     <string name="go_to_sync">Sincronizar teste</string>
+    <string name="close">Fechar</string>
+    <string name="value_error">Valor inválido</string>
 
 
     <!--
@@ -45,6 +48,7 @@
     <string name="logando">Entrando na sua conta</string>
     <string name="add_account">Criando atleta</string>
     <string name="qualification_message">Qualifique a atuação do atleta no teste.</string>
+    <string name="wingspan_message">Nos testes de salto horizontal, é necessário a envergadura do atleta, que consiste da altura entre os pés e a esticado</string>
     <string name="rating">Rendimento do atleta no exercício</string>
     <string name="not_find">
                 Ops... Não foi encontrado nenhum resultado para a busca

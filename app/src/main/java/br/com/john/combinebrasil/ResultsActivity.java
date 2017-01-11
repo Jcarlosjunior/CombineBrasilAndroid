@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.Results;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.AllActivities;
@@ -37,16 +38,16 @@ import br.com.john.combinebrasil.Services.Services;
 
 public class ResultsActivity extends AppCompatActivity {
     Toolbar toolbar;
-    Button buttonAdd, btnReady;
-    EditText editFirstResult, editSecondResult;
+    Button buttonAdd, btnReady, buttonWingspan;
+    EditText editFirstResult, editSecondResult, editWingspan;
     int contResults=0, position=0;
     TextView textNamePlayer, textNameTest, textNameTestDetails, textDetailsTest, textNamePlayerDetails, textDetailsPlayer, textShowRating;
     ImageView imgArrowTest, imgArrowPlayer;
     boolean arrowDownTest=true,arrowDownPlayer=true;
-    LinearLayout linearRating;
+    LinearLayout linearRating, linearWingSpan;
     RatingBar ratingBar;
-    String idAthlete = "";
-    float ratingValue, wingspan=0;
+    String idAthlete = "", wingspan=" ";
+    float ratingValue;
 
     LinearLayout linearInsert, linearResultDone;
     TextView txtFistDone, txtSecondDone, txtNameResult, txtRating;
@@ -60,6 +61,7 @@ public class ResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_results);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         LinearLayout btnBack = (LinearLayout) findViewById(R.id.linear_back_button);
         btnBack.setOnClickListener(btnBackClickListener);
@@ -67,6 +69,22 @@ public class ResultsActivity extends AppCompatActivity {
         linearAddAccount.setVisibility(View.GONE);
         ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
         imgSearch.setVisibility(View.GONE);
+        try {
+            TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
+            DatabaseHelper db = new DatabaseHelper(ResultsActivity.this);
+            TestTypes test = db.getTestTypeFromId(AllActivities.testSelected);
+            textTitle.setText(test.getName());
+
+            editWingspan = (EditText) findViewById(R.id.edit_wingspan);
+            TextWatcher mask = MaskHeight.insert("#,##", editWingspan);
+            editWingspan.addTextChangedListener(mask);
+            buttonWingspan = (Button) findViewById(R.id.button_wingspan);
+            buttonWingspan.setOnClickListener(clickedWingspan);
+            linearWingSpan = (LinearLayout) findViewById(R.id.linear_wingspan);
+
+            if(test.getName().toLowerCase().contains("vertical"))
+                linearWingSpan.setVisibility(View.VISIBLE);
+        }catch(Exception e){}
 
         linearRating = (LinearLayout) findViewById(R.id.linear_rating_results);
 
@@ -150,11 +168,6 @@ public class ResultsActivity extends AppCompatActivity {
                         enabledButtonAdd(true);
                     else
                         enabledButtonAdd(false);
-
-                    /*if(s.length()==1){
-                        editFirstResult.setText(s.toString() + ",");
-                        editFirstResult.setSelection(s.length()+1);
-                    }*/
                 }
 
                 @Override
@@ -195,9 +208,14 @@ public class ResultsActivity extends AppCompatActivity {
         if(test!=null) {
             textNameTest.setText(test.getName());
             textNameTestDetails.setText(test.getName());
-            //textDetailsTest.setText(detailText);
+            String testDetail = test.getDescription();
+            testDetail = testDetail.replace(".",".\n");
+            testDetail = testDetail.replace(";",";\n");
+            testDetail = testDetail.replace("-","\n-");
+            textDetailsTest.setText(testDetail);
         }
     }
+
 
     private View.OnClickListener clickedImgArrowTest = new View.OnClickListener() {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -373,5 +391,21 @@ public class ResultsActivity extends AppCompatActivity {
     public static void finished(Activity act){
         ((ResultsActivity)act).finish();
     }
+
+    private View.OnClickListener clickedWingspan = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            TextView extError = (TextView) findViewById(R.id.text_error_wingspan);
+            if (editWingspan.getText().toString().trim().length()>3){
+                wingspan = editWingspan.getText().toString();
+                linearWingSpan.setVisibility(View.GONE);
+                extError.setVisibility(View.INVISIBLE);
+            }
+            else {
+                extError.setVisibility(View.VISIBLE);
+                Services.changeColorEditBorderError(editWingspan, ResultsActivity.this);
+            }
+        }
+    };
 }
 

@@ -47,9 +47,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".SyncActivity"
-            android:label="@string/title_activity_sync"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".SyncAthleteActivity"></activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SyncAthleteActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

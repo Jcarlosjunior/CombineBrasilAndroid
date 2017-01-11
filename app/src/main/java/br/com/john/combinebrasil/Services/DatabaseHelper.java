@@ -686,7 +686,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTS_FIRST_VALUE)),
                         c.getString(c.getColumnIndex(Constants.TESTS_SECOND_VALUE)),
                         c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
-                        c.getFloat(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
                         c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
                 );
 
@@ -720,7 +720,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTS_FIRST_VALUE)),
                         c.getString(c.getColumnIndex(Constants.TESTS_SECOND_VALUE)),
                         c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
-                        c.getFloat(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
                         c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
                 );
 
@@ -881,7 +881,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTS_FIRST_VALUE)),
                         c.getString(c.getColumnIndex(Constants.TESTS_SECOND_VALUE)),
                         c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
-                        c.getFloat(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
                         c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
                 );
             } else {

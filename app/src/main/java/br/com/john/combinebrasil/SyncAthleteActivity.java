@@ -41,6 +41,7 @@ public class SyncAthleteActivity extends AppCompatActivity {
     long numAthletes = 0;
     AdapterRecyclerSyncAthlete adapterSync;
     String idTest;
+    FloatingActionButton fab;
 
 
     @Override
@@ -66,13 +67,11 @@ public class SyncAthleteActivity extends AppCompatActivity {
         linearProgress = (LinearLayout) findViewById(R.id.linear_progress);
         textProgress = (TextView) findViewById(R.id.text_progress);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_upload_sync_athlete);
+        fab = (FloatingActionButton) findViewById(R.id.fab_upload_sync_athlete);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 callSynAll();
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
             }
         });
 
@@ -91,8 +90,7 @@ public class SyncAthleteActivity extends AppCompatActivity {
 
             callInflateList();
 
-            ArrayList<Tests> obj = db.getTestsFromType(idTest);
-            if(numAthletes==obj.size()){
+            if(numAthletes==db.getCountTestSync(idTest)){
                 fab.setVisibility(View.GONE);
             }
         }
@@ -218,6 +216,10 @@ public class SyncAthleteActivity extends AppCompatActivity {
         db.updateSync(athletes.get(positionNow).getId(), idTest, id);
 
         adapterSync.notifyItemChanged(positionNow);
+
+        if(numAthletes==db.getCountTestSync(idTest)){
+            fab.setVisibility(View.GONE);
+        }
     }
 
 }

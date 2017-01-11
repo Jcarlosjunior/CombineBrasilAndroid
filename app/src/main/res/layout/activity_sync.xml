@@ -35,11 +35,13 @@
                     android:id="@+id/fab_upload_sync"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
                     android:layout_margin="16sp"
                     android:padding="16sp"
+                    app:srcCompat="@drawable/ic_upload"
                     app:backgroundTint="@color/orange"
-                    app:srcCompat="@drawable/ic_upload" />
+                    app:layout_anchor="@id/recycler_sync"
+                    app:layout_anchorGravity="bottom|right|end"
+                    />
 
         </android.support.design.widget.CoordinatorLayout>
 =
