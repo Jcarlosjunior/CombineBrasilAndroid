@@ -30,6 +30,7 @@ import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Results;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.MaskHeight;
@@ -75,6 +76,15 @@ public class ResultsActivity extends AppCompatActivity {
             TestTypes test = db.getTestTypeFromId(AllActivities.testSelected);
             textTitle.setText(test.getName());
 
+            linearInsert = (LinearLayout) findViewById(R.id.linear_insert);
+            linearResultDone = (LinearLayout) findViewById(R.id.linear_results_done);
+            txtNameResult = (TextView) findViewById(R.id.txt_name_result);
+            txtFistDone = (TextView) findViewById(R.id.txt_first_result_done);
+            txtSecondDone = (TextView) findViewById(R.id.txt_second_result_done);
+            ratingDone = (RatingBar) findViewById(R.id.rating_result_done);
+            buttonBack = (Button) findViewById(R.id.button_back);
+            txtRating = (TextView) findViewById(R.id.txt_rating_done);
+
             editWingspan = (EditText) findViewById(R.id.edit_wingspan);
             TextWatcher mask = MaskHeight.insert("#,##", editWingspan);
             editWingspan.addTextChangedListener(mask);
@@ -82,8 +92,10 @@ public class ResultsActivity extends AppCompatActivity {
             buttonWingspan.setOnClickListener(clickedWingspan);
             linearWingSpan = (LinearLayout) findViewById(R.id.linear_wingspan);
 
-            if(test.getName().toLowerCase().contains("vertical"))
+            if(test.getName().toLowerCase().equals("salto vertical")) {
+                linearInsert.setVisibility(View.GONE);
                 linearWingSpan.setVisibility(View.VISIBLE);
+            }
         }catch(Exception e){}
 
         linearRating = (LinearLayout) findViewById(R.id.linear_rating_results);
@@ -111,15 +123,6 @@ public class ResultsActivity extends AppCompatActivity {
         buttonAdd.setOnClickListener(clickSave);
 
         Bundle extras = getIntent().getExtras();
-
-        linearInsert = (LinearLayout) findViewById(R.id.linear_insert);
-        linearResultDone = (LinearLayout) findViewById(R.id.linear_results_done);
-        txtNameResult = (TextView) findViewById(R.id.txt_name_result);
-        txtFistDone = (TextView) findViewById(R.id.txt_first_result_done);
-        txtSecondDone = (TextView) findViewById(R.id.txt_second_result_done);
-        ratingDone = (RatingBar) findViewById(R.id.rating_result_done);
-        buttonBack = (Button) findViewById(R.id.button_back);
-        txtRating = (TextView) findViewById(R.id.txt_rating_done);
 
         if(extras != null){
             idAthlete = extras.getString("id_player");
@@ -307,6 +310,7 @@ public class ResultsActivity extends AppCompatActivity {
     private void saveTest(){
         DatabaseHelper db = new DatabaseHelper(ResultsActivity.this);
         db.openDataBase();
+        User user= db.getUser();
        Tests test = new Tests(
                 UUID.randomUUID().toString(),
                 AllActivities.testSelected,
@@ -315,6 +319,7 @@ public class ResultsActivity extends AppCompatActivity {
                 editSecondResult.getText().toString(),
                 ratingValue,
                 wingspan,
+               user.getId(),
                Services.convertBoolInInt(false));
         db.addTest(test);
         AthletesActivity.adapterTests.notifyItemChanged(position);
@@ -400,6 +405,7 @@ public class ResultsActivity extends AppCompatActivity {
                 wingspan = editWingspan.getText().toString();
                 linearWingSpan.setVisibility(View.GONE);
                 extError.setVisibility(View.INVISIBLE);
+                linearInsert.setVisibility(View.VISIBLE);
             }
             else {
                 extError.setVisibility(View.VISIBLE);

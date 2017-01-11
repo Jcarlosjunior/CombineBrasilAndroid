@@ -30,6 +30,7 @@ import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Positions;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.CountDownTimer;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
@@ -327,6 +328,7 @@ public class CronometerActivity extends AppCompatActivity {
     private void saveTest(){
         DatabaseHelper db = new DatabaseHelper(CronometerActivity.this);
         db.openDataBase();
+        User user= db.getUser();
         Tests test = new Tests(
                 UUID.randomUUID().toString(),
                 AllActivities.testSelected,
@@ -335,6 +337,7 @@ public class CronometerActivity extends AppCompatActivity {
                 textSecondValue.getText().toString(),
                 ratingValue,
                 " ",
+                user.getId(),
                 Services.convertBoolInInt(false)
                 );
         db.addTest(test);

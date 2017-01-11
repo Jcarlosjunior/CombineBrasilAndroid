@@ -48,7 +48,8 @@
     <string name="logando">Entrando na sua conta</string>
     <string name="add_account">Criando atleta</string>
     <string name="qualification_message">Qualifique a atuação do atleta no teste.</string>
-    <string name="wingspan_message">Nos testes de salto horizontal, é necessário a envergadura do atleta, que consiste da altura entre os pés e a esticado</string>
+    <string name="wingspan_message">Nos testes de salto vertical, é necessário a envergadura do atleta,
+        que consiste na altura entre os pés à mão do atleta acima da cabeça, com o seu braço totalmente esticado, como no exemplo abaixo: </string>
     <string name="rating">Rendimento do atleta no exercício</string>
     <string name="not_find">
                 Ops... Não foi encontrado nenhum resultado para a busca

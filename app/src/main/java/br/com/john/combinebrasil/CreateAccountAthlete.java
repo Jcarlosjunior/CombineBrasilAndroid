@@ -318,22 +318,15 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
     private void inflateSpinnerPosition(){
         DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
-        this.positions = new ArrayList<Positions>();
-        ArrayList<Positions> positions = db.getPositions();
+        positions = new ArrayList<Positions>();
+        positions = db.getPositions();
 
         if(positions!=null){
-
-            Positions obj = new Positions(" ", "Sem uma posição desejável", " ");
-            this.positions.add(obj);
-            for(Positions pos : positions){
-                this.positions.add(pos);
-            }
-            String [] adapter = new String[this.positions.size()];
-            for (int i=0; i<=this.positions.size()-1;i++)
-                adapter[i] = this.positions.get(i).getNAME();
+            String [] adapter = new String[positions.size()];
+            for (int i=0; i<=positions.size()-1;i++)
+                adapter[i] = positions.get(i).getNAME();
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, adapter);
             spinnerPosition.setAdapter(arrayAdapter);
-
         }
     }
 

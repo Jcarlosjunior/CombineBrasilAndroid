@@ -383,6 +383,7 @@ public class DeserializerJsonElements {
                             json.optString(Constants.TESTS_SECOND_VALUE),
                             (float) (json.optDouble(Constants.TESTS_RATING)),
                             json.optString(Constants.TESTS_WINGSPAN),
+                            json.optString(Constants.TESTS_USER),
                             Services.convertBoolInInt(true)
                     );
 
@@ -407,6 +408,7 @@ public class DeserializerJsonElements {
                 String.valueOf(json.optLong(Constants.TESTS_SECOND_VALUE)),
                 (float) (json.optDouble(Constants.TESTS_RATING)),
                 json.optString(Constants.TESTS_WINGSPAN),
+                json.optString(Constants.TESTS_USER),
                 Services.convertBoolInInt(true)
             );
         } catch (JSONException e) {

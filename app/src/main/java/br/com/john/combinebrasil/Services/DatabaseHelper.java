@@ -368,6 +368,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTS_SECOND_VALUE, obj.getSecondValue());
                 values.put(Constants.TESTS_RATING, obj.getRating());
                 values.put(Constants.TESTS_WINGSPAN, obj.getWingspan());
+                values.put(Constants.TESTS_USER, obj.getUser());
                 values.put(Constants.TESTS_SYNC, obj.getSync());
 
                 ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
@@ -389,6 +390,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue());
                 values.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue());
                 values.put(Constants.TESTS_WINGSPAN, test.getWingspan());
+                values.put(Constants.TESTS_USER, test.getUser());
                 values.put(Constants.TESTS_RATING, test.getRating());
 
                 ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
@@ -687,6 +689,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTS_SECOND_VALUE)),
                         c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
                         c.getString(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_USER)),
                         c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
                 );
 
@@ -721,6 +724,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTS_SECOND_VALUE)),
                         c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
                         c.getString(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_USER)),
                         c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
                 );
 
@@ -800,6 +804,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return itens;
+    }
+
+    public User getUser() {
+        this.openDataBase();
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_USER;
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        User item = new User();
+
+        if (c.moveToFirst()) {
+                item = new User(
+                        c.getString(c.getColumnIndex(Constants.USER_ID)),
+                        c.getString(c.getColumnIndex(Constants.USER_NAME)),
+                        c.getString(c.getColumnIndex(Constants.USER_EMAIL)),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.USER_ISADMIN))),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.USER_CANWRITE))),
+                        c.getString(c.getColumnIndex(Constants.USER_TOKEN))
+                );
+        } else {
+            item = null;
+        }
+        c.close();
+        db.close();
+
+        return item;
     }
 
     public Athletes getAthleteById(String idPlayer){
@@ -882,6 +914,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTS_SECOND_VALUE)),
                         c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
                         c.getString(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
+                        c.getString(c.getColumnIndex(Constants.TESTS_USER)),
                         c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
                 );
             } else {

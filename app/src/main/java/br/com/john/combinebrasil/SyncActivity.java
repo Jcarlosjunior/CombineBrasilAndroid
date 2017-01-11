@@ -150,6 +150,8 @@ public class SyncActivity extends AppCompatActivity {
             object.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue());
             object.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue());
             object.put(Constants.TESTS_RATING, test.getRating());
+            object.put(Constants.TESTS_WINGSPAN, test.getWingspan());
+            object.put(Constants.TESTS_USER, test.getUser());
         } catch (JSONException e) {
             e.printStackTrace();
         }

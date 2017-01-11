@@ -157,6 +157,7 @@ public class Constants {
     public static final String TESTS_SECOND_VALUE = "secondValue";
     public static final String TESTS_RATING = "rating";
     public static final String TESTS_WINGSPAN = "wingspan";
+    public static final String TESTS_USER = "user";
     public static final String TESTS_SYNC = "sync";
 
 }

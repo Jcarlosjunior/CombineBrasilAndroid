@@ -179,6 +179,8 @@ public class SyncAthleteActivity extends AppCompatActivity {
             object.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue().replace(",","."));
             object.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue().replace(",","."));
             object.put(Constants.TESTS_RATING, test.getRating());
+            object.put(Constants.TESTS_WINGSPAN, test.getWingspan());
+            object.put(Constants.TESTS_USER, test.getUser());
         } catch (JSONException e) {
             e.printStackTrace();
         }

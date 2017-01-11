@@ -12,11 +12,13 @@ public class Tests {
     private String SecondValue;
     private float Rating;
     private String Wingspan;
+    private String User;
     private int Sync;
 
     public Tests(){}
 
-    public Tests(String id, String type, String athlete, String firstValue, String secondValue, float rating, String wingspan,int sync) {
+    public Tests(String id, String type, String athlete, String firstValue, String secondValue,
+                 float rating, String wingspan, String user, int sync) {
         Id = id;
         Type = type;
         Athlete = athlete;
@@ -24,6 +26,7 @@ public class Tests {
         SecondValue = secondValue;
         Rating = rating;
         Wingspan = wingspan;
+        User = user;
         Sync = sync;
     }
 
@@ -89,5 +92,13 @@ public class Tests {
 
     public void setWingspan(String wingspan) {
         Wingspan = wingspan;
+    }
+
+    public String getUser() {
+        return User;
+    }
+
+    public void setUser(String user) {
+        User = user;
     }
 }
