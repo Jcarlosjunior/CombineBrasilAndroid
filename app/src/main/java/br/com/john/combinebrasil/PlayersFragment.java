@@ -111,6 +111,7 @@ public class PlayersFragment extends Fragment {
             }
         });
         AdapterListAthletes adapterTests = new AdapterListAthletes(AllActivities.mainActivity, values, testsArrayList);
+        adapterTests.setAthletes(true);
         adapterTests.setActivity(AllActivities.mainActivity);
         listViewPlayers.setVisibility(View.VISIBLE);
         listViewPlayers.setAdapter(adapterTests);

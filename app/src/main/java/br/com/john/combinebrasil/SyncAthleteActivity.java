@@ -1,6 +1,7 @@
 package br.com.john.combinebrasil;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -98,9 +99,12 @@ public class SyncAthleteActivity extends AppCompatActivity {
 
     private void callInflateList() {
         DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
-        athletes = db.getAthletes();
-        if (athletes != null || athletes.size() > 0)
+
+        athletes = db.getAthletesByTests(idTest);
+        try {
+            if (athletes != null || athletes.size() > 0)
                 inflateRecyclerView(athletes);
+        }catch (Exception e){};
     }
 
     private void inflateRecyclerView(ArrayList<Athletes> athletes) {
@@ -131,8 +135,7 @@ public class SyncAthleteActivity extends AppCompatActivity {
     }
 
     private void callSynAll(){
-        //syncAll();
-        if(Services.isConnectectInWifi(SyncAthleteActivity.this)){
+        if(Services.isOnline(SyncAthleteActivity.this)){
             syncAll();
         }
         else{
@@ -147,27 +150,28 @@ public class SyncAthleteActivity extends AppCompatActivity {
         }
         else
             Services.messageAlert(SyncAthleteActivity.this, "Aviso","Todos os testes foram salvos!","");
-
-
     }
 
     private void sync(Tests test){
         linearProgress.setVisibility(View.VISIBLE);
         textProgress.setText("Sincronizando");
 
-        String url = Constants.URL+Constants.API_TESTS;
+        if(Services.isOnline(SyncAthleteActivity.this)) {
+            String url = Constants.URL + Constants.API_TESTS;
 
-        if(!Services.convertIntInBool(test.getSync())) {
-            PostSync post = new PostSync();
-            post.setActivity(SyncAthleteActivity.this);
-            post.setAll(syncAll);
-            post.setObjPut(createObject(test));
-            post.execute(url);
+            if (!Services.convertIntInBool(test.getSync())) {
+                PostSync post = new PostSync();
+                post.setActivity(SyncAthleteActivity.this);
+                post.setAll(syncAll);
+                post.setObjPut(createObject(test));
+                post.execute(url);
+            } else {
+                positionNow = positionNow + 1;
+                syncAll();
+            }
         }
-        else{
-            positionNow = positionNow+1;
-            syncAll();
-        }
+        else
+            Services.messageAlert(SyncAthleteActivity.this, "Aviso","Para começar a sincronização, você precisa ter uma conexão com a internet.","");
     }
 
     private JSONObject createObject(Tests test) {

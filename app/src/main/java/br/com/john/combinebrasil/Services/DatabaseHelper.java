@@ -740,6 +740,65 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return itens;
     }
 
+    public ArrayList<Athletes> getAthletesByTests(String idTest) {
+        this.openDataBase();
+        ArrayList<Athletes> itens = new ArrayList<Athletes>();
+        try {
+            String selectQuery = "SELECT DISTINCT athletes."+Constants.ATHLETES_ID+
+                    ", athletes."+Constants.ATHLETES_NAME+
+                    ", athletes."+Constants.ATHLETES_BIRTHDAY+
+                    ", athletes."+Constants.ATHLETES_CPF+
+                    ", athletes."+Constants.ATHLETES_ADDRESS+
+                    ", athletes."+Constants.ATHLETES_DESIRABLE_POSITION+
+                    ", athletes."+Constants.ATHLETES_HEIGHT+
+                    ", athletes."+Constants.ATHLETES_WEIGHT+
+                    ", athletes."+Constants.ATHLETES_CREATEDAT+
+                    ", athletes."+Constants.ATHLETES_UPDATEAT+
+                    ", athletes."+Constants.ATHLETES_EMAIL+
+                    ", athletes."+Constants.ATHLETES_PHONE+
+                    ", athletes."+Constants.ATHLETES_CODE+
+                    " FROM "
+                    + Constants.TABLE_ATHLETES+" as athletes INNER JOIN "+Constants.TABLE_TESTS
+                    +" as tests ON athletes."+Constants.TESTS_ID+" = tests."+Constants.TESTS_ATHLETE+" WHERE tests."+Constants.TESTS_TYPE+
+                    " ='"+idTest+"'";
+
+            Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                do {
+                    String code = c.getString(c.getColumnIndex(Constants.ATHLETES_CODE));
+                    if(code == null)
+                        code = "";
+                    Athletes obj = new Athletes(
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_ID)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_NAME)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_BIRTHDAY)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_CPF)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_ADDRESS)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_DESIRABLE_POSITION)),
+                            c.getDouble(c.getColumnIndex(Constants.ATHLETES_HEIGHT)),
+                            c.getDouble(c.getColumnIndex(Constants.ATHLETES_WEIGHT)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_CREATEDAT)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_UPDATEAT)),
+                            code,
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_EMAIL)),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_PHONE))
+                    );
+                    itens.add(obj);
+                } while (c.moveToNext());
+
+            } else {
+                itens = null;
+            }
+            c.close();
+            this.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return itens;
+    }
+
     public ArrayList<TestTypes> getTestsTypes() {
         this.openDataBase();
 
@@ -865,6 +924,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         c.close();
         this.close();
         return athlete;
+    }
+
+    public boolean existAthleteByCPF(String cpf){
+        this.openDataBase();
+        boolean ret = false;
+        String selectQuery = "SELECT DISTINCT * FROM "+ Constants.TABLE_ATHLETES +
+                " WHERE "+Constants.ATHLETES_CPF +" ='"+cpf+"'";
+
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+
+        if (c.moveToFirst()) {
+            ret = true;
+        } else {
+            ret = false;
+        }
+        c.close();
+        this.close();
+        return ret;
     }
 
     public TestTypes getTestTypeFromId(String id){

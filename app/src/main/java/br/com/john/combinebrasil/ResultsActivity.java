@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -70,33 +71,25 @@ public class ResultsActivity extends AppCompatActivity {
         linearAddAccount.setVisibility(View.GONE);
         ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
         imgSearch.setVisibility(View.GONE);
-        try {
-            TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
-            DatabaseHelper db = new DatabaseHelper(ResultsActivity.this);
-            TestTypes test = db.getTestTypeFromId(AllActivities.testSelected);
-            textTitle.setText(test.getName());
 
-            linearInsert = (LinearLayout) findViewById(R.id.linear_insert);
-            linearResultDone = (LinearLayout) findViewById(R.id.linear_results_done);
-            txtNameResult = (TextView) findViewById(R.id.txt_name_result);
-            txtFistDone = (TextView) findViewById(R.id.txt_first_result_done);
-            txtSecondDone = (TextView) findViewById(R.id.txt_second_result_done);
-            ratingDone = (RatingBar) findViewById(R.id.rating_result_done);
-            buttonBack = (Button) findViewById(R.id.button_back);
-            txtRating = (TextView) findViewById(R.id.txt_rating_done);
+        TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
+        DatabaseHelper db = new DatabaseHelper(ResultsActivity.this);
+        TestTypes test = db.getTestTypeFromId(AllActivities.testSelected);
+        textTitle.setText(test.getName());
 
-            editWingspan = (EditText) findViewById(R.id.edit_wingspan);
-            TextWatcher mask = MaskHeight.insert("#,##", editWingspan);
-            editWingspan.addTextChangedListener(mask);
-            buttonWingspan = (Button) findViewById(R.id.button_wingspan);
-            buttonWingspan.setOnClickListener(clickedWingspan);
-            linearWingSpan = (LinearLayout) findViewById(R.id.linear_wingspan);
+        linearInsert = (LinearLayout) findViewById(R.id.linear_insert);
+        linearResultDone = (LinearLayout) findViewById(R.id.linear_results_done);
+        txtNameResult = (TextView) findViewById(R.id.txt_name_result);
+        txtFistDone = (TextView) findViewById(R.id.txt_first_result_done);
+        txtSecondDone = (TextView) findViewById(R.id.txt_second_result_done);
+        ratingDone = (RatingBar) findViewById(R.id.rating_result_done);
+        buttonBack = (Button) findViewById(R.id.button_back);
+        txtRating = (TextView) findViewById(R.id.txt_rating_done);
 
-            if(test.getName().toLowerCase().equals("salto vertical")) {
-                linearInsert.setVisibility(View.GONE);
-                linearWingSpan.setVisibility(View.VISIBLE);
-            }
-        }catch(Exception e){}
+        editWingspan = (EditText) findViewById(R.id.edit_wingspan);
+        buttonWingspan = (Button) findViewById(R.id.button_wingspan);
+        buttonWingspan.setOnClickListener(clickedWingspan);
+        linearWingSpan = (LinearLayout) findViewById(R.id.linear_wingspan);
 
         linearRating = (LinearLayout) findViewById(R.id.linear_rating_results);
 
@@ -132,7 +125,9 @@ public class ResultsActivity extends AppCompatActivity {
             verifyTest();
         }
 
-        TextWatcher mask = MaskHeight.insert("#,##", editFirstResult);
+        TextWatcher mask = MaskHeight.insert("#,##", editWingspan);
+        editWingspan.addTextChangedListener(mask);
+        mask = MaskHeight.insert("#,##", editFirstResult);
         editFirstResult.addTextChangedListener(mask);
         mask = MaskHeight.insert("#,##", editSecondResult);
         editSecondResult.addTextChangedListener(mask);
@@ -160,6 +155,12 @@ public class ResultsActivity extends AppCompatActivity {
             buttonBack.setOnClickListener(btnBackClickListener);
         }
         else{
+            TestTypes testypes = db.getTestTypeFromId(AllActivities.testSelected);
+
+            if(testypes.getName().toLowerCase().equals("salto vertical")) {
+                linearInsert.setVisibility(View.GONE);
+                linearWingSpan.setVisibility(View.VISIBLE);
+            }
             editFirstResult.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -211,11 +212,7 @@ public class ResultsActivity extends AppCompatActivity {
         if(test!=null) {
             textNameTest.setText(test.getName());
             textNameTestDetails.setText(test.getName());
-            String testDetail = test.getDescription();
-            testDetail = testDetail.replace(".",".\n");
-            testDetail = testDetail.replace(";",";\n");
-            testDetail = testDetail.replace("-","\n-");
-            textDetailsTest.setText(testDetail);
+            textDetailsTest.setText(Html.fromHtml(test.getDescription()));
         }
     }
 
@@ -315,8 +312,8 @@ public class ResultsActivity extends AppCompatActivity {
                 UUID.randomUUID().toString(),
                 AllActivities.testSelected,
                 idAthlete,
-                editFirstResult.getText().toString(),
-                editSecondResult.getText().toString(),
+                editFirstResult.getText().toString().replace(".",","),
+                editSecondResult.getText().toString().replace(".",","),
                 ratingValue,
                 wingspan,
                user.getId(),

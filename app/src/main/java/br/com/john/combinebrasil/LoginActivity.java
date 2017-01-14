@@ -40,7 +40,9 @@ public class LoginActivity extends Activity {
         btnLogin = (Button) findViewById(R.id.btn_entrar);
         linearProgress = (LinearLayout) findViewById(R.id.linear_progress_login);
 
+        if(Constants.debug)
         btnLogin.setOnLongClickListener(onLongClickListener);
+
         btnLogin.setOnClickListener(onClickLoginListener);
 
         DatabaseHelper db = new DatabaseHelper(this);

@@ -12,9 +12,11 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -47,6 +49,12 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private Button buttonAdd;
     Athletes athlete;
     ArrayList<Positions> positions;
+
+    TextView textTerms;
+    CheckBox checkTerms;
+    Button btnClose;
+    LinearLayout linearTerms;
+    boolean checked = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +83,31 @@ public class CreateAccountAthlete extends AppCompatActivity {
         spinnerYear = (MaterialBetterSpinner) findViewById(R.id.spinner_year_birthday_add);
         spinnerPosition = (MaterialBetterSpinner) findViewById(R.id.spinner_positions_add);
 
+        textTerms = (TextView) findViewById(R.id.text_terms);
+        checkTerms = (CheckBox) findViewById(R.id.check_terms);
+        btnClose = (Button) findViewById(R.id.button_close);
+        linearTerms = (LinearLayout) findViewById(R.id.linear_terms);
+
+        textTerms.setOnClickListener(clickOpenTerms);
+        btnClose.setOnClickListener(closeTerms);
+
+        textTerms.setVisibility(View.VISIBLE);
+
+        checkTerms.setChecked(false);
+        checkTerms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkTerms.isChecked()) {
+                    checked = true;
+                    textTerms.setVisibility(View.GONE);
+                }
+                else {
+                    checked = false;
+                    textTerms.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         inflateSpinnerDay();
         inflateSpinnerPosition();
 
@@ -90,7 +123,25 @@ public class CreateAccountAthlete extends AppCompatActivity {
         editTextWeihgt.addTextChangedListener(mask);
 
         buttonAdd.setOnClickListener(addAthleteClicked);
+
+        if(Constants.debug)
+            buttonAdd.setOnLongClickListener(longClick);
     }
+
+    private View.OnLongClickListener longClick = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            editTextName.setText("Um atleta teste");
+            editTextCPF.setText("43242343243");
+            editAddress.setText("Rua onde o atleta mora");
+            editEmail.setText("atletinha@atletinha.com");
+            editTextPhone.setText("12988888888");
+
+            editTextHeight.setText("190");
+            editTextWeihgt.setText("90");
+            return true;
+        }
+    };
 
     private View.OnClickListener addAthleteClicked = new View.OnClickListener() {
         @Override
@@ -113,6 +164,8 @@ public class CreateAccountAthlete extends AppCompatActivity {
                    post.setPlay(true);
                    post.execute(url);
                }
+               else
+                   Services.messageAlert(CreateAccountAthlete.this, "Aviso", "Para cadastrar o atleta, é necessário conexão com a internet.","");
            }
         }
     }
@@ -181,9 +234,33 @@ public class CreateAccountAthlete extends AppCompatActivity {
         LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
         linearProgress.setVisibility(View.GONE);
             if(ret.equals("FAIL"))
-                Services.messageAlert(CreateAccountAthlete.this, "Menasgem", "Atleta não cadastrado\n"+response, "" );
+                verifyErrorCreate(response);
+
             else if(ret.equals("OK"))
                 saveAthlete(response);
+    }
+
+    private void verifyErrorCreate(String result){
+        JSONObject json;
+        try{
+            json = new JSONObject(result);
+            String detail = json.getString("detail");
+            json = new JSONObject(detail);
+            if(json.getInt("code") ==  11000)
+                saveAthlete(json.getString("op"));
+            else
+                Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
+
+        }catch(JSONException e){
+            e.printStackTrace();
+            try {
+                json = new JSONObject(result);
+                Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "Atleta não cadastrado\n" + json.getString("message"), "");
+            } catch (JSONException e1) {
+                Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
+                e1.printStackTrace();
+            }
+        }
     }
 
     private void saveAthlete(String response){
@@ -192,7 +269,12 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
         DeserializerJsonElements des = new DeserializerJsonElements(response);
         athlete = des.getAthlete();
-        createCode(athlete.getId());
+        DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+
+        if(!db.existAthleteByCPF(athlete.getCPF()))
+            createCode(athlete.getId());
+        else
+            Services.messageAlert(CreateAccountAthlete.this,"Aviso","Ops, esse atleta já esta cadastrado na seletiva","");
     }
 
     private void createCode(String idAthlete){
@@ -211,10 +293,15 @@ public class CreateAccountAthlete extends AppCompatActivity {
         ArrayList<SelectiveAthletes> selectivesAthletes = db.getSelectivesAthletes();
 
         String numCode="";
-        if(selectivesAthletes!=null)
+        if(selectivesAthletes==null)
             numCode = "01";
         else{
-            int num = selectivesAthletes.size()+1;
+            int num;
+            try {
+                num = selectivesAthletes.size() + 1;
+            }catch (NullPointerException e){
+                num = 1;
+            }
             numCode = String.valueOf(num);
             if(num<9)
                 numCode = "0"+num;
@@ -241,8 +328,9 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private void afterSendSelectiveAthlete(String response, String result){
         LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
         linearProgress.setVisibility(View.GONE);
-        if(response.equals("FAIL"))
-            Services.messageAlert(CreateAccountAthlete.this, "Menasgem", "Atleta não cadastrado\n"+result, "" );
+        if(response.equals("FAIL")) {
+            Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
+        }
         else if(response.equals("OK")) {
             DeserializerJsonElements des = new DeserializerJsonElements(result);
             SelectiveAthletes item = des.getSelectiveAthlete();
@@ -255,7 +343,6 @@ public class CreateAccountAthlete extends AppCompatActivity {
                 Services.messageAlert(CreateAccountAthlete.this, "Salvo", "Atleta cadastrado com sucesso", "POSTATHLETE");
             }
         }
-
     }
 
     private void clearForm(){
@@ -270,6 +357,9 @@ public class CreateAccountAthlete extends AppCompatActivity {
         spinnerMonth.setText("");
         spinnerYear.setText("");
         spinnerDay.setText("");
+        textTerms.setVisibility(View.VISIBLE);
+        checkTerms.setChecked(false);
+        checked = false;
     }
 
     public static void finished(Activity act){
@@ -371,7 +461,8 @@ public class CreateAccountAthlete extends AppCompatActivity {
             ver = false;
         if(!validateWeight(editTextWeihgt))
             ver = false;
-
+        if(checked == false)
+            ver = false;
         if(!ver)
             Services.messageAlert(this, "Alerta","Dados inválidos, por favor, verifique para continuar.","");
         return ver;
@@ -428,13 +519,8 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private boolean validateHeight(EditText edit){
         boolean ver = false;
         if(getString(edit).length()>=3){
-            int num = Integer.parseInt(getString(edit).substring(0));
-            if(num>2)
-                Services.changeColorEditBorderError(edit, this);
-            else {
-                Services.changeColorEditBorder(edit, this);
-                ver = true;
-            }
+            Services.changeColorEditBorder(edit, this);
+            ver = true;
         }
         else
             Services.changeColorEditBorderError(edit, this);
@@ -445,7 +531,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
         boolean ver = false;
         if(getString(edit).length()>=2){
             int height = Integer.parseInt(getString(edit));
-            if(height>400)
+            if(height>300)
                 Services.changeColorEditBorderError(edit, this);
             else {
                 Services.changeColorEditBorder(edit, this);
@@ -473,4 +559,18 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
         return ret;
     }
+
+    private View.OnClickListener clickOpenTerms = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            linearTerms.setVisibility(View.VISIBLE);
+        }
+    };
+
+    private  View.OnClickListener closeTerms = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            linearTerms.setVisibility(View.GONE);
+        }
+    };
 }

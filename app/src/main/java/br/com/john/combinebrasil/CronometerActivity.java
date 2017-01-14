@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -474,11 +475,7 @@ public class CronometerActivity extends AppCompatActivity {
         TestTypes test = db.getTestTypeFromId(AllActivities.testSelected);
         if(test!=null) {
             textInfoNameTest.setText(test.getName());
-            String testDetail = test.getDescription();
-            testDetail = testDetail.replace(".",".\n");
-            testDetail = testDetail.replace(";",";\n");
-            testDetail = testDetail.replace("-","\n-");
-            textInfoDetailsTest.setText(testDetail);
+            textInfoDetailsTest.setText(Html.fromHtml(test.getDescription()));
         }
 
         Athletes athlete = db.getAthleteById(idAthlete);

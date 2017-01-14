@@ -168,16 +168,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (NavigationDrawer.navigationDrawerLeft.isDrawerOpen())
-            NavigationDrawer.navigationDrawerLeft.closeDrawer();
-        else {
+        /*if (NavigationDrawer.navigationDrawerLeft.isDrawerOpen())
+            NavigationDrawer.navigationDrawerLeft.closeDrawer();*/
+
             int position = mViewPagerHome.getCurrentItem();
             if (position == 0) {
                 MainActivity.this.finish();
             } else {
                 mViewPagerHome.setCurrentItem(0);
             }
-        }
+
     }
 
     @Override

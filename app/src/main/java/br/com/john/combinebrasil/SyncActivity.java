@@ -102,9 +102,8 @@ public class SyncActivity extends AppCompatActivity {
     }
 
     private void callSynAll(){
-        //syncAll();
-        if(Services.isConnectectInWifi(SyncActivity.this)){
-
+        if(Services.isOnline(SyncActivity.this)){
+            syncAll();
         }
         else{
             Services.messageAlert(SyncActivity.this, "Aviso","Para começar a sincronização, você precisa estar conectado em uma rede Wi-Fi.","");
@@ -119,25 +118,27 @@ public class SyncActivity extends AppCompatActivity {
             Services.messageAlert(SyncActivity.this, "Aviso", "Todos os testes foram salvos!", "");
             linearProgress.setVisibility(View.GONE);
         }
-
-
     }
 
     private void sync(){
         linearProgress.setVisibility(View.VISIBLE);
         String url = Constants.URL+Constants.API_TESTS;
 
-        if(Services.convertIntInBool(tests.get(positionSync).getSync())){
-            positionSync = positionSync+1;
-            sync();
-        }else{
-            PostSync post = new PostSync();
-            post.setActivity(SyncActivity.this);
-            post.setAll(true);
-            post.setSyncAcitivity(true);
-            post.setObjPut(createObject(tests.get(positionSync)));
-            post.execute(url);
+        if(Services.isOnline(SyncActivity.this)) {
+            if (Services.convertIntInBool(tests.get(positionSync).getSync())) {
+                positionSync = positionSync + 1;
+                sync();
+            } else {
+                PostSync post = new PostSync();
+                post.setActivity(SyncActivity.this);
+                post.setAll(true);
+                post.setSyncAcitivity(true);
+                post.setObjPut(createObject(tests.get(positionSync)));
+                post.execute(url);
+            }
         }
+        else
+            Services.messageAlert(SyncActivity.this, "Aviso","Para começar a sincronização, você precisa ter uma conexão com a internet.","");
 
     }
 
@@ -199,7 +200,7 @@ public class SyncActivity extends AppCompatActivity {
         if(testTypes!=null){
             for(TestTypes test : testTypes){
                 long numTestsDone = db.getCountTest(test.getId());
-                if(numTestsDone == numAthletes){
+                if(numTestsDone > 0){
                     testsInflate.add(test);
                 }
             }

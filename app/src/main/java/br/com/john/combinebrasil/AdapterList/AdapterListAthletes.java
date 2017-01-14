@@ -33,6 +33,7 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
     private final String[] Values;
     private ArrayList<Athletes> list;
     private Activity activity;
+    private boolean isAthletes=false;
 
     ListView listView;
 
@@ -87,10 +88,14 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
         DatabaseHelper db = new DatabaseHelper(activity);
         db.openDataBase();
         Tests test = db.getTestFromAthleteAndType(list.get(position).getId(),AllActivities.testSelected);
-        if(test!=null)
-            viewHolder.imgStatus.setImageDrawable(activity.getDrawable(R.drawable.check));
+       if(!isAthletes){
+           if(test!=null)
+               viewHolder.imgStatus.setImageDrawable(activity.getDrawable(R.drawable.check));
+           else
+               viewHolder.imgStatus.setVisibility(View.GONE);
+       }
         else
-        viewHolder.imgStatus.setVisibility(View.GONE);
+           viewHolder.imgStatus.setVisibility(View.GONE);
 
         return convertView;
     }
@@ -102,5 +107,13 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
     public  void setActivity(Activity activity)
     {
         this.activity = activity;
+    }
+
+    public boolean isAthletes() {
+        return isAthletes;
+    }
+
+    public void setAthletes(boolean athletes) {
+        isAthletes = athletes;
     }
 }

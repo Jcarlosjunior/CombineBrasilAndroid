@@ -37,6 +37,9 @@
     <string name="go_to_sync">Sincronizar teste</string>
     <string name="close">Fechar</string>
     <string name="value_error">Valor inválido</string>
+    <string name="open_terms">O atleta deve aceitar o termos de serviço</string>
+    <string name="terms">Aceitar termos de serviços?</string>
+    <string name="terms_title">Termos de Serviços Combine</string>
 
 
     <!--

@@ -99,8 +99,8 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
         Tests test = db.getTestFromAthleteAndType(list.get(position).getId(), AllActivities.testSelected);
         if(test!=null) {
             holder.imgStatus.setImageDrawable(activity.getDrawable(R.drawable.check));
-            holder.textFirstResult.setText(test.getFirstValue());
-            holder.textSecondResult.setText(test.getSecondValue());
+            holder.textFirstResult.setText(test.getFirstValue().replace(".",","));
+            holder.textSecondResult.setText(test.getSecondValue().replace(".",","));
         }
         else
             holder.imgStatus.setVisibility(View.GONE);
