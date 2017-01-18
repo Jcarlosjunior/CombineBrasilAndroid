@@ -66,6 +66,7 @@ public class Constants {
     public static final String RESULTS_ACTIVITY = "ResultsActivity";
     public static final String MAIN_ACTIVITY = "MainActivity";
     public static final String LOGIN_ACTIVITY = "LoginActivity";
+    public static final String LOGIN_CREATEACCOUNTATHLETE = "CreateAccountAthlete";
 
     //SHARED PREFERENCES
     public static final String TIMER_CHRONOMETER = "timer_chronometer",
@@ -91,6 +92,8 @@ public class Constants {
     public static final String ATHLETES_CREATEDAT = "createdAt";
     public static final String ATHLETES_UPDATEAT = "updatedAt";
     public static final String ATHLETES_CODE = "code";
+    public static final String ATHLETES_SYNC = "sync";
+    public static final String ATHLETES_TERMSACCEPTED = "termsAccepted";
 
     /*******************************USER TABLE ***********************************/
     public static final String TABLE_USER = "User";
@@ -122,6 +125,8 @@ public class Constants {
     public static final String SELECTIVES_TITLE = "title";
     public static final String SELECTIVES_TEAM = "team";
     public static final String SELECTIVES_DATE = "date";
+    public static final String SELECTIVES_CODESELECTIVE= "codeSelective";
+    public static final String SELECTIVES_CANSYNC = "canSync";
 
     /****************************** TEAM TABLE***************************************/
 
@@ -153,6 +158,7 @@ public class Constants {
     public static final String TESTS_ID = "_id";
     public static final String TESTS_TYPE = "type";
     public static final String TESTS_ATHLETE = "athlete";
+    public static final String TESTS_SELECTIVE = "selective";
     public static final String TESTS_FIRST_VALUE = "firstValue";
     public static final String TESTS_SECOND_VALUE = "secondValue";
     public static final String TESTS_RATING = "rating";

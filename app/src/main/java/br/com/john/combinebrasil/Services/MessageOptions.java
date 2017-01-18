@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.R;
@@ -79,6 +80,9 @@ public class MessageOptions {
         }
         else if(act.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY)){
                 MainActivity.returnMessageOptions(act, whoCalled);
+        }
+        else if(act.getClass().getSimpleName().equals(Constants.LOGIN_CREATEACCOUNTATHLETE)){
+            CreateAccountAthlete.createAthleteOff(act);
         }
     }
 }

@@ -147,6 +147,7 @@ public class SyncActivity extends AppCompatActivity {
 
         try {
             object.put(Constants.TESTS_ATHLETE, test.getAthlete());
+            object.put(Constants.TESTS_SELECTIVE, test.getSelective());
             object.put(Constants.TESTS_TYPE, test.getType());
             object.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue());
             object.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue());

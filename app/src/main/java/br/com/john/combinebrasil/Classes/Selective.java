@@ -9,15 +9,19 @@ public class Selective {
     private String Title;
     private String Team;
     private String Date;
+    private String CodeSelective;
+    private boolean CanSync;
 
     public Selective() {
     }
 
-    public Selective(String id, String title, String team, String date) {
+    public Selective(String id, String title, String team, String date, String codeSelective, boolean canSync) {
         Id = id;
         Title = title;
         Team = team;
         Date = date;
+        CodeSelective = codeSelective;
+        CanSync = canSync;
     }
 
     public String getId() {
@@ -50,5 +54,21 @@ public class Selective {
 
     public void setDate(String date) {
         Date = date;
+    }
+
+    public String getCodeSelective() {
+        return CodeSelective;
+    }
+
+    public void setCodeSelective(String codeSelective) {
+        CodeSelective = codeSelective;
+    }
+
+    public boolean getCanSync() {
+        return CanSync;
+    }
+
+    public void setCanSync(boolean canSync) {
+        CanSync = canSync;
     }
 }

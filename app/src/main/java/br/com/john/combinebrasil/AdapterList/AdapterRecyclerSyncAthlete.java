@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.Services.Constants;
@@ -88,9 +89,16 @@ public class AdapterRecyclerSyncAthlete  extends RecyclerView.Adapter<AdapterRec
         holder.txtName.setText(list.get(position).getName());
         holder.txtCode.setText(list.get(position).getCode());
 
-        holder.txtFirstResult.setText(test.getFirstValue());
-        holder.txtSecondResult.setText(test.getSecondValue());
-
+        if(test!=null) {
+            TestTypes type = db.getTestTypeFromId(test.getType());
+            if (type.getValueType().toLowerCase().equals("corrida") || type.getValueType().toLowerCase().equals("tempo")) {
+                holder.txtFirstResult.setText(Services.convertInTime(test.getFirstValue()));
+                holder.txtSecondResult.setText(Services.convertInTime(test.getSecondValue()));
+            } else {
+                holder.txtFirstResult.setText(Services.convertCentimetersinMeters(test.getFirstValue()));
+                holder.txtSecondResult.setText(Services.convertCentimetersinMeters(test.getSecondValue()));
+            }
+        }
 
         if (Services.convertIntInBool(test.getSync())){
             holder.imgSync.setVisibility(View.GONE);

@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.UUID;
 
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Positions;
@@ -40,6 +41,7 @@ import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Mask;
 import br.com.john.combinebrasil.Services.MaskHeight;
+import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.Services;
 
 public class CreateAccountAthlete extends AppCompatActivity {
@@ -153,21 +155,140 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private void callAddAthlete(){
        if(verifyForm()) {
            if(validaBirthday()) {
-               if (Services.isOnline(this)) {
-                   LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
-                   linearProgress.setVisibility(View.VISIBLE);
-                   String url = Constants.URL + Constants.API_ATHLETES;
+               if (checked == true) {
+                   if (Services.isOnline(this)) {
+                       LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
+                       linearProgress.setVisibility(View.VISIBLE);
+                       String url = Constants.URL + Constants.API_ATHLETES;
 
-                   PostAthleteAsyncTask post = new PostAthleteAsyncTask();
-                   post.setActivity(CreateAccountAthlete.this);
-                   post.setObjPut(createObject());
-                   post.setPlay(true);
-                   post.execute(url);
+                       PostAthleteAsyncTask post = new PostAthleteAsyncTask();
+                       post.setActivity(CreateAccountAthlete.this);
+                       post.setObjPut(createObject());
+                       post.setPlay(true);
+                       post.execute(url);
+                   } else
+                       new MessageOptions(CreateAccountAthlete.this, "Mensagem", "Você está offline, deseja salvar o usuário offline? Você deverá sincronizar com os outros avaliadores.","createUserOff");
+
                }
-               else
-                   Services.messageAlert(CreateAccountAthlete.this, "Aviso", "Para cadastrar o atleta, é necessário conexão com a internet.","");
            }
+           else
+               Services.messageAlert(CreateAccountAthlete.this, "Aviso", "Para continuar, é necessário que o atleta aceite os termos de uso.", "");
+
+       }
+    }
+
+    public static void createAthleteOff (Activity act){
+        ((CreateAccountAthlete)act).createAthleteOff();
+    }
+
+    private void createAthleteOff(){
+        try{
+            Athletes athlete = createAthlete();
+            SelectiveAthletes selectiveAthlete = createSelectiveAthletes(athlete);
+            athlete.setCode(selectiveAthlete.getInscriptionNumber());
+
+            DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+            long res = db.addAthlete(athlete);
+            if (res == 0) {
+                Athletes obj = db.getAthleteByValue(Constants.ATHLETES_CPF, athlete.getCPF());
+                if(obj != null)
+                    Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "CPF do usuário já esta cadastrado.", "");
+                else{
+                    obj = db.getAthleteByValue(Constants.ATHLETES_EMAIL, athlete.getEmail());
+                    if(obj != null)
+                        Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "E-mail do usuário já esta cadastrado.", "");
+                    else{
+                        obj = db.getAthleteByValue(Constants.ATHLETES_CODE, athlete.getCode());
+                        if(obj != null)
+                            Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "Código já cadastrado.", "");
+                    }
+                    Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "Erro ao cadastrar!", "");
+                }
+            }
+
+            db.addSelectiveAthlete(selectiveAthlete);
+
+            Services.messageAlert(CreateAccountAthlete.this, "Concluído", "Atleta criado, o código do atleta é "+selectiveAthlete.getInscriptionNumber()+". Informe aos outros avaliadores.", "");
+            clearForm();
+        }catch (Exception e){
+            e.printStackTrace();
         }
+    }
+
+    private SelectiveAthletes createSelectiveAthletes(Athletes athlete){
+        SelectiveAthletes selectiveAthlete;
+        try {
+            DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+            Selective selective = db.getSelective();
+            ArrayList<SelectiveAthletes> selectivesAthletes = db.getSelectivesAthletes();
+            String numCode = "";
+            if (selectivesAthletes == null)
+                numCode = "01";
+            else {
+                int num;
+                try {
+                    num = selectivesAthletes.size() + 1;
+                } catch (NullPointerException e) {
+                    num = 1;
+                }
+                numCode = String.valueOf(num);
+                if (num < 9)
+                    numCode = "0" + num;
+            }
+
+            String nameSelective = selective.getTitle().toString().toUpperCase().substring(0, 2) + "-" + numCode;
+
+
+            selectiveAthlete = new SelectiveAthletes(
+                    UUID.randomUUID().toString(),
+                    athlete.getId(),
+                    selective.getId(),
+                    nameSelective,
+                    true
+            );
+        }catch (Exception e){
+            return  null;
+        }
+
+        return selectiveAthlete;
+    }
+
+    private Athletes createAthlete(){
+        Athletes athletes;
+        try {
+            String address = " ";
+            String birthday = spinnerYear.getText().toString() + "-" + chooseMonth(spinnerMonth.getText()
+                    .toString()) + "-" + spinnerDay.getText().toString();
+            int position = getIndex(spinnerPosition);
+            double height = Double.parseDouble(editTextHeight.getText().toString().replaceAll(",", "."));
+            double weight = Double.parseDouble(editTextWeihgt.getText().toString().replaceAll(",", "."));
+
+            if (!(editAddress.getText().toString().trim().isEmpty()))
+                address = editAddress.getText().toString();
+
+            athletes = new Athletes(
+                    UUID.randomUUID().toString(),
+                    editTextName.getText().toString(),
+                    birthday,
+                    editTextCPF.getText().toString(),
+                    address,
+                    positions.get(position).getID(),
+                    height,
+                    weight,
+                    " ",
+                    " ",
+                    " ",
+                    editEmail.getText().toString(),
+                    editTextPhone.getText().toString(),
+                    false,
+                    true
+                    );
+        }
+        catch (Exception e){
+            return null;
+        }
+        return athletes;
+
     }
 
     private JSONObject createObject() {
@@ -186,6 +307,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
                 object.put(Constants.ATHLETES_HEIGHT, height);
                 object.put(Constants.ATHLETES_WEIGHT, weight);
                 object.put(Constants.ATHLETES_BIRTHDAY, birthday);
+                object.put(Constants.ATHLETES_TERMSACCEPTED, true);
                 object.put(Constants.ATHLETES_EMAIL, editEmail.getText().toString());
                 if(editAddress.getText().toString().trim().isEmpty())
                     object.put(Constants.ATHLETES_ADDRESS, " ");
@@ -460,8 +582,6 @@ public class CreateAccountAthlete extends AppCompatActivity {
         if(!validateHeight(editTextHeight))
             ver = false;
         if(!validateWeight(editTextWeihgt))
-            ver = false;
-        if(checked == false)
             ver = false;
         if(!ver)
             Services.messageAlert(this, "Alerta","Dados inválidos, por favor, verifique para continuar.","");

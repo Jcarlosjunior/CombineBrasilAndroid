@@ -46,6 +46,147 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linear_add_athlete"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/grey_transparent"
+        android:clickable="true"
+        android:paddingLeft="20sp"
+        android:paddingRight="20sp"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:visibility="gone"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_white_corner"
+            android:orientation="vertical"
+            >
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.8"
+                android:layout_margin="15sp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="10sp"
+                        android:paddingLeft="10sp"
+                        android:paddingBottom="10sp"
+                        android:textAlignment="center"
+                        android:text="@string/text_add_athlete"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <EditText
+                            android:id="@+id/edit_code_selective"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:hint="@string/code_selective"
+                            android:paddingLeft="10sp"
+                            android:paddingBottom="10sp"
+                            android:paddingTop="10sp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/greyDark"
+                            android:textSize="16sp"
+                            android:layout_marginRight="10sp"
+                            android:layout_marginBottom="15sp"
+                            android:background="@drawable/background_edit_border"
+                            android:singleLine="true"
+                            android:imeOptions="actionNext"
+                            />
+
+                        <EditText
+                            android:id="@+id/edit_code_athlete"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:hint="@string/code_athlete"
+                            android:paddingLeft="10sp"
+                            android:paddingBottom="10sp"
+                            android:paddingTop="10sp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/greyDark"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="15sp"
+                            android:singleLine="true"
+                            android:imeOptions="actionNext"
+                            android:background="@drawable/background_edit_border"
+                            />
+
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/edit_name_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/nome_opcional"
+                        android:paddingLeft="10sp"
+                        android:paddingBottom="10sp"
+                        android:paddingTop="10sp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/greyDark"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="15sp"
+                        android:background="@drawable/background_edit_border"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        />
+
+                </LinearLayout>
+            </ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <Button
+                    android:id="@+id/button_cancel"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:layout_marginRight="10sp"
+                    android:layout_marginLeft="10sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+                    android:text="@string/cancel"
+                    android:background="@drawable/background_button_white"
+                    />
+
+                <Button
+                    android:id="@+id/button_add_athlete"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginBottom="10sp"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginRight="10sp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:text="@string/adicionar"
+                    android:background="@drawable/background_button_blue"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/linear_progress_tests"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

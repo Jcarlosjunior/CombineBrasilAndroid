@@ -122,7 +122,9 @@ public class DeserializerJsonElements {
                         json.optString(Constants.ATHLETES_UPDATEAT),
                         "",
                         json.optString(Constants.ATHLETES_EMAIL),
-                        json.optString(Constants.ATHLETES_PHONE)
+                        json.optString(Constants.ATHLETES_PHONE),
+                        true,
+                        json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true)
                 );
                 AthletesList.add(athletesEntity);
             }
@@ -150,7 +152,9 @@ public class DeserializerJsonElements {
                     json.optString(Constants.ATHLETES_UPDATEAT),
                     "",
                     json.optString(Constants.ATHLETES_EMAIL),
-                    json.optString(Constants.ATHLETES_PHONE)
+                    json.optString(Constants.ATHLETES_PHONE),
+                    true,
+                    json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true)
             );
         } catch (JSONException jsonExc) {
             Log.i("JSON ERROR", jsonExc.toString());
@@ -246,7 +250,9 @@ public class DeserializerJsonElements {
                             json.optString(Constants.SELECTIVES_ID),
                             json.optString(Constants.SELECTIVES_TITLE),
                             json.optString(Constants.SELECTIVES_TEAM),
-                            json.optString(Constants.SELECTIVES_DATE)
+                            json.optString(Constants.SELECTIVES_DATE),
+                            json.optString(Constants.SELECTIVES_CODESELECTIVE),
+                            json.optBoolean(Constants.SELECTIVES_CANSYNC, false)
                     );
 
                     selectives.add(obj);
@@ -379,8 +385,9 @@ public class DeserializerJsonElements {
                             json.optString(Constants.TESTS_ID),
                             json.optString(Constants.TESTS_TYPE),
                             json.optString(Constants.TESTS_ATHLETE),
-                            json.optString(Constants.TESTS_FIRST_VALUE),
-                            json.optString(Constants.TESTS_SECOND_VALUE),
+                            json.optString(Constants.TESTS_SELECTIVE),
+                            json.optLong(Constants.TESTS_FIRST_VALUE),
+                            json.optLong(Constants.TESTS_SECOND_VALUE),
                             (float) (json.optDouble(Constants.TESTS_RATING)),
                             json.optString(Constants.TESTS_WINGSPAN),
                             json.optString(Constants.TESTS_USER),
@@ -404,8 +411,9 @@ public class DeserializerJsonElements {
                 json.optString(Constants.TESTS_ID),
                 json.optString(Constants.TESTS_TYPE),
                 json.optString(Constants.TESTS_ATHLETE),
-                String.valueOf(json.optLong(Constants.TESTS_FIRST_VALUE)),
-                String.valueOf(json.optLong(Constants.TESTS_SECOND_VALUE)),
+                json.optString(Constants.TESTS_SELECTIVE),
+                json.optLong(Constants.TESTS_FIRST_VALUE),
+                json.optLong(Constants.TESTS_SECOND_VALUE),
                 (float) (json.optDouble(Constants.TESTS_RATING)),
                 json.optString(Constants.TESTS_WINGSPAN),
                 json.optString(Constants.TESTS_USER),

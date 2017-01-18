@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -23,8 +24,10 @@ import java.util.ArrayList;
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerSync;
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerSyncAthlete;
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.SelectiveAthletes;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostSync;
 import br.com.john.combinebrasil.Services.Constants;
@@ -41,7 +44,7 @@ public class SyncAthleteActivity extends AppCompatActivity {
     int positionNow = 0;
     long numAthletes = 0;
     AdapterRecyclerSyncAthlete adapterSync;
-    String idTest;
+    String idTest, idAthlete;
     FloatingActionButton fab;
 
 
@@ -131,6 +134,7 @@ public class SyncAthleteActivity extends AppCompatActivity {
         syncAll = false;
         DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
         Tests test = db.getTestFromAthleteAndType(athletes.get(position).getId(), idTest);
+
         sync(test);
     }
 
@@ -157,17 +161,26 @@ public class SyncAthleteActivity extends AppCompatActivity {
         textProgress.setText("Sincronizando");
 
         if(Services.isOnline(SyncAthleteActivity.this)) {
-            String url = Constants.URL + Constants.API_TESTS;
+            DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
+            Athletes athlete  = db.getAthleteById(test.getAthlete());
+            if(athlete!=null){
+                if(athlete.getSync()){
+                    String url = Constants.URL + Constants.API_TESTS;
 
-            if (!Services.convertIntInBool(test.getSync())) {
-                PostSync post = new PostSync();
-                post.setActivity(SyncAthleteActivity.this);
-                post.setAll(syncAll);
-                post.setObjPut(createObject(test));
-                post.execute(url);
-            } else {
-                positionNow = positionNow + 1;
-                syncAll();
+                    if (!Services.convertIntInBool(test.getSync())) {
+                        PostSync post = new PostSync();
+                        post.setActivity(SyncAthleteActivity.this);
+                        post.setAll(syncAll);
+                        post.setObjPut(createObject(test));
+                        post.execute(url);
+                    } else {
+                        positionNow = positionNow + 1;
+                        syncAll();
+                    }
+                }
+                else
+                    callUpdateAthlete(athlete);
+
             }
         }
         else
@@ -179,9 +192,10 @@ public class SyncAthleteActivity extends AppCompatActivity {
 
         try {
             object.put(Constants.TESTS_ATHLETE, test.getAthlete());
+            object.put(Constants.TESTS_SELECTIVE, test.getSelective());
             object.put(Constants.TESTS_TYPE, test.getType());
-            object.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue().replace(",","."));
-            object.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue().replace(",","."));
+            object.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue());
+            object.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue());
             object.put(Constants.TESTS_RATING, test.getRating());
             object.put(Constants.TESTS_WINGSPAN, test.getWingspan());
             object.put(Constants.TESTS_USER, test.getUser());
@@ -194,9 +208,12 @@ public class SyncAthleteActivity extends AppCompatActivity {
     public static void returnPostTest(Activity act, String resp, String result){
         ((SyncAthleteActivity)act).returnPostTest(resp, result);
     }
+
     private void returnPostTest(String resp, String result){
         linearProgress.setVisibility(View.GONE);
         result = result.replaceAll("Value","");
+
+        Log.i("ERROR", result);
 
         if(syncAll){
             if(resp.equals("OK")) {
@@ -217,6 +234,7 @@ public class SyncAthleteActivity extends AppCompatActivity {
                 Services.messageAlert(SyncAthleteActivity.this, "Aviso","Erro ao tentar sincronizar teste.","");
         }
     }
+
     private void updateTest(String id){
         DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
         db.updateSync(athletes.get(positionNow).getId(), idTest, id);
@@ -227,5 +245,66 @@ public class SyncAthleteActivity extends AppCompatActivity {
             fab.setVisibility(View.GONE);
         }
     }
+
+    /**************************************************UPDATE ATHLETE NOT SYNC******************************/
+    private void callUpdateAthlete(Athletes athlete){
+        if(Services.isOnline(SyncAthleteActivity.this)){
+            updateAthlete(athlete);
+        }
+        else{
+            Services.messageAlert(SyncAthleteActivity.this, "Aviso","Para começar a sincronização, você precisa estar conectado em uma rede Wi-Fi.","");
+        }
+    }
+
+    private void updateAthlete(Athletes athlete){
+        idAthlete = athlete.getId();
+        DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
+        SelectiveAthletes selectiveAthletes = db.getSelectiveAthletesFromAthlete(athlete.getId());
+        if(selectiveAthletes!=null){
+            linearProgress.setVisibility(View.VISIBLE);
+            String url = Constants.URL + Constants.API_SELECTIVEATHLETES+"?"+Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER+"="+selectiveAthletes.getInscriptionNumber();
+            callFunc(url, "UPDATE_SELECTIVEATHLETE",  false);
+        }
+    }
+
+    private void callFunc(String url, String methodName, boolean isPost) {
+        int methodType = isPost ? 1 : 0;
+        Log.i("Sync DataBase", methodName + "\n\n "+url);
+        Connection task = new Connection(url, methodType, methodName, false, SyncAthleteActivity.this);
+        task.callByJsonStringRequest();
+    }
+
+    public static void updateSelectiveAthlete(Activity act, String response){
+        ((SyncAthleteActivity)act).updateSelectiveAthlete(response);
+    }
+
+    private void updateSelectiveAthlete(String response){
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        SelectiveAthletes selectiveAthlete = des.getSelectiveAthlete();
+
+        DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
+        db.updateSelectiveAthlete(selectiveAthlete);
+
+        String url = Constants.URL + Constants.API_ATHLETES+"?"+Constants.ATHLETES_ID+"="+selectiveAthlete.getAthlete();
+        callFunc(url, "UPDATE_ATHLETE",  false);
+    }
+
+    public static void updateAthlete(Activity act, String response){
+        ((SyncAthleteActivity)act).updateAthlete(response);
+    }
+
+    private void updateAthlete(String response){
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        Athletes athlete = des.getAthlete();
+
+        DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
+        db.updateAthlete(athlete);
+        db.updateTestsAthlete(idAthlete, athlete.getId());
+        linearProgress.setVisibility(View.GONE);
+
+        Tests test = db.getTestFromAthleteAndType(athletes.get(positionNow).getId(), idTest);
+        sync(test);
+    }
+
 
 }

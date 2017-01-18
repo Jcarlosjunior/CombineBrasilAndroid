@@ -141,8 +141,8 @@ public class ResultsActivity extends AppCompatActivity {
         if(test != null){
             linearInsert.setVisibility(View.GONE);
             linearResultDone.setVisibility(View.VISIBLE);
-            txtFistDone.setText(test.getFirstValue());
-            txtSecondDone.setText(test.getSecondValue());
+            txtFistDone.setText(Services.convertCentimetersinMeters(test.getFirstValue()));
+            txtSecondDone.setText(Services.convertCentimetersinMeters(test.getSecondValue()));
 
             Athletes athlete = db.getAthleteById(idAthlete);
             txtNameResult.setText(athlete.getName());
@@ -312,8 +312,9 @@ public class ResultsActivity extends AppCompatActivity {
                 UUID.randomUUID().toString(),
                 AllActivities.testSelected,
                 idAthlete,
-                editFirstResult.getText().toString().replace(".",","),
-                editSecondResult.getText().toString().replace(".",","),
+                AllActivities.testSelected,
+                Services.convertMetersinCentimeters(editFirstResult.getText().toString()),
+                Services.convertMetersinCentimeters(editSecondResult.getText().toString()),
                 ratingValue,
                 wingspan,
                user.getId(),

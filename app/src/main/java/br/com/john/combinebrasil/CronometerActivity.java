@@ -2,6 +2,7 @@ package br.com.john.combinebrasil;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Service;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -151,8 +152,8 @@ public class CronometerActivity extends AppCompatActivity {
         if(test != null){
             linearInsert.setVisibility(View.GONE);
             linearResultDone.setVisibility(View.VISIBLE);
-            txtFistDone.setText(test.getFirstValue());
-            txtSecondDone.setText(test.getSecondValue());
+            txtFistDone.setText(Services.convertInTime(test.getFirstValue()));
+            txtSecondDone.setText(Services.convertInTime(test.getSecondValue()));
 
             Athletes athlete = db.getAthleteById(idAthlete);
             txtNameResult.setText(athlete.getName());
@@ -334,8 +335,9 @@ public class CronometerActivity extends AppCompatActivity {
                 UUID.randomUUID().toString(),
                 AllActivities.testSelected,
                 idAthlete,
-                textFirstResult.getText().toString(),
-                textSecondValue.getText().toString(),
+                AllActivities.testSelected,
+                Services.convertInMilliSeconds(textFirstResult.getText().toString()),
+                Services.convertInMilliSeconds(textSecondValue.getText().toString()),
                 ratingValue,
                 " ",
                 user.getId(),

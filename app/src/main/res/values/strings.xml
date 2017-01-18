@@ -12,6 +12,9 @@
     <string name="salvar_dados">Salvar resultados</string>
     <string name="inconclusive">Dado Incoclusivo</string>
     <string name="nome">Nome</string>
+    <string name="nome_opcional">Nome (Opcional)</string>
+    <string name="code_selective">Código da selectiva</string>
+    <string name="code_athlete">Código do atleta</string>
     <string name="email">E-mail</string>
     <string name="cpf">CPF</string>
     <string name="address_add">Endereço (Opcional)</string>
@@ -54,6 +57,7 @@
     <string name="wingspan_message">Nos testes de salto vertical, é necessário a envergadura do atleta,
         que consiste na altura entre os pés à mão do atleta acima da cabeça, com o seu braço totalmente esticado, como no exemplo abaixo: </string>
     <string name="rating">Rendimento do atleta no exercício</string>
+    <string name="text_add_athlete">Para cadastrar um atleta, certifique-se que o atleta já fez o primeiro cadastro com o administrador. Após isso, informe o código de cadastro (código único que o administrador tem), e também o código do atleta, no qual o mesmo foi cadastrado pelo administrador, e informado após o cadastrado. Você também pode colocar o nome para visualizar mais facilmente na hora em que o atleta for realizar seus testes.</string>
     <string name="not_find">
                 Ops... Não foi encontrado nenhum resultado para a busca
     </string>

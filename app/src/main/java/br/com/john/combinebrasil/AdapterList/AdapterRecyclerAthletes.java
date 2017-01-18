@@ -97,10 +97,19 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
         DatabaseHelper db = new DatabaseHelper(activity);
         db.openDataBase();
         Tests test = db.getTestFromAthleteAndType(list.get(position).getId(), AllActivities.testSelected);
+
         if(test!=null) {
+            TestTypes type = db.getTestTypeFromId(test.getType());
             holder.imgStatus.setImageDrawable(activity.getDrawable(R.drawable.check));
-            holder.textFirstResult.setText(test.getFirstValue().replace(".",","));
-            holder.textSecondResult.setText(test.getSecondValue().replace(".",","));
+
+            if (type.getValueType().toLowerCase().equals("corrida") || type.getValueType().toLowerCase().equals("tempo")){
+                holder.textFirstResult.setText(Services.convertInTime(test.getFirstValue()));
+                holder.textSecondResult.setText(Services.convertInTime(test.getSecondValue()));
+            }
+            else{
+                holder.textFirstResult.setText(Services.convertCentimetersinMeters(test.getFirstValue()));
+                holder.textSecondResult.setText(Services.convertCentimetersinMeters(test.getSecondValue()));
+            }
         }
         else
             holder.imgStatus.setVisibility(View.GONE);

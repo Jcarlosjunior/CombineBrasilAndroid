@@ -7,7 +7,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,16 +21,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.UUID;
 
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.Selective;
+import br.com.john.combinebrasil.Classes.SelectiveAthletes;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.AppSectionsPagerAdapter;
 import br.com.john.combinebrasil.Services.Constants;
+import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.NavigationDrawer;
+import br.com.john.combinebrasil.Services.Services;
 import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
 import br.com.john.combinebrasil.Services.SyncDatabase;
 
@@ -36,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     ViewPager mViewPagerHome;
     public static LinearLayout linearProgress;
     public static TextView textProgress;
+    private LinearLayout linearAddAthlete;
+    private EditText editCodeUser, editCodeAthlete, editNameAthlete;
+    private Button btnAdd, btnCancel;
     Toolbar toolbar;
     NavigationDrawer navigationDrawer;
 
@@ -60,6 +73,18 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout linearAddAccount = (LinearLayout) findViewById(R.id.linear_add_account);
         linearAddAccount.setOnClickListener(clickAddAccount);
+
+        linearAddAthlete = (LinearLayout) findViewById(R.id.linear_add_athlete);
+        linearAddAthlete.setVisibility(View.GONE);
+
+        editCodeAthlete = (EditText) findViewById(R.id.edit_code_athlete);
+        editCodeUser = (EditText) findViewById(R.id.edit_code_selective);
+        editNameAthlete = (EditText) findViewById(R.id.edit_name_add);
+
+        btnAdd = (Button) findViewById(R.id.button_add_athlete);
+        btnCancel = (Button) findViewById(R.id.button_cancel);
+        btnAdd.setOnClickListener(clickAddAthlete);
+        btnCancel.setOnClickListener(closeAddAthlete);
 
         final LinearLayout btnMenu = (LinearLayout) findViewById(R.id.linear_menu_button);
         btnMenu.setVisibility(View.VISIBLE);
@@ -111,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         if(AllActivities.isSync)
             this.syncAll();
         AllActivities.isSync = false;
+
     }
 
     public static void callSync(Activity act){
@@ -161,8 +187,18 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener clickAddAccount = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(MainActivity.this, CreateAccountAthlete.class);
-            startActivity(i);
+            DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+            User user = db.getUser();
+            if(user!=null){
+                if(user.getIsAdmin()){
+                    Intent i = new Intent(MainActivity.this, CreateAccountAthlete.class);
+                    startActivity(i);
+                }
+                else{
+                        linearAddAthlete.setVisibility(View.VISIBLE);
+                }
+
+            }
         }
     };
 
@@ -206,8 +242,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 linearMenu.setVisibility(View.GONE);
-                intent = new Intent(MainActivity.this, CreateAccountAthlete.class);
-                startActivity(intent);
+                DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+                User user = db.getUser();
+                if(user!=null){
+                    if(user.getIsAdmin()){
+                        Intent i = new Intent(MainActivity.this, CreateAccountAthlete.class);
+                        startActivity(i);
+                    }
+                    else{
+                        linearAddAthlete.setVisibility(View.VISIBLE);
+                    }
+
+                }
             }
         });
 
@@ -265,7 +311,146 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
         this.finish();
+    }
 
+    private View.OnClickListener closeAddAthlete = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            linearAddAthlete.setVisibility(View.GONE);
+            editCodeUser.setText("");
+            editNameAthlete.setText("");
+            editCodeAthlete.setText("");
+        }
+    };
+
+    private View.OnClickListener clickAddAthlete = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(verifyForm())
+                createAthleteOff();
+        }
+    };
+
+    private void createAthleteOff(){
+        try{
+            Athletes athlete = createAthlete();
+            SelectiveAthletes selectiveAthlete = createSelectiveAthletes(athlete);
+            athlete.setCode(selectiveAthlete.getInscriptionNumber());
+
+            DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+            long res = db.addAthlete(athlete);
+            if (res == 0) {
+                    Services.messageAlert(MainActivity.this, "Mensagem", "Erro ao cadastrar!", "");
+                }
+
+            db.addSelectiveAthlete(selectiveAthlete);
+
+            linearAddAthlete.setVisibility(View.GONE);
+            clearForm();
+            PlayersFragment.callInflateAthletes();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private Athletes createAthlete(){
+        Athletes athletes;
+        try {
+            athletes = new Athletes(
+                    UUID.randomUUID().toString(),
+                    editNameAthlete.getText().toString(),
+                    " ",
+                    " ",
+                    " ",
+                    " ",
+                    0,
+                    0,
+                    " ",
+                    " ",
+                    editCodeAthlete.getText().toString(),
+                    " ",
+                    " ",
+                    false,
+                    true
+            );
+        }
+        catch (Exception e){
+            return null;
+        }
+        return athletes;
+
+    }
+
+    private SelectiveAthletes createSelectiveAthletes(Athletes athlete){
+        SelectiveAthletes selectiveAthlete;
+        try {
+            DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+            Selective selective = db.getSelective();
+
+            selectiveAthlete = new SelectiveAthletes(
+                    UUID.randomUUID().toString(),
+                    athlete.getId(),
+                    selective.getId(),
+                    editCodeAthlete.getText().toString(),
+                    true
+            );
+        }catch (Exception e){
+            return  null;
+        }
+
+        return selectiveAthlete;
+    }
+
+    private boolean verifyForm(){
+        boolean ver = true;
+        if(!valida(editCodeAthlete))
+            ver = false;
+        if(!validaCodeSelective(editCodeUser))
+            ver = false;
+        if(!ver)
+            Services.messageAlert(this, "Alerta","Dados inválidos, por favor, verifique para continuar.","");
+        return ver;
+    }
+
+    public boolean validaCodeSelective(EditText edit) {
+        boolean ver = false;
+        if(getString(edit).length()>=3) {
+            DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+            Selective selective = db.getSelective();
+            if(selective!=null){
+                if(selective.getCodeSelective().toLowerCase().equals(edit.getText().toString().toLowerCase())){
+                    Services.changeColorEditBorder(edit, this);
+                    ver = true;
+                }
+                else
+                    Services.changeColorEditBorderError(edit, this);
+            }
+        }
+        else
+            Services.changeColorEditBorderError(edit, this);
+        return ver;
+    }
+
+    public boolean valida(EditText edit) {
+        boolean ver = false;
+        if(getString(edit).length()>=3) {
+            Services.changeColorEditBorder(edit, this);
+            ver = true;
+        }
+        else
+            Services.changeColorEditBorderError(edit, this);
+        return ver;
+    }
+
+    private String getString(EditText edit){
+        return edit.getText().toString().trim().equals("") ? "" : edit.getText().toString();
+    }
+
+    private void clearForm(){
+        editNameAthlete.setText("");
+        editCodeUser.setText("");
+        editCodeAthlete.setText("");
     }
 
 

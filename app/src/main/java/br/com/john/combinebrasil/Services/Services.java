@@ -23,6 +23,10 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
+
 import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.R;
@@ -222,5 +226,91 @@ public class Services {
         }catch (Exception e){
             return date;
         }
+    }
+
+    public static long convertMetersinCentimeters(String meters){
+        return Long.parseLong(meters.replace(",",""));
+    }
+
+    public static String convertCentimetersinMeters(long centimeters){
+        String ret = "";
+        try{
+            String value = String.valueOf(centimeters);
+
+            if(value.length()>=3){
+                String met="", cent="";
+                met = value.substring(0,1);
+                cent = value.substring(1);
+                ret = met+","+cent;
+            }
+            else{
+                ret = "0,"+value;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getMessage();
+        }
+
+        return ret;
+    }
+
+    public static String convertInTime(long millis){
+       SimpleDateFormat formatter = new SimpleDateFormat("mm:ss:SS");
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(millis);
+        String time = formatter.format(calendar.getTime()).toString();
+
+        try {
+            String min = time.substring(0,2);
+            if(min.equals("00")){
+                time = time.substring(3);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return time;
+        //return minutes+":"+seconds+":"+mil;
+    }
+
+    public static long convertInMilliSeconds(String time){
+        long milisseconds = 0;
+        int cont =0;
+        try {
+            for (int i = 0; i <= time.length() - 1; i++) {
+                if (time.charAt(i) == ':')
+                    cont = cont + 1;
+            }
+        }catch(Exception e){
+            return milisseconds;
+        }
+        if(cont == 1) {
+            long sec = Integer.parseInt(time.substring(0, 2));
+            long mil = Integer.parseInt(time.substring(3));
+
+            long t = (sec * 1000) + (mil*10);
+
+            milisseconds = t;
+        }
+
+        if(cont == 2) {
+            try {
+                long min = Integer.parseInt(time.substring(0, 2));
+                String ti = time.substring(6);
+                long sec = Integer.parseInt(time.substring(3, 5));
+                long mil = Integer.parseInt(time.substring(6));
+
+                long t = ((min * 60L)*1000) + (sec * 1000) + (mil * 10);
+
+                milisseconds = t;
+            }catch (Exception e){
+                return milisseconds;
+            }
+        }
+
+        return milisseconds;
     }
 }

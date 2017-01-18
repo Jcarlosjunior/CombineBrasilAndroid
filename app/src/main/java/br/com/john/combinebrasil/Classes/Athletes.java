@@ -22,12 +22,14 @@ public class Athletes{
     String Code;
     String Email;
     String PhoneNumber;
+    boolean Sync;
+    boolean TermsAccepted;
 
     public Athletes(){}
 
     public Athletes(String id, String name, String birthday, String cpf, String address, String desirablePosition,
                     double height, double weight, String createdAt,
-                    String updateAt, String code, String email, String phoneNumber) {
+                    String updateAt, String code, String email, String phoneNumber, boolean sync, boolean termsAccepted) {
         Id = id;
         Name = name;
         Birthday = birthday;
@@ -41,6 +43,8 @@ public class Athletes{
         this.Code = code;
         this.Email = email;
         this.PhoneNumber = phoneNumber;
+        Sync = sync;
+        TermsAccepted = termsAccepted;
     }
 
     public String getId() {
@@ -145,5 +149,21 @@ public class Athletes{
 
     public void setPhoneNumber(String phoneNumber) {
         PhoneNumber = phoneNumber;
+    }
+
+    public boolean getSync() {
+        return Sync;
+    }
+
+    public void setSync(boolean sync) {
+        Sync = sync;
+    }
+
+    public boolean getTermsAccepted() {
+        return TermsAccepted;
+    }
+
+    public void setTermsAccepted(boolean termsAccepted) {
+        TermsAccepted = termsAccepted;
     }
 }

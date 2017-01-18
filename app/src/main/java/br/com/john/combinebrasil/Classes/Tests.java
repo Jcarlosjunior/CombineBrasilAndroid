@@ -8,8 +8,9 @@ public class Tests {
   private String Id;
     private String Type;
     private String Athlete;
-    private String FirstValue;
-    private String SecondValue;
+    private String Selective;
+    private long FirstValue;
+    private long SecondValue;
     private float Rating;
     private String Wingspan;
     private String User;
@@ -17,11 +18,12 @@ public class Tests {
 
     public Tests(){}
 
-    public Tests(String id, String type, String athlete, String firstValue, String secondValue,
+    public Tests(String id, String type, String athlete, String selective, long firstValue, long secondValue,
                  float rating, String wingspan, String user, int sync) {
         Id = id;
         Type = type;
         Athlete = athlete;
+        Selective = selective;
         FirstValue = firstValue;
         SecondValue = secondValue;
         Rating = rating;
@@ -54,19 +56,19 @@ public class Tests {
         Athlete = athlete;
     }
 
-    public String getFirstValue() {
+    public long getFirstValue() {
         return FirstValue;
     }
 
-    public void setFirstValue(String firstValue) {
+    public void setFirstValue(long firstValue) {
         FirstValue = firstValue;
     }
 
-    public String getSecondValue() {
+    public long getSecondValue() {
         return SecondValue;
     }
 
-    public void setSecondValue(String secondValue) {
+    public void setSecondValue(long secondValue) {
         SecondValue = secondValue;
     }
 
@@ -100,5 +102,13 @@ public class Tests {
 
     public void setUser(String user) {
         User = user;
+    }
+
+    public String getSelective() {
+        return Selective;
+    }
+
+    public void setSelective(String selective) {
+        Selective = selective;
     }
 }
