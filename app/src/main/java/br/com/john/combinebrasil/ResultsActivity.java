@@ -29,6 +29,7 @@ import java.util.UUID;
 
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Results;
+import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Classes.User;
@@ -308,11 +309,12 @@ public class ResultsActivity extends AppCompatActivity {
         DatabaseHelper db = new DatabaseHelper(ResultsActivity.this);
         db.openDataBase();
         User user= db.getUser();
-       Tests test = new Tests(
+        Selective selective = db.getSelective();
+        Tests test = new Tests(
                 UUID.randomUUID().toString(),
                 AllActivities.testSelected,
                 idAthlete,
-                AllActivities.testSelected,
+                selective.getId(),
                 Services.convertMetersinCentimeters(editFirstResult.getText().toString()),
                 Services.convertMetersinCentimeters(editSecondResult.getText().toString()),
                 ratingValue,

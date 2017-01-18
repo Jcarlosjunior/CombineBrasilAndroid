@@ -775,6 +775,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ", athletes."+Constants.ATHLETES_PHONE+
                     ", athletes."+Constants.ATHLETES_CODE+
                     ", athletes."+Constants.ATHLETES_SYNC+
+                    ", athletes."+Constants.ATHLETES_TERMSACCEPTED+
                     " FROM "
                     + Constants.TABLE_ATHLETES+" as athletes INNER JOIN "+Constants.TABLE_TESTS
                     +" as tests ON athletes."+Constants.TESTS_ID+" = tests."+Constants.TESTS_ATHLETE+" WHERE tests."+Constants.TESTS_TYPE+

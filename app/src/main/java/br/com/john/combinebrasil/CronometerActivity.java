@@ -30,6 +30,7 @@ import java.util.UUID;
 
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Positions;
+import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Classes.User;
@@ -331,11 +332,12 @@ public class CronometerActivity extends AppCompatActivity {
         DatabaseHelper db = new DatabaseHelper(CronometerActivity.this);
         db.openDataBase();
         User user= db.getUser();
+        Selective selective = db.getSelective();
         Tests test = new Tests(
                 UUID.randomUUID().toString(),
                 AllActivities.testSelected,
                 idAthlete,
-                AllActivities.testSelected,
+                selective.getId(),
                 Services.convertInMilliSeconds(textFirstResult.getText().toString()),
                 Services.convertInMilliSeconds(textSecondValue.getText().toString()),
                 ratingValue,

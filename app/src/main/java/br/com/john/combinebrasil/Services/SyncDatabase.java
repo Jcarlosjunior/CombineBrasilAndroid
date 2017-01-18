@@ -24,6 +24,7 @@ import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
+import br.com.john.combinebrasil.SyncAthleteActivity;
 
 /**
  * Created by GTAC on 14/11/2016.
@@ -310,4 +311,7 @@ public class SyncDatabase {
             throw sqle;
         }
     }
+
+
+    /***********************************************************************************************/
 }

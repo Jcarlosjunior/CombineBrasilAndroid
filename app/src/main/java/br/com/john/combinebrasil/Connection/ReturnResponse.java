@@ -16,6 +16,7 @@ import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.SyncDatabase;
+import br.com.john.combinebrasil.SyncActivity;
 import br.com.john.combinebrasil.SyncAthleteActivity;
 
 
@@ -60,10 +61,17 @@ public class ReturnResponse {
                 else if (whoCalled.equals(Constants.CALLED_GET_TESTS))
                     SyncDatabase.testResponse(response);
                 else if(whoCalled.equals("UPDATE_SELECTIVEATHLETE"))
-                    SyncAthleteActivity.updateSelectiveAthlete(activity, response);
+                    if(activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
+                        SyncAthleteActivity.updateSelectiveAthlete(activity, response);
+                    //else
+                        //SyncActivity.updateSelectiveAthlete(activity, response);
 
                 else if(whoCalled.equals("UPDATE_ATHLETE"))
-                    SyncAthleteActivity.updateAthlete(activity, response);
+                    if(activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
+                        SyncAthleteActivity.updateAthlete(activity, response);
+                    //else
+                        //SyncActivity.updateAthlete(activity, response);
+
 
             }
         } catch (Exception e) {
