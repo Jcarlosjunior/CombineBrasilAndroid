@@ -390,13 +390,17 @@ public class CreateAccountAthlete extends AppCompatActivity {
         linearProgress.setVisibility(View.GONE);
 
         DeserializerJsonElements des = new DeserializerJsonElements(response);
-        athlete = des.getAthlete();
+        athlete = des.getObjAthlete();
         DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
 
-        if(!db.existAthleteByCPF(athlete.getCPF()))
-            createCode(athlete.getId());
-        else
-            Services.messageAlert(CreateAccountAthlete.this,"Aviso","Ops, esse atleta já esta cadastrado na seletiva","");
+        try {
+            if (!db.existAthleteByCPF(athlete.getCPF()))
+                createCode(athlete.getId());
+            else
+                Services.messageAlert(CreateAccountAthlete.this, "Aviso", "Ops, esse atleta já esta cadastrado na seletiva", "");
+        }catch (Exception e){
+            Services.messageAlert(CreateAccountAthlete.this, "Aviso", "Ops, esse atleta já esta cadastrado na seletiva", "");
+        }
     }
 
     private void createCode(String idAthlete){
@@ -455,7 +459,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
         }
         else if(response.equals("OK")) {
             DeserializerJsonElements des = new DeserializerJsonElements(result);
-            SelectiveAthletes item = des.getSelectiveAthlete();
+            SelectiveAthletes item = des.getObjSelectiveAthlete();
 
             DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
             db.addSelectiveAthlete(item);

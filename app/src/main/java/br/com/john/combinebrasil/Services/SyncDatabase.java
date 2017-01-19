@@ -49,10 +49,10 @@ public class SyncDatabase {
         //initSyncDatabase();
     }
 
-    private static  void callFunc(String url, String methodName, boolean isPost) {
+    public static  void callFunc(String url, String methodName, boolean isPost, Activity act) {
         int methodType = isPost ? 1 : 0;
         Log.i("Sync DataBase", methodName + "\n\n "+url);
-        Connection task = new Connection(url, methodType, methodName, false, activity);
+        Connection task = new Connection(url, methodType, methodName, false, act);
         task.callByJsonStringRequest();
     }
 
@@ -69,7 +69,7 @@ public class SyncDatabase {
             MainActivity.textProgress.setText("Verificando seu Usuário");
             callFunc(Constants.URL + Constants.API_USERS+"?"+Constants.USER_EMAIL+"="+
                             SharedPreferencesAdapter.getValueStringSharedPreferences(activity,Constants.LOGIN_EMAIL),
-                    Constants.CALLED_GET_USER,  false);
+                    Constants.CALLED_GET_USER,  false, activity);
         }
     }
 
@@ -90,7 +90,7 @@ public class SyncDatabase {
             db.close();
             MainActivity.textProgress.setText("Sincronizando Equipe");
             String url = Constants.URL + Constants.API_TEAMUSERS+"?"+Constants.TEAMUSERS_USER+"="+user.getId();
-            callFunc(url, Constants.CALLED_GET_TEAMUSERS,  false);
+            callFunc(url, Constants.CALLED_GET_TEAMUSERS,  false, activity);
 
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
@@ -117,7 +117,7 @@ public class SyncDatabase {
             db.close();
             MainActivity.textProgress.setText("Sincronizando Seletiva");
             String url = Constants.URL + Constants.API_SELECTIVES+"?"+Constants.SELECTIVES_TEAM+"="+ teamUser.getTeam();
-            callFunc(url, Constants.CALLED_GET_SELECTIVE,  false);
+            callFunc(url, Constants.CALLED_GET_SELECTIVE,  false, activity);
 
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
@@ -141,7 +141,7 @@ public class SyncDatabase {
             db.openDataBase();
             db.addSelectives(selectives);
             db.close();
-            callFunc(Constants.URL + Constants.API_TEAMS, Constants.CALLED_GET_TEAM,  false);
+            callFunc(Constants.URL + Constants.API_TEAMS, Constants.CALLED_GET_TEAM,  false, activity);
             MainActivity.textProgress.setText("Sincronizando avaliadores");
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
@@ -177,7 +177,7 @@ public class SyncDatabase {
             MainActivity.textProgress.setText("Sincronizando testes");
             String url = Constants.URL + Constants.API_SELECTIVEATHLETES+"?"+Constants.SELECTIVEATHLETES_SELECTIVE+"="+item.getId();
             callFunc(url,
-                    Constants.CALLED_GET_SELECTIVEATHLETES,  false);
+                    Constants.CALLED_GET_SELECTIVEATHLETES,  false, activity);
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
             SyncDatabase.hideProgress(activity.getClass().getSimpleName());
@@ -200,7 +200,7 @@ public class SyncDatabase {
             db.openDataBase();
             db.addSelectivesAthletes(selectiveAthletes);
             db.close();
-            callFunc(Constants.URL + Constants.API_ATHLETES, Constants.CALLED_GET_ATHLETES, false);
+            callFunc(Constants.URL + Constants.API_ATHLETES, Constants.CALLED_GET_ATHLETES, false, activity);
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
             SyncDatabase.hideProgress(activity.getClass().getSimpleName());
@@ -232,7 +232,7 @@ public class SyncDatabase {
             db.openDataBase();
             db.addAthletes(athletesAdd);
             db.close();
-            callFunc(Constants.URL + Constants.API_POSITIONS, Constants.CALLED_GET_POSITIONS,  false);
+            callFunc(Constants.URL + Constants.API_POSITIONS, Constants.CALLED_GET_POSITIONS,  false, activity);
             MainActivity.textProgress.setText("Sincronizando Posições");
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
@@ -256,7 +256,7 @@ public class SyncDatabase {
             db.openDataBase();
             db.addPositions(positions);
             db.close();
-            callFunc(Constants.URL + Constants.API_TESTTYPES, Constants.CALLED_GET_TESTTYPES,  false);
+            callFunc(Constants.URL + Constants.API_TESTTYPES, Constants.CALLED_GET_TESTTYPES,  false, activity);
             MainActivity.textProgress.setText("Sincronizando seletiva");
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");
@@ -280,7 +280,7 @@ public class SyncDatabase {
             db.openDataBase();
             db.addTestTypes(testTypes);
             db.close();
-            callFunc(Constants.URL + Constants.API_TESTS, Constants.CALLED_GET_TESTS,  false);
+            callFunc(Constants.URL + Constants.API_TESTS, Constants.CALLED_GET_TESTS,  false, activity);
             MainActivity.textProgress.setText("Sincronizando testes");
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");

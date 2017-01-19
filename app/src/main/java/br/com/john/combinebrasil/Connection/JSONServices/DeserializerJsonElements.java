@@ -138,24 +138,29 @@ public class DeserializerJsonElements {
     public Athletes getAthlete() {
         Athletes athlete = new Athletes();
         try {
-            JSONObject json = new JSONObject(response);
-            athlete = new Athletes(
-                    json.optString(Constants.ATHLETES_ID),
-                    json.optString(Constants.ATHLETES_NAME),
-                    json.optString(Constants.ATHLETES_BIRTHDAY),
-                    json.optString(Constants.ATHLETES_CPF),
-                    json.optString(Constants.ATHLETES_ADDRESS),
-                    json.optString(Constants.ATHLETES_DESIRABLE_POSITION),
-                    json.optDouble(Constants.ATHLETES_HEIGHT),
-                    json.optDouble(Constants.ATHLETES_WEIGHT),
-                    json.optString(Constants.ATHLETES_CREATEDAT),
-                    json.optString(Constants.ATHLETES_UPDATEAT),
-                    "",
-                    json.optString(Constants.ATHLETES_EMAIL),
-                    json.optString(Constants.ATHLETES_PHONE),
-                    true,
-                    json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true)
-            );
+
+            JSONArray jsonArray = new JSONArray(response);
+
+            for (int i = 0; i <= jsonArray.length() - 1; i++) {
+                JSONObject json = new JSONObject(jsonArray.getString(i));
+                athlete = new Athletes(
+                        json.optString(Constants.ATHLETES_ID),
+                        json.optString(Constants.ATHLETES_NAME),
+                        json.optString(Constants.ATHLETES_BIRTHDAY),
+                        json.optString(Constants.ATHLETES_CPF),
+                        json.optString(Constants.ATHLETES_ADDRESS),
+                        json.optString(Constants.ATHLETES_DESIRABLE_POSITION),
+                        json.optDouble(Constants.ATHLETES_HEIGHT),
+                        json.optDouble(Constants.ATHLETES_WEIGHT),
+                        json.optString(Constants.ATHLETES_CREATEDAT),
+                        json.optString(Constants.ATHLETES_UPDATEAT),
+                        "",
+                        json.optString(Constants.ATHLETES_EMAIL),
+                        json.optString(Constants.ATHLETES_PHONE),
+                        true,
+                        json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true)
+                );
+            }
         } catch (JSONException jsonExc) {
             Log.i("JSON ERROR", jsonExc.toString());
             athlete = null;
@@ -163,6 +168,35 @@ public class DeserializerJsonElements {
         return athlete;
     }
 
+    public Athletes getObjAthlete() {
+        Athletes athlete = new Athletes();
+        try {
+
+            JSONObject json = new JSONObject(response);
+
+                athlete = new Athletes(
+                        json.optString(Constants.ATHLETES_ID),
+                        json.optString(Constants.ATHLETES_NAME),
+                        json.optString(Constants.ATHLETES_BIRTHDAY),
+                        json.optString(Constants.ATHLETES_CPF),
+                        json.optString(Constants.ATHLETES_ADDRESS),
+                        json.optString(Constants.ATHLETES_DESIRABLE_POSITION),
+                        json.optDouble(Constants.ATHLETES_HEIGHT),
+                        json.optDouble(Constants.ATHLETES_WEIGHT),
+                        json.optString(Constants.ATHLETES_CREATEDAT),
+                        json.optString(Constants.ATHLETES_UPDATEAT),
+                        "",
+                        json.optString(Constants.ATHLETES_EMAIL),
+                        json.optString(Constants.ATHLETES_PHONE),
+                        true,
+                        json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true)
+                );
+        } catch (JSONException jsonExc) {
+            Log.i("JSON ERROR", jsonExc.toString());
+            athlete = null;
+        }
+        return athlete;
+    }
     /***************************************
      * POSITIONS
      ********************************************/
@@ -220,19 +254,45 @@ public class DeserializerJsonElements {
     public SelectiveAthletes getSelectiveAthlete() {
         SelectiveAthletes selectiveAthletes = new SelectiveAthletes();
         try {
-            JSONObject json = new JSONObject(response);
-            selectiveAthletes = new SelectiveAthletes(
-                    json.optString(Constants.SELECTIVEATHLETES_ID),
-                    json.optString(Constants.SELECTIVEATHLETES_ATHLETE),
-                    json.optString(Constants.SELECTIVEATHLETES_SELECTIVE),
-                    json.optString(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER),
-                    json.optBoolean(Constants.SELECTIVEATHLETES_PRESENCE)
-            );
+            JSONArray jsonArray = new JSONArray(response);
+
+            for(int i=0; i<=jsonArray.length()-1; i++) {
+                JSONObject json = new JSONObject(jsonArray.getString(i));
+                selectiveAthletes = new SelectiveAthletes(
+                        json.optString(Constants.SELECTIVEATHLETES_ID),
+                        json.optString(Constants.SELECTIVEATHLETES_ATHLETE),
+                        json.optString(Constants.SELECTIVEATHLETES_SELECTIVE),
+                        json.optString(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER),
+                        json.optBoolean(Constants.SELECTIVEATHLETES_PRESENCE)
+                );
+            }
         } catch (JSONException e) {
             selectiveAthletes = null;
             Log.i("ERROR: getPositions", e.getMessage());
         }
         return selectiveAthletes;
+
+    }
+
+    public SelectiveAthletes getObjSelectiveAthlete() {
+        SelectiveAthletes selectiveAthletes = new SelectiveAthletes();
+        try {
+            JSONObject json = new JSONObject(response);
+
+                selectiveAthletes = new SelectiveAthletes(
+                        json.optString(Constants.SELECTIVEATHLETES_ID),
+                        json.optString(Constants.SELECTIVEATHLETES_ATHLETE),
+                        json.optString(Constants.SELECTIVEATHLETES_SELECTIVE),
+                        json.optString(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER),
+                        json.optBoolean(Constants.SELECTIVEATHLETES_PRESENCE)
+                );
+
+        } catch (JSONException e) {
+            selectiveAthletes = null;
+            Log.i("ERROR: getPositions", e.getMessage());
+        }
+        return selectiveAthletes;
+
     }
 
     /***************************************

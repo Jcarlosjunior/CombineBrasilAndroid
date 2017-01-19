@@ -33,6 +33,7 @@ import br.com.john.combinebrasil.Connection.Posts.PostSync;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Services;
+import br.com.john.combinebrasil.Services.SyncDatabase;
 
 public class SyncAthleteActivity extends AppCompatActivity {
     private RecyclerView recyclerSync;
@@ -157,10 +158,9 @@ public class SyncAthleteActivity extends AppCompatActivity {
     }
 
     private void sync(Tests test){
-        linearProgress.setVisibility(View.VISIBLE);
-        textProgress.setText("Sincronizando");
-
         if(Services.isOnline(SyncAthleteActivity.this)) {
+            linearProgress.setVisibility(View.VISIBLE);
+            textProgress.setText("Sincronizando");
             DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
             Athletes athlete  = db.getAthleteById(test.getAthlete());
             if(athlete!=null){
@@ -180,7 +180,6 @@ public class SyncAthleteActivity extends AppCompatActivity {
                 }
                 else
                     callUpdateAthlete(athlete);
-
             }
         }
         else
@@ -260,18 +259,23 @@ public class SyncAthleteActivity extends AppCompatActivity {
         idAthlete = athlete.getId();
         DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
         SelectiveAthletes selectiveAthletes = db.getSelectiveAthletesFromAthlete(athlete.getId());
-        if(selectiveAthletes!=null){
+        if(selectiveAthletes==null){
+            positionNow = positionNow+1;
+
+            if(athletes.size()<positionNow) {
+                Tests test = db.getTestFromAthleteAndType(athletes.get(positionNow).getId(), idTest);
+                sync(test);
+            }
+            else{
+                Services.messageAlert(SyncAthleteActivity.this, "Aviso","Nada mais a sincronizar","");
+                linearProgress.setVisibility(View.GONE);
+            }
+        }
+        else {
             linearProgress.setVisibility(View.VISIBLE);
             String url = Constants.URL + Constants.API_SELECTIVEATHLETES+"?"+Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER+"="+selectiveAthletes.getInscriptionNumber();
-            callFunc(url, "UPDATE_SELECTIVEATHLETE",  false);
+            SyncDatabase.callFunc(url, "UPDATE_SELECTIVEATHLETE",  false, SyncAthleteActivity.this);
         }
-    }
-
-    private void callFunc(String url, String methodName, boolean isPost) {
-        int methodType = isPost ? 1 : 0;
-        Log.i("Sync DataBase", methodName + "\n\n "+url);
-        Connection task = new Connection(url, methodType, methodName, false, SyncAthleteActivity.this);
-        task.callByJsonStringRequest();
     }
 
     public static void updateSelectiveAthlete(Activity act, String response){
@@ -281,12 +285,13 @@ public class SyncAthleteActivity extends AppCompatActivity {
     private void updateSelectiveAthlete(String response){
         DeserializerJsonElements des = new DeserializerJsonElements(response);
         SelectiveAthletes selectiveAthlete = des.getSelectiveAthlete();
+        if(selectiveAthlete!=null){
+            DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
+            db.updateSelectiveAthlete(selectiveAthlete);
 
-        DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
-        db.updateSelectiveAthlete(selectiveAthlete);
-
-        String url = Constants.URL + Constants.API_ATHLETES+"?"+Constants.ATHLETES_ID+"="+selectiveAthlete.getAthlete();
-        callFunc(url, "UPDATE_ATHLETE",  false);
+            String url = Constants.URL + Constants.API_ATHLETES + "?" + Constants.ATHLETES_ID + "=" + selectiveAthlete.getAthlete();
+            SyncDatabase.callFunc(url, "UPDATE_ATHLETE", false, SyncAthleteActivity.this);
+        }
     }
 
     public static void updateAthlete(Activity act, String response){
@@ -298,10 +303,15 @@ public class SyncAthleteActivity extends AppCompatActivity {
         Athletes athlete = des.getAthlete();
 
         DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
+
+        SelectiveAthletes selectiveAthletes = db.getSelectiveAthletesFromAthlete(athlete.getId());
+        athlete.setCode(selectiveAthletes.getInscriptionNumber());
+
         db.updateAthlete(athlete);
         db.updateTestsAthlete(idAthlete, athlete.getId());
         linearProgress.setVisibility(View.GONE);
 
+        athletes.set(positionNow, athlete);
         Tests test = db.getTestFromAthleteAndType(athletes.get(positionNow).getId(), idTest);
         sync(test);
     }

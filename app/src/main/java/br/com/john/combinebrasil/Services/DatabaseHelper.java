@@ -238,7 +238,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.SELECTIVEATHLETES_ATHLETE, obj.getAthlete());
                 values.put(Constants.SELECTIVEATHLETES_SELECTIVE, obj.getSelective());
                 values.put(Constants.SELECTIVEATHLETES_PRESENCE, Services.convertBoolInInt(obj.getPresence()));
-                values.put(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER, obj.getInscriptionNumber());
+                values.put(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER, obj.getInscriptionNumber().toUpperCase());
 
                 ret = myDataBase.insert(Constants.TABLE_SELECTIVEATHLETES, null, values);
             }
@@ -257,7 +257,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.SELECTIVEATHLETES_ATHLETE, selectiveAthlete.getAthlete());
                 values.put(Constants.SELECTIVEATHLETES_SELECTIVE, selectiveAthlete.getSelective());
                 values.put(Constants.SELECTIVEATHLETES_PRESENCE, Services.convertBoolInInt(selectiveAthlete.getPresence()));
-                values.put(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER, selectiveAthlete.getInscriptionNumber());
+                values.put(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER, selectiveAthlete.getInscriptionNumber().toUpperCase());
 
                 ret = myDataBase.insert(Constants.TABLE_SELECTIVEATHLETES, null, values);
         }catch (Exception e){
@@ -276,7 +276,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.SELECTIVES_TITLE, obj.getTitle());
                 values.put(Constants.SELECTIVES_TEAM, obj.getTeam());
                 values.put(Constants.SELECTIVES_DATE, obj.getDate());
-                values.put(Constants.SELECTIVES_CODESELECTIVE, obj.getDate());
+                values.put(Constants.SELECTIVES_CODESELECTIVE, obj.getCodeSelective());
                 values.put(Constants.SELECTIVES_CANSYNC, obj.getDate());
 
                 ret = myDataBase.insert(Constants.TABLE_SELECTIVES, null, values);
@@ -536,7 +536,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_ID)),
                             c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_ATHLETE)),
                             c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_SELECTIVE)),
-                            c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER)),
+                            c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER)).toUpperCase(),
                             Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVEATHLETES_PRESENCE)))
                     );
                     itens.add(obj);
@@ -553,6 +553,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return itens;
     }
 
+    public SelectiveAthletes getSelectiveAthletesFromId(String id) {
+        this.openDataBase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_SELECTIVEATHLETES +
+                " WHERE "+Constants.SELECTIVEATHLETES_ID+"='"+id+"'";
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+        SelectiveAthletes obj= new SelectiveAthletes();
+        if (c.moveToNext()) {
+            obj= new SelectiveAthletes(
+                    c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_ID)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_ATHLETE)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_SELECTIVE)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER)).toUpperCase(),
+                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVEATHLETES_PRESENCE)))
+            );
+
+        } else {
+            obj = null;
+        }
+        c.close();
+        this.close();
+
+        return obj;
+    }
+
     public SelectiveAthletes getSelectiveAthletesFromAthlete(String athlete) {
         this.openDataBase();
 
@@ -565,8 +590,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_ID)),
                 c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_ATHLETE)),
                 c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_SELECTIVE)),
-                c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER)),
-                Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER)))
+                c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER)).toUpperCase(),
+                Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVEATHLETES_PRESENCE)))
                 );
 
         } else {
@@ -1180,8 +1205,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
 
             String selectQuery = "UPDATE " + Constants.TABLE_TESTS + " SET "
-                    + Constants.TESTS_ATHLETE + "='" +newId + "', "+
-                    "  WHERE "+ Constants.TESTS_ATHLETE + "='" + idOlder+ "'";
+                    + Constants.TESTS_ATHLETE + "='" +newId + "'  WHERE "+ Constants.TESTS_ATHLETE + "='" + idOlder+ "'";
 
             Cursor c = myDataBase.rawQuery(selectQuery, null);
             c.getCount();
