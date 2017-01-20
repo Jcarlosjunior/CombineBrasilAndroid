@@ -1156,8 +1156,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.openDataBase();
         try {
 
-            String selectQuery = "UPDATE " + Constants.TABLE_SELECTIVEATHLETES + " SET " + Constants.SELECTIVEATHLETES_ID + "='" +
-                    obj.getId() + "', "+Constants.SELECTIVEATHLETES_ATHLETE+"='"+obj.getAthlete()+"'  WHERE "
+            String selectQuery = "UPDATE " +
+                    Constants.TABLE_SELECTIVEATHLETES + " SET " +
+                    Constants.SELECTIVEATHLETES_ID + "='" +obj.getId() +
+                    "', "+Constants.SELECTIVEATHLETES_ATHLETE+"='"+obj.getAthlete()+
+                    "'  WHERE "
                     + Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER + "='" + obj.getInscriptionNumber() + "'";
 
             Cursor c = myDataBase.rawQuery(selectQuery, null);

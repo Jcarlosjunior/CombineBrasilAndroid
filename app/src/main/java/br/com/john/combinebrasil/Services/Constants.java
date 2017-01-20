@@ -67,6 +67,7 @@ public class Constants {
     public static final String MAIN_ACTIVITY = "MainActivity";
     public static final String LOGIN_ACTIVITY = "LoginActivity";
     public static final String LOGIN_CREATEACCOUNTATHLETE = "CreateAccountAthlete";
+    public static final String SYNC_ACTIVITY = "SyncActivity";
 
     //SHARED PREFERENCES
     public static final String TIMER_CHRONOMETER = "timer_chronometer",
@@ -165,5 +166,13 @@ public class Constants {
     public static final String TESTS_WINGSPAN = "wingspan";
     public static final String TESTS_USER = "user";
     public static final String TESTS_SYNC = "sync";
+
+    public static final String TERMS_TEXT = "<br>Declaro  para os devidos fins de direito  e ciência que:<br><br>" +
+            "1. Participarei da seletiva e se caso selecionado, dos treinos e jogos de Futebol Americano e estou em pleno gozo de saúde e em condições de participar da seletiva, treinos e jogos, não apresentando qualquer tipo de impedimento ou restrição à prática e atividades físicas e esportivas.<br><br>" +
+            "2.Assumo, todos os riscos e responsabilidade legal das minhas ações envolvidas na participação da seletiva, dos treinos e jogos. Isentando o time, comissão técnica e organizadora, colaboradores e patrocinadores DE TODA E QUALQUER RESPONSABILIDADE por quaisquer danos materiais, morais ou físicos, que porventura venha a sofrer ou provocar.<br><br>" +
+            "3.Em caso de lesões do atleta, será acionado o serviço de atendimento médico da rede pública para atender o ocorrido. O atleta ou o seu (sua) acompanhante poderá decidir pelo atendimento, remoção ou transferência para hospitais da rede privada de saúde, eximindo de qualquer responsabilidade, o time, comissão técnica e organizadora, colaboradores e patrocinadores de ônus pelas despesas decorrentes deste atendimento. <br><br>" +
+            "5. Concedo, a título universal e de forma irrevogável e irretratável, o direito de usar minha imagem, voz, sons a serem captados na seletiva, treinos e jogos, para usos informativos, promocionais ou publicitários , sem acarretar nenhum ônus ao time, comissão organizadora e aos parceiros. Renunciando o recebimento de qualquer renda que vier a ser auferida com tais direitos em qualquer tempo/data, sendo os direitos reservados ao time e comissão organizadora.<br><br>" +
+            "6. Poderá o time solicitar ao atleta, exame médicos periódicos para os treinos e jogos, se caso não for realizado e apresentado, ficará então este exame substituído  por este TERMOS DE RESPONSABILIDADE, eximindo o time e assumindo o atleta suas consequências.<br><br>" +
+            "7. Fica eleito o foro da cidade de São Jose dos Campos, preterido qualquer outro, por mais privilegiado que seja, para dirimir quaisquer questões oriundas deste Termo de Responsabilidade.<br><br>";
 
 }

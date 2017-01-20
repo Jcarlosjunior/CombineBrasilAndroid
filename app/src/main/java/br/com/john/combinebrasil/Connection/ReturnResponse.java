@@ -63,7 +63,7 @@ public class ReturnResponse {
 
                 else if(whoCalled.equals("UPDATE_SELECTIVEATHLETE")) {
                     if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
-                        SyncAthleteActivity.updateSelectiveAthlete(activity, response);
+                        SyncAthleteActivity.updateSelectiveAthlete(activity, "OK", response);
                     else if (activity.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY))
                         MainActivity.updateSelectiveAthlete(activity, response);
                 }

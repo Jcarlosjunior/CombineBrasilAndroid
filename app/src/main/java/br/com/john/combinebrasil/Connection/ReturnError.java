@@ -35,7 +35,7 @@ public class ReturnError {
 
             else if(whoCalled.equals("UPDATE_SELECTIVEATHLETE"))
                 if(activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
-                    SyncAthleteActivity.updateSelectiveAthlete(activity, message);
+                    SyncAthleteActivity.updateSelectiveAthlete(activity, "FAIL", message);
                 else if(activity.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY))
                     MainActivity.updateSelectiveAthlete(activity, message);
                     //else

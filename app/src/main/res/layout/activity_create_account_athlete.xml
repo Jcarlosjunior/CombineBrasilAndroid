@@ -254,6 +254,8 @@
                             android:textStyle="normal"
                             android:textSize="14sp"
                             android:textAlignment="center"
+                            android:paddingTop="5sp"
+                            android:paddingBottom="5sp"
                             android:layout_marginBottom="20sp"
                             android:layout_marginTop="20sp"
                             />
@@ -387,8 +389,6 @@
                             android:layout_margin="10sp"
                             android:paddingTop="10sp"
                             android:paddingBottom="10dp"
-                            android:paddingRight="40sp"
-                            android:paddingLeft="40sp"
                             android:orientation="vertical"
                             android:gravity="center"
                             android:animateLayoutChanges="true">
@@ -398,16 +398,15 @@
                                 android:text="@string/terms_title"
                                 android:textColor="@color/colorPrimary"
                                 android:gravity="center"
-                                android:textSize="18sp"
-                                android:padding="10sp" />
+                                android:textStyle="bold"
+                                android:textSize="16sp" />
 
                             <TextView
+                                android:id="@+id/text_terms_body"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="0.8"
-                                android:text="@string/lorem"
                                 android:textSize="14sp"
-                                android:textAlignment="center"
                                 />
 
                             <LinearLayout

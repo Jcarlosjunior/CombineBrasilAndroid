@@ -42,7 +42,8 @@
     <string name="value_error">Valor inválido</string>
     <string name="open_terms">O atleta deve aceitar o termos de serviço</string>
     <string name="terms">Aceitar termos de serviços?</string>
-    <string name="terms_title">Termos de Serviços Combine</string>
+    <string name="terms_title">TERMO DE RESPONSABILIDADE, CONDIÇOES FÍSICAS E USO DE IMAGEM</string>
+    <string name="save_Athletes">Salvar atletas</string>
 
 
     <!--
@@ -61,6 +62,7 @@
     <string name="not_find">
                 Ops... Não foi encontrado nenhum resultado para a busca
     </string>
+    <string name="text_sync_athlete">Você cadastrou alguns atletas na seletiva, porém você estava sem conexão com a internet, e por esse motivo, os atletas não foram salvos.</string>
     <!-- ******************************** ITENS MENUS ****************************************************
     -->
     <string name="order_by">Ordenar por</string>

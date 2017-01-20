@@ -5,6 +5,7 @@ import android.app.Service;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,7 +54,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
     Athletes athlete;
     ArrayList<Positions> positions;
 
-    TextView textTerms;
+    TextView textTerms, bodyTextTerms;
     CheckBox checkTerms;
     Button btnClose;
     LinearLayout linearTerms;
@@ -92,6 +94,9 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
         textTerms.setOnClickListener(clickOpenTerms);
         btnClose.setOnClickListener(closeTerms);
+
+        bodyTextTerms = (TextView) findViewById(R.id.text_terms_body);
+        bodyTextTerms.setText(Html.fromHtml(Constants.TERMS_TEXT));
 
         textTerms.setVisibility(View.VISIBLE);
 
@@ -466,7 +471,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
             athlete.setCode(item.getInscriptionNumber());
             long ret = db.addAthlete(athlete);
             if(ret!=0){
-                Services.messageAlert(CreateAccountAthlete.this, "Salvo", "Atleta cadastrado com sucesso", "POSTATHLETE");
+                Services.messageAlert(CreateAccountAthlete.this, "Salvo", "Atleta cadastrado com sucesso. O código do atleta é "+athlete.getCode(), "POSTATHLETE");
             }
         }
     }
@@ -643,8 +648,14 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private boolean validateHeight(EditText edit){
         boolean ver = false;
         if(getString(edit).length()>=3){
-            Services.changeColorEditBorder(edit, this);
-            ver = true;
+            int first = Integer.parseInt(edit.getText().toString().substring(0,1));
+            if(first>=3){
+                Services.changeColorEditBorderError(edit, this);
+            }
+            else {
+                Services.changeColorEditBorder(edit, this);
+                ver = true;
+            }
         }
         else
             Services.changeColorEditBorderError(edit, this);

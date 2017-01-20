@@ -4,10 +4,9 @@ android {
     compileSdkVersion 24
     buildToolsVersion "23.0.3"
     useLibrary 'org.apache.http.legacy'
-
     defaultConfig {
         applicationId "br.com.john.combinebrasil"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -17,6 +16,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 

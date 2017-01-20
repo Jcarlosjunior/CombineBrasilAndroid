@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,14 +20,19 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerSync;
+import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.Selective;
+import br.com.john.combinebrasil.Classes.SelectiveAthletes;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostAthleteAsyncTask;
 import br.com.john.combinebrasil.Connection.Posts.PostSync;
@@ -37,11 +43,16 @@ import br.com.john.combinebrasil.Services.Services;
 
 public class SyncActivity extends AppCompatActivity {
     private RecyclerView recyclerSync;
-    LinearLayout linearProgress;
+    LinearLayout linearProgress, linearAddAthlete;
+    Button btnSaveAthletes;
+    ImageView imgClose;
+    TextView textSave;
     private static boolean isSync = false;
     ArrayList<TestTypes> testsInflate;
     ArrayList<Tests> tests;
-    int positionNow = 0, positionSync, positionAthlete=0;
+    ArrayList<Athletes> athletes;
+    String idAthleteChange;
+    int positionNow = 0, positionSync, positionAthlete=0, positionSaveAthletes = 0;
     long numTests=0, numAthletes=0;
     AdapterRecyclerSync adapterTests;
 
@@ -63,6 +74,14 @@ public class SyncActivity extends AppCompatActivity {
         TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
         textTitle.setText("Sincronizar os testes");
 
+        linearAddAthlete = (LinearLayout) findViewById(R.id.linear_update_Athletes);
+        btnSaveAthletes = (Button) findViewById(R.id.button_save_athlete);
+        imgClose = (ImageView) findViewById(R.id.image_close) ;
+        imgClose.setOnClickListener(closeAdd);
+        textSave = (TextView) findViewById(R.id.text_message_save_athletes);
+
+        btnSaveAthletes.setOnClickListener(saveAthletes);
+
         recyclerSync= (RecyclerView) findViewById(R.id.recycler_sync);
         recyclerSync.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         linearProgress = (LinearLayout) findViewById(R.id.linear_progress);
@@ -76,6 +95,7 @@ public class SyncActivity extends AppCompatActivity {
                 //        .setAction("Action", null).show();
             }
         });
+        fab.setVisibility(View.GONE);
 
         tests = new ArrayList<Tests>();
 
@@ -83,6 +103,189 @@ public class SyncActivity extends AppCompatActivity {
         numAthletes = db.getCountTable(Constants.TABLE_ATHLETES);
 
         callInflateList();
+
+        verifyAthletes();
+    }
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        verifyAthletes();
+    }
+
+    private void verifyAthletes() {
+        linearAddAthlete.setVisibility(View.GONE);
+        DatabaseHelper db = new DatabaseHelper(SyncActivity.this);
+        User user = db.getUser();
+        if(user.getIsAdmin()) {
+            if (Services.isOnline(SyncActivity.this)) {
+                ArrayList<Athletes> athletes = db.getAthletes();
+
+                this.athletes = new ArrayList<Athletes>();
+                if (athletes == null) {
+                    linearAddAthlete.setVisibility(View.GONE);
+                } else {
+                    int cont = 0;
+                    for (Athletes athlete : athletes) {
+                        if (athlete.getSync() == false) {
+                            cont = cont + 1;
+                            this.athletes.add(athlete);
+                        }
+                    }
+                    if (cont > 0) {
+                        textSave.setText("Opa! Você cadastrou " + cont + " atletas na seletiva, porém você estava sem conexão com a internet, e por esse motivo, os atletas não foram salvos. Agora você está com conexão e pode salvo-los.");
+                        linearAddAthlete.setVisibility(View.VISIBLE);
+                    } else
+                        linearAddAthlete.setVisibility(View.GONE);
+                }
+            }
+            else
+                linearAddAthlete.setVisibility(View.GONE);
+        }
+        else
+            linearAddAthlete.setVisibility(View.GONE);
+    }
+
+    private View.OnClickListener saveAthletes = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            saveAthletes();
+        }
+    };
+
+    private JSONObject createObject(Athletes athlete) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put(Constants.ATHLETES_NAME, athlete.getName());
+            object.put(Constants.ATHLETES_CPF, athlete.getCPF());
+            object.put(Constants.ATHLETES_PHONE, athlete.getPhoneNumber());
+            object.put(Constants.ATHLETES_DESIRABLE_POSITION, athlete.getDesirablePosition());
+            object.put(Constants.ATHLETES_HEIGHT, athlete.getHeight());
+            object.put(Constants.ATHLETES_WEIGHT, athlete.getWeight());
+            object.put(Constants.ATHLETES_BIRTHDAY, athlete.getBirthday());
+            object.put(Constants.ATHLETES_TERMSACCEPTED, athlete.getTermsAccepted());
+            object.put(Constants.ATHLETES_EMAIL, athlete.getEmail());
+            if(athlete.getAddress().toString().trim().isEmpty())
+                object.put(Constants.ATHLETES_ADDRESS, " ");
+            else
+                object.put(Constants.ATHLETES_ADDRESS, athlete.getAddress());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+    private void saveAthletes(){
+        if(positionSaveAthletes<athletes.size()) {
+            String url = Constants.URL + Constants.API_ATHLETES;
+            idAthleteChange = athletes.get(positionSaveAthletes).getId();
+            linearProgress.setVisibility(View.VISIBLE);
+
+            PostAthleteAsyncTask post = new PostAthleteAsyncTask();
+            post.setActivity(SyncActivity.this);
+            post.setObjPut(createObject(athletes.get(positionSaveAthletes)));
+            post.setPlay(true);
+            post.execute(url);
+        }
+        else {
+            Services.messageAlert(SyncActivity.this, "Concluído", "Sem mais Atletas para salvar", "");
+            linearAddAthlete.setVisibility(View.GONE);
+        }
+    }
+
+    public static void afterSendAthlete(Activity act, String ret, String response){
+        ((SyncActivity)act).afterPost(ret, response);
+    }
+
+    private void afterPost(String ret, String response){
+        linearProgress.setVisibility(View.GONE);
+        if(ret.equals("FAIL"))
+            verifyErrorCreate(response);
+
+        else if(ret.equals("OK"))
+            saveAthlete(response);
+    }
+
+    private void verifyErrorCreate(String result){
+        JSONObject json;
+        try{
+            json = new JSONObject(result);
+            String detail = json.getString("detail");
+            json = new JSONObject(detail);
+            if(json.getInt("code") ==  11000)
+                saveAthlete(json.getString("op"));
+            else {
+                Services.messageAlert(SyncActivity.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
+            }
+
+        }catch(JSONException e){
+            e.printStackTrace();
+            try {
+                json = new JSONObject(result);
+                Services.messageAlert(SyncActivity.this, "Mensagem", "Atleta não cadastrado\n" + json.getString("message"), "");
+            } catch (JSONException e1) {
+                Services.messageAlert(SyncActivity.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    private void saveAthlete(String response){
+        linearProgress.setVisibility(View.GONE);
+
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        Athletes athlete = des.getObjAthlete();
+        DatabaseHelper db = new DatabaseHelper(SyncActivity.this);
+        Athletes obj = db.getAthleteById(idAthleteChange);
+        athlete.setCode(obj.getCode());
+        db.updateAthlete(athlete);
+        createCode(athlete.getId());
+    }
+
+    private void createCode(String idAthlete){
+        linearProgress.setVisibility(View.VISIBLE);
+        String url = Constants.URL + Constants.API_SELECTIVEATHLETES;
+
+        PostAthleteAsyncTask post = new PostAthleteAsyncTask();
+        post.setActivity(SyncActivity.this);
+        post.setObjPut(createObjectSelectiveAthletes(idAthlete));
+        post.setPlay(false);
+        post.execute(url);
+    }
+
+    private JSONObject createObjectSelectiveAthletes(String athlete) {
+        DatabaseHelper db = new DatabaseHelper(SyncActivity.this);
+        SelectiveAthletes selectiveAthlete = db.getSelectiveAthletesFromAthlete(idAthleteChange);
+
+        JSONObject object = new JSONObject();
+        try {
+            object.put(Constants.SELECTIVEATHLETES_ATHLETE, athlete);
+            object.put(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER, selectiveAthlete.getInscriptionNumber());
+            object.put(Constants.SELECTIVEATHLETES_SELECTIVE, selectiveAthlete.getSelective());
+            object.put(Constants.SELECTIVEATHLETES_PRESENCE, true);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+    public static void afterSendSelectiveAthlete(Activity act, String response, String result){
+        ((SyncActivity)act).afterSendSelectiveAthlete(response, result);
+    }
+
+    private void afterSendSelectiveAthlete(String response, String result){
+        linearProgress.setVisibility(View.GONE);
+        if(response.equals("FAIL")) {
+            Services.messageAlert(SyncActivity.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
+        }
+        else if(response.equals("OK")) {
+            DeserializerJsonElements des = new DeserializerJsonElements(result);
+            SelectiveAthletes item = des.getObjSelectiveAthlete();
+
+            DatabaseHelper db = new DatabaseHelper(SyncActivity.this);
+            db.updateSelectiveAthlete(item);
+            positionSaveAthletes = positionSaveAthletes +1;
+            saveAthletes();
+        }
     }
 
     private View.OnClickListener btnBackClickListener = new View.OnClickListener() {
@@ -241,5 +444,12 @@ public class SyncActivity extends AppCompatActivity {
         intent.putExtra("testSelect",id);
         startActivity(intent);
     }
+
+    private View.OnClickListener closeAdd = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            linearAddAthlete.setVisibility(View.GONE);
+        }
+    };
 
 }

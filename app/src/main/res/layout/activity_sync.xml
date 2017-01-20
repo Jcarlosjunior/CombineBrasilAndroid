@@ -116,4 +116,65 @@
             android:layout_weight="0.4"></LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linear_update_Athletes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:animateLayoutChanges="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingLeft="20sp"
+            android:paddingRight="20sp"
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"/>
+                <ImageView
+                    android:id="@+id/image_close"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:src="@drawable/close_x"/>
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/text_message_save_athletes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:text="@string/text_sync_athlete"
+                android:textColor="@color/black"
+                android:layout_marginTop="10sp"
+                />
+
+            <Button
+                android:id="@+id/button_save_athlete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="10sp"
+                android:layout_marginLeft="25sp"
+                android:layout_marginRight="25sp"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:text="@string/save_Athletes"
+                android:background="@drawable/background_button_blue"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </RelativeLayout>

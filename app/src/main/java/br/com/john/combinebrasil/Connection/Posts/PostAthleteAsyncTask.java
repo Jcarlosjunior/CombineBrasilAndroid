@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.john.combinebrasil.CreateAccountAthlete;
+import br.com.john.combinebrasil.Services.Constants;
+import br.com.john.combinebrasil.SyncActivity;
 
 public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
     private Activity activity;
@@ -92,10 +94,17 @@ public class PostAthleteAsyncTask extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String status) {
-        if(isPlay)
-            CreateAccountAthlete.afterSendAthlete(activity, resp, result);
-        else
-            CreateAccountAthlete.afterSendSelectiveAthlete(activity, resp, result);
+        if(activity.getClass().getSimpleName().equals(Constants.SYNC_ACTIVITY)){
+            if (isPlay)
+                SyncActivity.afterSendAthlete(activity, resp, result);
+            else
+                SyncActivity.afterSendSelectiveAthlete(activity, resp, result);
+        }else {
+            if (isPlay)
+                CreateAccountAthlete.afterSendAthlete(activity, resp, result);
+            else
+                CreateAccountAthlete.afterSendSelectiveAthlete(activity, resp, result);
+        }
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{

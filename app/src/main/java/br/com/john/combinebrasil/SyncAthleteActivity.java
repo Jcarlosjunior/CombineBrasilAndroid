@@ -174,8 +174,10 @@ public class SyncAthleteActivity extends AppCompatActivity {
                         post.setObjPut(createObject(test));
                         post.execute(url);
                     } else {
-                        positionNow = positionNow + 1;
-                        syncAll();
+                        if(syncAll){
+                            positionNow = positionNow + 1;
+                            syncAll();
+                        }
                     }
                 }
                 else
@@ -278,20 +280,34 @@ public class SyncAthleteActivity extends AppCompatActivity {
         }
     }
 
-    public static void updateSelectiveAthlete(Activity act, String response){
-        ((SyncAthleteActivity)act).updateSelectiveAthlete(response);
+    public static void updateSelectiveAthlete(Activity act, String status, String response){
+        ((SyncAthleteActivity)act).updateSelectiveAthlete(status, response);
     }
 
-    private void updateSelectiveAthlete(String response){
-        DeserializerJsonElements des = new DeserializerJsonElements(response);
-        SelectiveAthletes selectiveAthlete = des.getSelectiveAthlete();
-        if(selectiveAthlete!=null){
-            DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
-            db.updateSelectiveAthlete(selectiveAthlete);
+    private void updateSelectiveAthlete(String status, String response){
+        if(status.equals("OK")){
+            if(!response.equals("[]")){
+                DeserializerJsonElements des = new DeserializerJsonElements(response);
+                SelectiveAthletes selectiveAthlete = des.getSelectiveAthlete();
+                if(selectiveAthlete!=null){
+                    DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
+                    db.updateSelectiveAthlete(selectiveAthlete);
 
-            String url = Constants.URL + Constants.API_ATHLETES + "?" + Constants.ATHLETES_ID + "=" + selectiveAthlete.getAthlete();
-            SyncDatabase.callFunc(url, "UPDATE_ATHLETE", false, SyncAthleteActivity.this);
+                    String url = Constants.URL + Constants.API_ATHLETES + "?" + Constants.ATHLETES_ID + "=" + selectiveAthlete.getAthlete();
+                    SyncDatabase.callFunc(url, "UPDATE_ATHLETE", false, SyncAthleteActivity.this);
+                }
+            }
         }
+        else{
+            if(syncAll){
+                positionNow = positionNow + 1;
+                syncAll();
+            }
+            else
+                Services.messageAlert(SyncAthleteActivity.this, "Aviso","O atleta ainda não foi cadastrado na API.","");
+
+        }
+
     }
 
     public static void updateAthlete(Activity act, String response){

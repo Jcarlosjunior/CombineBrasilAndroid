@@ -73,18 +73,16 @@ public class Services {
     }
 
     private static void clickedOkAlert(){
+        alerta.hide();
         if(whoCalled.toUpperCase().equals("HIDE") || whoCalled.equals(""))
             alerta.hide();
         else if(whoCalled.toUpperCase().equals("DIALOGSAVECRONOMETER")){
-            alerta.hide();
             CronometerActivity.finished(activity);
         }
         else if(whoCalled.toUpperCase().equals("DIALOGSAVERESULTS")){
-            alerta.hide();
             ResultsActivity.finished(activity);
         }
         else if(whoCalled.toUpperCase().equals("POSTATHLETE")){
-            alerta.hide();
             CreateAccountAthlete.finished(activity);
         }
     }
