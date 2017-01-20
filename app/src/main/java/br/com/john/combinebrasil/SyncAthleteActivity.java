@@ -44,6 +44,7 @@ public class SyncAthleteActivity extends AppCompatActivity {
     ArrayList<Tests> tests;
     int positionNow = 0;
     long numAthletes = 0;
+    int positionSelected = 0;
     AdapterRecyclerSyncAthlete adapterSync;
     String idTest, idAthlete;
     FloatingActionButton fab;
@@ -84,6 +85,7 @@ public class SyncAthleteActivity extends AppCompatActivity {
 
         if(extras != null){
             idTest = extras.getString("testSelect");
+            positionSelected = extras.getInt("positionSelected");
 
             DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
             this.tests= db.getTestsFromType(idTest);
@@ -241,6 +243,7 @@ public class SyncAthleteActivity extends AppCompatActivity {
         db.updateSync(athletes.get(positionNow).getId(), idTest, id);
 
         adapterSync.notifyItemChanged(positionNow);
+        SyncActivity.adapterTests.notifyItemChanged(positionSelected);
 
         if(numAthletes==db.getCountTestSync(idTest)){
             fab.setVisibility(View.GONE);

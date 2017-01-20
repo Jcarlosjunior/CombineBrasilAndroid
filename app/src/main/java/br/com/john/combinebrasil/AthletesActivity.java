@@ -186,7 +186,7 @@ public class AthletesActivity extends AppCompatActivity {
     private void inflateRecyclerView(ArrayList<Athletes> athletesArrayList, String[] values){
         Collections.sort(athletesArrayList, new Comparator<Athletes>() {
             public int compare(Athletes v1, Athletes v2) {
-                return v1.getName().compareTo(v2.getName());
+                return v1.getName().toLowerCase().compareTo(v2.getName().toLowerCase());
             }
         });
         adapterTests = new AdapterRecyclerAthletes(AthletesActivity.this, athletesArrayList, values);

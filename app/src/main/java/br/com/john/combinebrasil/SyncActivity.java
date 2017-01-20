@@ -54,7 +54,7 @@ public class SyncActivity extends AppCompatActivity {
     String idAthleteChange;
     int positionNow = 0, positionSync, positionAthlete=0, positionSaveAthletes = 0;
     long numTests=0, numAthletes=0;
-    AdapterRecyclerSync adapterTests;
+    public static AdapterRecyclerSync adapterTests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -417,7 +417,7 @@ public class SyncActivity extends AppCompatActivity {
         String[] values = new String[tests.size()];
         for(int i=0; i<=tests.size()-1;i++)
             values[i] = tests.get(i).getId();
-        AdapterRecyclerSync adapterTests = new AdapterRecyclerSync(SyncActivity.this, tests, values);
+        adapterTests = new AdapterRecyclerSync(SyncActivity.this, tests, values);
         recyclerSync.setVisibility(View.VISIBLE);
         recyclerSync.setAdapter(adapterTests);
         auxSync();
@@ -442,6 +442,7 @@ public class SyncActivity extends AppCompatActivity {
     private void onClickItemList(int position, String id){
         Intent intent = new Intent(SyncActivity.this, SyncAthleteActivity.class);
         intent.putExtra("testSelect",id);
+        intent.putExtra("positionSelected",position);
         startActivity(intent);
     }
 
@@ -451,5 +452,6 @@ public class SyncActivity extends AppCompatActivity {
             linearAddAthlete.setVisibility(View.GONE);
         }
     };
+
 
 }

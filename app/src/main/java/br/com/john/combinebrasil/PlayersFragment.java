@@ -107,7 +107,7 @@ public class PlayersFragment extends Fragment {
     private static void inflateRecyclerView(ArrayList<Athletes> testsArrayList, String[] values){
         Collections.sort(testsArrayList, new Comparator<Athletes>() {
             public int compare(Athletes v1, Athletes v2) {
-                return v1.getName().compareTo(v2.getName());
+                return v1.getName().toUpperCase().compareTo(v2.getName().toUpperCase());
             }
         });
         AdapterListAthletes adapterTests = new AdapterListAthletes(AllActivities.mainActivity, values, testsArrayList);
