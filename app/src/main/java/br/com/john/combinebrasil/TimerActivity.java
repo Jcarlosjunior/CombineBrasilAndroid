@@ -203,6 +203,7 @@ public class TimerActivity extends AppCompatActivity {
             editFirstResult.setEnabled(true);
             textResult.setText("Insira o quantidade de repetições feitas");
             btnSave.setText("SALVAR RESULTADO");
+            editFirstResult.setText("");
             btnAlterDone.setOnClickListener(clickSaveResults);
             init = false;
         }
