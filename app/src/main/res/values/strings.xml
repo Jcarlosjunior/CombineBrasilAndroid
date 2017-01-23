@@ -6,6 +6,7 @@
     <string name="testes">Testes</string>
     <string name="first_result">Primeiro Resultado</string>
     <string name="second_result">Segundo Resultado</string>
+    <string name="result_value">Insira o quantidade de repetições feitas</string>
     <string name="first">Primeiro</string>
     <string name="second">Segundo</string>
     <string name="adicionar">Adicionar</string>
@@ -44,6 +45,9 @@
     <string name="terms">Aceitar termos de serviços?</string>
     <string name="terms_title">TERMO DE RESPONSABILIDADE, CONDIÇOES FÍSICAS E USO DE IMAGEM</string>
     <string name="save_Athletes">Salvar atletas</string>
+    <string name="alter_timer">Alterar tempo</string>
+    <string name="configure_timer">Altere o tempo do teste como desejar.</string>
+    <string name="minute">00</string>
 
 
     <!--
@@ -89,4 +93,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_sync">SyncActivity</string>
+    <string name="title_activity_timer">TimerActivity</string>
+    <string name="hello_round">Hello Round World!</string>
+    <string name="hello_square">Hello Square World!</string>
 </resources>

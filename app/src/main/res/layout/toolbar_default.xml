@@ -86,15 +86,42 @@
                 android:layout_marginRight="10sp"
                 android:visibility="gone"
                 />
-
-
-            <com.miguelcatalan.materialsearchview.MaterialSearchView
-                android:id="@+id/search_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/linear_delete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:gravity="right"
+            android:visibility="gone"
+            android:layout_marginRight="10dp">
+
+            <ImageView
+                android:id="@+id/img_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/delete"
+                android:layout_marginRight="5sp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linear_setting"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:gravity="right"
+            android:visibility="gone"
+            android:layout_marginRight="10dp">
+
+            <ImageView
+                android:id="@+id/img_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/settings"
+                android:layout_marginRight="10sp"
+                />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/linear_add_account"
             android:layout_width="0dp"

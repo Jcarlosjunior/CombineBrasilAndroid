@@ -451,7 +451,8 @@ public class DeserializerJsonElements {
                             (float) (json.optDouble(Constants.TESTS_RATING)),
                             json.optString(Constants.TESTS_WINGSPAN),
                             json.optString(Constants.TESTS_USER),
-                            Services.convertBoolInInt(true)
+                            Services.convertBoolInInt(true),
+                            true
                     );
 
                     testses.add(obj);
@@ -477,7 +478,8 @@ public class DeserializerJsonElements {
                 (float) (json.optDouble(Constants.TESTS_RATING)),
                 json.optString(Constants.TESTS_WINGSPAN),
                 json.optString(Constants.TESTS_USER),
-                Services.convertBoolInInt(true)
+                Services.convertBoolInInt(true),
+                true
             );
         } catch (JSONException e) {
             test = null;

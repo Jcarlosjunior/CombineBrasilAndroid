@@ -45,4 +45,16 @@ public class SharedPreferencesAdapter {
         String value = shared.getString(key, "");
         return value;
     }
+
+    public static void setTimerDefault (Context ctx, String value){
+        editor = ctx.getSharedPreferences(MY_PREFERENCES, ctx.MODE_PRIVATE).edit();
+        editor.putString(Constants.TIMER, value);
+        editor.commit();
+    }
+
+    public static String getTimerDefault(Context ctx){
+        shared = ctx.getSharedPreferences(MY_PREFERENCES, ctx.MODE_PRIVATE);
+        String value = shared.getString(Constants.TIMER, "");
+        return value;
+    }
 }

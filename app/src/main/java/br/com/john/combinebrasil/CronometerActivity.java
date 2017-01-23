@@ -35,6 +35,7 @@ import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Services.AllActivities;
+import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.CountDownTimer;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.MessageOptions;
@@ -43,11 +44,11 @@ import br.com.john.combinebrasil.Services.Services;
 public class CronometerActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView textFirstResult, textSecondValue, textCronometer, textShowQualify, textInfoNameAthlete, textInfoNameTest, textInfoDetailsAthlete, textInfoDetailsTest;
-    LinearLayout linearButtonPlay, linearFirstValue, linearSecondValue, linearRating, linearInfo;
-    ImageView imgIconButtonPlay, imgReset, imgPause, imgSave, imgTestArrow, imgAthleteArrow;
+    LinearLayout linearButtonPlay, linearFirstValue, linearSecondValue, linearRating, linearInfo, deleteTest;
+    ImageView imgIconButtonPlay, imgReset, imgPause, imgSave, imgTestArrow, imgAthleteArrow, imgDelete;
     Button btnSave, btnReady, btnInconclusive;
     RatingBar ratingBar;
-    private float ratingValue;
+    private float ratingValue = 0;
     String idAthlete = "";
     int position = 0, inconclusive=0;
     boolean isSaveInconclusive=false, arrowDownTest=false, arrowDownPlayer=false;
@@ -59,6 +60,8 @@ public class CronometerActivity extends AppCompatActivity {
 
     private final CountDownTimer countDownTimer = new CountDownTimer();
     private boolean init = false, firstValueSave = false, secondValueSalve = false, isPause=false;
+
+    DatabaseHelper db;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -82,56 +85,17 @@ public class CronometerActivity extends AppCompatActivity {
 
         ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
         imgSearch.setVisibility(View.GONE);
+        final TextView textNamePlayer = (TextView) findViewById(R.id.text_name_player_cronometer);
+
+        createElements();
+        db = new DatabaseHelper(CronometerActivity.this);
+        db.openDataBase();
 
         try {
             TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
-            DatabaseHelper db = new DatabaseHelper(CronometerActivity.this);
             db.getTestTypeFromId(AllActivities.testSelected).getName();
             textTitle.setText(db.getTestTypeFromId(AllActivities.testSelected).getName());
         }catch(Exception e){}
-
-        linearButtonPlay = (LinearLayout) findViewById(R.id.linear_button_play);
-        linearFirstValue = (LinearLayout) findViewById(R.id.linear_show_first_value);
-        linearSecondValue = (LinearLayout) findViewById(R.id.linear_show_second_value);
-        linearRating = (LinearLayout) findViewById(R.id.linear_rating_cronometer);
-
-        textFirstResult = (TextView) findViewById(R.id.text_first_value);
-        textSecondValue = (TextView) findViewById(R.id.text_second_value);
-        textCronometer = (TextView) findViewById(R.id.text_cronometer);
-        textShowQualify = (TextView) findViewById(R.id.text_show_qualify_cronometer);
-        final TextView textNamePlayer = (TextView) findViewById(R.id.text_name_player_cronometer);
-
-        imgIconButtonPlay = (ImageView) findViewById(R.id.image_icon_button_play);
-        imgPause = (ImageView) findViewById(R.id.image_pause);
-        imgReset = (ImageView) findViewById(R.id.image_reset);
-        imgSave = (ImageView) findViewById(R.id.image_save);
-        imgTestArrow = (ImageView)findViewById(R.id.img_test_arrow);
-        imgAthleteArrow = (ImageView)findViewById(R.id.img_player_arrow);
-
-        btnSave = (Button) findViewById(R.id.button_save_results);
-        btnReady = (Button) findViewById(R.id.button_ready_cronometer);
-        btnInconclusive=(Button) findViewById(R.id.button_inconclusive_results);
-
-        ratingBar = (RatingBar) findViewById(R.id.rating_cronometer);
-
-        countDownTimer.setTextView(textCronometer);
-
-        textShowQualify.setText("");
-        textShowQualify.setVisibility(View.GONE);
-
-        linearInsert = (LinearLayout) findViewById(R.id.linear_insert);
-        linearResultDone = (LinearLayout) findViewById(R.id.linear_results_done);
-        txtNameResult = (TextView) findViewById(R.id.txt_name_result);
-        txtFistDone = (TextView) findViewById(R.id.txt_first_result_done);
-        txtSecondDone = (TextView) findViewById(R.id.txt_second_result_done);
-        ratingDone = (RatingBar) findViewById(R.id.rating_result_done);
-        buttonBack = (Button) findViewById(R.id.button_back);
-        txtRating = (TextView) findViewById(R.id.txt_rating_done);
-
-        textInfoNameTest = (TextView) findViewById(R.id.text_info_name_test);
-        textInfoNameAthlete = (TextView) findViewById(R.id.text_info_name_athlete);
-        textInfoDetailsAthlete = (TextView) findViewById(R.id.text_info_details_athlete);
-        textInfoDetailsTest = (TextView) findViewById(R.id.text_info_details_test);
 
 
         Bundle extras = getIntent().getExtras();
@@ -139,7 +103,6 @@ public class CronometerActivity extends AppCompatActivity {
             idAthlete = extras.getString("id_player");
             position = extras.getInt("position");
             verifyTest();
-            DatabaseHelper db  = new DatabaseHelper(CronometerActivity.this);
             db.openDataBase();
             Athletes athlete = db.getAthleteById(idAthlete);
             textNamePlayer.setText(athlete.getName());
@@ -147,38 +110,40 @@ public class CronometerActivity extends AppCompatActivity {
     }
 
     private void verifyTest(){
-        DatabaseHelper db = new DatabaseHelper(CronometerActivity.this);
         db.openDataBase();
         Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
         if(test != null){
-            linearInsert.setVisibility(View.GONE);
-            linearResultDone.setVisibility(View.VISIBLE);
-            txtFistDone.setText(Services.convertInTime(test.getFirstValue()));
-            txtSecondDone.setText(Services.convertInTime(test.getSecondValue()));
+            if(!Services.convertIntInBool(test.getSync())) {
+                deleteTest.setVisibility(View.VISIBLE);
+            }
 
-            Athletes athlete = db.getAthleteById(idAthlete);
-            txtNameResult.setText(athlete.getName());
-
-            ratingDone.setRating(test.getRating());
-            ratingDone.setEnabled(false);
-
-            txtRating.setText(Services.verifyQualification(test.getRating()));
-
-            buttonBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
+            if(test.getCanSync()) {
+                showInfoTestDone();
+            }
+            else {
+                if(test!=null) {
+                    firstValueSave = true;
+                    textFirstResult.setText(Services.convertInTime(test.getFirstValue()));
                 }
-            });
+                linearInsert.setVisibility(View.VISIBLE);
+                linearResultDone.setVisibility(View.GONE);
+            }
         }
         else{
-            btnSave.setOnClickListener(clickedSave);
-            btnInconclusive.setOnClickListener(btnResetClickListener);
-            imgPause.setOnClickListener(clickedPause);
-            imgReset.setOnClickListener(clickedReset);
-            imgSave.setOnClickListener(clickedSaveTime);
-            linearButtonPlay.setOnClickListener(clickedPlayAndStop);
-
+            deleteTest.setVisibility(View.GONE);
+            linearInsert.setVisibility(View.VISIBLE);
+            linearResultDone.setVisibility(View.GONE);
+            textFirstResult.setText("00:00");
+            textSecondValue.setText("00:00");
+            init = false;
+            firstValueSave = false; secondValueSalve = false;
+            isPause=false;
+            isSaveInconclusive=false;
+            ratingValue = 0;
+            inconclusive = 0;
+            imgIconButtonPlay.setVisibility(View.VISIBLE);
+            linearButtonPlay.setVisibility(View.VISIBLE);
+            btnSave.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -249,6 +214,8 @@ public class CronometerActivity extends AppCompatActivity {
             firstValueSave=true;
             textFirstResult.setText(textCronometer.getText());
             linearFirstValue.setVisibility(View.VISIBLE);
+
+            saveTest();
             stopCronometer();
             inconclusive=0;
 
@@ -293,6 +260,9 @@ public class CronometerActivity extends AppCompatActivity {
         else if(method.equals("saveAllResults")){
             showRating();
         }
+        else if(method.equals("deleteCronometer")){
+            deleteTest();
+        }
     }
 
     private void showRating(){
@@ -321,7 +291,7 @@ public class CronometerActivity extends AppCompatActivity {
                         String.valueOf(Services.verifyQualification(ratingBar.getRating())),
                         Toast.LENGTH_SHORT).show();
                 ratingValue = ratingBar.getRating();
-                saveTest();
+                updateTest();
                 linearRating.setVisibility(View.GONE);
                 Services.messageAlert(CronometerActivity.this, "Mensagem","Os resultados foram salvos!","DIALOGSAVECRONOMETER");
             }
@@ -329,7 +299,6 @@ public class CronometerActivity extends AppCompatActivity {
     }
 
     private void saveTest(){
-        DatabaseHelper db = new DatabaseHelper(CronometerActivity.this);
         db.openDataBase();
         User user= db.getUser();
         Selective selective = db.getSelective();
@@ -343,9 +312,19 @@ public class CronometerActivity extends AppCompatActivity {
                 ratingValue,
                 " ",
                 user.getId(),
-                Services.convertBoolInInt(false)
+                Services.convertBoolInInt(false),
+                false
                 );
         db.addTest(test);
+        deleteTest.setVisibility(View.VISIBLE);
+        AthletesActivity.adapterTests.notifyItemChanged(position);
+    }
+
+    private void updateTest(){
+        db.openDataBase();
+        Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
+        if(!test.getCanSync())
+        db.updateSync(Services.convertInMilliSeconds(textSecondValue.getText().toString()), ratingValue, test.getId());
         AthletesActivity.adapterTests.notifyItemChanged(position);
     }
 
@@ -547,4 +526,98 @@ public class CronometerActivity extends AppCompatActivity {
 
         }
     };
+
+    private void showInfoTestDone(){
+        Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
+
+        linearInsert.setVisibility(View.GONE);
+        linearResultDone.setVisibility(View.VISIBLE);
+        txtFistDone.setText(Services.convertInTime(test.getFirstValue()));
+        txtSecondDone.setText(Services.convertInTime(test.getSecondValue()));
+
+        Athletes athlete = db.getAthleteById(idAthlete);
+        txtNameResult.setText(athlete.getName());
+
+        ratingDone.setRating(test.getRating());
+        ratingDone.setEnabled(false);
+
+        txtRating.setText(Services.verifyQualification(test.getRating()));
+
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    private void createElements(){
+        deleteTest = (LinearLayout) findViewById(R.id.linear_delete);
+        imgDelete = (ImageView) findViewById(R.id.img_delete);
+        imgDelete.setOnClickListener(clickDelete);
+
+        linearButtonPlay = (LinearLayout) findViewById(R.id.linear_button_play);
+        linearFirstValue = (LinearLayout) findViewById(R.id.linear_show_first_value);
+        linearSecondValue = (LinearLayout) findViewById(R.id.linear_show_second_value);
+        linearRating = (LinearLayout) findViewById(R.id.linear_rating_cronometer);
+
+        textFirstResult = (TextView) findViewById(R.id.text_first_value);
+        textSecondValue = (TextView) findViewById(R.id.text_second_value);
+        textCronometer = (TextView) findViewById(R.id.text_cronometer);
+        textShowQualify = (TextView) findViewById(R.id.text_show_qualify_cronometer);
+
+        imgIconButtonPlay = (ImageView) findViewById(R.id.image_icon_button_play);
+        imgPause = (ImageView) findViewById(R.id.image_pause);
+        imgReset = (ImageView) findViewById(R.id.image_reset);
+        imgSave = (ImageView) findViewById(R.id.image_save);
+        imgTestArrow = (ImageView)findViewById(R.id.img_test_arrow);
+        imgAthleteArrow = (ImageView)findViewById(R.id.img_player_arrow);
+
+        btnSave = (Button) findViewById(R.id.button_save_results);
+        btnReady = (Button) findViewById(R.id.button_ready_cronometer);
+        btnInconclusive=(Button) findViewById(R.id.button_inconclusive_results);
+
+        ratingBar = (RatingBar) findViewById(R.id.rating_cronometer);
+
+        countDownTimer.setTextView(textCronometer);
+
+        textShowQualify.setText("");
+        textShowQualify.setVisibility(View.GONE);
+
+        linearInsert = (LinearLayout) findViewById(R.id.linear_insert);
+        linearResultDone = (LinearLayout) findViewById(R.id.linear_results_done);
+        txtNameResult = (TextView) findViewById(R.id.txt_name_result);
+        txtFistDone = (TextView) findViewById(R.id.txt_first_result_done);
+        txtSecondDone = (TextView) findViewById(R.id.txt_second_result_done);
+        ratingDone = (RatingBar) findViewById(R.id.rating_result_done);
+        buttonBack = (Button) findViewById(R.id.button_back);
+        txtRating = (TextView) findViewById(R.id.txt_rating_done);
+
+        textInfoNameTest = (TextView) findViewById(R.id.text_info_name_test);
+        textInfoNameAthlete = (TextView) findViewById(R.id.text_info_name_athlete);
+        textInfoDetailsAthlete = (TextView) findViewById(R.id.text_info_details_athlete);
+        textInfoDetailsTest = (TextView) findViewById(R.id.text_info_details_test);
+
+        btnSave.setOnClickListener(clickedSave);
+        btnInconclusive.setOnClickListener(btnResetClickListener);
+        imgPause.setOnClickListener(clickedPause);
+        imgReset.setOnClickListener(clickedReset);
+        imgSave.setOnClickListener(clickedSaveTime);
+        linearButtonPlay.setOnClickListener(clickedPlayAndStop);
+    }
+
+    private View.OnClickListener clickDelete = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            new MessageOptions(CronometerActivity.this, "Deletar", "Deseja excluir os dados do teste atual?", "deleteCronometer");
+        }
+    };
+
+    private void deleteTest(){
+        Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
+        db.openDataBase();
+        db.deleteValue(Constants.TABLE_TESTS, test.getId());
+        Services.messageAlert(CronometerActivity.this, "Mensagem","Teste excluído!","");
+        verifyTest();
+    }
 }

@@ -65,6 +65,14 @@
                     android:textColor="@color/black"
                     android:text="Segundo resultado: 1:02"/>
             </LinearLayout>
+            <TextView
+                android:id="@+id/text_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Atleta já sincronizado"
+                android:paddingTop="5sp"
+                android:visibility="gone"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
         <LinearLayout

@@ -132,7 +132,6 @@ public class ResultsActivity extends AppCompatActivity {
         editFirstResult.addTextChangedListener(mask);
         mask = MaskHeight.insert("#,##", editSecondResult);
         editSecondResult.addTextChangedListener(mask);
-
 }
 
     private void verifyTest(){
@@ -320,7 +319,8 @@ public class ResultsActivity extends AppCompatActivity {
                 ratingValue,
                 wingspan,
                user.getId(),
-               Services.convertBoolInInt(false));
+               Services.convertBoolInInt(false),
+                false);
         db.addTest(test);
         AthletesActivity.adapterTests.notifyItemChanged(position);
     }

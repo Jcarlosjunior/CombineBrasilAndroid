@@ -57,6 +57,7 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
         TextView textSecondResult;
         TextView textCode;
         ImageView imgStatus;
+        TextView textStatus;
         public ViewHolder(View v) {
             super(v);
             linearBackground = (LinearLayout) v.findViewById(R.id.linear_list_players);
@@ -65,6 +66,7 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
             textSecondResult = (TextView) v.findViewById(R.id.text_second_result_list);
             textCode = (TextView) v.findViewById(R.id.text_code_list);
             imgStatus = (ImageView) v.findViewById(R.id.img_status_players);
+            textStatus = (TextView) v.findViewById(R.id.text_status);
         }
     }
 
@@ -100,11 +102,27 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
 
         if(test!=null) {
             TestTypes type = db.getTestTypeFromId(test.getType());
-            holder.imgStatus.setImageDrawable(activity.getDrawable(R.drawable.check));
+            if(test.getCanSync()) {
+                holder.textStatus.setVisibility(View.VISIBLE);
+                if(Services.convertIntInBool(test.getSync()))
+                    holder.textStatus.setText("Exercício já sincronizado");
+                else
+                    holder.textStatus.setText("Exercício pronto pra ser sincronizado");
+                holder.imgStatus.setImageDrawable(activity.getDrawable(R.drawable.check));
+            }
+            else {
+                holder.textStatus.setVisibility(View.GONE);
+                holder.imgStatus.setVisibility(View.GONE);
+            }
 
             if (type.getValueType().toLowerCase().equals("corrida") || type.getValueType().toLowerCase().equals("tempo")){
                 holder.textFirstResult.setText(Services.convertInTime(test.getFirstValue()));
                 holder.textSecondResult.setText(Services.convertInTime(test.getSecondValue()));
+            }
+            else if(type.getValueType().toLowerCase().equals("repeticao")|| type.getValueType().toLowerCase().equals("repeticao por tempo"))
+            {
+                holder.textFirstResult.setText(String.valueOf(test.getFirstValue()));
+                holder.textSecondResult.setVisibility(View.GONE);
             }
             else{
                 holder.textFirstResult.setText(Services.convertCentimetersinMeters(test.getFirstValue()));

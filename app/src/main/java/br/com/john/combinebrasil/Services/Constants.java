@@ -59,12 +59,14 @@ public class Constants {
     public static final String NAME_DATABASE = "Combine.db";
     public static final String TESTS = "Testes";
     public static final String USER = "User";
+    public static final String TIMER = "Timer";
 
     /****************************************NAMES ACTIVITYS**********************************/
 
     public static final String CRONOMETER_ACTIVITY = "CronometerActivity";
     public static final String RESULTS_ACTIVITY = "ResultsActivity";
     public static final String MAIN_ACTIVITY = "MainActivity";
+    public static final String TIMER_ACTIVITY = "TimerActivity";
     public static final String LOGIN_ACTIVITY = "LoginActivity";
     public static final String LOGIN_CREATEACCOUNTATHLETE = "CreateAccountAthlete";
     public static final String SYNC_ACTIVITY = "SyncActivity";
@@ -166,6 +168,7 @@ public class Constants {
     public static final String TESTS_WINGSPAN = "wingspan";
     public static final String TESTS_USER = "user";
     public static final String TESTS_SYNC = "sync";
+    public static final String TESTS_CANSYNC = "canSync";
 
     public static final String TERMS_TEXT = "<br>Declaro  para os devidos fins de direito  e ciência que:<br><br>" +
             "1. Participarei da seletiva e se caso selecionado, dos treinos e jogos de Futebol Americano e estou em pleno gozo de saúde e em condições de participar da seletiva, treinos e jogos, não apresentando qualquer tipo de impedimento ou restrição à prática e atividades físicas e esportivas.<br><br>" +

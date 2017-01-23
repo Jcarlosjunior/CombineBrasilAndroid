@@ -40,6 +40,7 @@ import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
+import br.com.john.combinebrasil.Services.Timer;
 
 public class AthletesActivity extends AppCompatActivity {
     public static RecyclerView listViewPlayers;
@@ -219,6 +220,8 @@ public class AthletesActivity extends AppCompatActivity {
         TestTypes testTypes = db.getTestTypeFromId(AllActivities.testSelected);
         if(testTypes.getValueType().toLowerCase().equals("corrida") || testTypes.getValueType().toLowerCase().equals("tempo"))
             i = new Intent(AthletesActivity.this, CronometerActivity.class);
+        else if (testTypes.getValueType().toLowerCase().equals("repeticao")|| testTypes.getValueType().toLowerCase().equals("repeticao por tempo"))
+            i = new Intent(AthletesActivity.this, TimerActivity.class);
         else
             i = new Intent(AthletesActivity.this, ResultsActivity.class);
 

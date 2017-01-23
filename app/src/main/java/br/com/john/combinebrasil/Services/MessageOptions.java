@@ -15,6 +15,7 @@ import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.ResultsActivity;
+import br.com.john.combinebrasil.TimerActivity;
 
 /**
  * Created by GTAC on 06/11/2016.
@@ -79,10 +80,13 @@ public class MessageOptions {
             ResultsActivity.getMethodOutResultsActivity(act, whoCalled);
         }
         else if(act.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY)){
-                MainActivity.returnMessageOptions(act, whoCalled);
+            MainActivity.returnMessageOptions(act, whoCalled);
         }
         else if(act.getClass().getSimpleName().equals(Constants.LOGIN_CREATEACCOUNTATHLETE)){
             CreateAccountAthlete.createAthleteOff(act);
+        }
+        else if(act.getClass().getSimpleName().equals(Constants.TIMER_ACTIVITY)){
+            TimerActivity.returnOption(act, whoCalled);
         }
     }
 }

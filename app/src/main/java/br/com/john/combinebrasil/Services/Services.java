@@ -10,8 +10,12 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +35,7 @@ import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.ResultsActivity;
+import br.com.john.combinebrasil.TimerActivity;
 
 /**
  * Created by GTAC on 18/10/2016.
@@ -85,6 +90,8 @@ public class Services {
         else if(whoCalled.toUpperCase().equals("POSTATHLETE")){
             CreateAccountAthlete.finished(activity);
         }
+        else if(activity.getClass().getSimpleName().equals(Constants.TIMER_ACTIVITY))
+            TimerActivity.returnOption(activity, whoCalled);
     }
 
     public static boolean isOnline(Activity act) {
@@ -268,10 +275,27 @@ public class Services {
             }
         }catch(Exception e){
             e.printStackTrace();
+            return "00:00";
         }
 
         return time;
         //return minutes+":"+seconds+":"+mil;
+    }
+
+    public static long convertInMinute(long mili ){
+        SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(mili);
+        String time = formatter.format(calendar.getTime()).toString();
+        String min = time.substring(0,2);
+        return Long.parseLong(min);
+    }
+
+    public static long convertInSecond(long mili){
+
+        return (mili / 1000) % 60;
     }
 
     public static long convertInMilliSeconds(String time){
@@ -310,5 +334,21 @@ public class Services {
         }
 
         return milisseconds;
+    }
+
+
+    public static NotificationCompat.Builder buildNotificationCommon(final Activity _context) {
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(_context)
+                .setWhen(System.currentTimeMillis());
+        //Vibration
+        builder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        //Ton
+        builder.setSound(notification);
+
+
+        return builder;
     }
 }

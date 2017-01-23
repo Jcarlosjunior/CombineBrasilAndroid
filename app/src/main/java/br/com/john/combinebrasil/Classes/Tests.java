@@ -15,11 +15,13 @@ public class Tests {
     private String Wingspan;
     private String User;
     private int Sync;
+    private boolean CanSync;
+
 
     public Tests(){}
 
     public Tests(String id, String type, String athlete, String selective, long firstValue, long secondValue,
-                 float rating, String wingspan, String user, int sync) {
+                 float rating, String wingspan, String user, int sync, boolean canSync) {
         Id = id;
         Type = type;
         Athlete = athlete;
@@ -30,6 +32,7 @@ public class Tests {
         Wingspan = wingspan;
         User = user;
         Sync = sync;
+        CanSync = canSync;
     }
 
     public String getId() {
@@ -110,5 +113,13 @@ public class Tests {
 
     public void setSelective(String selective) {
         Selective = selective;
+    }
+
+    public boolean getCanSync() {
+        return CanSync;
+    }
+
+    public void setCanSync(boolean canSync) {
+        CanSync = canSync;
     }
 }

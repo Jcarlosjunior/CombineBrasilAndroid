@@ -113,11 +113,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public long delete(String table, String id){
-        SQLiteDatabase db = getWritableDatabase();
+        this.openDataBase();
         long ret = 0;
-        ret = db.delete(table, "id = ?", new String[] { id });
-        db.close();
+        ret = this.myDataBase.delete(table, "id = ?", new String[] { id });
+        this.myDataBase.close();
         return  ret;
+    }
+
+    public int deleteValue(String table, String id){
+        this.openDataBase();
+        int ret = 0;
+        try {
+            String selectQuery = "DELETE FROM "+table+" WHERE _id='"+id+"'";
+
+            Cursor c = myDataBase.rawQuery(selectQuery, null);
+            ret = c.getCount();
+
+        } catch (Exception e) {
+            Log.i("ERROR DELETE", e.getMessage());
+        }
+        return ret;
+
     }
 
     private static boolean ret;
@@ -377,6 +393,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTS_WINGSPAN, obj.getWingspan());
                 values.put(Constants.TESTS_USER, obj.getUser());
                 values.put(Constants.TESTS_SYNC, obj.getSync());
+                values.put(Constants.TESTS_CANSYNC, Services.convertBoolInInt(obj.getCanSync()));
 
                 ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
             }
@@ -391,15 +408,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try{
                 ContentValues values = new ContentValues();
 
-                values.put(Constants.TESTS_ID, test.getId());
-                values.put(Constants.TESTS_TYPE, test.getType());
-                values.put(Constants.TESTS_ATHLETE, test.getAthlete());
-                values.put(Constants.TESTS_SELECTIVE, test.getSelective());
-                values.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue());
-                values.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue());
-                values.put(Constants.TESTS_WINGSPAN, test.getWingspan());
-                values.put(Constants.TESTS_USER, test.getUser());
-                values.put(Constants.TESTS_RATING, test.getRating());
+            values.put(Constants.TESTS_ID, test.getId());
+            values.put(Constants.TESTS_TYPE, test.getType());
+            values.put(Constants.TESTS_ATHLETE, test.getAthlete());
+            values.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue());
+            values.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue());
+            values.put(Constants.TESTS_RATING, test.getRating());
+            values.put(Constants.TESTS_WINGSPAN, test.getWingspan());
+            values.put(Constants.TESTS_USER, test.getUser());
+            values.put(Constants.TESTS_SYNC, test.getSync());
+            values.put(Constants.TESTS_CANSYNC, Services.convertBoolInInt(test.getCanSync()));
 
                 ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
 
@@ -731,7 +749,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
                         c.getString(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
                         c.getString(c.getColumnIndex(Constants.TESTS_USER)),
-                        c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
+                        c.getInt(c.getColumnIndex(Constants.TESTS_SYNC)),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTS_CANSYNC)))
                 );
 
                 itens.add(obj);
@@ -767,7 +786,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
                         c.getString(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
                         c.getString(c.getColumnIndex(Constants.TESTS_USER)),
-                        c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
+                        c.getInt(c.getColumnIndex(Constants.TESTS_SYNC)),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTS_CANSYNC)))
                 );
 
                 itens.add(obj);
@@ -1077,7 +1097,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getFloat(c.getColumnIndex(Constants.TESTS_RATING)),
                         c.getString(c.getColumnIndex(Constants.TESTS_WINGSPAN)),
                         c.getString(c.getColumnIndex(Constants.TESTS_USER)),
-                        c.getInt(c.getColumnIndex(Constants.TESTS_SYNC))
+                        c.getInt(c.getColumnIndex(Constants.TESTS_SYNC)),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTS_CANSYNC)))
                 );
             } else {
                 test = null;
@@ -1140,6 +1161,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String selectQuery = "UPDATE " + Constants.TABLE_TESTS + " SET " + Constants.TESTS_SYNC + "=" +
                     Services.convertBoolInInt(true) + ", "+Constants.TESTS_ID+"='"+id+"' WHERE "
                     + Constants.TESTS_ATHLETE + "='" + athlete + "' AND "+Constants.TESTS_TYPE+"='"+type+"'";
+
+            Cursor c = myDataBase.rawQuery(selectQuery, null);
+            c.getCount();
+
+        } catch (Exception e) {
+            Log.i("ERROR UPDATE", e.getMessage());
+        }
+        return ret;
+    }
+
+    public boolean updateSync(long second, float rating, String id) {
+        boolean ret = false;
+        this.openDataBase();
+        try {
+            String selectQuery = "UPDATE " + Constants.TABLE_TESTS + " SET "
+                    + Constants.TESTS_CANSYNC + "=" + Services.convertBoolInInt(true) +
+                    ", "+Constants.TESTS_SECOND_VALUE+"="+second+
+                    ", "+Constants.TESTS_RATING+"="+rating+" WHERE "
+                    + Constants.TESTS_ID + "='" + id + "'";
 
             Cursor c = myDataBase.rawQuery(selectQuery, null);
             c.getCount();
