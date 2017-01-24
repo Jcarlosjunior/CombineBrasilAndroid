@@ -171,7 +171,14 @@ public class AthletesActivity extends AppCompatActivity {
         DatabaseHelper db = new DatabaseHelper(myContext);
         db.openDataBase();
         athletesArrayList = db.getAthletes();
-        showList(athletesArrayList);
+        if(athletesArrayList!=null){
+            Collections.sort(athletesArrayList, new Comparator<Athletes>() {
+                public int compare(Athletes v1, Athletes v2) {
+                    return v1.getName().toLowerCase().compareTo(v2.getName().toLowerCase());
+                }
+            });
+            showList(athletesArrayList);
+        }
     }
 
     private void showList(ArrayList<Athletes> arrayAthletes){
@@ -185,11 +192,7 @@ public class AthletesActivity extends AppCompatActivity {
     }
 
     private void inflateRecyclerView(ArrayList<Athletes> athletesArrayList, String[] values){
-        Collections.sort(athletesArrayList, new Comparator<Athletes>() {
-            public int compare(Athletes v1, Athletes v2) {
-                return v1.getName().toLowerCase().compareTo(v2.getName().toLowerCase());
-            }
-        });
+
         adapterTests = new AdapterRecyclerAthletes(AthletesActivity.this, athletesArrayList, values);
 
         listViewPlayers.setVisibility(View.VISIBLE);
@@ -311,7 +314,7 @@ public class AthletesActivity extends AppCompatActivity {
             if(!(athletesArrayList == null || athletesArrayList.size()==0)) {
                 Collections.sort(athletesArrayList, new Comparator<Athletes>() {
                     public int compare(Athletes v1, Athletes v2) {
-                        return v1.getCode().toLowerCase().compareTo(v2.getCode().toLowerCase());
+                        return v1.getCode().toLowerCase().substring(3).compareTo(v2.getCode().toLowerCase().substring(3));
                     }
                 });
 

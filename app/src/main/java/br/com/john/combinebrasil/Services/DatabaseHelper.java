@@ -411,6 +411,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.put(Constants.TESTS_ID, test.getId());
             values.put(Constants.TESTS_TYPE, test.getType());
             values.put(Constants.TESTS_ATHLETE, test.getAthlete());
+            values.put(Constants.TESTS_SELECTIVE, test.getSelective());
             values.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue());
             values.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue());
             values.put(Constants.TESTS_RATING, test.getRating());
@@ -481,7 +482,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public long getCountTest(String idTest){
         this.openDataBase();
-        return  DatabaseUtils.longForQuery(myDataBase, "SELECT COUNT(*) FROM "+Constants.TABLE_TESTS +" WHERE "+Constants.TESTS_TYPE+" ='"+idTest+"'", null);
+        return  DatabaseUtils.longForQuery(myDataBase, "SELECT COUNT(*) FROM "+Constants.TABLE_TESTS +" WHERE "
+                +Constants.TESTS_TYPE+" ='"+idTest+"' and "
+                +Constants.TESTS_CANSYNC+"=1", null);
     }
 
     public long getCountTestSync(String idTest){
@@ -822,9 +825,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ", athletes."+Constants.ATHLETES_SYNC+
                     ", athletes."+Constants.ATHLETES_TERMSACCEPTED+
                     " FROM "
-                    + Constants.TABLE_ATHLETES+" as athletes INNER JOIN "+Constants.TABLE_TESTS
-                    +" as tests ON athletes."+Constants.TESTS_ID+" = tests."+Constants.TESTS_ATHLETE+" WHERE tests."+Constants.TESTS_TYPE+
-                    " ='"+idTest+"'";
+                    + Constants.TABLE_ATHLETES+" as athletes INNER JOIN "
+                    +Constants.TABLE_TESTS
+                    +" as tests ON athletes."+Constants.TESTS_ID+" = tests."
+                    +Constants.TESTS_ATHLETE+" WHERE tests."+Constants.TESTS_TYPE+
+                    " ='"+idTest+"' and "+Constants.TESTS_CANSYNC+"=1";
 
             Cursor c = myDataBase.rawQuery(selectQuery, null);
 

@@ -94,7 +94,13 @@ public class AdapterRecyclerSyncAthlete  extends RecyclerView.Adapter<AdapterRec
             if (type.getValueType().toLowerCase().equals("corrida") || type.getValueType().toLowerCase().equals("tempo")) {
                 holder.txtFirstResult.setText(Services.convertInTime(test.getFirstValue()));
                 holder.txtSecondResult.setText(Services.convertInTime(test.getSecondValue()));
-            } else {
+            }
+            else if(type.getValueType().toLowerCase().equals("repeticao")|| type.getValueType().toLowerCase().equals("repeticao por tempo"))
+            {
+                holder.txtFirstResult.setText(String.valueOf(test.getFirstValue()));
+                holder.txtSecondResult.setVisibility(View.GONE);
+            }
+            else {
                 holder.txtFirstResult.setText(Services.convertCentimetersinMeters(test.getFirstValue()));
                 holder.txtSecondResult.setText(Services.convertCentimetersinMeters(test.getSecondValue()));
             }

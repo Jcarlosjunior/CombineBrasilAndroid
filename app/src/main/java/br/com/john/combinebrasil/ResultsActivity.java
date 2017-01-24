@@ -34,6 +34,7 @@ import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Services.AllActivities;
+import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.MaskHeight;
 import br.com.john.combinebrasil.Services.MessageOptions;
@@ -44,10 +45,11 @@ public class ResultsActivity extends AppCompatActivity {
     Button buttonAdd, btnReady, buttonWingspan;
     EditText editFirstResult, editSecondResult, editWingspan;
     int contResults=0, position=0;
-    TextView textNamePlayer, textNameTest, textNameTestDetails, textDetailsTest, textNamePlayerDetails, textDetailsPlayer, textShowRating;
-    ImageView imgArrowTest, imgArrowPlayer;
+    TextView textNamePlayer, textNameTest, textNameTestDetails, textDetailsTest, textNamePlayerDetails,
+            textDetailsPlayer, textShowRating;
+    ImageView imgArrowTest, imgArrowPlayer, imgDelete;
     boolean arrowDownTest=true,arrowDownPlayer=true;
-    LinearLayout linearRating, linearWingSpan;
+    LinearLayout linearRating, linearWingSpan, deleteTest;
     RatingBar ratingBar;
     String idAthlete = "", wingspan=" ";
     float ratingValue;
@@ -56,6 +58,7 @@ public class ResultsActivity extends AppCompatActivity {
     TextView txtFistDone, txtSecondDone, txtNameResult, txtRating;
     Button buttonBack;
     RatingBar ratingDone;
+    DatabaseHelper db;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -74,9 +77,12 @@ public class ResultsActivity extends AppCompatActivity {
         imgSearch.setVisibility(View.GONE);
 
         TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
-        DatabaseHelper db = new DatabaseHelper(ResultsActivity.this);
+        db = new DatabaseHelper(ResultsActivity.this);
         TestTypes test = db.getTestTypeFromId(AllActivities.testSelected);
         textTitle.setText(test.getName());
+        deleteTest = (LinearLayout) findViewById(R.id.linear_delete);
+        imgDelete = (ImageView) findViewById(R.id.img_delete);
+        imgDelete.setOnClickListener(clickDelete);
 
         linearInsert = (LinearLayout) findViewById(R.id.linear_insert);
         linearResultDone = (LinearLayout) findViewById(R.id.linear_results_done);
@@ -135,26 +141,37 @@ public class ResultsActivity extends AppCompatActivity {
 }
 
     private void verifyTest(){
-        DatabaseHelper db = new DatabaseHelper(ResultsActivity.this);
         db.openDataBase();
         Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
         if(test != null){
-            linearInsert.setVisibility(View.GONE);
-            linearResultDone.setVisibility(View.VISIBLE);
-            txtFistDone.setText(Services.convertCentimetersinMeters(test.getFirstValue()));
-            txtSecondDone.setText(Services.convertCentimetersinMeters(test.getSecondValue()));
-
-            Athletes athlete = db.getAthleteById(idAthlete);
-            txtNameResult.setText(athlete.getName());
-
-            ratingDone.setRating(test.getRating());
-            ratingDone.setEnabled(false);
-
-            txtRating.setText(Services.verifyQualification(test.getRating()));
-
-            buttonBack.setOnClickListener(btnBackClickListener);
+            if(!Services.convertIntInBool(test.getSync())) {
+                deleteTest.setVisibility(View.VISIBLE);
+            }
+            else
+                deleteTest.setVisibility(View.GONE);
+            if(test.getCanSync()) {
+                showInfoTestDone();
+            }
+            else {
+                if(test!=null) {
+                    contResults = 1;
+                    editFirstResult.setText(Services.convertCentimetersinMeters(test.getFirstValue()));
+                    editFirstResult.setEnabled(false);
+                    editSecondResult.setEnabled(true);
+                }
+                linearInsert.setVisibility(View.VISIBLE);
+                linearResultDone.setVisibility(View.GONE);
+            }
         }
         else{
+            linearInsert.setVisibility(View.VISIBLE);
+            linearResultDone.setVisibility(View.GONE);
+            contResults = 0;
+            editFirstResult.setText("");
+            editSecondResult.setText("");
+            editFirstResult.setEnabled(true);
+            editSecondResult.setEnabled(false);
+            deleteTest.setVisibility(View.GONE);
             TestTypes testypes = db.getTestTypeFromId(AllActivities.testSelected);
 
             if(testypes.getName().toLowerCase().equals("salto vertical")) {
@@ -199,6 +216,25 @@ public class ResultsActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void showInfoTestDone(){
+        Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
+
+        linearInsert.setVisibility(View.GONE);
+        linearResultDone.setVisibility(View.VISIBLE);
+        txtFistDone.setText(Services.convertCentimetersinMeters(test.getFirstValue()));
+        txtSecondDone.setText(Services.convertCentimetersinMeters(test.getSecondValue()));
+
+        Athletes athlete = db.getAthleteById(idAthlete);
+        txtNameResult.setText(athlete.getName());
+
+        ratingDone.setRating(test.getRating());
+        ratingDone.setEnabled(false);
+
+        txtRating.setText(Services.verifyQualification(test.getRating()));
+
+        buttonBack.setOnClickListener(btnBackClickListener);
     }
 
     private void showInfoAthlete(){
@@ -269,6 +305,17 @@ public class ResultsActivity extends AppCompatActivity {
         else if(method.equals("exitActivity")){
             finish();
         }
+        else if(method.equals("deleteResults")){
+            deleteTest();
+        }
+    }
+
+    private void deleteTest(){
+        Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
+        db.openDataBase();
+        db.deleteValue(Constants.TABLE_TESTS, test.getId());
+        Services.messageAlert(ResultsActivity.this, "Mensagem","Teste excluído!","");
+        verifyTest();
     }
 
     private void showRating(){
@@ -298,14 +345,13 @@ public class ResultsActivity extends AppCompatActivity {
                         String.valueOf(Services.verifyQualification(ratingBar.getRating())),
                         Toast.LENGTH_SHORT).show();
                 linearRating.setVisibility(View.GONE);
-                saveTest();
+                updateTest();
                 Services.messageAlert(ResultsActivity.this, "Mensagem","Os resultados foram salvos!", "DialogSaveResults");
             }
         });
     }
 
     private void saveTest(){
-        DatabaseHelper db = new DatabaseHelper(ResultsActivity.this);
         db.openDataBase();
         User user= db.getUser();
         Selective selective = db.getSelective();
@@ -315,13 +361,22 @@ public class ResultsActivity extends AppCompatActivity {
                 idAthlete,
                 selective.getId(),
                 Services.convertMetersinCentimeters(editFirstResult.getText().toString()),
-                Services.convertMetersinCentimeters(editSecondResult.getText().toString()),
+                0,
                 ratingValue,
                 wingspan,
                user.getId(),
                Services.convertBoolInInt(false),
                 false);
         db.addTest(test);
+        deleteTest.setVisibility(View.VISIBLE);
+        AthletesActivity.adapterTests.notifyItemChanged(position);
+    }
+
+    private void updateTest(){
+        db.openDataBase();
+        Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
+        if(!test.getCanSync())
+            db.updateSync(Services.convertMetersinCentimeters(editSecondResult.getText().toString()), ratingValue, test.getId());
         AthletesActivity.adapterTests.notifyItemChanged(position);
     }
 
@@ -335,6 +390,7 @@ public class ResultsActivity extends AppCompatActivity {
             editFirstResult.setEnabled(false);
             editSecondResult.setEnabled(true);
             enabledButtonAdd(false);
+            saveTest();
 
         }
         else if(contResults==2){
@@ -373,9 +429,6 @@ public class ResultsActivity extends AppCompatActivity {
     };
 
     private void exitActivity(){
-        if(contResults>0)
-            messageOption("Sair", "Tem certeza que deseja sair e abandonar o teste?","exitActivity");
-        else
             finish();
     }
 
@@ -411,6 +464,13 @@ public class ResultsActivity extends AppCompatActivity {
                 extError.setVisibility(View.VISIBLE);
                 Services.changeColorEditBorderError(editWingspan, ResultsActivity.this);
             }
+        }
+    };
+
+    private View.OnClickListener clickDelete = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            new MessageOptions(ResultsActivity.this, "Deletar", "Deseja excluir os dados do teste atual?", "deleteResults");
         }
     };
 }

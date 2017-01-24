@@ -90,6 +90,8 @@ public class Services {
         else if(whoCalled.toUpperCase().equals("POSTATHLETE")){
             CreateAccountAthlete.finished(activity);
         }
+        else if (whoCalled.equals("updateAthelete"))
+            CreateAccountAthlete.update(activity);
         else if(activity.getClass().getSimpleName().equals(Constants.TIMER_ACTIVITY))
             TimerActivity.returnOption(activity, whoCalled);
     }
@@ -350,5 +352,34 @@ public class Services {
 
 
         return builder;
+    }
+
+    public static String chooseMonth(String month){
+        if(month.equalsIgnoreCase("01") ||month.equalsIgnoreCase("1"))
+            return "Janeiro";
+        else if(month.equalsIgnoreCase("02")||month.equalsIgnoreCase("2"))
+            return "Fevereiro";
+        else if(month.equalsIgnoreCase("03")||month.equalsIgnoreCase("3"))
+            return "Março";
+        else if(month.equalsIgnoreCase("04")||month.equalsIgnoreCase("4"))
+            return "Abril";
+        else if(month.equalsIgnoreCase("05")||month.equalsIgnoreCase("5"))
+            return "Maio";
+        else if(month.equalsIgnoreCase("06")||month.equalsIgnoreCase("6"))
+            return "Junho";
+        else if(month.equalsIgnoreCase("07")||month.equalsIgnoreCase("7"))
+            return "Julho";
+        else if(month.equalsIgnoreCase("08")||month.equalsIgnoreCase("8"))
+            return "Agosto";
+        else if(month.equalsIgnoreCase("09")||month.equalsIgnoreCase("9"))
+            return "Setembro";
+        else if(month.equalsIgnoreCase("10"))
+            return "Outubro";
+        else if(month.equalsIgnoreCase("11"))
+            return "Novembro";
+        else if(month.equalsIgnoreCase("12"))
+            return "Dezembro";
+        else
+            return "";
     }
 }

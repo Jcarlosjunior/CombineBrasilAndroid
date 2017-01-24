@@ -227,7 +227,6 @@ public class SyncDatabase {
                     athletesList.get(i).setCode(item.getInscriptionNumber());
                     athletesAdd.add(athletesList.get(i));
                 }
-
             }
             db.openDataBase();
             db.addAthletes(athletesAdd);

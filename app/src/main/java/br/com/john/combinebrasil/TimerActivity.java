@@ -429,14 +429,19 @@ public class TimerActivity extends AppCompatActivity {
             time = SharedPreferencesAdapter.getTimerDefault(TimerActivity.this);
             if(time==null || time.equals("")){
                 SharedPreferencesAdapter.setTimerDefault(TimerActivity.this, "01:00");
+                time="01:00";
             }
         }catch (Exception e){
             SharedPreferencesAdapter.setTimerDefault(TimerActivity.this, "01:00");
             time="01:00";
         }
-
-        minutes = Long.parseLong(time.substring(0,2));
-        seconds = Long.parseLong(time.substring(3));
+        try {
+            minutes = Long.parseLong(time.substring(0, 2));
+            seconds = Long.parseLong(time.substring(3));
+        }catch (Exception e){
+            minutes = 01;
+            seconds= 00;
+        }
         textTimer.setText(time);
         timer.setValue(minutes, seconds);
     }

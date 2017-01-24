@@ -54,6 +54,18 @@
 
             </LinearLayout>
         </ScrollView>
+
+        <Button
+            android:id="@+id/button_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:background="@drawable/background_button_blue"
+            android:text="@string/edit_athlete"
+            android:textColor="@color/white"
+            android:textAllCaps="true"
+            android:textSize="16sp"
+            />
     </LinearLayout>
 </LinearLayout>
 

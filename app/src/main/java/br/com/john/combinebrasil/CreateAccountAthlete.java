@@ -39,6 +39,7 @@ import br.com.john.combinebrasil.Classes.Team;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostAthleteAsyncTask;
+import br.com.john.combinebrasil.Connection.Posts.PutAthlete;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Mask;
@@ -58,7 +59,8 @@ public class CreateAccountAthlete extends AppCompatActivity {
     CheckBox checkTerms;
     Button btnClose;
     LinearLayout linearTerms;
-    boolean checked = false;
+    boolean checked = false, editAthlete = false;
+    String idAthlete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +135,50 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
         if(Constants.debug)
             buttonAdd.setOnLongClickListener(longClick);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            editAthlete = extras.getBoolean("EditAthlete");
+            if(editAthlete) {
+                idAthlete = extras.getString("id_player");
+                editAthlete();
+            }
+        }
+    }
+
+    private void editAthlete(){
+        DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+        Athletes athlete = db.getAthleteById(idAthlete);
+
+        checked = true;
+        textTerms.setVisibility(View.GONE);
+        editTextName.setText(athlete.getName());
+        editTextCPF.setText(athlete.getCPF());
+        editAddress.setText(athlete.getAddress());
+        editEmail.setText(athlete.getEmail());
+        editTextPhone.setText(athlete.getPhoneNumber());
+        editTextHeight.setText(String.format("%.2f", athlete.getHeight()).replace(".",","));
+        editTextWeihgt.setText(String.format("%.0f",athlete.getWeight()).replace(".",","));
+        Positions position = db.getPositiomById(athlete.getDesirablePosition());
+        if(position!=null)
+            spinnerPosition.setText(position.getNAME());
+        else
+            spinnerPosition.setText("");
+        String birthday = Services.convertDate(athlete.getBirthday());
+        if(!birthday.isEmpty()){
+            String day = birthday.substring(0,2);
+            String month =Services.chooseMonth(birthday.substring(3,5));
+            String year = birthday.substring(6);
+
+            spinnerDay.setText(day);
+            spinnerMonth.setText(month);
+            spinnerYear.setText(year);
+        }
+        else{
+            spinnerDay.setText("");
+            spinnerMonth.setText("");
+            spinnerYear.setText("");
+        }
     }
 
     private View.OnLongClickListener longClick = new View.OnLongClickListener() {
@@ -164,13 +210,21 @@ public class CreateAccountAthlete extends AppCompatActivity {
                    if (Services.isOnline(this)) {
                        LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
                        linearProgress.setVisibility(View.VISIBLE);
-                       String url = Constants.URL + Constants.API_ATHLETES;
-
-                       PostAthleteAsyncTask post = new PostAthleteAsyncTask();
-                       post.setActivity(CreateAccountAthlete.this);
-                       post.setObjPut(createObject());
-                       post.setPlay(true);
-                       post.execute(url);
+                       if(editAthlete){
+                           String url = Constants.URL + Constants.API_ATHLETES+"/"+idAthlete;
+                           PutAthlete post = new PutAthlete();
+                           post.setActivity(CreateAccountAthlete.this);
+                           post.setObjPut(createObject());
+                           post.setPlay(true);
+                           post.execute(url);
+                       }else {
+                           String url = Constants.URL + Constants.API_ATHLETES;
+                           PostAthleteAsyncTask post = new PostAthleteAsyncTask();
+                           post.setActivity(CreateAccountAthlete.this);
+                           post.setObjPut(createObject());
+                           post.setPlay(true);
+                           post.execute(url);
+                       }
                    } else
                        new MessageOptions(CreateAccountAthlete.this, "Mensagem", "Você está offline, deseja salvar o usuário offline? Você deverá sincronizar com os outros avaliadores.","createUserOff");
 
@@ -178,7 +232,6 @@ public class CreateAccountAthlete extends AppCompatActivity {
            }
            else
                Services.messageAlert(CreateAccountAthlete.this, "Aviso", "Para continuar, é necessário que o atleta aceite os termos de uso.", "");
-
        }
     }
 
@@ -264,7 +317,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
             String address = " ";
             String birthday = spinnerYear.getText().toString() + "-" + chooseMonth(spinnerMonth.getText()
                     .toString()) + "-" + spinnerDay.getText().toString();
-            int position = getIndex(spinnerPosition);
+
             double height = Double.parseDouble(editTextHeight.getText().toString().replaceAll(",", "."));
             double weight = Double.parseDouble(editTextWeihgt.getText().toString().replaceAll(",", "."));
 
@@ -277,7 +330,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
                     birthday,
                     editTextCPF.getText().toString(),
                     address,
-                    positions.get(position).getID(),
+                    getIdPosition(spinnerPosition),
                     height,
                     weight,
                     " ",
@@ -299,7 +352,6 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private JSONObject createObject() {
         JSONObject object = new JSONObject();
         try {
-            int position = getIndex(spinnerPosition);
 
             try {
                 double height = Double.parseDouble(editTextHeight.getText().toString().replaceAll(",", "."));
@@ -308,7 +360,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
                 object.put(Constants.ATHLETES_NAME, editTextName.getText().toString());
                 object.put(Constants.ATHLETES_CPF, editTextCPF.getText().toString());
                 object.put(Constants.ATHLETES_PHONE, editTextPhone.getText().toString());
-                object.put(Constants.ATHLETES_DESIRABLE_POSITION, positions.get(position).getID());
+                object.put(Constants.ATHLETES_DESIRABLE_POSITION, getIdPosition(spinnerPosition));
                 object.put(Constants.ATHLETES_HEIGHT, height);
                 object.put(Constants.ATHLETES_WEIGHT, weight);
                 object.put(Constants.ATHLETES_BIRTHDAY, birthday);
@@ -327,26 +379,23 @@ public class CreateAccountAthlete extends AppCompatActivity {
         return object;
     }
 
-    int index = 0;
-    private int getIndex(MaterialBetterSpinner spinner) {
+
+    private String getIdPosition(MaterialBetterSpinner spinner) {
+        String positionSelected = "";
         try {
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                @Override
-                public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                    String seluniversity = (String) arg0.getSelectedItem();
-                    index = position;
+            positionSelected = spinner.getText().toString();
+            if(!positionSelected.trim().equals("")){
+                for(Positions position : positions){
+                    if(positionSelected.trim().equals(position.getNAME())){
+                        positionSelected = position.getID();
+                        return position.getID();
+                    }
                 }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
+            }
         }catch (Exception e){
-            index = 0;
+            return "";
         }
-
-        return index;
+        return positionSelected;
     }
 
     private String getString(EditText edit){
@@ -363,8 +412,12 @@ public class CreateAccountAthlete extends AppCompatActivity {
             if(ret.equals("FAIL"))
                 verifyErrorCreate(response);
 
-            else if(ret.equals("OK"))
-                saveAthlete(response);
+            else if(ret.equals("OK")) {
+                if (!editAthlete)
+                    saveAthlete(response);
+                else
+                    updateAthlete(response);
+            }
     }
 
     private void verifyErrorCreate(String result){
@@ -388,6 +441,34 @@ public class CreateAccountAthlete extends AppCompatActivity {
                 e1.printStackTrace();
             }
         }
+    }
+
+    private void updateAthlete(String response){
+        String url = Constants.URL + Constants.API_ATHLETES+"?"+Constants.ATHLETES_ID+"="+idAthlete;
+        Connection task = new Connection(url, 0, "updateAthleteAccount",false, CreateAccountAthlete.this);
+        task.callByJsonStringRequest();
+
+        LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
+        linearProgress.setVisibility(View.VISIBLE);
+    }
+    public static void returnAccountAthlete(Activity act, String response){
+        ((CreateAccountAthlete)act).returnAccountAthlete(response);
+    }
+    private void returnAccountAthlete(String response){
+
+        LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
+        linearProgress.setVisibility(View.GONE);
+
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        athlete = des.getAthlete();
+        if(athlete!=null){
+            DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+            SelectiveAthletes seletive = db.getSelectiveAthletesFromAthlete(athlete.getId());
+            athlete.setCode(seletive.getInscriptionNumber());
+            db.updateAthlete(athlete);
+        }
+
+        Services.messageAlert(CreateAccountAthlete.this, "Mensagem","Atleta autalizado","updateAthelete");
     }
 
     private void saveAthlete(String response){
@@ -491,6 +572,13 @@ public class CreateAccountAthlete extends AppCompatActivity {
         textTerms.setVisibility(View.VISIBLE);
         checkTerms.setChecked(false);
         checked = false;
+    }
+
+    public static void update(Activity act){
+        ((CreateAccountAthlete)act).update();
+    }
+    private void update(){
+        this.finish();
     }
 
     public static void finished(Activity act){

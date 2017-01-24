@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,12 +16,16 @@ import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Positions;
+import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Services;
 
 public class DetailsAthletes extends AppCompatActivity {
     Toolbar toolbar;
     TextView textName;
+    Button buttonEdit;
+    Bundle extras;
+    String idAthlete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +42,31 @@ public class DetailsAthletes extends AppCompatActivity {
         imgSearch.setVisibility(View.GONE);
 
         textName = (TextView) findViewById(R.id.text_name_details);
+        buttonEdit = (Button) findViewById(R.id.button_edit);
+        buttonEdit.setOnClickListener(clickEditAthlete);
 
-        Bundle extras = getIntent().getExtras();
+        DatabaseHelper db = new DatabaseHelper(DetailsAthletes.this);
+        User user = db.getUser();
+        if(user!=null){
+            if(user.getIsAdmin())
+                buttonEdit.setVisibility(View.VISIBLE);
+            else
+                buttonEdit.setVisibility(View.GONE);
+        }
+        extras = getIntent().getExtras();
         if(extras != null) {
-            showInfoAthlete(extras.getString("id_player"));
-
+            idAthlete = extras.getString("id_player");
+            showInfoAthlete(idAthlete);
         }
 
 
     }
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        showInfoAthlete(idAthlete);
+    }
+
     @Override
     public void onBackPressed(){
         finish();
@@ -80,8 +101,20 @@ public class DetailsAthletes extends AppCompatActivity {
                      "Posição Desejada: "+pos +"\n"+
                      "Altura: "+String.format("%.2f", athlete.getHeight()).replace(".",",") +"\n"+
                      "Peso: "+String.format("%.0f",athlete.getWeight()).replace(".",",")+" Kg");
+    }
 
+    private View.OnClickListener clickEditAthlete = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            editAthlete();
+        }
+    };
 
+    private void editAthlete(){
+        Intent intent = new Intent(DetailsAthletes.this, CreateAccountAthlete.class);
+        intent.putExtra("EditAthlete", true);
+        intent.putExtra("id_player",extras.getString("id_player"));
+        startActivity(intent);
 
     }
 }

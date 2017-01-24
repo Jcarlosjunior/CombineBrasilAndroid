@@ -3,6 +3,7 @@ package br.com.john.combinebrasil;
 import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
+import android.database.SQLException;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +19,9 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerSync;
@@ -97,9 +100,23 @@ public class SyncAthleteActivity extends AppCompatActivity {
 
             callInflateList();
 
-            if(numAthletes==db.getCountTestSync(idTest)){
-                fab.setVisibility(View.GONE);
+            verifySync();
+        }
+    }
+
+    private void verifySync(){
+        int cont  = 0;
+        DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
+        ArrayList<Tests> tests = db.getTestsFromType(idTest);
+        for(Tests test : tests){
+            if(!Services.convertIntInBool(test.getSync())) {
+                cont = 1;
+                fab.setVisibility(View.VISIBLE);
+                break;
             }
+        }
+        if(cont == 0){
+            fab.setVisibility(View.GONE);
         }
     }
 
@@ -152,11 +169,76 @@ public class SyncAthleteActivity extends AppCompatActivity {
 
     private void syncAll(){
         syncAll = true;
-        if(positionNow<numAthletes){
+        DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
+        if(positionNow<athletes.size()){
             sync(tests.get(positionNow));
         }
-        else
-            Services.messageAlert(SyncAthleteActivity.this, "Aviso","Todos os testes foram salvos!","");
+        else {
+            linearProgress.setVisibility(View.VISIBLE);
+            Connection task = new Connection(Constants.URL + Constants.API_TESTS, 0, Constants.CALLED_GET_TESTS, false, SyncAthleteActivity.this);
+            task.callByJsonStringRequest();
+
+        }
+    }
+
+    public static void testResponse(Activity act,String response) {
+        ((SyncAthleteActivity)act).testResponse(response);
+    }
+    private void testResponse(String response){
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        ArrayList<Tests> test = des.getTest();
+        DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
+        try {
+            db.createDataBase();
+        } catch (IOException ioe) {
+            Services.messageAlert(SyncAthleteActivity.this, "Mensagem", "Unable to create database", "");
+            throw new Error("Unable to create database");
+        }
+        try {
+            db.openDataBase();
+            db.addTests(test);
+            db.close();
+            Connection task = new Connection(Constants.URL + Constants.API_ATHLETES, 0, Constants.CALLED_GET_ATHLETES, false, SyncAthleteActivity.this);
+            task.callByJsonStringRequest();
+        } catch (SQLException sqle) {
+            Services.messageAlert(SyncAthleteActivity.this, "Mensagem", sqle.getMessage(), "");
+            SyncDatabase.hideProgress(SyncAthleteActivity.this.getClass().getSimpleName());
+            throw sqle;
+        }
+    }
+
+    public static void athletesResponse(Activity act, String response){
+        ((SyncAthleteActivity)act).athletesResponse(response);
+    }
+    private void athletesResponse(String response) {
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        ArrayList<Athletes> athletesList = des.getAthletes();
+        DatabaseHelper db = new DatabaseHelper(SyncAthleteActivity.this);
+        try {
+            db.createDataBase();
+        } catch (IOException ioe) {
+            Services.messageAlert(SyncAthleteActivity.this, "Mensagem", "Unable to create database", "");
+            throw new Error("Unable to create database");
+        }
+        try {
+            ArrayList<Athletes> athletesAdd = new ArrayList<Athletes>();
+            for(int i=0; i<=athletesList.size()-1; i++){
+                SelectiveAthletes item = db.getSelectiveAthletesFromAthlete(athletesList.get(i).getId());
+                if(item!=null){
+                    athletesList.get(i).setCode(item.getInscriptionNumber());
+                    athletesAdd.add(athletesList.get(i));
+                }
+            }
+            db.openDataBase();
+            db.addAthletes(athletesAdd);
+            db.close();
+            Services.messageAlert(SyncAthleteActivity.this, "Aviso", "Todos os testes foram salvos!", "");
+            linearProgress.setVisibility(View.GONE);
+        } catch (SQLException sqle) {
+            Services.messageAlert(SyncAthleteActivity.this, "Mensagem", sqle.getMessage(), "");
+            SyncDatabase.hideProgress(SyncAthleteActivity.this.getClass().getSimpleName());
+            throw sqle;
+        }
     }
 
     private void sync(Tests test){
@@ -226,6 +308,8 @@ public class SyncAthleteActivity extends AppCompatActivity {
                 positionNow = positionNow + 1;
                 callSynAll();
             }
+            else
+                Services.messageAlert(SyncAthleteActivity.this, "Aviso","Erro ao tentar sincronizar teste.","");
         }
         else{
             if(resp.equals("OK")){
@@ -245,9 +329,7 @@ public class SyncAthleteActivity extends AppCompatActivity {
         adapterSync.notifyItemChanged(positionNow);
         SyncActivity.adapterTests.notifyItemChanged(positionSelected);
 
-        if(numAthletes==db.getCountTestSync(idTest)){
-            fab.setVisibility(View.GONE);
-        }
+        verifySync();
     }
 
     /**************************************************UPDATE ATHLETE NOT SYNC******************************/
@@ -308,7 +390,6 @@ public class SyncAthleteActivity extends AppCompatActivity {
             }
             else
                 Services.messageAlert(SyncAthleteActivity.this, "Aviso","O atleta ainda não foi cadastrado na API.","");
-
         }
 
     }

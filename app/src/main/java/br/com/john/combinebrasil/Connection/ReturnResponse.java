@@ -39,6 +39,9 @@ public class ReturnResponse {
     public void goTo(String whoCalled, String response, boolean isList, Activity activity, int statuCode) {
         try {
             if (!response.equals(null) || response.length() <= 0) {
+                if(whoCalled.equals("updateAthleteAccount"))
+                    CreateAccountAthlete.returnAccountAthlete(activity, response);
+
                 if (whoCalled.equals(Constants.CALLED_LOGIN))
                     LoginActivity.afterLogin(response, isList, activity, statuCode);
                 else if (whoCalled.equals(Constants.CALLED_GET_USER))
@@ -51,16 +54,22 @@ public class ReturnResponse {
                     SyncDatabase.teamResponse(response);
                 else if (whoCalled.equals(Constants.CALLED_GET_SELECTIVEATHLETES))
                     SyncDatabase.selectiveAthletesResponse(response);
-                else if (whoCalled.equals(Constants.CALLED_GET_ATHLETES))
-                    SyncDatabase.athletesResponse(response);
+                else if (whoCalled.equals(Constants.CALLED_GET_ATHLETES)) {
+                    if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
+                        SyncAthleteActivity.athletesResponse(activity, response);
+                    else
+                        SyncDatabase.athletesResponse(response);
+                }
                 else if (whoCalled.equals(Constants.CALLED_GET_POSITIONS))
                     SyncDatabase.positionsResponse(response);
-
                 else if (whoCalled.equals(Constants.CALLED_GET_TESTTYPES))
                     SyncDatabase.testTypesResponse(response);
-                else if (whoCalled.equals(Constants.CALLED_GET_TESTS))
-                    SyncDatabase.testResponse(response);
-
+                else if (whoCalled.equals(Constants.CALLED_GET_TESTS)){
+                    if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
+                        SyncAthleteActivity.testResponse(activity, response);
+                    else
+                        SyncDatabase.testResponse(response);
+                }
                 else if(whoCalled.equals("UPDATE_SELECTIVEATHLETE")) {
                     if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
                         SyncAthleteActivity.updateSelectiveAthlete(activity, "OK", response);
