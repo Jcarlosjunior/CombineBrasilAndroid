@@ -40,13 +40,14 @@ import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.Services;
+import br.com.john.combinebrasil.Services.SyncDatabase;
 
 public class SyncActivity extends AppCompatActivity {
     private RecyclerView recyclerSync;
     LinearLayout linearProgress, linearAddAthlete;
     Button btnSaveAthletes;
     ImageView imgClose;
-    TextView textSave;
+    TextView textSave, textProgress;
     private static boolean isSync = false;
     ArrayList<TestTypes> testsInflate;
     ArrayList<Tests> tests;
@@ -55,6 +56,7 @@ public class SyncActivity extends AppCompatActivity {
     int positionNow = 0, positionSync, positionAthlete=0, positionSaveAthletes = 0;
     long numTests=0, numAthletes=0;
     public static AdapterRecyclerSync adapterTests;
+    boolean isAdmin=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class SyncActivity extends AppCompatActivity {
         imgClose = (ImageView) findViewById(R.id.image_close) ;
         imgClose.setOnClickListener(closeAdd);
         textSave = (TextView) findViewById(R.id.text_message_save_athletes);
+        textProgress = (TextView) findViewById(R.id.text_progress);
 
         btnSaveAthletes.setOnClickListener(saveAthletes);
 
@@ -116,30 +119,32 @@ public class SyncActivity extends AppCompatActivity {
         linearAddAthlete.setVisibility(View.GONE);
         DatabaseHelper db = new DatabaseHelper(SyncActivity.this);
         User user = db.getUser();
-        if(user.getIsAdmin()) {
-            if (Services.isOnline(SyncActivity.this)) {
-                ArrayList<Athletes> athletes = db.getAthletes();
+        isAdmin = user.getIsAdmin();
+        checkAthlete();
+    }
 
-                this.athletes = new ArrayList<Athletes>();
-                if (athletes == null) {
-                    linearAddAthlete.setVisibility(View.GONE);
-                } else {
-                    int cont = 0;
-                    for (Athletes athlete : athletes) {
-                        if (athlete.getSync() == false) {
-                            cont = cont + 1;
-                            this.athletes.add(athlete);
-                        }
-                    }
-                    if (cont > 0) {
-                        textSave.setText("Opa! Você cadastrou " + cont + " atletas na seletiva, porém você estava sem conexão com a internet, e por esse motivo, os atletas não foram salvos. Agora você está com conexão e pode salvo-los.");
-                        linearAddAthlete.setVisibility(View.VISIBLE);
-                    } else
-                        linearAddAthlete.setVisibility(View.GONE);
-                }
-            }
-            else
+    private void checkAthlete(){
+        DatabaseHelper db = new DatabaseHelper(SyncActivity.this);
+        if (Services.isOnline(SyncActivity.this)) {
+            ArrayList<Athletes> athletes = db.getAthletes();
+
+            this.athletes = new ArrayList<Athletes>();
+            if (athletes == null) {
                 linearAddAthlete.setVisibility(View.GONE);
+            } else {
+                int cont = 0;
+                for (Athletes athlete : athletes) {
+                    if (athlete.getSync() == false) {
+                        cont = cont + 1;
+                        this.athletes.add(athlete);
+                    }
+                }
+                if (cont > 0) {
+                    textSave.setText("Opa! Você cadastrou " + cont + " atletas na seletiva, porém você estava sem conexão com a internet, e por esse motivo, os atletas não foram salvos. Agora você está com conexão e pode salvo-los.");
+                    linearAddAthlete.setVisibility(View.VISIBLE);
+                } else
+                    linearAddAthlete.setVisibility(View.GONE);
+            }
         }
         else
             linearAddAthlete.setVisibility(View.GONE);
@@ -148,9 +153,21 @@ public class SyncActivity extends AppCompatActivity {
     private View.OnClickListener saveAthletes = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            saveAthletes();
+            calSyncAthletes();
         }
     };
+
+    private void calSyncAthletes(){
+        if(positionSaveAthletes<athletes.size()) {
+            if (isAdmin)
+                saveAthletes();
+            else
+                callUpdateAthletes();
+        }else{
+            Services.messageAlert(SyncActivity.this, "Concluído", "Sem mais Atletas para salvar", "");
+            linearAddAthlete.setVisibility(View.GONE);
+        }
+    }
 
     private JSONObject createObject(Athletes athlete) {
         JSONObject object = new JSONObject();
@@ -174,11 +191,78 @@ public class SyncActivity extends AppCompatActivity {
         return object;
     }
 
+    private void callUpdateAthletes(){
+            if(Services.isOnline(SyncActivity.this)) {
+                linearProgress.setVisibility(View.VISIBLE);
+                String numathlete = String.valueOf(positionAthlete+1);
+                textProgress.setText("Atualizando "+numathlete+"º atleta.");
+
+                athletes.get(positionSaveAthletes).getId();
+                String url = Constants.URL + Constants.API_SELECTIVEATHLETES + "?" + Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER + "="
+                        + athletes.get(positionSaveAthletes).getCode();
+                SyncDatabase.callFunc(url, "UPDATE_SELECTIVEATHLETE", false, SyncActivity.this);
+            }
+    }
+
+    public static void updateSelectiveAthlete(Activity act, String response){
+        ((SyncActivity)act).updateSelectiveAthlete(response);
+    }
+
+    private void updateSelectiveAthlete(String response){
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        SelectiveAthletes selectiveAthlete = des.getSelectiveAthlete();
+
+        if (response.equals("[]")) {
+            linearProgress.setVisibility(View.GONE);
+            positionSaveAthletes = positionSaveAthletes +1;
+            calSyncAthletes();
+        }
+        else{
+            DatabaseHelper db = new DatabaseHelper(SyncActivity.this);
+            SelectiveAthletes sel = db.getSelectiveAthletesFromId(selectiveAthlete.getId());
+            if (sel == null) {
+                db.updateSelectiveAthlete(selectiveAthlete);
+
+                String url = Constants.URL + Constants.API_ATHLETES+"?"+Constants.ATHLETES_ID+"="+selectiveAthlete.getAthlete();
+                SyncDatabase.callFunc(url, "UPDATE_ATHLETE",  false, SyncActivity.this);
+            }
+            else {
+                linearProgress.setVisibility(View.GONE);
+                linearAddAthlete.setVisibility(View.GONE);
+                Services.messageAlert(SyncActivity.this, "Mensagem", "O código informado, já esta cadastrado a um atleta.", "");
+            }
+        }
+
+    }
+
+    public static void updateAthlete(Activity act, String response){
+        ((SyncActivity)act).updateAthlete(response);
+    }
+
+    private void updateAthlete(String response){
+        DeserializerJsonElements des = new DeserializerJsonElements(response);
+        Athletes athlete = des.getAthlete();
+
+        DatabaseHelper db = new DatabaseHelper(SyncActivity.this);
+        SelectiveAthletes selectiveAthletes = db.getSelectiveAthletesFromAthlete(athlete.getId());
+        athlete.setCode(selectiveAthletes.getInscriptionNumber());
+        db.updateAthlete(athlete);
+
+        linearProgress.setVisibility(View.GONE);
+        linearAddAthlete.setVisibility(View.GONE);
+
+        positionSaveAthletes = positionSaveAthletes +1;
+        calSyncAthletes();
+    }
+
+
     private void saveAthletes(){
         if(positionSaveAthletes<athletes.size()) {
             String url = Constants.URL + Constants.API_ATHLETES;
             idAthleteChange = athletes.get(positionSaveAthletes).getId();
             linearProgress.setVisibility(View.VISIBLE);
+            String numathlete = String.valueOf(positionAthlete+1);
+            textProgress.setText("Atualizando "+numathlete+"º atleta.");
 
             PostAthleteAsyncTask post = new PostAthleteAsyncTask();
             post.setActivity(SyncActivity.this);
@@ -284,7 +368,7 @@ public class SyncActivity extends AppCompatActivity {
             DatabaseHelper db = new DatabaseHelper(SyncActivity.this);
             db.updateSelectiveAthlete(item);
             positionSaveAthletes = positionSaveAthletes +1;
-            saveAthletes();
+            calSyncAthletes();
         }
     }
 

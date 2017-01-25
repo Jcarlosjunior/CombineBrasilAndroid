@@ -43,13 +43,14 @@ import br.com.john.combinebrasil.Services.Services;
 
 public class CronometerActivity extends AppCompatActivity {
     Toolbar toolbar;
-    TextView textFirstResult, textSecondValue, textCronometer, textShowQualify, textInfoNameAthlete, textInfoNameTest, textInfoDetailsAthlete, textInfoDetailsTest;
+    TextView textFirstResult, textSecondValue, textCronometer, textShowQualify, textInfoNameAthlete,
+            textInfoNameTest, textInfoDetailsAthlete, textInfoDetailsTest, textRating;
     LinearLayout linearButtonPlay, linearFirstValue, linearSecondValue, linearRating, linearInfo, deleteTest;
     ImageView imgIconButtonPlay, imgReset, imgPause, imgSave, imgTestArrow, imgAthleteArrow, imgDelete;
     Button btnSave, btnReady, btnInconclusive;
     RatingBar ratingBar;
     private float ratingValue = 0;
-    String idAthlete = "";
+    String idAthlete = "", nameTest="";
     int position = 0, inconclusive=0;
     boolean isSaveInconclusive=false, arrowDownTest=false, arrowDownPlayer=false;
 
@@ -95,6 +96,7 @@ public class CronometerActivity extends AppCompatActivity {
             TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
             db.getTestTypeFromId(AllActivities.testSelected).getName();
             textTitle.setText(db.getTestTypeFromId(AllActivities.testSelected).getName());
+            nameTest = db.getTestTypeFromId(AllActivities.testSelected).getName();
         }catch(Exception e){}
 
 
@@ -208,7 +210,7 @@ public class CronometerActivity extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void checkAndSaveRun(){
-        if(inconclusive >=2)
+        if(inconclusive >=1)
             isSaveInconclusive=true;
         if(firstValueSave==false){
             firstValueSave=true;
@@ -228,7 +230,6 @@ public class CronometerActivity extends AppCompatActivity {
             btnSave.setVisibility(View.VISIBLE);
             btnSave.setEnabled(true);
             stopCronometer();
-
         }
     }
 
@@ -258,7 +259,12 @@ public class CronometerActivity extends AppCompatActivity {
             resetCrometer();
         }
         else if(method.equals("saveAllResults")){
-            showRating();
+            if(nameTest.toString().toLowerCase().equals("sprint 40 jardas")|nameTest.toString().toLowerCase().equals("sprint 40")){
+                updateTest();
+                linearRating.setVisibility(View.GONE);
+                Services.messageAlert(CronometerActivity.this, "Mensagem","Os resultados foram salvos!","DIALOGSAVECRONOMETER");
+            }else
+                showRating();
         }
         else if(method.equals("deleteCronometer")){
             deleteTest();
@@ -329,7 +335,7 @@ public class CronometerActivity extends AppCompatActivity {
     }
 
     private void verifyInconclusive(){
-        if(inconclusive>=2){
+        if(inconclusive>=1){
             btnSave.setVisibility(View.GONE);
             btnInconclusive.setVisibility(View.VISIBLE);
         }
@@ -541,7 +547,20 @@ public class CronometerActivity extends AppCompatActivity {
         ratingDone.setRating(test.getRating());
         ratingDone.setEnabled(false);
 
-        txtRating.setText(Services.verifyQualification(test.getRating()));
+        if(nameTest.toString().toLowerCase().equals("sprint 40 jardas")||
+                nameTest.toString().toLowerCase().equals("sprint 40")){
+            ratingDone.setVisibility(View.INVISIBLE);
+            textRating.setVisibility(View.INVISIBLE);
+            txtRating.setVisibility(View.INVISIBLE);
+        }
+        else{
+            ratingDone.setVisibility(View.VISIBLE);
+            textRating.setVisibility(View.VISIBLE);
+            txtRating.setVisibility(View.VISIBLE);
+        }
+
+
+            txtRating.setText(Services.verifyQualification(test.getRating()));
 
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -592,6 +611,7 @@ public class CronometerActivity extends AppCompatActivity {
         ratingDone = (RatingBar) findViewById(R.id.rating_result_done);
         buttonBack = (Button) findViewById(R.id.button_back);
         txtRating = (TextView) findViewById(R.id.txt_rating_done);
+        textRating = (TextView) findViewById(R.id.text_rating);
 
         textInfoNameTest = (TextView) findViewById(R.id.text_info_name_test);
         textInfoNameAthlete = (TextView) findViewById(R.id.text_info_name_athlete);

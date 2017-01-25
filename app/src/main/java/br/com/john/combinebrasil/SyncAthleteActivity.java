@@ -174,9 +174,12 @@ public class SyncAthleteActivity extends AppCompatActivity {
             sync(tests.get(positionNow));
         }
         else {
-            linearProgress.setVisibility(View.VISIBLE);
+            Services.messageAlert(SyncAthleteActivity.this, "Aviso","Nada mais a sincronizar","");
+            linearProgress.setVisibility(View.GONE);
+
+            /*linearProgress.setVisibility(View.VISIBLE);
             Connection task = new Connection(Constants.URL + Constants.API_TESTS, 0, Constants.CALLED_GET_TESTS, false, SyncAthleteActivity.this);
-            task.callByJsonStringRequest();
+            task.callByJsonStringRequest();*/
 
         }
     }
@@ -327,8 +330,11 @@ public class SyncAthleteActivity extends AppCompatActivity {
         db.updateSync(athletes.get(positionNow).getId(), idTest, id);
 
         adapterSync.notifyItemChanged(positionNow);
-        SyncActivity.adapterTests.notifyItemChanged(positionSelected);
-
+        try {
+            SyncActivity.adapterTests.notifyItemChanged(positionSelected);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         verifySync();
     }
 

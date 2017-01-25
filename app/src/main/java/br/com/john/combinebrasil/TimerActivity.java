@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -204,7 +205,7 @@ public class TimerActivity extends AppCompatActivity {
             textResult.setText("Insira o quantidade de repetições feitas");
             btnSave.setText("SALVAR RESULTADO");
             editFirstResult.setText("");
-            btnAlterDone.setOnClickListener(clickSaveResults);
+            btnSave.setOnClickListener(clickSaveResults);
             init = false;
         }
     }
@@ -285,14 +286,16 @@ public class TimerActivity extends AppCompatActivity {
     }
     private void alertFinishTimer(){
         init=false;
-        Services.buildNotificationCommon(TimerActivity.this);
-
         this.runOnUiThread(new Runnable() {
             public void run() {
+                Services.buildNotificationCommon(TimerActivity.this);
                 Services.messageAlert(TimerActivity.this, "Mensagem","O timer foi concluído, insira o resultado do atleta.","timer");
                 textTimer.setText(SharedPreferencesAdapter.getTimerDefault(TimerActivity.this));
                 linearValues.setVisibility(View.VISIBLE);
                 linearSetting.setVisibility(View.VISIBLE);
+                Vibrator v = (Vibrator) TimerActivity.this.getSystemService(Context.VIBRATOR_SERVICE);
+                // Vibrate for 500 milliseconds
+                v.vibrate(500);
             }
         });
     }

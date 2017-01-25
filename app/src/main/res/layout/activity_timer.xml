@@ -148,7 +148,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.2"
-                            android:src="@drawable/reset_clock_small"
+                            android:src="@drawable/reset_clock"
                             android:id="@+id/image_icon_reset" />
 
                         <LinearLayout
@@ -186,7 +186,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.2"
-                            android:src="@drawable/icon_play_small"
+                            android:src="@drawable/icon_play"
                             android:id="@+id/image_icon_button_play" />
 
                         <LinearLayout
@@ -214,7 +214,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.2"
-                            android:src="@drawable/stop_small"
+                            android:src="@drawable/stop"
                             android:id="@+id/image_icon_button_stop" />
 
                         <LinearLayout

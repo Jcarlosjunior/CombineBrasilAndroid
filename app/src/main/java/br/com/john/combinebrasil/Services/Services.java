@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -340,6 +341,7 @@ public class Services {
 
 
     public static NotificationCompat.Builder buildNotificationCommon(final Activity _context) {
+        Log.i("NOTIFICATION","SOUNDS");
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(_context)
                 .setWhen(System.currentTimeMillis());

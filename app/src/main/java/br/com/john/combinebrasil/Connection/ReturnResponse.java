@@ -75,6 +75,8 @@ public class ReturnResponse {
                         SyncAthleteActivity.updateSelectiveAthlete(activity, "OK", response);
                     else if (activity.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY))
                         MainActivity.updateSelectiveAthlete(activity, response);
+                    else if (activity.getClass().getSimpleName().equals(Constants.SYNC_ACTIVITY))
+                        SyncActivity.updateSelectiveAthlete(activity, response);
                 }
                     //else
                         //SyncActivity.updateSelectiveAthlete(activity, response);
@@ -84,6 +86,8 @@ public class ReturnResponse {
                             SyncAthleteActivity.updateAthlete(activity, response);
                         else if (activity.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY))
                             MainActivity.updateAthlete(activity, response);
+                        else if (activity.getClass().getSimpleName().equals(Constants.SYNC_ACTIVITY))
+                            SyncActivity.updateAthlete(activity, response);
                     }
                     //else
                         //SyncActivity.updateAthlete(activity, response);

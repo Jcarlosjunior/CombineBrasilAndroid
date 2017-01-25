@@ -482,9 +482,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public long getCountTest(String idTest){
         this.openDataBase();
-        return  DatabaseUtils.longForQuery(myDataBase, "SELECT COUNT(*) FROM "+Constants.TABLE_TESTS +" WHERE "
-                +Constants.TESTS_TYPE+" ='"+idTest+"' and "
-                +Constants.TESTS_CANSYNC+"=1", null);
+        return  DatabaseUtils.longForQuery(myDataBase, "SELECT COUNT(*) FROM "
+                +Constants.TABLE_TESTS +" WHERE ("
+                +Constants.TESTS_TYPE+" ='"+idTest+"' " +
+                "and "
+                +Constants.TESTS_CANSYNC+"=1)", null);
     }
 
     public long getCountTestSync(String idTest){

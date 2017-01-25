@@ -40,6 +40,7 @@ import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
+import br.com.john.combinebrasil.Services.Services;
 import br.com.john.combinebrasil.Services.Timer;
 
 public class AthletesActivity extends AppCompatActivity {
@@ -156,8 +157,18 @@ public class AthletesActivity extends AppCompatActivity {
     private String getCountAthletes(){
         DatabaseHelper db = new DatabaseHelper(AthletesActivity.this);
         long numAthltes = db.getCountTable(Constants.TABLE_ATHLETES);
-        long numSync = db.getCountTestSync(AllActivities.testSelected);
-        long numTests = db.getCountTest(AllActivities.testSelected);
+        long numSync = 0;
+        long numTests = 0;
+        ArrayList<Tests> tests = db.getTestsFromType(AllActivities.testSelected);
+        if(tests!=null) {
+            for (Tests obj : tests) {
+                if (obj.getCanSync())
+                    numTests = numTests + 1;
+                if (Services.convertIntInBool(obj.getSync()))
+                    numSync = numSync + 1;
+            }
+        }
+
        if(numTests==numAthltes){
            if(numSync<numAthltes)
                linearSync.setVisibility(View.VISIBLE);

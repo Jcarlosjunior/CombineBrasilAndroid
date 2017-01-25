@@ -52,7 +52,7 @@ public class ResultsActivity extends AppCompatActivity {
     LinearLayout linearRating, linearWingSpan, deleteTest;
     RatingBar ratingBar;
     String idAthlete = "", wingspan=" ";
-    float ratingValue;
+    float ratingValue = 0;
 
     LinearLayout linearInsert, linearResultDone;
     TextView txtFistDone, txtSecondDone, txtNameResult, txtRating;
@@ -300,7 +300,8 @@ public class ResultsActivity extends AppCompatActivity {
             checkAndSaveResults();
         }
         else if(method.equals("saveAllResults")){
-            showRating();
+            updateTest();
+            Services.messageAlert(ResultsActivity.this, "Mensagem","Os resultados foram salvos!", "DialogSaveResults");
         }
         else if(method.equals("exitActivity")){
             finish();
@@ -345,8 +346,6 @@ public class ResultsActivity extends AppCompatActivity {
                         String.valueOf(Services.verifyQualification(ratingBar.getRating())),
                         Toast.LENGTH_SHORT).show();
                 linearRating.setVisibility(View.GONE);
-                updateTest();
-                Services.messageAlert(ResultsActivity.this, "Mensagem","Os resultados foram salvos!", "DialogSaveResults");
             }
         });
     }
