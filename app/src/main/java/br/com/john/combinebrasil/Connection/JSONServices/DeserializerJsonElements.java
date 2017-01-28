@@ -417,7 +417,9 @@ public class DeserializerJsonElements {
                             json.optString(Constants.TESTTYPES_ATTEMPTSLIMIT),
                             json.optBoolean(Constants.TESTTYPES_VISIBLETOREPORT),
                             json.optString(Constants.TESTTYPES_DESCRIPTION),
-                            json.optString(Constants.TESTTYPES_VALUETYPES)
+                            json.optString(Constants.TESTTYPES_VALUETYPES),
+                            json.optString(Constants.TESTTYPES_ICONIMAGEURL),
+                            json.optString(Constants.TESTTYPES_TUTORIALIMAGEURL)
                     );
 
                     teams.add(obj);
@@ -486,5 +488,35 @@ public class DeserializerJsonElements {
             Log.i("ERROR: getPositions", e.getMessage());
         }
         return test;
+    }
+
+    public Tests getTestObjectTest() {
+        Tests tests = new Tests();
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+
+            if (jsonArray.length() > 0) {
+                for (int i = 0; i <= jsonArray.length() - 1; i++) {
+                    JSONObject json = new JSONObject(jsonArray.getString(i));
+                     tests = new Tests(
+                            json.optString(Constants.TESTS_ID),
+                            json.optString(Constants.TESTS_TYPE),
+                            json.optString(Constants.TESTS_ATHLETE),
+                            json.optString(Constants.TESTS_SELECTIVE),
+                            json.optLong(Constants.TESTS_FIRST_VALUE),
+                            json.optLong(Constants.TESTS_SECOND_VALUE),
+                            (float) (json.optDouble(Constants.TESTS_RATING)),
+                            json.optString(Constants.TESTS_WINGSPAN),
+                            json.optString(Constants.TESTS_USER),
+                            Services.convertBoolInInt(true),
+                            true
+                    );
+                }
+            }
+        } catch (JSONException e) {
+            tests = null;
+            Log.i("ERROR: getPositions", e.getMessage());
+        }
+        return tests;
     }
 }

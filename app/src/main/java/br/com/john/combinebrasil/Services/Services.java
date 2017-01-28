@@ -126,8 +126,8 @@ public class Services {
 
     public static Bitmap getRoundedCornerBitmap(Bitmap pBitmap) {
 
-        int width = 250;
-        int height = pBitmap.getHeight() * 250 / pBitmap.getWidth();
+        int width = 400;
+        int height = pBitmap.getHeight() * 400 / pBitmap.getWidth();
 
 
         Bitmap bitmap = Bitmap.createScaledBitmap(pBitmap, width, height, true);
@@ -351,7 +351,6 @@ public class Services {
         Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         //Ton
         builder.setSound(notification);
-
 
         return builder;
     }

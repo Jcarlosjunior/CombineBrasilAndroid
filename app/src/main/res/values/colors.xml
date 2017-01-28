@@ -9,13 +9,14 @@
     <color name="white_transparent">#88ffffff</color>
     <color name="whiteDark">#f4f4f4</color>
     <color name="greyDark">#7d7d7d</color>
-    <color name="red_status">#d71a06</color>
+    <color name="red_status">#c74437</color>
     <color name="red_dark">#FFB71504</color>
     <color name="grey_transparent">#47dddddd</color>
     <color name="grey_transparent_menu">#bfcccccc</color>
     <color name="dark_transparent">#d9000000</color>
     <color name="yellow">#ffde00</color>
-    <color name="green">#009925</color>
+    <color name="green">#3abf5a</color>
+    <color name="green_done">#e23fb95c</color>
     <color name="green_dark">#FF007B1E</color>
     <color name="orange">#dc5515</color>
     <color name="orange_light">#ed5d18</color>

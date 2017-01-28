@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -151,6 +152,8 @@ public class AthletesActivity extends AppCompatActivity {
     protected void onRestart(){
         super.onRestart();
         textCount.setText(getCountAthletes());
+        editSearch.setText("");
+        hideKeyboard();
         callInflateAthletes();
     }
 
@@ -182,18 +185,18 @@ public class AthletesActivity extends AppCompatActivity {
         DatabaseHelper db = new DatabaseHelper(myContext);
         db.openDataBase();
         athletesArrayList = db.getAthletes();
-        if(athletesArrayList!=null){
-            Collections.sort(athletesArrayList, new Comparator<Athletes>() {
-                public int compare(Athletes v1, Athletes v2) {
-                    return v1.getName().toLowerCase().compareTo(v2.getName().toLowerCase());
-                }
-            });
+        if(athletesArrayList!=null) {
+            listViewPlayers.setVisibility(View.VISIBLE);
+            linearNotSearch.setVisibility(View.GONE);
+            orderName();
             showList(athletesArrayList);
         }
+
     }
 
     private void showList(ArrayList<Athletes> arrayAthletes){
         if(!(arrayAthletes == null || arrayAthletes.size()==0)){
+            this.athletesArrayList = arrayAthletes;
             String[] values = new String[arrayAthletes.size()];
             for(int i=0; i <=arrayAthletes.size()-1; i++){
                 values[i] = arrayAthletes.get(i).getId();
@@ -268,6 +271,7 @@ public class AthletesActivity extends AppCompatActivity {
                         editSearch.setCursorVisible(false);
                         editSearch.clearFocus();
                         ret = true;
+                        callInflateAthletes();
                     }
                 }
                 ret = false;
@@ -350,8 +354,11 @@ public class AthletesActivity extends AppCompatActivity {
         DatabaseHelper db = new DatabaseHelper(AthletesActivity.this);
         db.openDataBase();
         ArrayList<Athletes> athletesList = db.searchAthletes(search);
-        if(athletesList!= null && athletesList.size()>0)
+        if(athletesList!= null && athletesList.size()>0) {
             showList(athletesList);
+            listViewPlayers.setVisibility(View.VISIBLE);
+            linearNotSearch.setVisibility(View.GONE);
+        }
         else{
             listViewPlayers.setVisibility(View.GONE);
             linearNotSearch.setVisibility(View.VISIBLE);

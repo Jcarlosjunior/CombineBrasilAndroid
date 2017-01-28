@@ -15,6 +15,7 @@
         android:paddingLeft="10sp"
         android:background="@drawable/background_border_list">
         <LinearLayout
+            android:id="@+id/linear_img_done"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.1">
@@ -24,6 +25,19 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/check"
                 android:id="@+id/img_status_sync" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_img_sync"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/icon_upload"
+                android:id="@+id/img_sync" />
         </LinearLayout>
 
         <LinearLayout
@@ -83,19 +97,5 @@
             </LinearLayout>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/icon_upload"
-                android:id="@+id/img_sync" />
-        </LinearLayout>
-
-
     </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,7 @@
 package br.com.john.combinebrasil;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -143,13 +144,17 @@ public class MainActivity extends AppCompatActivity {
         ((MainActivity)act).syncAll();
     }
     private void syncAll(){
-        linearProgress.setVisibility(View.VISIBLE);
-        try {
-            SyncDatabase syncDatabase = new SyncDatabase(MainActivity.this);
-            syncDatabase.initSyncDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(Services.isOnline(MainActivity.this)) {
+            linearProgress.setVisibility(View.VISIBLE);
+            try {
+                SyncDatabase syncDatabase = new SyncDatabase(MainActivity.this);
+                syncDatabase.initSyncDatabase();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        else
+            Services.messageAlert(MainActivity.this, "Aviso","Você precisa estar conectado à internet para atualizar.","");
     }
 
     public static void finishSync(Activity act){
@@ -221,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRestart(){
         super.onRestart();
         PlayersFragment.callInflateAthletes();
+        TestsFragment.callInflateTests();
     }
 
     Intent intent = null;
@@ -298,7 +304,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void returnMessageOptions(String whoCalled){
         if(whoCalled.equals("update")){
-            linearProgress.setVisibility(View.VISIBLE);
             syncAll();
         }
 

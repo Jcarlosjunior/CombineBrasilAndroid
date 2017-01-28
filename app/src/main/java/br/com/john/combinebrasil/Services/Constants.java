@@ -8,11 +8,12 @@ import java.io.File;
  * Created by GTAC on 17/10/2016.
  */
 public class Constants {
-    public static final boolean debug = true;
+    public static final boolean debug = false;
 
     public static final int STATUS_NOT_INIT=0, STATUS_DONE=1, STATUS_PENDING=2;
 
-    public static final String URL = "https://combine-api.herokuapp.com/";
+    //public static final String URL = "https://combine-api.herokuapp.com/"; //Ambiente de testes
+    public static final String URL = "http://production-combine-api.herokuapp.com/"; //Ambiente de testes
 
     public static final String login = "api/login";
 
@@ -155,6 +156,8 @@ public class Constants {
     public static final String TESTTYPES_VISIBLETOREPORT = "visibleToReport";
     public static final String TESTTYPES_DESCRIPTION = "description";
     public static final String TESTTYPES_VALUETYPES= "valueType";
+    public static final String TESTTYPES_ICONIMAGEURL= "iconImageUrl";
+    public static final String TESTTYPES_TUTORIALIMAGEURL= "tutorialImageUrl";
 
     /************************************TESTS*******************************************/
     public static final String TABLE_TESTS = "Tests";

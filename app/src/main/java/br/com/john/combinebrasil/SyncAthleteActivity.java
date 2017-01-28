@@ -311,8 +311,10 @@ public class SyncAthleteActivity extends AppCompatActivity {
                 positionNow = positionNow + 1;
                 callSynAll();
             }
-            else
-                Services.messageAlert(SyncAthleteActivity.this, "Aviso","Erro ao tentar sincronizar teste.","");
+            else{
+                updateTestExist(result);
+            }
+
         }
         else{
             if(resp.equals("OK")){
@@ -321,8 +323,56 @@ public class SyncAthleteActivity extends AppCompatActivity {
                 updateTest(test.getId());
             }
             else
-                Services.messageAlert(SyncAthleteActivity.this, "Aviso","Erro ao tentar sincronizar teste.","");
+                updateTestExist(result);
         }
+    }
+
+    private void updateTestExist(String result){
+        try {
+            linearProgress.setVisibility(View.VISIBLE);
+            JSONObject json = new JSONObject(result);
+            String detail = json.getString("detail");
+            json = new JSONObject(detail);
+            if(json.getInt("code") ==  11000){
+                String update = json.getString("op");
+                json = new JSONObject(update);
+                String url = Constants.URL+Constants.API_TESTS+"?"+Constants.TESTS_ATHLETE+"="+
+                        json.getString(Constants.TESTS_ATHLETE)+"&"+
+                        Constants.TESTS_TYPE+"="+json.getString(Constants.TESTS_TYPE);
+                Connection task = new Connection(url, 0, "UPDATE_TEST", false, SyncAthleteActivity.this);
+                task.callByJsonStringRequest();
+            }
+            else{
+                linearProgress.setVisibility(View.GONE);
+                Services.messageAlert(SyncAthleteActivity.this, "Aviso","Erro ao tentar sincronizar teste.","");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void returnUpdateSync(Activity act, String response){
+        ((SyncAthleteActivity)act).returnUpdateSync(response);
+    }
+
+    private void returnUpdateSync(String response) {
+        linearProgress.setVisibility(View.GONE);
+        if (!response.equals("[]")) {
+            DeserializerJsonElements des = new DeserializerJsonElements(response);
+            Tests test = des.getTestObjectTest();
+            if (test != null) {
+                updateTest(test.getId());
+                if (syncAll) {
+                    positionNow = positionNow + 1;
+                    callSynAll();
+                }
+            } else
+                Services.messageAlert(SyncAthleteActivity.this, "Aviso", "Erro ao tentar sincronizar teste.", "");
+        }
+        else
+            Services.messageAlert(SyncAthleteActivity.this, "Aviso", "Erro ao tentar sincronizar teste.", "");
+
     }
 
     private void updateTest(String id){

@@ -41,6 +41,8 @@ public class ReturnResponse {
             if (!response.equals(null) || response.length() <= 0) {
                 if(whoCalled.equals("updateAthleteAccount"))
                     CreateAccountAthlete.returnAccountAthlete(activity, response);
+                if(whoCalled.equals("UPDATE_TEST"))
+                    SyncAthleteActivity.returnUpdateSync(activity, response);
 
                 if (whoCalled.equals(Constants.CALLED_LOGIN))
                     LoginActivity.afterLogin(response, isList, activity, statuCode);

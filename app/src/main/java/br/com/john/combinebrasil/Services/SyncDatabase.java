@@ -223,7 +223,7 @@ public class SyncDatabase {
             ArrayList<Athletes> athletesAdd = new ArrayList<Athletes>();
             for(int i=0; i<=athletesList.size()-1; i++){
                 SelectiveAthletes item = db.getSelectiveAthletesFromAthlete(athletesList.get(i).getId());
-                if(item!=null){
+                if(item!=null) {
                     athletesList.get(i).setCode(item.getInscriptionNumber());
                     athletesAdd.add(athletesList.get(i));
                 }
@@ -276,10 +276,12 @@ public class SyncDatabase {
             throw new Error("Unable to create database");
         }
         try {
+            Selective sel = db.getSelective();
             db.openDataBase();
             db.addTestTypes(testTypes);
             db.close();
-            callFunc(Constants.URL + Constants.API_TESTS, Constants.CALLED_GET_TESTS,  false, activity);
+            String url = Constants.URL + Constants.API_TESTS+"?"+Constants.TESTS_SELECTIVE+"="+sel.getId();
+            callFunc(url, Constants.CALLED_GET_TESTS,  false, activity);
             MainActivity.textProgress.setText("Sincronizando testes");
         } catch (SQLException sqle) {
             Services.messageAlert(activity, "Mensagem", sqle.getMessage(), "");

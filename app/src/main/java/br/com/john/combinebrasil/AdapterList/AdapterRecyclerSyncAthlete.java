@@ -48,6 +48,8 @@ public class AdapterRecyclerSyncAthlete  extends RecyclerView.Adapter<AdapterRec
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         LinearLayout linearBackground;
+        LinearLayout linearDone;
+        LinearLayout linearSync;
         TextView txtName;
         TextView txtCode;
         TextView txtFirstResult;
@@ -58,6 +60,8 @@ public class AdapterRecyclerSyncAthlete  extends RecyclerView.Adapter<AdapterRec
         public ViewHolder(View v) {
             super(v);
             linearBackground = (LinearLayout) v.findViewById(R.id.linear_sync_athlete);
+            linearDone = (LinearLayout) v.findViewById(R.id.linear_img_done);
+            linearSync = (LinearLayout) v.findViewById(R.id.linear_img_sync);
             txtName = (TextView) v.findViewById(R.id.text_name_sync);
             txtCode = (TextView) v.findViewById(R.id.text_code_sync);
             txtFirstResult = (TextView) v.findViewById(R.id.text_first_sync);
@@ -107,13 +111,13 @@ public class AdapterRecyclerSyncAthlete  extends RecyclerView.Adapter<AdapterRec
         }
 
         if (Services.convertIntInBool(test.getSync())){
-            holder.imgSync.setVisibility(View.GONE);
-            holder.imgStatus.setImageDrawable(activity.getDrawable(R.drawable.check));
-
+            holder.linearSync.setVisibility(View.GONE);
+            holder.linearDone.setVisibility(View.VISIBLE);
         }
         else {
-            holder.imgSync.setVisibility(View.VISIBLE);
             holder.imgStatus.setVisibility(View.GONE);
+            holder.linearDone.setVisibility(View.GONE);
+            holder.linearSync.setVisibility(View.VISIBLE);
         }
 
         holder.imgSync.setOnClickListener(new View.OnClickListener() {

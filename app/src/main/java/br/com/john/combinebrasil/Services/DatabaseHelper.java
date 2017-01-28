@@ -12,6 +12,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.SyncStateContract;
 import android.util.Log;
 
+import org.junit.Test;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -170,25 +172,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.openDataBase();
         try{
             for (Athletes obj : listAthletes) {
-                ContentValues values = new ContentValues();
+                Athletes athlete = this.getAthleteByValue(Constants.ATHLETES_CODE, obj.getDesirablePosition());
+                if(athlete==null){
+                    ContentValues values = new ContentValues();
 
-                values.put(Constants.ATHLETES_ID, obj.getId());
-                values.put(Constants.ATHLETES_NAME, obj.getName());
-                values.put(Constants.ATHLETES_BIRTHDAY, obj.getBirthday());
-                values.put(Constants.ATHLETES_CPF, obj.getCPF());
-                values.put(Constants.ATHLETES_ADDRESS, obj.getAddress());
-                values.put(Constants.ATHLETES_DESIRABLE_POSITION, obj.getDesirablePosition());
-                values.put(Constants.ATHLETES_HEIGHT, obj.getHeight());
-                values.put(Constants.ATHLETES_WEIGHT, obj.getWeight());
-                values.put(Constants.ATHLETES_CREATEDAT, obj.getCreatedAt());
-                values.put(Constants.ATHLETES_UPDATEAT, obj.getUpdateAt());
-                values.put(Constants.ATHLETES_CODE, obj.getCode());
-                values.put(Constants.ATHLETES_EMAIL, obj.getEmail());
-                values.put(Constants.ATHLETES_PHONE, obj.getPhoneNumber());
-                values.put(Constants.ATHLETES_SYNC, Services.convertBoolInInt(obj.getSync()));
-                values.put(Constants.ATHLETES_TERMSACCEPTED, Services.convertBoolInInt(obj.getTermsAccepted()));
+                    values.put(Constants.ATHLETES_ID, obj.getId());
+                    values.put(Constants.ATHLETES_NAME, obj.getName());
+                    values.put(Constants.ATHLETES_BIRTHDAY, obj.getBirthday());
+                    values.put(Constants.ATHLETES_CPF, obj.getCPF());
+                    values.put(Constants.ATHLETES_ADDRESS, obj.getAddress());
+                    values.put(Constants.ATHLETES_DESIRABLE_POSITION, obj.getDesirablePosition());
+                    values.put(Constants.ATHLETES_HEIGHT, obj.getHeight());
+                    values.put(Constants.ATHLETES_WEIGHT, obj.getWeight());
+                    values.put(Constants.ATHLETES_CREATEDAT, obj.getCreatedAt());
+                    values.put(Constants.ATHLETES_UPDATEAT, obj.getUpdateAt());
+                    values.put(Constants.ATHLETES_CODE, obj.getCode());
+                    values.put(Constants.ATHLETES_EMAIL, obj.getEmail());
+                    values.put(Constants.ATHLETES_PHONE, obj.getPhoneNumber());
+                    values.put(Constants.ATHLETES_SYNC, Services.convertBoolInInt(obj.getSync()));
+                    values.put(Constants.ATHLETES_TERMSACCEPTED, Services.convertBoolInInt(obj.getTermsAccepted()));
 
-                ret = myDataBase.insert(Constants.TABLE_ATHLETES, null, values);
+                    ret = myDataBase.insert(Constants.TABLE_ATHLETES, null, values);
+                }
+                else if(!athlete.getSync()){
+                    this.updateAthlete(athlete);
+                }
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -248,15 +256,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.openDataBase();
         try{
             for (SelectiveAthletes obj : selectiveAthletes) {
-                ContentValues values = new ContentValues();
+                SelectiveAthletes sel = this.getSelectiveAthletesFromId(obj.getInscriptionNumber());
+                if(sel==null) {
+                    ContentValues values = new ContentValues();
 
-                values.put(Constants.SELECTIVEATHLETES_ID, obj.getId());
-                values.put(Constants.SELECTIVEATHLETES_ATHLETE, obj.getAthlete());
-                values.put(Constants.SELECTIVEATHLETES_SELECTIVE, obj.getSelective());
-                values.put(Constants.SELECTIVEATHLETES_PRESENCE, Services.convertBoolInInt(obj.getPresence()));
-                values.put(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER, obj.getInscriptionNumber().toUpperCase());
+                    values.put(Constants.SELECTIVEATHLETES_ID, obj.getId());
+                    values.put(Constants.SELECTIVEATHLETES_ATHLETE, obj.getAthlete());
+                    values.put(Constants.SELECTIVEATHLETES_SELECTIVE, obj.getSelective());
+                    values.put(Constants.SELECTIVEATHLETES_PRESENCE, Services.convertBoolInInt(obj.getPresence()));
+                    values.put(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER, obj.getInscriptionNumber().toUpperCase());
 
-                ret = myDataBase.insert(Constants.TABLE_SELECTIVEATHLETES, null, values);
+                    ret = myDataBase.insert(Constants.TABLE_SELECTIVEATHLETES, null, values);
+                }else if(sel.getId().equals(obj.getId())){
+                    this.updateSelectiveAthlete(obj);
+                }
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -369,6 +382,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTTYPES_VISIBLETOREPORT, Services.convertBoolInInt(obj.getVisibleToReport()));
                 values.put(Constants.TESTTYPES_DESCRIPTION, obj.getDescription());
                 values.put(Constants.TESTTYPES_VALUETYPES, obj.getValueType());
+                values.put(Constants.TESTTYPES_ICONIMAGEURL, obj.getIconImageURL());
+                values.put(Constants.TESTTYPES_TUTORIALIMAGEURL, obj.getTutorialImageURL());
 
                 ret = myDataBase.insert(Constants.TABLE_TESTTYPES, null, values);
             }
@@ -382,20 +397,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.openDataBase();
         try{
             for (Tests obj : tests) {
-                ContentValues values = new ContentValues();
+                Tests tes = this.getTestFromAthleteAndType(obj.getAthlete(), obj.getType());
+                if(tes==null) {
+                    ContentValues values = new ContentValues();
 
-                values.put(Constants.TESTS_ID, obj.getId());
-                values.put(Constants.TESTS_TYPE, obj.getType());
-                values.put(Constants.TESTS_ATHLETE, obj.getAthlete());
-                values.put(Constants.TESTS_FIRST_VALUE, obj.getFirstValue());
-                values.put(Constants.TESTS_SECOND_VALUE, obj.getSecondValue());
-                values.put(Constants.TESTS_RATING, obj.getRating());
-                values.put(Constants.TESTS_WINGSPAN, obj.getWingspan());
-                values.put(Constants.TESTS_USER, obj.getUser());
-                values.put(Constants.TESTS_SYNC, obj.getSync());
-                values.put(Constants.TESTS_CANSYNC, Services.convertBoolInInt(obj.getCanSync()));
+                    values.put(Constants.TESTS_ID, obj.getId());
+                    values.put(Constants.TESTS_TYPE, obj.getType());
+                    values.put(Constants.TESTS_ATHLETE, obj.getAthlete());
+                    values.put(Constants.TESTS_FIRST_VALUE, obj.getFirstValue());
+                    values.put(Constants.TESTS_SECOND_VALUE, obj.getSecondValue());
+                    values.put(Constants.TESTS_RATING, obj.getRating());
+                    values.put(Constants.TESTS_WINGSPAN, obj.getWingspan());
+                    values.put(Constants.TESTS_USER, obj.getUser());
+                    values.put(Constants.TESTS_SYNC, obj.getSync());
+                    values.put(Constants.TESTS_CANSYNC, Services.convertBoolInInt(obj.getCanSync()));
 
-                ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
+                    ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
+                }
+                else{
+                    updateTest(obj);
+                }
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -581,6 +602,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String selectQuery = "SELECT * FROM " + Constants.TABLE_SELECTIVEATHLETES +
                 " WHERE "+Constants.SELECTIVEATHLETES_ID+"='"+id+"'";
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+        SelectiveAthletes obj= new SelectiveAthletes();
+        if (c.moveToNext()) {
+            obj= new SelectiveAthletes(
+                    c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_ID)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_ATHLETE)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_SELECTIVE)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER)).toUpperCase(),
+                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVEATHLETES_PRESENCE)))
+            );
+
+        } else {
+            obj = null;
+        }
+        c.close();
+        this.close();
+
+        return obj;
+    }
+
+    public SelectiveAthletes getSelectiveAthletesFromCode(String code) {
+        this.openDataBase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_SELECTIVEATHLETES +
+                " WHERE "+Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER+"='"+code.toUpperCase()+"'";
         Cursor c = myDataBase.rawQuery(selectQuery, null);
         SelectiveAthletes obj= new SelectiveAthletes();
         if (c.moveToNext()) {
@@ -889,7 +935,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_ATTEMPTSLIMIT)),
                         Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_VISIBLETOREPORT))),
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_DESCRIPTION)),
-                        c.getString(c.getColumnIndex(Constants.TESTTYPES_VALUETYPES))
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_VALUETYPES)),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_ICONIMAGEURL)),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_TUTORIALIMAGEURL))
                 );
 
                 itens.add(obj);
@@ -1071,7 +1119,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_ATTEMPTSLIMIT)),
                         Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_VISIBLETOREPORT))),
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_DESCRIPTION)),
-                        c.getString(c.getColumnIndex(Constants.TESTTYPES_VALUETYPES))
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_VALUETYPES)),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_ICONIMAGEURL)),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_TUTORIALIMAGEURL))
                 );
             } else {
                 test = null;
@@ -1256,6 +1306,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             String selectQuery = "UPDATE " + Constants.TABLE_TESTS + " SET "
                     + Constants.TESTS_ATHLETE + "='" +newId + "'  WHERE "+ Constants.TESTS_ATHLETE + "='" + idOlder+ "'";
+
+            Cursor c = myDataBase.rawQuery(selectQuery, null);
+            c.getCount();
+
+        } catch (Exception e) {
+            Log.i("ERROR UPDATE", e.getMessage());
+        }
+        return ret;
+    }
+
+    public boolean updateTest(Tests test) {
+        boolean ret = false;
+        this.openDataBase();
+        try {
+            String selectQuery = "UPDATE " + Constants.TABLE_TESTS + " SET "
+                    + Constants.TESTS_SYNC + "=1, " +
+                     Constants.TESTS_CANSYNC + "=1, " +
+                     Constants.TESTS_ID + "='"+test.getId()+"', "+
+                     Constants.TESTS_FIRST_VALUE + "= "+test.getFirstValue()+", "+
+                     Constants.TESTS_SECOND_VALUE + "= "+test.getSecondValue()+", "+
+                     Constants.TESTS_RATING + "= "+test.getRating()+", "+
+                     Constants.TESTS_WINGSPAN + "= '"+test.getWingspan()+"', "+
+                        "= '"+test.getWingspan()+"', "+
+                    "' WHERE "+ Constants.TESTS_ATHLETE + "='" + test.getAthlete()+ "'"+
+                    " AND "+Constants.TESTS_TYPE +" = '"+test.getType()+"'";
 
             Cursor c = myDataBase.rawQuery(selectQuery, null);
             c.getCount();

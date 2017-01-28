@@ -52,6 +52,7 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         LinearLayout linearBackground;
+        LinearLayout linearStatus;
         TextView textNamePlayer;
         TextView textFirstResult;
         TextView textSecondResult;
@@ -61,7 +62,8 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
         public ViewHolder(View v) {
             super(v);
             linearBackground = (LinearLayout) v.findViewById(R.id.linear_list_players);
-            textNamePlayer = (TextView) v.findViewById(R.id.text_name_player_list);
+            linearStatus = (LinearLayout) v.findViewById(R.id.linear_img_status);
+           textNamePlayer = (TextView) v.findViewById(R.id.text_name_player_list);
             textFirstResult = (TextView) v.findViewById(R.id.text_first_result_list);
             textSecondResult = (TextView) v.findViewById(R.id.text_second_result_list);
             textCode = (TextView) v.findViewById(R.id.text_code_list);
@@ -95,6 +97,7 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
         holder.textFirstResult.setText("");
         holder.textSecondResult.setText("");
         holder.textCode.setText(list.get(position).getCode());
+        holder.textStatus.setVisibility(View.GONE);
 
         DatabaseHelper db = new DatabaseHelper(activity);
         db.openDataBase();
@@ -103,16 +106,15 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
         if(test!=null) {
             TestTypes type = db.getTestTypeFromId(test.getType());
             if(test.getCanSync()) {
+                holder.linearStatus.setVisibility(View.VISIBLE);
                 holder.textStatus.setVisibility(View.VISIBLE);
                 if(Services.convertIntInBool(test.getSync()))
                     holder.textStatus.setText("Exercício já sincronizado");
                 else
                     holder.textStatus.setText("Exercício pronto pra ser sincronizado");
-                holder.imgStatus.setImageDrawable(activity.getDrawable(R.drawable.check));
             }
             else {
-                holder.textStatus.setVisibility(View.GONE);
-                holder.imgStatus.setVisibility(View.GONE);
+                holder.linearStatus.setVisibility(View.GONE);
             }
 
             if (type.getValueType().toLowerCase().equals("corrida") || type.getValueType().toLowerCase().equals("tempo")){
@@ -130,7 +132,7 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
             }
         }
         else
-            holder.imgStatus.setVisibility(View.GONE);
+            holder.linearStatus.setVisibility(View.GONE);
     }
 
 
