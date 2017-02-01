@@ -15,6 +15,7 @@ import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.ResultsActivity;
+import br.com.john.combinebrasil.ResultsOnlyOneActivity;
 import br.com.john.combinebrasil.TimerActivity;
 
 /**
@@ -78,6 +79,9 @@ public class MessageOptions {
         }
         else if(act.getClass().getSimpleName().equals(Constants.RESULTS_ACTIVITY)){
             ResultsActivity.getMethodOutResultsActivity(act, whoCalled);
+        }
+        else if(act.getClass().getSimpleName().equals(Constants.RESULTS_ONLY_ONE_ACTIVITY)){
+            ResultsOnlyOneActivity.getMethodOutResultsActivity(act, whoCalled);
         }
         else if(act.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY)){
             MainActivity.returnMessageOptions(act, whoCalled);

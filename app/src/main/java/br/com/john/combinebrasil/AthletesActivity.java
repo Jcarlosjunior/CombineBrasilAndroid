@@ -8,8 +8,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -24,17 +22,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import br.com.john.combinebrasil.AdapterList.AdapterListAthletes;
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerAthletes;
-import br.com.john.combinebrasil.AdapterList.AdapterRecyclerTests;
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
@@ -42,7 +36,6 @@ import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Services;
-import br.com.john.combinebrasil.Services.Timer;
 
 public class AthletesActivity extends AppCompatActivity {
     public static RecyclerView listViewPlayers;
@@ -60,7 +53,7 @@ public class AthletesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_players);
+        setContentView(R.layout.activity_athletes);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -236,11 +229,13 @@ public class AthletesActivity extends AppCompatActivity {
         db.openDataBase();
         TestTypes testTypes = db.getTestTypeFromId(AllActivities.testSelected);
         if(testTypes.getValueType().toLowerCase().equals("corrida") || testTypes.getValueType().toLowerCase().equals("tempo"))
-            i = new Intent(AthletesActivity.this, CronometerActivity.class);
+            //i = new Intent(AthletesActivity.this, CronometerActivity.class);
+            i = new Intent(AthletesActivity.this, CronometerOnlyOneActivity.class);
         else if (testTypes.getValueType().toLowerCase().equals("repeticao")|| testTypes.getValueType().toLowerCase().equals("repeticao por tempo"))
             i = new Intent(AthletesActivity.this, TimerActivity.class);
         else
-            i = new Intent(AthletesActivity.this, ResultsActivity.class);
+            //i = new Intent(AthletesActivity.this, ResultsActivity.class);
+            i = new Intent(AthletesActivity.this, ResultsOnlyOneActivity.class);
 
         i.putExtra("id_player",player.getId());
         i.putExtra("position",position);

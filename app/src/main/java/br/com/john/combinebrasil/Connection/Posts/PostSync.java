@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.john.combinebrasil.CreateAccountAthlete;
+import br.com.john.combinebrasil.CronometerOnlyOneActivity;
+import br.com.john.combinebrasil.ResultsOnlyOneActivity;
 import br.com.john.combinebrasil.SyncActivity;
 import br.com.john.combinebrasil.SyncAthleteActivity;
 
@@ -94,11 +96,18 @@ public class PostSync extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String status) {
-        if(isSyncAcitivity){
-            SyncActivity.returnPostSync(activity, resp, result);
+        if(activity.getClass().getSimpleName().equals("CronometerOnlyOneActivity")){
+            CronometerOnlyOneActivity.returnPostTest(activity, resp, result);
         }
-        else{
-            SyncAthleteActivity.returnPostTest(activity, resp, result);
+        else if(activity.getClass().getSimpleName().equals("ResultsOnlyOneActivity")){
+            ResultsOnlyOneActivity.returnPostTest(activity, resp, result);
+        }
+        else {
+            if (isSyncAcitivity) {
+                SyncActivity.returnPostSync(activity, resp, result);
+            } else {
+                SyncAthleteActivity.returnPostTest(activity, resp, result);
+            }
         }
     }
 

@@ -12,8 +12,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import br.com.john.combinebrasil.CreateAccountAthlete;
+import br.com.john.combinebrasil.CronometerOnlyOneActivity;
 import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
+import br.com.john.combinebrasil.ResultsOnlyOneActivity;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.SyncDatabase;
 import br.com.john.combinebrasil.SyncActivity;
@@ -41,8 +43,14 @@ public class ReturnResponse {
             if (!response.equals(null) || response.length() <= 0) {
                 if(whoCalled.equals("updateAthleteAccount"))
                     CreateAccountAthlete.returnAccountAthlete(activity, response);
-                if(whoCalled.equals("UPDATE_TEST"))
-                    SyncAthleteActivity.returnUpdateSync(activity, response);
+                if(whoCalled.equals("UPDATE_TEST")) {
+                    if(activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
+                        SyncAthleteActivity.returnUpdateSync(activity, response);
+                    else if(activity.getClass().getSimpleName().equals("CronometerOnlyOneActivity"))
+                        CronometerOnlyOneActivity.returnUpdateSync(activity, response);
+                    else if(activity.getClass().getSimpleName().equals("ResultsOnlyOneActivity"))
+                        ResultsOnlyOneActivity.returnUpdateSync(activity, response);
+                }
 
                 if (whoCalled.equals(Constants.CALLED_LOGIN))
                     LoginActivity.afterLogin(response, isList, activity, statuCode);

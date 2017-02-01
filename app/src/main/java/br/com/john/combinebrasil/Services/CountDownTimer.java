@@ -5,6 +5,7 @@ package br.com.john.combinebrasil.Services;
  */
 
 import android.os.Handler;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ public class CountDownTimer {
     private static long milisecondCounter=00,secondCounter=00, minuteCounter=00, hourCounter=00;
     private static String timeCount = "";
     private static TextView textView;
+    private static Button btnSave;
 
     public CountDownTimer(){
 
@@ -88,7 +90,7 @@ public class CountDownTimer {
         minuteCounter=00;
         secondCounter=00;
         textView.setText("00:00");
-
+        enabledButtonAdd(false);
         play=false;
         //SharedPreferencesAdapter.setTimeChronometer(AllActivitys.mainActivity, getTimeCount());
     }
@@ -110,10 +112,18 @@ public class CountDownTimer {
         if(milisecondCounter<10)
             milis = String.valueOf("0"+milisecondCounter);
 
-        if(minuteCounter>0)
-            return String.valueOf(minute+":"+second+":"+milis);
-        else
-            return String.valueOf(second+":"+milis);
+        if(minuteCounter>0) {
+
+            enabledButtonAdd(true);
+            return String.valueOf(minute + ":" + second + ":" + milis);
+        }
+        else {
+            if(minuteCounter<=0&&secondCounter<2)
+                enabledButtonAdd(false);
+            else
+                enabledButtonAdd(true);
+            return String.valueOf(second + ":" + milis);
+        }
     }
 
     public void setTimeCount(String time){
@@ -138,5 +148,20 @@ public class CountDownTimer {
 
     public void setTextView(TextView txt){
         textView = txt;
+    }
+    public void setButton(Button btn){
+        btnSave = btn;
+    }
+
+    public static void enabledButtonAdd(boolean enabled){
+        if(btnSave!=null) {
+            if (enabled) {
+                btnSave.setEnabled(true);
+                btnSave.setAlpha(1f);
+            } else {
+                btnSave.setEnabled(false);
+                btnSave.setAlpha(.5f);
+            }
+        }
     }
 }

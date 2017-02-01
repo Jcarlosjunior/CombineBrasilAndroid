@@ -4,6 +4,7 @@
     <string name="Password">Senha</string>
     <string name="Entrar">Entrar</string>
     <string name="testes">Testes</string>
+    <string name="result">Resultado</string>
     <string name="first_result">Primeiro Resultado</string>
     <string name="second_result">Segundo Resultado</string>
     <string name="result_value">Insira o quantidade de repetições feitas</string>
@@ -49,6 +50,7 @@
     <string name="alter_timer">Alterar tempo</string>
     <string name="configure_timer">Altere o tempo do teste como desejar.</string>
     <string name="minute">00</string>
+    <string name="save_test">Salvando teste</string>
 
 
     <!--
@@ -65,8 +67,10 @@
     <string name="rating">Rendimento do atleta no exercício</string>
     <string name="text_add_athlete">Para cadastrar um atleta, certifique-se que o atleta já fez o primeiro cadastro com o administrador. Após isso, informe o código de cadastro (código único que o administrador tem), e também o código do atleta, no qual o mesmo foi cadastrado pelo administrador, e informado após o cadastrado. Você também pode colocar o nome para visualizar mais facilmente na hora em que o atleta for realizar seus testes.</string>
     <string name="not_find">
-                Ops... Não foi encontrado nenhum resultado para a busca
+                Ops... Não foi encontrado nenhum resultado para a busca. Talvez o atleta ainda não foi atualizado em seu celular.
     </string>
+
+    <string name="click_update">Clique na tela para atualizar. </string>
     <string name="text_sync_athlete">Você cadastrou alguns atletas na seletiva, porém você estava sem conexão com a internet, e por esse motivo, os atletas não foram salvos.</string>
     <!-- ******************************** ITENS MENUS ****************************************************
     -->

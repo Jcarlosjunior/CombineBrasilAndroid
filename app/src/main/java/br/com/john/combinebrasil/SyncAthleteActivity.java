@@ -31,6 +31,7 @@ import br.com.john.combinebrasil.Classes.SelectiveAthletes;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Connection.Connection;
+import br.com.john.combinebrasil.Connection.JSONServices.CreateJSON;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostSync;
 import br.com.john.combinebrasil.Services.Constants;
@@ -258,7 +259,7 @@ public class SyncAthleteActivity extends AppCompatActivity {
                         PostSync post = new PostSync();
                         post.setActivity(SyncAthleteActivity.this);
                         post.setAll(syncAll);
-                        post.setObjPut(createObject(test));
+                        post.setObjPut(CreateJSON.createObject(test));
                         post.execute(url);
                     } else {
                         if(syncAll){
@@ -275,23 +276,6 @@ public class SyncAthleteActivity extends AppCompatActivity {
             Services.messageAlert(SyncAthleteActivity.this, "Aviso","Para começar a sincronização, você precisa ter uma conexão com a internet.","");
     }
 
-    private JSONObject createObject(Tests test) {
-        JSONObject object = new JSONObject();
-
-        try {
-            object.put(Constants.TESTS_ATHLETE, test.getAthlete());
-            object.put(Constants.TESTS_SELECTIVE, test.getSelective());
-            object.put(Constants.TESTS_TYPE, test.getType());
-            object.put(Constants.TESTS_FIRST_VALUE, test.getFirstValue());
-            object.put(Constants.TESTS_SECOND_VALUE, test.getSecondValue());
-            object.put(Constants.TESTS_RATING, test.getRating());
-            object.put(Constants.TESTS_WINGSPAN, test.getWingspan());
-            object.put(Constants.TESTS_USER, test.getUser());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return object;
-    }
 
     public static void returnPostTest(Activity act, String resp, String result){
         ((SyncAthleteActivity)act).returnPostTest(resp, result);

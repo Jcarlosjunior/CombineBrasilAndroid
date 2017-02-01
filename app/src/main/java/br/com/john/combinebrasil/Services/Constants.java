@@ -8,12 +8,13 @@ import java.io.File;
  * Created by GTAC on 17/10/2016.
  */
 public class Constants {
-    public static final boolean debug = false;
+
+    public static final boolean debug = true;
 
     public static final int STATUS_NOT_INIT=0, STATUS_DONE=1, STATUS_PENDING=2;
 
-    //public static final String URL = "https://combine-api.herokuapp.com/"; //Ambiente de testes
-    public static final String URL = "http://production-combine-api.herokuapp.com/"; //Ambiente de testes
+    public static final String URL = "https://combine-api.herokuapp.com/"; //Ambiente de testes
+   // public static final String URL = "http://production-combine-api.herokuapp.com/"; //Produção
 
     public static final String login = "api/login";
 
@@ -66,6 +67,7 @@ public class Constants {
 
     public static final String CRONOMETER_ACTIVITY = "CronometerActivity";
     public static final String RESULTS_ACTIVITY = "ResultsActivity";
+    public static final String RESULTS_ONLY_ONE_ACTIVITY = "ResultsOnlyOneActivity";
     public static final String MAIN_ACTIVITY = "MainActivity";
     public static final String TIMER_ACTIVITY = "TimerActivity";
     public static final String LOGIN_ACTIVITY = "LoginActivity";

@@ -184,14 +184,15 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private View.OnLongClickListener longClick = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            editTextName.setText("Um atleta teste");
+            editTextName.setText("Atleta");
             editTextCPF.setText("43242343243");
-            editAddress.setText("Rua onde o atleta mora");
-            editEmail.setText("atletinha@atletinha.com");
+            editAddress.setText("Rua do Atleta");
+            editEmail.setText("atleta@atletinha.com");
             editTextPhone.setText("12988888888");
 
             editTextHeight.setText("190");
             editTextWeihgt.setText("90");
+
             return true;
         }
     };

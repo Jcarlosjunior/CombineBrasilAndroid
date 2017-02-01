@@ -34,8 +34,10 @@ import java.util.concurrent.TimeUnit;
 
 import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CronometerActivity;
+import br.com.john.combinebrasil.CronometerOnlyOneActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.ResultsActivity;
+import br.com.john.combinebrasil.ResultsOnlyOneActivity;
 import br.com.john.combinebrasil.TimerActivity;
 
 /**
@@ -83,10 +85,16 @@ public class Services {
         if(whoCalled.toUpperCase().equals("HIDE") || whoCalled.equals(""))
             alerta.hide();
         else if(whoCalled.toUpperCase().equals("DIALOGSAVECRONOMETER")){
-            CronometerActivity.finished(activity);
+            if(activity.getClass().getSimpleName().equals("CronometerActivity"))
+                CronometerActivity.finished(activity);
+            else
+                CronometerOnlyOneActivity.finished(activity);
         }
         else if(whoCalled.toUpperCase().equals("DIALOGSAVERESULTS")){
-            ResultsActivity.finished(activity);
+            if(activity.getClass().getSimpleName().equals("ResultsActivity"))
+                ResultsActivity.finished(activity);
+            else if(activity.getClass().getSimpleName().equals("ResultsOnlyOneActivity"))
+                ResultsOnlyOneActivity.finished(activity);
         }
         else if(whoCalled.toUpperCase().equals("POSTATHLETE")){
             CreateAccountAthlete.finished(activity);

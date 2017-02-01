@@ -397,8 +397,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.openDataBase();
         try{
             for (Tests obj : tests) {
-                Tests tes = this.getTestFromAthleteAndType(obj.getAthlete(), obj.getType());
-                if(tes==null) {
                     ContentValues values = new ContentValues();
 
                     values.put(Constants.TESTS_ID, obj.getId());
@@ -413,10 +411,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     values.put(Constants.TESTS_CANSYNC, Services.convertBoolInInt(obj.getCanSync()));
 
                     ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
-                }
-                else{
-                    updateTest(obj);
-                }
             }
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -427,7 +421,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long ret = 0;
         this.openDataBase();
         try{
-                ContentValues values = new ContentValues();
+            ContentValues values = new ContentValues();
 
             values.put(Constants.TESTS_ID, test.getId());
             values.put(Constants.TESTS_TYPE, test.getType());
@@ -441,7 +435,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.put(Constants.TESTS_SYNC, test.getSync());
             values.put(Constants.TESTS_CANSYNC, Services.convertBoolInInt(test.getCanSync()));
 
-                ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
+            ret = myDataBase.insert(Constants.TABLE_TESTS, null, values);
 
         }catch (Exception e){
             Log.i("Error", e.getMessage());
@@ -1321,15 +1315,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.openDataBase();
         try {
             String selectQuery = "UPDATE " + Constants.TABLE_TESTS + " SET "
-                    + Constants.TESTS_SYNC + "=1, " +
-                     Constants.TESTS_CANSYNC + "=1, " +
+                    + Constants.TESTS_SYNC + "= 1, " +
+                     Constants.TESTS_CANSYNC + "= 1, " +
                      Constants.TESTS_ID + "='"+test.getId()+"', "+
                      Constants.TESTS_FIRST_VALUE + "= "+test.getFirstValue()+", "+
                      Constants.TESTS_SECOND_VALUE + "= "+test.getSecondValue()+", "+
                      Constants.TESTS_RATING + "= "+test.getRating()+", "+
                      Constants.TESTS_WINGSPAN + "= '"+test.getWingspan()+"', "+
-                        "= '"+test.getWingspan()+"', "+
-                    "' WHERE "+ Constants.TESTS_ATHLETE + "='" + test.getAthlete()+ "'"+
+                     Constants.TESTS_SELECTIVE + "= '"+test.getSelective()+"'"+
+                    " WHERE "+ Constants.TESTS_ATHLETE + "='" + test.getAthlete()+ "'"+
                     " AND "+Constants.TESTS_TYPE +" = '"+test.getType()+"'";
 
             Cursor c = myDataBase.rawQuery(selectQuery, null);
@@ -1347,8 +1341,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Athletes> searchAthletes(String search){
         this.openDataBase();
         String selectQuery =  "SELECT DISTINCT * FROM "+Constants.TABLE_ATHLETES+" WHERE " +
-                "("+Constants.ATHLETES_NAME+" || \"\" || "+Constants.ATHLETES_CPF+") LIKE '%"+search+"%' GROUP BY "
-                +Constants.ATHLETES_NAME+", "+Constants.ATHLETES_CPF+"";
+                "("+Constants.ATHLETES_NAME+" || \"\" || "+Constants.ATHLETES_CODE+") LIKE '%"+search+"%' GROUP BY "
+                +Constants.ATHLETES_NAME+", "+Constants.ATHLETES_CODE+"";
 
         Cursor c = myDataBase.rawQuery(selectQuery, null);
 

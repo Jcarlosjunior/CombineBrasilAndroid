@@ -96,6 +96,7 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
         holder.textNamePlayer.setText(list.get(position).getName());
         holder.textFirstResult.setText("");
         holder.textSecondResult.setText("");
+        holder.textSecondResult.setVisibility(View.GONE);
         holder.textCode.setText(list.get(position).getCode());
         holder.textStatus.setVisibility(View.GONE);
 
