@@ -31,6 +31,7 @@ import br.com.john.combinebrasil.Classes.SelectiveAthletes;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Classes.User;
+import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.AppSectionsPagerAdapter;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnAdd, btnCancel;
     Toolbar toolbar;
     NavigationDrawer navigationDrawer;
+
+    ArrayList<SelectiveAthletes>sele=null;
 
     ImageView imgCreateAthlete, imgUpdate, imgUpload, imgHelp, imgExit;
     LinearLayout linearMenu;
@@ -269,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 linearMenu.setVisibility(View.GONE);
-                new MessageOptions(MainActivity.this, "Aualizar", "Deseja atualizar todos dados do aplicativo?", "update");
+                new MessageOptions(MainActivity.this, "Aualizar", "Deseja atualizar os atletas?", "update");
             }
         });
 
@@ -304,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void returnMessageOptions(String whoCalled){
         if(whoCalled.equals("update")){
-            syncAll();
+            updateAthletes();
         }
 
         else if(whoCalled.equals("exit")){
@@ -318,6 +321,87 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
         this.finish();
+    }
+
+    private void updateAthletes(){
+        if(Services.isOnline(MainActivity.this)){
+            linearProgress.setVisibility(View.VISIBLE);
+            textProgress.setText("Atualziando Atletas");
+            DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+            Selective selective = db.getSelective();
+            String url = Constants.URL+Constants.API_SELECTIVEATHLETES+"?"+Constants.SELECTIVEATHLETES_SELECTIVE+"="+
+                    selective.getId();
+            Connection task =new Connection(url, 0,"UpdateSelectiveAthletes",false, MainActivity.this);
+            task.callByJsonStringRequest();
+        }
+        else
+            Services.messageAlert(MainActivity.this, "Aviso","è necessário conexão com a internet para atualizar.","");
+    }
+
+    public static void returnUpdateSelectiveAthletes(Activity activity, String response, int statusCode){
+        ((MainActivity)activity).returnUpdateSelectiveAthletes(response, statusCode);
+    }
+    private void returnUpdateSelectiveAthletes(String response, int statusCode) {
+        if (statusCode == 200 || statusCode == 201) {
+            linearProgress.setVisibility(View.GONE);
+            if (response.trim().equals("[]") || response.isEmpty()) {
+                Services.messageAlert(MainActivity.this, "Mensagem", "Nenhum atleta para atualizar", "");
+            } else {
+                DeserializerJsonElements des = new DeserializerJsonElements(response);
+                sele = des.getSelectiveAthletes();
+                DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+                db.openDataBase();
+                db.addSelectivesAthletes(sele);
+                String url = Constants.URL+Constants.API_ATHLETES;
+                linearProgress.setVisibility(View.VISIBLE);
+                textProgress.setText("Atualziando Atletas");
+                Connection task =new Connection(url, 0,"UpdateAthletes",false, MainActivity.this);
+                task.callByJsonStringRequest();
+            }
+        }
+        else
+            Services.messageAlert(MainActivity.this, "Mensagem", "Erro ao tentar atualziar", "");
+
+    }
+
+    public static void returnUpdateAthletes(Activity act, String response, int status){
+        ((MainActivity)act).returnUpdateAthletes(response, status);
+    }
+    private void returnUpdateAthletes(String response, int status){
+        if (status == 200 || status == 201) {
+            if (response.trim().equals("[]") || response.isEmpty()) {
+                Services.messageAlert(MainActivity.this, "Mensagem", "Nenhum atleta para atualizar", "");
+            } else {
+                DeserializerJsonElements des = new DeserializerJsonElements(response);
+                ArrayList<Athletes> athletes = des.getAthletes();
+                DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+                db.openDataBase();
+                for(Athletes athlete : athletes){
+                    Athletes obj = db.getAthleteById(athlete.getId());
+                    if(obj==null){
+                        SelectiveAthletes sel = db.getSelectiveAthletesFromAthlete(athlete.getId());
+                        if(sel!=null){
+                            athlete.setCode(sel.getInscriptionNumber());
+                            db.addAthlete(athlete);
+                        }
+                    }
+
+                    else if(obj.getCode().isEmpty()){
+                        SelectiveAthletes sel = db.getSelectiveAthletesFromAthlete(athlete.getId());
+                        if(sel!=null){
+                            athlete.setCode(sel.getInscriptionNumber());
+                            db.updateAthlete(athlete);
+                        }
+                    }
+                }
+
+                linearProgress.setVisibility(View.GONE);
+                Services.messageAlert(MainActivity.this, "Mensagem","Todos os atletas foram atualizados","");
+                PlayersFragment.callInflateAthletes();
+            }
+        }
+        else
+            Services.messageAlert(MainActivity.this, "Mensagem", "Erro ao tentar atualziar", "");
     }
 
     private View.OnClickListener closeAddAthlete = new View.OnClickListener() {

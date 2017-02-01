@@ -11,6 +11,7 @@ import android.view.View;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
 import br.com.john.combinebrasil.LoginActivity;
@@ -88,8 +89,6 @@ public class ReturnResponse {
                     else if (activity.getClass().getSimpleName().equals(Constants.SYNC_ACTIVITY))
                         SyncActivity.updateSelectiveAthlete(activity, response);
                 }
-                    //else
-                        //SyncActivity.updateSelectiveAthlete(activity, response);
 
                 else if(whoCalled.equals("UPDATE_ATHLETE")) {
                         if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
@@ -99,8 +98,24 @@ public class ReturnResponse {
                         else if (activity.getClass().getSimpleName().equals(Constants.SYNC_ACTIVITY))
                             SyncActivity.updateAthlete(activity, response);
                     }
-                    //else
-                        //SyncActivity.updateAthlete(activity, response);
+                else if(whoCalled.equals("UpdateSelectiveAthletes")){
+                    if(activity.getClass().getSimpleName().equals("MainActivity"))
+                        MainActivity.returnUpdateSelectiveAthletes(activity, response, statuCode);
+                    else if(activity.getClass().getSimpleName().equals("AthletesActivity"))
+                        AthletesActivity.returnUpdateSelectiveAthletes(activity, response, statuCode);
+                }
+                else if(whoCalled.equals("UpdateSelectiveAthletes")){
+                    if(activity.getClass().getSimpleName().equals("MainActivity"))
+                        MainActivity.returnUpdateSelectiveAthletes(activity, response, statuCode);
+                    else if(activity.getClass().getSimpleName().equals("AthletesActivity"))
+                        AthletesActivity.returnUpdateSelectiveAthletes(activity, response, statuCode);
+                }
+                else if(whoCalled.equals("UpdateAthletes")){
+                    if(activity.getClass().getSimpleName().equals("MainActivity"))
+                        MainActivity.returnUpdateAthletes(activity, response, statuCode);
+                    else if(activity.getClass().getSimpleName().equals("AthletesActivity"))
+                        AthletesActivity.returnUpdateAthletes(activity, response, statuCode);
+                }
 
 
             }

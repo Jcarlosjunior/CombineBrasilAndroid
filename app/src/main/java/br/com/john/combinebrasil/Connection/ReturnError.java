@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 
+import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
@@ -33,19 +34,35 @@ public class ReturnError {
                 LoginActivity.afterLogin(message, false, activity, statusError);
             }
 
-            else if(whoCalled.equals("UPDATE_SELECTIVEATHLETE"))
-                if(activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
+            else if(whoCalled.equals("UPDATE_SELECTIVEATHLETE")) {
+                if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
                     SyncAthleteActivity.updateSelectiveAthlete(activity, "FAIL", message);
-                else if(activity.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY))
+                else if (activity.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY))
                     MainActivity.updateSelectiveAthlete(activity, message);
+            }
                     //else
                     //SyncActivity.updateSelectiveAthlete(activity, response);
 
-                else if(whoCalled.equals("UPDATE_ATHLETE"))
-                    if(activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
+                else if(whoCalled.equals("UPDATE_ATHLETE")) {
+                    if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
                         SyncAthleteActivity.updateAthlete(activity, message);
-                    else if(activity.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY))
+                    else if (activity.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY))
                         MainActivity.updateAthlete(activity, message);
+                }
+
+            else if(whoCalled.equals("UpdateSelectiveAthletes")){
+                if(activity.getClass().getSimpleName().equals("MainActivity"))
+                    MainActivity.returnUpdateSelectiveAthletes(activity, message, statusError);
+                if(activity.getClass().getSimpleName().equals("AthletesActivity"))
+                    AthletesActivity.returnUpdateSelectiveAthletes(activity, message, statusError);
+            }
+
+            else if(whoCalled.equals("UpdateAthletes")){
+                if(activity.getClass().getSimpleName().equals("MainActivity"))
+                    MainActivity.returnUpdateAthletes(activity, message, statusError);
+                if(activity.getClass().getSimpleName().equals("AthletesActivity"))
+                    AthletesActivity.returnUpdateAthletes(activity, message, statusError);
+            }
             //esse método é de retorno caso tenha dado certo a requisição
             //redireciona de volta para quem chamou
             //whocalled é importante para identificar quem  fez a requisição

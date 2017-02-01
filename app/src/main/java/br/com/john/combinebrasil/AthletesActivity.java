@@ -30,11 +30,16 @@ import java.util.Comparator;
 
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerAthletes;
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.Selective;
+import br.com.john.combinebrasil.Classes.SelectiveAthletes;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Connection.Connection;
+import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
+import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.Services;
 
 public class AthletesActivity extends AppCompatActivity {
@@ -44,11 +49,11 @@ public class AthletesActivity extends AppCompatActivity {
     Toolbar toolbar;
     ArrayList<Athletes> athletesArrayList;
     private static Context myContext;
-    private TextView textOptionName, textOptionCode,textCount;
+    private TextView textOptionName, textOptionCode,textCount, textProgress;
     private EditText editSearch;
     private ImageView imgOrder;
     private Button btnCancel, buttonSync;
-    private LinearLayout linearOrder, linearNotSearch, linearSync;
+    private LinearLayout linearOrder, linearNotSearch, linearSync, linearProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +76,13 @@ public class AthletesActivity extends AppCompatActivity {
         linearOrder = (LinearLayout) findViewById(R.id.linear_order_by);
         linearNotSearch = (LinearLayout) findViewById(R.id.linear_search_null);
         linearSync = (LinearLayout) findViewById(R.id.linear_sync);
+        linearProgress = (LinearLayout) findViewById(R.id.linear_progress);
 
         editSearch = (EditText) findViewById(R.id.edit_search);
         textOptionName = (TextView) findViewById(R.id.text_option_order_name);
         textOptionCode = (TextView) findViewById(R.id.text_option_order_code);
         textCount = (TextView) findViewById(R.id.text_count_athletes);
+        textProgress = (TextView) findViewById(R.id.text_progress);
 
         btnCancel= (Button) findViewById(R.id.btn_cancel_order);
         buttonSync=(Button) findViewById(R.id.button_sync);
@@ -112,6 +119,7 @@ public class AthletesActivity extends AppCompatActivity {
         textOptionCode.setOnClickListener(clickedOrderCode);
         textOptionName.setOnClickListener(clickedOrderName);
         btnCancel.setOnClickListener(hideOptionsOrder);
+        linearNotSearch.setOnClickListener(clickedUpdateAthletes);
 
         editSearch.setOnTouchListener(editTouch);
         editSearch.addTextChangedListener(new TextWatcher() {
@@ -358,6 +366,101 @@ public class AthletesActivity extends AppCompatActivity {
             listViewPlayers.setVisibility(View.GONE);
             linearNotSearch.setVisibility(View.VISIBLE);
         }
+    }
+
+    private View.OnClickListener clickedUpdateAthletes = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            new MessageOptions(AthletesActivity.this, "Mensagem","Deseja verificar se existem novos atletas cadastrados?","UpdateAthletes");
+        }
+    };
+
+    public static void returnOptions(Activity act, String whoCalled){
+        ((AthletesActivity)act).returnOptions(whoCalled);
+    }
+    private void returnOptions(String whoCalled){
+        if(whoCalled.equals("UpdateAthletes"))
+            updateAthletes();
+    }
+    private void updateAthletes(){
+        if(Services.isOnline(AthletesActivity.this)){
+            linearProgress.setVisibility(View.VISIBLE);
+            textProgress.setText("Atualziando Atletas");
+            DatabaseHelper db = new DatabaseHelper(AthletesActivity.this);
+            Selective selective = db.getSelective();
+            String url = Constants.URL+Constants.API_SELECTIVEATHLETES+"?"+Constants.SELECTIVEATHLETES_SELECTIVE+"="+
+                    selective.getId();
+            Connection task =new Connection(url, 0,"UpdateSelectiveAthletes",false, AthletesActivity.this);
+            task.callByJsonStringRequest();
+        }
+        else
+            Services.messageAlert(AthletesActivity.this, "Aviso","è necessário conexão com a internet para atualizar.","");
+    }
+
+    public static void returnUpdateSelectiveAthletes(Activity activity, String response, int statusCode){
+        ((AthletesActivity)activity).returnUpdateSelectiveAthletes(response, statusCode);
+    }
+    private void returnUpdateSelectiveAthletes(String response, int statusCode) {
+        if (statusCode == 200 || statusCode == 201) {
+            linearProgress.setVisibility(View.GONE);
+            if (response.trim().equals("[]") || response.isEmpty()) {
+                Services.messageAlert(AthletesActivity.this, "Mensagem", "Nenhum atleta para atualizar", "");
+            } else {
+                DeserializerJsonElements des = new DeserializerJsonElements(response);
+                ArrayList<SelectiveAthletes> sele = des.getSelectiveAthletes();
+                DatabaseHelper db = new DatabaseHelper(AthletesActivity.this);
+                db.openDataBase();
+                db.addSelectivesAthletes(sele);
+                String url = Constants.URL+Constants.API_ATHLETES;
+                linearProgress.setVisibility(View.VISIBLE);
+                textProgress.setText("Atualziando Atletas");
+                Connection task =new Connection(url, 0,"UpdateAthletes",false, AthletesActivity.this);
+                task.callByJsonStringRequest();
+            }
+        }
+        else
+            Services.messageAlert(AthletesActivity.this, "Mensagem", "Erro ao tentar atualziar", "");
+
+    }
+
+    public static void returnUpdateAthletes(Activity act, String response, int status){
+        ((AthletesActivity)act).returnUpdateAthletes(response, status);
+    }
+    private void returnUpdateAthletes(String response, int status){
+        if (status == 200 || status == 201) {
+            if (response.trim().equals("[]") || response.isEmpty()) {
+                Services.messageAlert(AthletesActivity.this, "Mensagem", "Nenhum atleta para atualizar", "");
+            } else {
+                DeserializerJsonElements des = new DeserializerJsonElements(response);
+                ArrayList<Athletes> athletes = des.getAthletes();
+                DatabaseHelper db = new DatabaseHelper(AthletesActivity.this);
+                db.openDataBase();
+                for(Athletes athlete : athletes){
+                    Athletes obj = db.getAthleteById(athlete.getId());
+                    if(obj==null){
+                        SelectiveAthletes sel = db.getSelectiveAthletesFromAthlete(athlete.getId());
+                        if(sel!=null){
+                            athlete.setCode(sel.getInscriptionNumber());
+                            db.addAthlete(athlete);
+                        }
+                    }
+
+                    else if(obj.getCode().isEmpty()){
+                        SelectiveAthletes sel = db.getSelectiveAthletesFromAthlete(athlete.getId());
+                        if(sel!=null){
+                            athlete.setCode(sel.getInscriptionNumber());
+                            db.updateAthlete(athlete);
+                        }
+                    }
+                }
+
+                linearProgress.setVisibility(View.GONE);
+                Services.messageAlert(AthletesActivity.this, "Mensagem","Todos os atletas foram atualizados","");
+                callInflateAthletes();
+            }
+        }
+        else
+            Services.messageAlert(AthletesActivity.this, "Mensagem", "Erro ao tentar atualziar", "");
     }
 
 }

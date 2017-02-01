@@ -159,8 +159,6 @@ public class CronometerOnlyOneActivity extends AppCompatActivity {
         init=true;
         isPause=false;
         countDownTimer.initCount();
-        //imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.stop));
-        //linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_red));
         linearStop.setVisibility(View.VISIBLE);
         linearButtonPlay.setVisibility(View.GONE);
         linearVisibilityReset.setVisibility(View.VISIBLE);
@@ -189,9 +187,6 @@ public class CronometerOnlyOneActivity extends AppCompatActivity {
         enabledButtonAdd(true);
         isPause=true;
         countDownTimer.pause();
-        //linearButtonPlay.setBackground(getDrawable(R.drawable.background_button_circle_green));
-        //imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
-
         linearStop.setVisibility(View.GONE);
         linearButtonPlay.setVisibility(View.VISIBLE);
         linearVisibilityReset.setVisibility(View.VISIBLE);
@@ -203,8 +198,6 @@ public class CronometerOnlyOneActivity extends AppCompatActivity {
         isPause = true;
         init=false;
         countDownTimer.stop();
-        //linearButtonPlay.setBackground(getDrawable(R.drawable.background_circle_green));
-        //imgIconButtonPlay.setImageDrawable(getDrawable(R.drawable.icon_play));
 
         linearStop.setVisibility(View.GONE);
         linearButtonPlay.setVisibility(View.VISIBLE);

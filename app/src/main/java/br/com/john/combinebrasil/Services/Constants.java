@@ -66,6 +66,7 @@ public class Constants {
     /****************************************NAMES ACTIVITYS**********************************/
 
     public static final String CRONOMETER_ACTIVITY = "CronometerActivity";
+    public static final String CRONOMETER_ONLY_ONE_ACTIVITY = "CronometerOnlyOneActivity";
     public static final String RESULTS_ACTIVITY = "ResultsActivity";
     public static final String RESULTS_ONLY_ONE_ACTIVITY = "ResultsOnlyOneActivity";
     public static final String MAIN_ACTIVITY = "MainActivity";

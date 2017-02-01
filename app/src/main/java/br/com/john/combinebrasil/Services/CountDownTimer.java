@@ -33,10 +33,10 @@ public class CountDownTimer {
             public void run() {
                 while(play){
                     Date newDate = new Date();
-                    if(((newDate.getTime()) - date.getTime()) > 100) {
+                    if(((newDate.getTime()) - date.getTime()) > 99) {
                         milisecondCounter = milisecondCounter + 1;
                         mHandlerUpdateMili.post(mUpdateMili);
-                        if (milisecondCounter > 100) {
+                        if (milisecondCounter > 99) {
                             secondCounter = secondCounter + 1;
                             mHandlerUpdateSec.post(mUpdateSec);
                             milisecondCounter=0;
@@ -48,7 +48,7 @@ public class CountDownTimer {
                         }
                     }
                     try{
-                        timerThread.sleep(10);
+                        timerThread.sleep(9);
                     }catch (Exception e) {
                         // TODO: handle exception
                     }

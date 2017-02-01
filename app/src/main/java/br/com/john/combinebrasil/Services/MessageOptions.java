@@ -10,8 +10,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CronometerActivity;
+import br.com.john.combinebrasil.CronometerOnlyOneActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.ResultsActivity;
@@ -77,6 +79,9 @@ public class MessageOptions {
         if(act.getClass().getSimpleName().equals(Constants.CRONOMETER_ACTIVITY)){
             CronometerActivity.getMethodOutActivity(act, whoCalled);
         }
+        else if(act.getClass().getSimpleName().equals(Constants.CRONOMETER_ONLY_ONE_ACTIVITY))
+            CronometerOnlyOneActivity.getMethodOutActivity(act, whoCalled);
+
         else if(act.getClass().getSimpleName().equals(Constants.RESULTS_ACTIVITY)){
             ResultsActivity.getMethodOutResultsActivity(act, whoCalled);
         }
@@ -92,5 +97,7 @@ public class MessageOptions {
         else if(act.getClass().getSimpleName().equals(Constants.TIMER_ACTIVITY)){
             TimerActivity.returnOption(act, whoCalled);
         }
+        else if(act.getClass().getSimpleName().equals("AthletesActivity"))
+            AthletesActivity.returnOptions(act,whoCalled);
     }
 }

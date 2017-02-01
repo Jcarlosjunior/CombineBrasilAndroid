@@ -86,8 +86,6 @@
                             android:inputType="number"
                             android:layout_gravity="center"
                             android:background="@drawable/background_edit_border"/>
-
-
                     </LinearLayout>
 
                     <LinearLayout
