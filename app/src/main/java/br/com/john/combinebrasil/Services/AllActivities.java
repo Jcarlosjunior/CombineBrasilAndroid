@@ -8,6 +8,7 @@ import android.content.Context;
  */
 public class AllActivities {
     public static Activity mainActivity;
+    public static Activity introActivity;
     public static Activity detailsProcessActivity;
 
     public static String testSelected;

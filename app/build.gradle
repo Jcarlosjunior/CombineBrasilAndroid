@@ -21,12 +21,17 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(path: ':volley')
     compile('com.mikepenz.materialdrawer:library:2.8.2@aar') {
         transitive = true
     }
+    compile 'com.github.paolorotolo:appintro:4.1.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'

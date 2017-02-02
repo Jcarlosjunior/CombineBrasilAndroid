@@ -289,6 +289,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 linearMenu.setVisibility(View.GONE);
+                intent = new Intent(MainActivity.this, IntroActivity.class);
+                startActivity(intent);
             }
         });
 

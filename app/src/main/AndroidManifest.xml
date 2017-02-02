@@ -57,7 +57,9 @@
             android:name=".TimerActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".CronometerOnlyOneActivity" />
-        <activity android:name=".ResultsOnlyOneActivity"></activity>
+        <activity android:name=".ResultsOnlyOneActivity" />
+        <activity android:name=".IntroActivity"
+            android:theme="@style/AppThemeDark"/>
     </application>
 
 </manifest>
