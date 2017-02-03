@@ -55,7 +55,7 @@ public class ResultsOnlyOneActivity extends AppCompatActivity {
             textDetailsPlayer, textShowRating;
     ImageView imgArrowTest, imgArrowPlayer, imgDelete;
     boolean arrowDownTest=true,arrowDownPlayer=true;
-    LinearLayout linearRating, linearWingSpan, deleteTest, linearProgress;
+    LinearLayout linearRating, linearWingSpan, deleteTest, linearProgress, linearNoConnection;
     RatingBar ratingBar;
     String idAthlete = "", wingspan=" ";
     float ratingValue = 0;
@@ -104,6 +104,9 @@ public class ResultsOnlyOneActivity extends AppCompatActivity {
         buttonWingspan = (Button) findViewById(R.id.button_wingspan);
         buttonWingspan.setOnClickListener(clickedWingspan);
         linearWingSpan = (LinearLayout) findViewById(R.id.linear_wingspan);
+
+        linearNoConnection = (LinearLayout) findViewById(R.id.linear_no_connection);
+        linearNoConnection.setOnClickListener(clickVerifyConnection);
 
         linearRating = (LinearLayout) findViewById(R.id.linear_rating_results);
 
@@ -165,16 +168,23 @@ public class ResultsOnlyOneActivity extends AppCompatActivity {
             }
         }
         else{
-            linearInsert.setVisibility(View.VISIBLE);
-            linearResultDone.setVisibility(View.GONE);
-            editFirstResult.setText("");
-            editFirstResult.setEnabled(true);
-            deleteTest.setVisibility(View.GONE);
-            TestTypes testypes = db.getTestTypeFromId(AllActivities.testSelected);
+            if(Services.isOnline(ResultsOnlyOneActivity.this)) {
+                linearInsert.setVisibility(View.VISIBLE);
+                linearNoConnection.setVisibility(View.GONE);
+                linearResultDone.setVisibility(View.GONE);
+                editFirstResult.setText("");
+                editFirstResult.setEnabled(true);
+                deleteTest.setVisibility(View.GONE);
+                TestTypes testypes = db.getTestTypeFromId(AllActivities.testSelected);
 
-            if(testypes.getName().toLowerCase().equals("salto vertical")) {
+                if (testypes.getName().toLowerCase().equals("salto vertical")) {
+                    linearInsert.setVisibility(View.GONE);
+                    linearWingSpan.setVisibility(View.VISIBLE);
+                }
+            }
+            else{
+                linearNoConnection.setVisibility(View.VISIBLE);
                 linearInsert.setVisibility(View.GONE);
-                linearWingSpan.setVisibility(View.VISIBLE);
             }
             editFirstResult.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -504,6 +514,13 @@ public class ResultsOnlyOneActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             new MessageOptions(ResultsOnlyOneActivity.this, "Deletar", "Deseja excluir os dados do teste atual?", "deleteResults");
+        }
+    };
+
+    private View.OnClickListener clickVerifyConnection = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            verifyTest();
         }
     };
 }

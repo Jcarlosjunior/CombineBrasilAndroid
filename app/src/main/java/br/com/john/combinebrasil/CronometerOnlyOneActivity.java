@@ -55,7 +55,7 @@ public class CronometerOnlyOneActivity extends AppCompatActivity {
             textInfoNameTest, textInfoDetailsAthlete, textInfoDetailsTest, textRating, textProgress;
 
     LinearLayout linearButtonPlay, linearRating, linearInfo, deleteTest, linearProgress, linearVisibilityReset, linearReset,
-        linearStop;
+        linearStop, linearNoConnection;
     ImageView imgIconButtonPlay, imgTestArrow, imgAthleteArrow, imgDelete;
     Button btnSave, btnReady, btnCancel;
     RatingBar ratingBar;
@@ -147,6 +147,15 @@ public class CronometerOnlyOneActivity extends AppCompatActivity {
             imgIconButtonPlay.setVisibility(View.VISIBLE);
             linearButtonPlay.setVisibility(View.VISIBLE);
             enabledButtonAdd(false);
+
+            if(Services.isOnline(CronometerOnlyOneActivity.this)) {
+                linearInsert.setVisibility(View.VISIBLE);
+                linearNoConnection.setVisibility(View.GONE);
+            }
+            else {
+                linearInsert.setVisibility(View.GONE);
+                linearNoConnection.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -633,6 +642,9 @@ public class CronometerOnlyOneActivity extends AppCompatActivity {
         linearRating = (LinearLayout) findViewById(R.id.linear_rating_cronometer);
         linearProgress = (LinearLayout) findViewById(R.id.linear_progress);
 
+        linearNoConnection = (LinearLayout) findViewById(R.id.linear_no_connection);
+        linearNoConnection.setOnClickListener(clickVerifyConnection);
+
         textCronometer = (TextView) findViewById(R.id.text_cronometer);
         textShowQualify = (TextView) findViewById(R.id.text_show_qualify_cronometer);
 
@@ -689,4 +701,11 @@ public class CronometerOnlyOneActivity extends AppCompatActivity {
         Services.messageAlert(CronometerOnlyOneActivity.this, "Mensagem","Teste excluído!","");
         verifyTest();
     }
+
+    private View.OnClickListener clickVerifyConnection = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+           verifyTest();
+        }
+    };
 }

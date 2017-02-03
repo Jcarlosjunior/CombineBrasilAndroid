@@ -111,8 +111,6 @@ public class Services {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnectedOrConnecting()) {
             return true;
-        }else{
-            Toast.makeText(act,"É necessário uma conexão com a internet.", Toast.LENGTH_LONG).show();
         }
         return false;
     }

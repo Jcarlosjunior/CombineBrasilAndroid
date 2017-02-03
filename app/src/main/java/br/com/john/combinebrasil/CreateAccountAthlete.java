@@ -58,7 +58,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
     TextView textTerms, bodyTextTerms;
     CheckBox checkTerms;
     Button btnClose;
-    LinearLayout linearTerms;
+    LinearLayout linearTerms, linearCreate, linearNoConnection;
     boolean checked = false, editAthlete = false;
     String idAthlete;
     @Override
@@ -73,6 +73,10 @@ public class CreateAccountAthlete extends AppCompatActivity {
         imgSearch.setVisibility(View.GONE);
         LinearLayout btnBack = (LinearLayout) findViewById(R.id.linear_back_button);
         btnBack.setOnClickListener(btnBackClickListener);
+
+        linearCreate = (LinearLayout) findViewById(R.id.linear_create);
+        linearNoConnection = (LinearLayout) findViewById(R.id.linear_no_connection);
+        linearNoConnection.setOnClickListener(clickedVerifyConnection);
 
         editTextName = (EditText) findViewById(R.id.edit_name_add);
         editTextCPF = (EditText) findViewById(R.id.edit_cpf_add);
@@ -99,6 +103,8 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
         bodyTextTerms = (TextView) findViewById(R.id.text_terms_body);
         bodyTextTerms.setText(Html.fromHtml(Constants.TERMS_TEXT));
+
+        verifyConnection();
 
         textTerms.setVisibility(View.VISIBLE);
 
@@ -143,6 +149,23 @@ public class CreateAccountAthlete extends AppCompatActivity {
                 idAthlete = extras.getString("id_player");
                 editAthlete();
             }
+        }
+    }
+    private View.OnClickListener clickedVerifyConnection = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            verifyConnection();
+        }
+    };
+
+    private void verifyConnection(){
+        if(Services.isOnline(CreateAccountAthlete.this)){
+            linearCreate.setVisibility(View.VISIBLE);
+            linearNoConnection.setVisibility(View.GONE);
+        }
+        else{
+            linearCreate.setVisibility(View.GONE);
+            linearNoConnection.setVisibility(View.VISIBLE);
         }
     }
 

@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context="br.com.john.combinebrasil.CreateAccountAthlete">
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,6 +14,7 @@
         android:layout_alignParentStart="true">
         <include layout="@layout/toolbar_default" android:id="@+id/include"/>
         <LinearLayout
+            android:id="@+id/linear_create"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -281,6 +280,36 @@
                     android:background="@drawable/background_button_blue"
                     />
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_no_connection"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.9"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:animateLayoutChanges="true">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:src="@drawable/icon_no_wifi"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4"
+                android:textAlignment="center"
+                android:text="@string/no_connection"
+                android:textSize="16sp"
+                android:padding="10sp"
+                />
+
         </LinearLayout>
     </LinearLayout>
 

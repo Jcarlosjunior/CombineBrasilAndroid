@@ -70,7 +70,7 @@
     <string name="not_find">
                 Ops... Não foi encontrado nenhum resultado para a busca. Talvez o atleta ainda não foi atualizado em seu celular.
     </string>
-
+    <string name="no_connection">Infelizmente você está sem conexão com a internet. Clique na tela para continuar, ou tente quando houver internet.</string>
     <string name="click_update">Clique na tela para atualizar. </string>
     <string name="text_sync_athlete">Você cadastrou alguns atletas na seletiva, porém você estava sem conexão com a internet, e por esse motivo, os atletas não foram salvos.</string>
     <!-- ******************************** ITENS MENUS ****************************************************
