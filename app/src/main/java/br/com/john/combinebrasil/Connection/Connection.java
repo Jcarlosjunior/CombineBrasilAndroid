@@ -128,7 +128,7 @@ public class Connection extends AppCompatActivity {
                 header.put("Content-Type", "application/json; charset=utf-8");
                 //header.put("Content-Type","application/x-www-form-urlencoded");
                 header.put("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
-//                header.put("authorization", base64EncodedCredentials);
+                header.put("authorization", Constants.AUTHENTICATION);
 
                 return header;
             }

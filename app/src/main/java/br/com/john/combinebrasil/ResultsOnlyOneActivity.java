@@ -38,6 +38,7 @@ import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.CreateJSON;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
+import br.com.john.combinebrasil.Connection.Posts.DeleteTest;
 import br.com.john.combinebrasil.Connection.Posts.PostSync;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
@@ -300,11 +301,17 @@ public class ResultsOnlyOneActivity extends AppCompatActivity {
     }
 
     private void deleteTest(){
-        Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
-        db.openDataBase();
-        db.deleteValue(Constants.TABLE_TESTS, test.getId());
-        Services.messageAlert(ResultsOnlyOneActivity.this, "Mensagem","Teste excluído!","");
-        verifyTest();
+        if(Services.isOnline(ResultsOnlyOneActivity.this)) {
+            /*DeleteTest deleteTest = new DeleteTest();
+            deleteTest.setActivity(ResultsOnlyOneActivity.this);
+            deleteTest.set*/
+
+            Tests test = db.getTestFromAthleteAndType(idAthlete, AllActivities.testSelected);
+            db.openDataBase();
+            db.deleteValue(Constants.TABLE_TESTS, test.getId());
+            Services.messageAlert(ResultsOnlyOneActivity.this, "Mensagem", "Teste excluído!", "");
+            verifyTest();
+        }
     }
 
     private void saveTest(){

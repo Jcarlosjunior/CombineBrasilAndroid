@@ -39,7 +39,6 @@ public class SharedPreferencesAdapter {
         editor.putString(key, value);
         editor.commit();
     }
-
     public static String getValueStringSharedPreferences(Context ctx, String key){
         shared = ctx.getSharedPreferences(MY_PREFERENCES, ctx.MODE_PRIVATE);
         String value = shared.getString(key, "");

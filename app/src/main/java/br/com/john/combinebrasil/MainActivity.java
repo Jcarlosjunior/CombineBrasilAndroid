@@ -22,8 +22,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Selective;
@@ -140,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
         if(AllActivities.isSync)
             this.syncAll();
         AllActivities.isSync = false;
+
+        verifyDate();
 
     }
 
@@ -610,6 +617,27 @@ public class MainActivity extends AppCompatActivity {
         editNameAthlete.setText("");
         editCodeUser.setText("");
         editCodeAthlete.setText("");
+    }
+
+    private void verifyDate(){
+        try {
+            String dateLogin = SharedPreferencesAdapter.getValueStringSharedPreferences(MainActivity.this, Constants.DATE_LOGIN);
+            Calendar c = Calendar.getInstance();
+            System.out.println("Current time => " + c.getTime());
+
+            SimpleDateFormat df = new SimpleDateFormat("dd MM yyyy");
+            String currentDate = df.format(c.getTime());
+
+            Date date1 = df.parse(dateLogin);
+            Date date2 = df.parse(currentDate);
+            long diff = date2.getTime() - date1.getTime();
+            System.out.println ("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+            if(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)>=3){
+                Services.messageAlert(MainActivity.this, "Mensagem","A sua versão de teste expirou.","exit");
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
 

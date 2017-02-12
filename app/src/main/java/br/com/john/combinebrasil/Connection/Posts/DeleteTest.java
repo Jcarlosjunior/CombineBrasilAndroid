@@ -1,7 +1,7 @@
 package br.com.john.combinebrasil.Connection.Posts;
 
 /**
- * Created by GTAC on 06/01/2017.
+ * Created by GTAC on 07/02/2017.
  */
 
 
@@ -11,11 +11,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 
+import com.android.volley.toolbox.HttpClientStack;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -38,15 +41,14 @@ import br.com.john.combinebrasil.CronometerOnlyOneActivity;
 import br.com.john.combinebrasil.ResultsOnlyOneActivity;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.SyncActivity;
-import br.com.john.combinebrasil.SyncAthleteActivity;
 
-public class PostSync extends AsyncTask<String, String, String> {
+public class DeleteTest extends AsyncTask<String, String, String> {
     private Activity activity;
     private JSONObject objPut;
     int statusCode=0;
     String resp = "";
     String result = "";
-    boolean isAll, isSyncAcitivity=false;
+    boolean isPlay;
 
     protected void onPreExecute() {
         super.onPreExecute();
@@ -61,7 +63,8 @@ public class PostSync extends AsyncTask<String, String, String> {
 
         client = new DefaultHttpClient(httpParams);
 
-        HttpPost post = new HttpPost(params[0]); //strings[0] == url
+        HttpClientStack.HttpPatch post = new HttpClientStack.HttpPatch(params[0]); //strings[0] == url
+
 
         post.setHeader("content-type", "application/json");
         post.setHeader("Accept", "application/json");
@@ -98,19 +101,10 @@ public class PostSync extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String status) {
-        if(activity.getClass().getSimpleName().equals("CronometerOnlyOneActivity")){
-            CronometerOnlyOneActivity.returnPostTest(activity, resp, result);
-        }
-        else if(activity.getClass().getSimpleName().equals("ResultsOnlyOneActivity")){
-            ResultsOnlyOneActivity.returnPostTest(activity, resp, result);
-        }
-        else {
-            if (isSyncAcitivity) {
-                SyncActivity.returnPostSync(activity, resp, result);
-            } else {
-                SyncAthleteActivity.returnPostTest(activity, resp, result);
-            }
-        }
+        /*if(activity.getClass().getSimpleName().equals("CronometerOnlyOneActivity"))
+            CronometerOnlyOneActivity.afterDeleteTest(activity, resp, result);
+        if(activity.getClass().getSimpleName().equals("ResultsOnlyOneActivity"))
+            ResultsOnlyOneActivity.afterDeleteTest(activity, resp, result);*/
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
@@ -132,11 +126,4 @@ public class PostSync extends AsyncTask<String, String, String> {
         this.activity = activity;
     }
 
-    public void setAll(boolean play) {
-        isAll = isAll;
-    }
-
-    public void setSyncAcitivity(boolean syncAcitivity){
-        this.isSyncAcitivity = syncAcitivity;
-    }
 }

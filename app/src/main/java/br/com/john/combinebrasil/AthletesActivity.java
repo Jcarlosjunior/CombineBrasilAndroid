@@ -342,6 +342,22 @@ public class AthletesActivity extends AppCompatActivity {
             }
         }catch (Exception e){
             Log.i("Error ",e.getMessage());
+            try {
+                if(!(athletesArrayList == null || athletesArrayList.size()==0)) {
+                    Collections.sort(athletesArrayList, new Comparator<Athletes>() {
+                        public int compare(Athletes v1, Athletes v2) {
+                            return v1.getCode().compareTo(v2.getCode());
+                        }
+                    });
+
+                    showList(athletesArrayList);
+                    textOptionCode.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.colorPrimary));
+                    textOptionName.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.black));
+                }
+            }catch (Exception error){
+                Log.i("Error ",error.getMessage());
+            }
+
         }
     }
 

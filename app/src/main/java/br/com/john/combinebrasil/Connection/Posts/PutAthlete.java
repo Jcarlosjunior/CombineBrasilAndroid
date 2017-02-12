@@ -64,6 +64,7 @@ public class PutAthlete extends AsyncTask<String, String, String> {
 
         post.setHeader("content-type", "application/json");
         post.setHeader("Accept", "application/json");
+        post.setHeader("authorization", Constants.AUTHENTICATION);
 
         StringEntity entity = null;
         try {

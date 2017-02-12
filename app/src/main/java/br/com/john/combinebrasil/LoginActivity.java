@@ -13,6 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
@@ -107,6 +110,15 @@ public class LoginActivity extends Activity {
 
         SharedPreferencesAdapter.setLoggedSharedPreferences(LoginActivity.this, true);
         SharedPreferencesAdapter.setValueStringSharedPreferences(LoginActivity.this, Constants.LOGIN_EMAIL, user.getEmail());
+
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time => " + c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("dd MM yyyy");
+        String formattedDate = df.format(c.getTime());
+
+        SharedPreferencesAdapter.setValueStringSharedPreferences(LoginActivity.this, Constants.DATE_LOGIN, formattedDate);
+
         Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         AllActivities.isSync = true;
         startActivity(mainIntent);

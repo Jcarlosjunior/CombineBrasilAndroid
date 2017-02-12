@@ -508,7 +508,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
                 createCode(athlete.getId());
             else
                 Services.messageAlert(CreateAccountAthlete.this, "Aviso", "Ops, esse atleta já esta cadastrado na seletiva", "");
-        }catch (Exception e){
+        }catch (NullPointerException e){
             Services.messageAlert(CreateAccountAthlete.this, "Aviso", "Ops, esse atleta já esta cadastrado na seletiva", "");
         }
     }
@@ -569,7 +569,9 @@ public class CreateAccountAthlete extends AppCompatActivity {
         }
         else if(response.equals("OK")) {
             DeserializerJsonElements des = new DeserializerJsonElements(result);
-            SelectiveAthletes item = des.getObjSelectiveAthlete();
+            SelectiveAthletes item = des.getSelectiveAthlete();
+            if(item==null)
+                item = des.getObjSelectiveAthlete();
 
             DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
             db.addSelectiveAthlete(item);

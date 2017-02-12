@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 import br.com.john.combinebrasil.LoginActivity;
+import br.com.john.combinebrasil.Services.Constants;
 
 public class PostLogin extends AsyncTask<String, String, String> {
 
@@ -59,6 +60,7 @@ public class PostLogin extends AsyncTask<String, String, String> {
         HttpPost post = new HttpPost(params[0]); //strings[0] == url
 
         post.setHeader("content-type", "application/json");
+        post.setHeader("authorization", Constants.AUTHENTICATION);
 
         StringEntity entity = null;
         try {

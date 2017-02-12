@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
+import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.ResultsActivity;
 import br.com.john.combinebrasil.ResultsOnlyOneActivity;
@@ -103,6 +104,9 @@ public class Services {
             CreateAccountAthlete.update(activity);
         else if(activity.getClass().getSimpleName().equals(Constants.TIMER_ACTIVITY))
             TimerActivity.returnOption(activity, whoCalled);
+        else if (whoCalled.equals("exit")){
+            MainActivity.returnMessageOptions(activity, whoCalled);
+        }
     }
 
     public static boolean isOnline(Activity act) {
