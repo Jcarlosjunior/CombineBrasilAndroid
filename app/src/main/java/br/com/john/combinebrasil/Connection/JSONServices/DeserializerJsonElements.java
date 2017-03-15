@@ -367,7 +367,7 @@ public class DeserializerJsonElements {
             }
         } catch (JSONException e) {
             team = null;
-            Log.i("ERROR: getPositions", e.getMessage());
+            Log.i("ERROR: getTeamUser", e.getMessage());
         }
         return team;
     }

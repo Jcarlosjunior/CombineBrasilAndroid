@@ -9,12 +9,12 @@ import java.io.File;
  */
 public class Constants {
 
-    public static final boolean debug = true;
+    public static final boolean debug = false;
 
     public static final int STATUS_NOT_INIT=0, STATUS_DONE=1, STATUS_PENDING=2;
 
-   public static final String URL = "https://combine-api.herokuapp.com/"; //Ambiente de testes
-   //public static final String URL = "http://production-combine-api.herokuapp.com/"; //Produção
+   //public static final String URL = "https://combine-api.herokuapp.com/"; //Ambiente de testes
+   public static final String URL = "http://production-combine-api.herokuapp.com/"; //Produção
  public static final String AUTHENTICATION =
          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IkF0aGxldGUgRm9ybSIsImlhdCI6MTQ4NjQ2NzI3NX0.Dy_2y2yRvYXp1N4_GylIzse-Mt3zX6O35rvddqKRV_g";
 
