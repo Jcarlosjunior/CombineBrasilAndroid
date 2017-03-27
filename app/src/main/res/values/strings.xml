@@ -2,7 +2,11 @@
     <string name="app_name">Combine Brasil</string>
     <string name="User">Usuário</string>
     <string name="Password">Senha</string>
+    <string name="confirm_password">Confirme a senha</string>
     <string name="Entrar">Entrar</string>
+    <string name="register">Cadastrar</string>
+    <string name="create_selective">Criar seletiva</string>
+    <string name="inscrever">Inscreva-se e melhore suas seletivas</string>
     <string name="testes">Testes</string>
     <string name="result">Resultado</string>
     <string name="first_result">Primeiro Resultado</string>
@@ -18,11 +22,20 @@
     <string name="code_selective">Código da selectiva</string>
     <string name="code_athlete">Código do atleta</string>
     <string name="email">E-mail</string>
+    <string name="email_contact">E-mail para contato</string>
+    <string name="city">Cidade</string>
+    <string name="neighborhood">Bairro</string>
+    <string name="street">Rua</string>
+    <string name="state">Estado</string>
     <string name="cpf">CPF</string>
     <string name="address_add">Endereço (Opcional)</string>
     <string name="phone">Telfone ex:(xx)xxxxx-xxxx</string>
     <string name="position">Posição Desejável</string>
+    <string name="team">Time</string>
     <string name="nascimento">Data de Nascimento</string>
+    <string name="date_selective">Data da Seletiva</string>
+    <string name="local_selective">Onde irá acontecer a seletiva</string>
+    <string name="message_social_link">Para ficarmos sempre atualizados, queremos algum meio em mídia social do time (facebook, instagram, site, etc.)</string>
     <string name="dia">Dia</string>
     <string name="mes">Mês</string>
     <string name="ano">Ano</string>
@@ -58,6 +71,8 @@
     ************************************ MENSAGENS PADRÕES ************************************************
     -->
     <string name="carregando_testes">Os testes estão sendo carregados</string>
+    <string name="bem_vindo">Bem vindo ao Combine Brasil</string>
+    <string name="recording">Cadastrando usuário...</string>
     <string name="sync_now">Os testes estão sendo sincronizados</string>
     <string name="erro_dados_invalidos">Dados Inválidos</string>
     <string name="logando">Entrando na sua conta</string>
@@ -77,7 +92,16 @@
     -->
     <string name="order_by">Ordenar por</string>
     <string name="name">Nome</string>
+    <string name="name_title">Nome do Título</string>
+    <string name="notes">Observações</string>
+    <string name="cep">CEP</string>
+    <string name="number">Número</string>
+    <string name="complement">Complemento</string>
+    <string name="social_link">Mídia Social</string>
     <string name="code">Código</string>
+
+    <string name="team_name">Nome do Time</string>
+    <string name="modality">Modalidade</string>
 
     <string name="create">Criar Atleta</string>
     <string name="update">Atualizar</string>

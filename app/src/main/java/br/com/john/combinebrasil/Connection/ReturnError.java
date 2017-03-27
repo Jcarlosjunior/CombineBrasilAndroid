@@ -9,6 +9,7 @@ import android.view.View;
 
 import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.CreateAccountAthlete;
+import br.com.john.combinebrasil.CreateSelectiveActivity;
 import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.Services.Constants;
@@ -63,6 +64,8 @@ public class ReturnError {
                 if(activity.getClass().getSimpleName().equals("AthletesActivity"))
                     AthletesActivity.returnUpdateAthletes(activity, message, statusError);
             }
+            else if(whoCalled.equals(Constants.CALLED_GET_CEP))
+                CreateSelectiveActivity.returnCEP(activity, message, statusError);
             //esse método é de retorno caso tenha dado certo a requisição
             //redireciona de volta para quem chamou
             //whocalled é importante para identificar quem  fez a requisição

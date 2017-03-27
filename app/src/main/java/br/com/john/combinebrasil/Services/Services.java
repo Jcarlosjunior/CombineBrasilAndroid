@@ -17,8 +17,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -33,10 +35,12 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import br.com.john.combinebrasil.CreateAccountAthlete;
+import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.R;
+import br.com.john.combinebrasil.RegisterActivity;
 import br.com.john.combinebrasil.ResultsActivity;
 import br.com.john.combinebrasil.ResultsOnlyOneActivity;
 import br.com.john.combinebrasil.TimerActivity;
@@ -107,6 +111,11 @@ public class Services {
         else if (whoCalled.equals("exit")){
             MainActivity.returnMessageOptions(activity, whoCalled);
         }
+        else if (activity.getClass().getSimpleName().equals("RegisterActivity"))
+            RegisterActivity.returnMessage(activity, whoCalled);
+
+        else if(activity.getClass().getSimpleName().equals("CreateTeamActivity"))
+            CreateTeamActivity.returnMessage(activity, whoCalled);
     }
 
     public static boolean isOnline(Activity act) {
@@ -212,6 +221,7 @@ public class Services {
     public static boolean convertIntInBool(int value){
         return (value == 1) ? true : false;
     }
+
     public  static int convertBoolInInt(boolean value){
         return (value == true) ? 1 : 0;
     }
@@ -365,6 +375,40 @@ public class Services {
         return builder;
     }
 
+    public static ArrayAdapter<String> inflateSpinnerDay(Activity activity ){
+        String[] spinnerDayValues = new String[31];
+        for(int i=0; i<=30;i++){
+            int num = i+1;
+            if(num<10)
+                spinnerDayValues[i] = String.valueOf("0"+num);
+            else
+                spinnerDayValues[i] = String.valueOf(num);
+        }
+        ArrayAdapter<String> arrayAdapterDay = new ArrayAdapter<String>(activity, android.R.layout.simple_dropdown_item_1line, spinnerDayValues);
+        return arrayAdapterDay;
+    }
+
+    public static ArrayAdapter<String> inflateSpinnerMonth(Activity activity){
+        String[] spinnerMonthValues  = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro","Novembro","Dezembro"};
+        ArrayAdapter<String> arrayAdapterMonth = new ArrayAdapter<String>(activity, android.R.layout.simple_dropdown_item_1line, spinnerMonthValues);
+        return arrayAdapterMonth;
+    }
+
+    public static ArrayAdapter<String> inflateSpinnerYear(Activity activity){
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+
+        String[] spinnerYearsValues = new String[200];
+
+        for(int x=199; x>=0; x--){
+            spinnerYearsValues[x]=String.valueOf(year-x);
+        }
+
+         ArrayAdapter<String> arrayAdapterYear = new ArrayAdapter<String>(activity, android.R.layout.simple_dropdown_item_1line, spinnerYearsValues);
+
+        return arrayAdapterYear;
+    }
+
     public static String chooseMonth(String month){
         if(month.equalsIgnoreCase("01") ||month.equalsIgnoreCase("1"))
             return "Janeiro";
@@ -392,5 +436,51 @@ public class Services {
             return "Dezembro";
         else
             return "";
+    }
+
+    public static String convertMonthInNumber(String month){
+        if(month.equalsIgnoreCase("janeiro"))
+            return "01";
+        else if(month.equalsIgnoreCase("fevereiro"))
+            return "02";
+        else if(month.equalsIgnoreCase("Março"))
+            return "03";
+        else if(month.equalsIgnoreCase("abril"))
+            return "04";
+        else if(month.equalsIgnoreCase("maio"))
+            return "05";
+        else if(month.equalsIgnoreCase("junho"))
+            return "06";
+        else if(month.equalsIgnoreCase("julho"))
+            return "07";
+        else if(month.equalsIgnoreCase("agosto"))
+            return "08";
+        else if(month.equalsIgnoreCase("setembro"))
+            return "09";
+        else if(month.equalsIgnoreCase("outubro"))
+            return "10";
+        else if(month.equalsIgnoreCase("novembro"))
+            return "11";
+        else if(month.equalsIgnoreCase("dezembro"))
+            return "12";
+        else
+            return "";
+    }
+
+    public static boolean isValidEmail(EditText edit, Activity act) {
+        CharSequence target = edit.getText();
+        boolean ret = false;
+        if (TextUtils.isEmpty(target)) {
+            Services.changeColorEditBorderError(edit, act);
+            ret =  false;
+        } else {
+            ret =  android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+            if(!ret)
+                Services.changeColorEditBorderError(edit, act);
+            else
+                Services.changeColorEditBorder(edit, act);
+        }
+
+        return ret;
     }
 }

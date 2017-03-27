@@ -14,6 +14,7 @@
     <color name="grey_transparent">#47dddddd</color>
     <color name="grey_transparent_menu">#bfcccccc</color>
     <color name="dark_transparent">#d9000000</color>
+    <color name="dark">#434343</color>
     <color name="yellow">#ffde00</color>
     <color name="green">#3abf5a</color>
     <color name="green_done">#e23fb95c</color>

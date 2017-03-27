@@ -696,7 +696,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
         boolean ver = true;
         if(!validaName(editTextName))
             ver = false;
-        if(!isValidEmail(editEmail))
+        if(!Services.isValidEmail(editEmail, this))
             ver = false;
         if (!validaCPF(editTextCPF))
             ver = false;
@@ -790,23 +790,6 @@ public class CreateAccountAthlete extends AppCompatActivity {
         else
             Services.changeColorEditBorderError(edit, this);
         return ver;
-    }
-
-    public final boolean isValidEmail(EditText edit) {
-        CharSequence target = edit.getText();
-        boolean ret = false;
-        if (TextUtils.isEmpty(target)) {
-            Services.changeColorEditBorderError(edit, this);
-            ret =  false;
-        } else {
-            ret =  android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-            if(!ret)
-                Services.changeColorEditBorderError(edit, this);
-            else
-                Services.changeColorEditBorder(edit, this);
-        }
-
-        return ret;
     }
 
     private View.OnClickListener clickOpenTerms = new View.OnClickListener() {

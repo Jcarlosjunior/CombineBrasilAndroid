@@ -11,6 +11,13 @@ public class Selective {
     private String Date;
     private String CodeSelective;
     private boolean CanSync;
+    private String City;
+    private String Neighborhood;
+    private String State;
+    private String Street;
+    private String PostalCode;
+    private String Notes;
+    private String Address;
 
     public Selective() {
     }
@@ -70,5 +77,61 @@ public class Selective {
 
     public void setCanSync(boolean canSync) {
         CanSync = canSync;
+    }
+
+    public String getCity() {
+        return City;
+    }
+
+    public void setCity(String city) {
+        City = city;
+    }
+
+    public String getNeighborhood() {
+        return Neighborhood;
+    }
+
+    public void setNeighborhood(String neighborhood) {
+        Neighborhood = neighborhood;
+    }
+
+    public String getState() {
+        return State;
+    }
+
+    public void setState(String state) {
+        State = state;
+    }
+
+    public String getStreet() {
+        return Street;
+    }
+
+    public void setStreet(String street) {
+        Street = street;
+    }
+
+    public String getPostalCode() {
+        return PostalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        PostalCode = postalCode;
+    }
+
+    public String getNotes() {
+        return Notes;
+    }
+
+    public void setNotes(String notes) {
+        Notes = notes;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
     }
 }

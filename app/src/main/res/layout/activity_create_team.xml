@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_create_team"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.com.john.combinebrasil.CreateTeamActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar_default" android:id="@+id/include"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.8"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.05"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.9"
+                    android:orientation="vertical">
+                    <EditText
+                        android:id="@+id/edit_name_team"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="14dp"
+                        android:textColor="@color/colorPrimary"
+                        android:hint="@string/team_name"
+                        android:textColorHint="@color/greyDark"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:background="@drawable/background_edit_border"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:inputType="textPersonName"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <EditText
+                            android:id="@+id/edit_city_team"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                            android:textSize="14dp"
+                            android:textColor="@color/colorPrimary"
+                            android:hint="@string/city"
+                            android:textColorHint="@color/greyDark"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:background="@drawable/background_edit_border"
+                            android:maxLines="1"
+                            android:maxLength="9"
+                            android:singleLine="true"
+                            android:inputType="number"
+                            android:layout_marginRight="3sp"
+                            />
+
+                    </LinearLayout>
+
+                        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                            android:id="@+id/spinner_modality"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/modality"
+                            android:paddingLeft="10sp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/greyDark"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="5sp"
+                            android:background="@drawable/background_edit_border"/>
+
+                    <EditText
+                        android:id="@+id/edit_email_team"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textSize="14dp"
+                        android:textColor="@color/colorPrimary"
+                        android:hint="@string/email_contact"
+                        android:textColorHint="@color/greyDark"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:background="@drawable/background_edit_border"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:inputType="text"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/message_social_link"
+                        android:textSize="15sp"
+                        android:textColor="@color/greyDark"
+                        android:paddingBottom="5sp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/edit_social_link"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                            android:textSize="16dp"
+                            android:textColor="@color/colorPrimary"
+                            android:hint="@string/social_link"
+                            android:textColorHint="@color/greyDark"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:background="@drawable/background_edit_border"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:inputType="text"
+                            android:layout_marginLeft="3sp"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.05"/>
+            </LinearLayout>
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btn_create_team"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="bottom|center_vertical|center_horizontal"
+            android:layout_gravity="bottom|center_vertical"
+            android:text="@string/create_selective"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:textAllCaps="true"
+            android:textSize="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginBottom="10sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:background="@drawable/background_button_blue" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_transparent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:clickable="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"></LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"></LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.6"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"/>
+                    <ProgressBar
+                        android:id="@+id/progress"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"/>
+
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.4"
+                    android:text="@string/recording"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:id="@+id/text_progress"
+                    android:gravity="center_vertical|center_horizontal" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"></LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"></LinearLayout>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

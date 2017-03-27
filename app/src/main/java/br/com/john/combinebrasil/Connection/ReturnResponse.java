@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.CreateAccountAthlete;
+import br.com.john.combinebrasil.CreateSelectiveActivity;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
 import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
@@ -61,8 +62,11 @@ public class ReturnResponse {
                     SyncDatabase.teamUsersResponse(response);
                 else if (whoCalled.equals(Constants.CALLED_GET_SELECTIVE))
                     SyncDatabase.selectiveResponse(response);
-                else if (whoCalled.equals(Constants.CALLED_GET_TEAM))
+                else if (whoCalled.equals(Constants.CALLED_GET_TEAM)) {
+                    if(activity.getClass().getSimpleName().equals("CreateSelectiveActivity"))
+                        CreateSelectiveActivity.returnGetAllTeams(activity, response, statuCode);
                     SyncDatabase.teamResponse(response);
+                }
                 else if (whoCalled.equals(Constants.CALLED_GET_SELECTIVEATHLETES))
                     SyncDatabase.selectiveAthletesResponse(response);
                 else if (whoCalled.equals(Constants.CALLED_GET_ATHLETES)) {
@@ -116,6 +120,9 @@ public class ReturnResponse {
                     else if(activity.getClass().getSimpleName().equals("AthletesActivity"))
                         AthletesActivity.returnUpdateAthletes(activity, response, statuCode);
                 }
+
+                else if(whoCalled.equals(Constants.CALLED_GET_CEP))
+                    CreateSelectiveActivity.returnCEP(activity, response, statuCode);
 
 
             }

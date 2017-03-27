@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.CEP;
 import br.com.john.combinebrasil.Classes.Positions;
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.SelectiveAthletes;
@@ -518,5 +519,23 @@ public class DeserializerJsonElements {
             Log.i("ERROR: getPositions", e.getMessage());
         }
         return tests;
+    }
+
+    /**********************************CEP**********************************/
+    public CEP getCep() {
+        CEP cep = null;
+        try {
+            JSONObject json = new JSONObject(this.response);
+            cep = new CEP(
+                    json.optString(Constants.CEP),
+                    json.optString(Constants.STREET),
+                    json.optString(Constants.NEIGHBORHOOD),
+                    json.optString(Constants.STATE),
+                    json.optString(Constants.CITY)
+            );
+        } catch (JSONException jsonExc) {
+            Log.i("JSON ERROR", jsonExc.toString());
+        }
+        return cep;
     }
 }

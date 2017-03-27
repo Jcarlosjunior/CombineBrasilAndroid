@@ -58,8 +58,13 @@
             android:screenOrientation="portrait" />
         <activity android:name=".CronometerOnlyOneActivity" />
         <activity android:name=".ResultsOnlyOneActivity" />
-        <activity android:name=".IntroActivity"
-            android:theme="@style/AppThemeDark"/>
+        <activity
+            android:name=".IntroActivity"
+            android:theme="@style/AppThemeDark" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".CreateSelectiveActivity" />
+        <activity android:name=".CreateTeamActivity"></activity>
     </application>
 
 </manifest>

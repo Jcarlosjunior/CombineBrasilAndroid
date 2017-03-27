@@ -13,10 +13,12 @@ public class Constants {
 
     public static final int STATUS_NOT_INIT=0, STATUS_DONE=1, STATUS_PENDING=2;
 
-   //public static final String URL = "https://combine-api.herokuapp.com/"; //Ambiente de testes
-   public static final String URL = "http://production-combine-api.herokuapp.com/"; //Produção
+   public static final String URL = "https://combine-api.herokuapp.com/"; //Ambiente de testes
+   //public static final String URL = "http://production-combine-api.herokuapp.com/"; //Produção
  public static final String AUTHENTICATION =
          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IkF0aGxldGUgRm9ybSIsImlhdCI6MTQ4NjQ2NzI3NX0.Dy_2y2yRvYXp1N4_GylIzse-Mt3zX6O35rvddqKRV_g";
+
+   public static final String URLCep = "https://viacep.com.br/ws/";
 
     public static final String login = "api/login";
     public static final String DATE_LOGIN = "date_login";
@@ -46,6 +48,7 @@ public class Constants {
     public static final String CALLED_GET_TEAMUSERS= "getTeamUsers";
     public static final String CALLED_GET_TEAM= "getTeam";
     public static final String CALLED_GET_TESTTYPES= "getTestTypes";
+    public static final String CALLED_GET_CEP= "GET_CEP";
 
     public static final String CALLED_POST_TESTS = "calledPostTests";
 
@@ -109,6 +112,7 @@ public class Constants {
     public static final String TABLE_USER = "User";
     public static final String USER_ID = "_id";
     public static final String USER_NAME = "name";
+    public static final String USER_PASSWORD = "password";
     public static final String USER_EMAIL = "email";
     public static final String USER_ISADMIN = "isAdmin";
     public static final String USER_CANWRITE = "canWrite";
@@ -137,6 +141,13 @@ public class Constants {
     public static final String SELECTIVES_DATE = "date";
     public static final String SELECTIVES_CODESELECTIVE= "codeSelective";
     public static final String SELECTIVES_CANSYNC = "canSync";
+    public static final String SELECTIVES_NOTE = "note";
+    public static final String SELECTIVES_ADDRESS = "address";
+    public static final String SELECTIVES_POSTALCODE = "postalCode";
+    public static final String SELECTIVES_NEIGHBORHOOD = "neighborhood";
+    public static final String SELECTIVES_CITY = "city";
+    public static final String SELECTIVES_STATE = "state";
+    public static final String SELECTIVES_STREET = "street";
 
     /****************************** TEAM TABLE***************************************/
 
@@ -145,6 +156,13 @@ public class Constants {
     public static final String TEAM_NAME = "name";
     public static final String TEAM_CITY = "city";
     public static final String TEAM_MODALITY = "modality";
+    public static final String TEAM_ADDRESS = "addres";
+    public static final String TEAM_FOUNDATION = "foundation";
+    public static final String TEAM_PRESIDENTNAME= "presidentName";
+    public static final String TEAM_EMAIL = "email";
+    public static final String TEAM_PHONENUMBER = "phoneNumber";
+    public static final String TEAM_SOCIAL_LINK = "socialLink";
+    public static final String TEAM_TRAININGSCHEDULE = "trainingSchedule";
 
     /****************************** TEAM USERS TABLE***************************************/
 
@@ -178,6 +196,12 @@ public class Constants {
     public static final String TESTS_USER = "user";
     public static final String TESTS_SYNC = "sync";
     public static final String TESTS_CANSYNC = "canSync";
+
+   public static final String CEP = "cep";
+   public static final String STREET = "logradouro";
+   public static final String NEIGHBORHOOD = "bairro";
+   public static final String CITY = "localidade";
+   public static final String STATE = "uf";
 
     public static final String TERMS_TEXT = "<br>Declaro  para os devidos fins de direito  e ciência que:<br><br>" +
             "1. Participarei da seletiva e se caso selecionado, dos treinos e jogos de Futebol Americano e estou em pleno gozo de saúde e em condições de participar da seletiva, treinos e jogos, não apresentando qualquer tipo de impedimento ou restrição à prática e atividades físicas e esportivas.<br><br>" +

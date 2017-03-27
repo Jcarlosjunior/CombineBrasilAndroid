@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +16,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
@@ -30,6 +30,7 @@ public class LoginActivity extends Activity {
 
     EditText editPassword, editLogin;
     Button btnLogin;
+    TextView textRegister;
     public static LinearLayout linearProgress;
 
     @Override
@@ -42,11 +43,13 @@ public class LoginActivity extends Activity {
         editLogin = (EditText) findViewById(R.id.edit_login);
         btnLogin = (Button) findViewById(R.id.btn_entrar);
         linearProgress = (LinearLayout) findViewById(R.id.linear_progress_login);
+        textRegister = (TextView) findViewById(R.id.text_register);
 
         if(Constants.debug)
         btnLogin.setOnLongClickListener(onLongClickListener);
 
         btnLogin.setOnClickListener(onClickLoginListener);
+        textRegister.setOnClickListener(onClickRegister);
 
         DatabaseHelper db = new DatabaseHelper(this);
         try {
@@ -64,6 +67,14 @@ public class LoginActivity extends Activity {
             e.printStackTrace();
         }
     }
+
+    private View.OnClickListener onClickRegister = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            Intent mainIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(mainIntent);
+        }
+    };
 
     public View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
         @Override
@@ -119,7 +130,7 @@ public class LoginActivity extends Activity {
 
         SharedPreferencesAdapter.setValueStringSharedPreferences(LoginActivity.this, Constants.DATE_LOGIN, formattedDate);
 
-        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent mainIntent = new Intent(LoginActivity.this, MenuActivity.class);
         AllActivities.isSync = true;
         startActivity(mainIntent);
         finish();

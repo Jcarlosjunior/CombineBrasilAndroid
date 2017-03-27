@@ -3,8 +3,11 @@ package br.com.john.combinebrasil.Connection.JSONServices;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import br.com.john.combinebrasil.Classes.Selective;
+import br.com.john.combinebrasil.Classes.Team;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.Constants;
+import br.com.john.combinebrasil.Services.Services;
 
 /**
  * Created by GTAC on 31/01/2017.
@@ -23,6 +26,38 @@ public class CreateJSON {
             object.put(Constants.TESTS_RATING, test.getRating());
             object.put(Constants.TESTS_WINGSPAN, test.getWingspan());
             object.put(Constants.TESTS_USER, test.getUser());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+    public static JSONObject createObjectSelective(Selective selective) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put(Constants.SELECTIVES_TEAM, selective.getTeam());
+            object.put(Constants.SELECTIVES_DATE, selective.getDate());
+            object.put(Constants.SELECTIVES_TITLE, selective.getTitle());
+            object.put(Constants.SELECTIVES_CITY, selective.getCity());
+            object.put(Constants.SELECTIVES_NEIGHBORHOOD, selective.getNeighborhood());
+            object.put(Constants.SELECTIVES_POSTALCODE, selective.getPostalCode());
+            object.put(Constants.SELECTIVES_STATE, selective.getState());
+            object.put(Constants.SELECTIVES_STREET, selective.getState());
+            object.put(Constants.SELECTIVES_NOTE, selective.getNotes());
+            object.put(Constants.SELECTIVES_ADDRESS, selective.getAddress());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+    public static JSONObject createObjectTeam(Team team) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put(Constants.TEAM_NAME, team.getName());
+            object.put(Constants.TEAM_MODALITY, team.getModality());
+            object.put(Constants.TEAM_EMAIL, team.getEmail());
+            object.put(Constants.TEAM_SOCIAL_LINK, team.getSocialLink());
         } catch (JSONException e) {
             e.printStackTrace();
         }
