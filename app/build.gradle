@@ -1,8 +1,8 @@
-apply plugin: 'com.android.application'
+apply plugin: 'android'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 23
+    buildToolsVersion '25.0.0'
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "br.com.john.combinebrasil"
@@ -33,6 +33,7 @@ dependencies {
     }
     compile 'com.github.paolorotolo:appintro:4.1.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    compile 'com.prolificinteractive:material-calendarview:1.4.3'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
@@ -41,5 +42,6 @@ dependencies {
     compile 'com.weiwangcn.betterspinner:library-material:1.1.0'
     compile 'junit:junit:4.12'
     compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }

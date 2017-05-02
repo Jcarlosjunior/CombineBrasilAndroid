@@ -17,7 +17,6 @@ public class Team {
     private String SocialLink;
     private String Training;
 
-
     public Team(){}
 
     public Team(String id, String name, String city, String modality) {
@@ -114,4 +113,5 @@ public class Team {
     public void setTraining(String training) {
         Training = training;
     }
+
 }

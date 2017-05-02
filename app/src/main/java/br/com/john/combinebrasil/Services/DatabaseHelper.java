@@ -300,13 +300,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try{
             for (Selective obj : selectives) {
                 ContentValues values = new ContentValues();
-
                 values.put(Constants.SELECTIVES_ID, obj.getId());
                 values.put(Constants.SELECTIVES_TITLE, obj.getTitle());
-                values.put(Constants.SELECTIVES_TEAM, obj.getTeam());
+                values.put(Constants.SELECTIVES_TEAM, this.getNameTeamByIdTeam(obj.getTeam()));
                 values.put(Constants.SELECTIVES_DATE, obj.getDate());
                 values.put(Constants.SELECTIVES_CODESELECTIVE, obj.getCodeSelective());
                 values.put(Constants.SELECTIVES_CANSYNC, obj.getDate());
+                values.put(Constants.SELECTIVES_ADDRESS, obj.getAddress());
+                values.put(Constants.SELECTIVES_CITY, obj.getCity());
+                values.put(Constants.SELECTIVES_NEIGHBORHOOD, obj.getNeighborhood());
+                values.put(Constants.SELECTIVES_STATE, obj.getState());
+                values.put(Constants.SELECTIVES_STREET, obj.getStreet());
+                values.put(Constants.SELECTIVES_POSTALCODE, obj.getPostalCode());
+                values.put(Constants.SELECTIVES_NOTE, obj.getNotes());
 
                 ret = myDataBase.insert(Constants.TABLE_SELECTIVES, null, values);
             }
@@ -666,6 +672,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return obj;
     }
 
+    public ArrayList<Selective> getSelectives() {
+        this.openDataBase();
+        ArrayList<Selective> itens = new ArrayList<Selective>();
+        try {
+            String selectQuery = "SELECT * FROM " + Constants.TABLE_SELECTIVES;
+            Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                do {
+                    Selective obj = new Selective();
+                    obj.setId(c.getString(c.getColumnIndex(Constants.SELECTIVES_ID)));
+                    obj.setTitle(c.getString(c.getColumnIndex(Constants.SELECTIVES_TITLE)));
+                    obj.setTeam(c.getString(c.getColumnIndex(Constants.SELECTIVES_TEAM)));
+                    obj.setCodeSelective(c.getString(c.getColumnIndex(Constants.SELECTIVES_CODESELECTIVE)));
+                    obj.setDate(c.getString(c.getColumnIndex(Constants.SELECTIVES_DATE)));
+                    obj.setAddress(c.getString(c.getColumnIndex(Constants.SELECTIVES_ADDRESS)));
+                    obj.setCity(c.getString(c.getColumnIndex(Constants.SELECTIVES_CITY)));
+                    obj.setNeighborhood(c.getString(c.getColumnIndex(Constants.SELECTIVES_NEIGHBORHOOD)));
+                    obj.setNotes(c.getString(c.getColumnIndex(Constants.SELECTIVES_NOTE)));
+                    obj.setPostalCode(c.getString(c.getColumnIndex(Constants.SELECTIVES_POSTALCODE)));
+                    obj.setState(c.getString(c.getColumnIndex(Constants.SELECTIVES_STATE)));
+                    obj.setStreet(c.getString(c.getColumnIndex(Constants.SELECTIVES_STREET)));
+                    obj.setCanSync(Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVES_CANSYNC))));
+                    itens.add(obj);
+                } while (c.moveToNext());
+
+            } else {
+                itens = null;
+            }
+            c.close();
+            this.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return itens;
+    }
+
     public Selective getSelective() {
         this.openDataBase();
 
@@ -680,8 +724,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getString(c.getColumnIndex(Constants.SELECTIVES_TEAM)),
                     c.getString(c.getColumnIndex(Constants.SELECTIVES_DATE)),
                     c.getString(c.getColumnIndex(Constants.SELECTIVES_CODESELECTIVE)),
-                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVES_CANSYNC)))
-
+                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVES_CANSYNC))),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_CITY)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_NEIGHBORHOOD)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_STATE)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_STREET)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_POSTALCODE)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_NOTE)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_ADDRESS))
             );
 
         } else {
@@ -761,8 +811,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getString(c.getColumnIndex(Constants.SELECTIVES_TEAM)),
                     c.getString(c.getColumnIndex(Constants.SELECTIVES_DATE)),
                     c.getString(c.getColumnIndex(Constants.SELECTIVES_CODESELECTIVE)),
-                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVES_CANSYNC)))
+                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVES_CANSYNC))),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_CITY)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_NEIGHBORHOOD)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_STATE)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_STREET)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_POSTALCODE)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_NOTE)),
+                    c.getString(c.getColumnIndex(Constants.SELECTIVES_ADDRESS))
             );
+
+        } else {
+            obj = null;
+        }
+        c.close();
+        this.close();
+
+        return obj;
+    }
+
+    public Selective getSelectiveFromId(String id) {
+        this.openDataBase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_SELECTIVES +" WHERE "
+                +Constants.SELECTIVES_ID +"='"+id+"'" ;
+
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+        Selective obj= new Selective();
+        if ( c.moveToFirst()) {
+            obj= new Selective();
+            obj.setId(c.getString(c.getColumnIndex(Constants.SELECTIVES_ID)));
+            obj.setTitle(c.getString(c.getColumnIndex(Constants.SELECTIVES_TITLE)));
+            obj.setTeam(c.getString(c.getColumnIndex(Constants.SELECTIVES_TEAM)));
+            obj.setDate(c.getString(c.getColumnIndex(Constants.SELECTIVES_DATE)));
+            obj.setCodeSelective(c.getString(c.getColumnIndex(Constants.SELECTIVES_CODESELECTIVE)));
+            obj.setAddress(c.getString(c.getColumnIndex(Constants.SELECTIVES_ADDRESS)));
+            obj.setNotes(c.getString(c.getColumnIndex(Constants.SELECTIVES_NOTE)));
+            obj.setPostalCode(c.getString(c.getColumnIndex(Constants.SELECTIVES_POSTALCODE)));
+            obj.setCanSync(Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.SELECTIVES_CANSYNC))));
 
         } else {
             obj = null;
@@ -808,6 +894,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.close();
 
         return itens;
+    }
+
+    public String getNameTeamByIdTeam(String idTeam){
+        this.openDataBase();
+        String selectQuery = "SELECT DISTINCT "+Constants.TEAM_NAME+" FROM "+ Constants.TABLE_TEAM +
+                " WHERE "+Constants.TEAM_ID +" ='"+idTeam+"'";
+
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+        String nameTeam = "";
+
+        if (c.moveToFirst()) {
+            nameTeam = c.getString(c.getColumnIndex(Constants.TEAM_NAME));
+        } else {
+            nameTeam = "";
+        }
+        c.close();
+        this.close();
+        return nameTeam;
     }
 
     public ArrayList<Tests> getTestsFromType(String idType) {
@@ -1373,6 +1478,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }while(c.moveToNext());
         }
         return athletes;
+
+    }
+
+    public ArrayList<Selective> searchSelective(String search){
+        this.openDataBase();
+        String selectQuery =  "SELECT DISTINCT * FROM "+Constants.TABLE_SELECTIVES+" WHERE " +
+                "("+Constants.SELECTIVES_TITLE+" || \"\" || "+Constants.SELECTIVES_TEAM+") LIKE '%"+search+"%' GROUP BY "
+                +Constants.SELECTIVES_TITLE+", "+Constants.SELECTIVES_TEAM+"";
+
+        Cursor c = myDataBase.rawQuery(selectQuery, null);
+
+        ArrayList<Selective> selectives = new ArrayList<Selective>();
+
+
+        if(c.getCount()>0){
+            c.moveToFirst();
+            do{
+                Selective selective = new Selective();
+                selective.setId(c.getString(c.getColumnIndex(Constants.SELECTIVES_ID)));
+                selective.setDate(c.getString(c.getColumnIndex(Constants.SELECTIVES_DATE)));
+                selective.setTeam(c.getString(c.getColumnIndex(Constants.SELECTIVES_TEAM)));
+                selective.setCodeSelective(c.getString(c.getColumnIndex(Constants.SELECTIVES_CODESELECTIVE)));
+                selective.setTitle(c.getString(c.getColumnIndex(Constants.SELECTIVES_TITLE)));
+                selectives.add(selective);
+            }while(c.moveToNext());
+        }
+        return selectives;
 
     }
 }

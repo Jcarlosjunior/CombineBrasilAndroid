@@ -63,7 +63,7 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
             super(v);
             linearBackground = (LinearLayout) v.findViewById(R.id.linear_list_players);
             linearStatus = (LinearLayout) v.findViewById(R.id.linear_img_status);
-           textNamePlayer = (TextView) v.findViewById(R.id.text_name_player_list);
+            textNamePlayer = (TextView) v.findViewById(R.id.text_name_player_list);
             textFirstResult = (TextView) v.findViewById(R.id.text_first_result_list);
             textSecondResult = (TextView) v.findViewById(R.id.text_second_result_list);
             textCode = (TextView) v.findViewById(R.id.text_code_list);

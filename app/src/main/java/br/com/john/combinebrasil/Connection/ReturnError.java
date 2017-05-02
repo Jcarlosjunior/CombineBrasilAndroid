@@ -10,10 +10,14 @@ import android.view.View;
 import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CreateSelectiveActivity;
+import br.com.john.combinebrasil.EnterSelectiveActivity;
+import br.com.john.combinebrasil.HistoricSelectiveActivity;
 import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.Services.Constants;
+import br.com.john.combinebrasil.Services.SyncDatabase;
 import br.com.john.combinebrasil.SyncAthleteActivity;
+import br.com.john.combinebrasil.TestSelectiveActivity;
 
 public class ReturnError {
     public String message;
@@ -33,6 +37,14 @@ public class ReturnError {
             }
             else if(whoCalled.equals(Constants.CALLED_LOGIN)){
                 LoginActivity.afterLogin(message, false, activity, statusError);
+            }
+
+            else if (whoCalled.equals(Constants.CALLED_GET_SELECTIVE)){
+                if(activity.getClass().getSimpleName().equals("EnterSelectiveActivity"))
+                    EnterSelectiveActivity.returnGetAllSelectives(activity, message, statusError);
+                else if(activity.getClass().getSimpleName().equals("EnterSelectiveActivity"))
+                    HistoricSelectiveActivity.returnGetAllSelectives(activity, message, statusError);
+
             }
 
             else if(whoCalled.equals("UPDATE_SELECTIVEATHLETE")) {
@@ -63,6 +75,11 @@ public class ReturnError {
                     MainActivity.returnUpdateAthletes(activity, message, statusError);
                 if(activity.getClass().getSimpleName().equals("AthletesActivity"))
                     AthletesActivity.returnUpdateAthletes(activity, message, statusError);
+            }
+
+            else if (whoCalled.equals(Constants.CALLED_GET_TESTTYPES)) {
+                if (activity.getClass().getSimpleName().equals("TestSelectiveActivity"))
+                    TestSelectiveActivity.returnUpdateTests(activity, statusError, message);
             }
             else if(whoCalled.equals(Constants.CALLED_GET_CEP))
                 CreateSelectiveActivity.returnCEP(activity, message, statusError);

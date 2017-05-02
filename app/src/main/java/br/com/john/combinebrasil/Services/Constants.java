@@ -8,8 +8,9 @@ import java.io.File;
  * Created by GTAC on 17/10/2016.
  */
 public class Constants {
-
-    public static final boolean debug = false;
+    public static final int colorWhite = 0xffffffff;
+    public static final int colorBlue = 0xff004071;
+    public static final boolean debug = true;
 
     public static final int STATUS_NOT_INIT=0, STATUS_DONE=1, STATUS_PENDING=2;
 

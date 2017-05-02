@@ -64,7 +64,11 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MenuActivity" />
         <activity android:name=".CreateSelectiveActivity" />
-        <activity android:name=".CreateTeamActivity"></activity>
+        <activity android:name=".CreateTeamActivity" />
+        <activity android:name=".EnterSelectiveActivity" />
+        <activity android:name=".SelectiveDetailsActivity" />
+        <activity android:name=".TestSelectiveActivity" />
+        <activity android:name=".HistoricSelectiveActivity" />
     </application>
 
 </manifest>

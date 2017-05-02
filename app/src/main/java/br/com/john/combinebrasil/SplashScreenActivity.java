@@ -21,7 +21,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 Intent mainIntent;
                 if(SharedPreferencesAdapter.getLoggedSharedPreferences(SplashScreenActivity.this))
-                   mainIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                   mainIntent = new Intent(SplashScreenActivity.this, MenuActivity.class);
                 else
                     mainIntent = new Intent(SplashScreenActivity.this, IntroActivity.class);
                 startActivity(mainIntent);

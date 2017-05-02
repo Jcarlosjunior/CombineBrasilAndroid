@@ -73,7 +73,7 @@ public class CreateTeamActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if(verifyFields()){
-                if(spinnerModality.getText().toString().equals("")){
+                if(!spinnerModality.getText().toString().equals("")){
                     createTeam();
                 }
                 else
@@ -87,7 +87,7 @@ public class CreateTeamActivity extends AppCompatActivity {
             linearProgress.setVisibility(View.VISIBLE);
             textProgress.setText("Criando seu time...");
 
-            String url = Constants.URL + Constants.API_SELECTIVES;
+            String url = Constants.URL + Constants.API_TEAMS;
 
             PostTeamAsyncTask post = new PostTeamAsyncTask();
             post.setActivity(CreateTeamActivity.this);

@@ -95,7 +95,8 @@
             android:layout_weight="0.1"
             android:gravity="right"
             android:visibility="gone"
-            android:layout_marginRight="10dp">
+            android:layout_marginRight="10dp"
+            android:animateLayoutChanges="true">
 
             <ImageView
                 android:id="@+id/img_delete"

@@ -52,24 +52,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                        <android.support.v7.widget.AppCompatSpinner
                             android:id="@+id/spinner_team"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.8"
+                            android:layout_weight="0.9"
                             android:hint="@string/team"
                             android:paddingLeft="10sp"
                             android:textColor="@color/black"
                             android:textColorHint="@color/greyDark"
                             android:textSize="14sp"
-                            android:layout_marginBottom="5sp"
-                            android:background="@drawable/background_edit_border"/>
+                            android:layout_marginBottom="0sp"
+                            />
 
                         <ImageView
                             android:id="@+id/image_add_team"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.2"
+                            android:layout_weight="0.1"
                             android:padding="5sp"
                             android:src="@drawable/ic_add_circle_outline_black_24dp"/>
 
@@ -278,13 +278,17 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="10dp"
                         android:textSize="14dp"
+                        android:layout_weight="1"
                         android:textColor="@color/colorPrimary"
                         android:hint="@string/notes"
                         android:textColorHint="@color/greyDark"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:maxLines ="4"
+                        android:maxLength ="2000"
                         android:background="@drawable/background_edit_border"
-                        android:inputType="text"
+                        android:scrollHorizontally="false"
                         />
 
                 </LinearLayout>
@@ -324,10 +328,12 @@
         android:orientation="vertical"
         android:visibility="gone"
         android:clickable="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.4"></LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"

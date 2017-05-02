@@ -6,6 +6,8 @@
     <string name="Entrar">Entrar</string>
     <string name="register">Cadastrar</string>
     <string name="create_selective">Criar seletiva</string>
+    <string name="create_team">Criar Time</string>
+    <string name="enter_selective">Ser avaliador da seletiva</string>
     <string name="inscrever">Inscreva-se e melhore suas seletivas</string>
     <string name="testes">Testes</string>
     <string name="result">Resultado</string>
@@ -29,6 +31,7 @@
     <string name="state">Estado</string>
     <string name="cpf">CPF</string>
     <string name="address_add">Endereço (Opcional)</string>
+    <string name="address">Endereço </string>
     <string name="phone">Telfone ex:(xx)xxxxx-xxxx</string>
     <string name="position">Posição Desejável</string>
     <string name="team">Time</string>
@@ -65,6 +68,7 @@
     <string name="minute">00</string>
     <string name="save_test">Salvando teste</string>
     <string name="updating">Atualizando</string>
+    <string name="admin_selective">Criador da Seletiva</string>
 
 
     <!--
@@ -73,6 +77,9 @@
     <string name="carregando_testes">Os testes estão sendo carregados</string>
     <string name="bem_vindo">Bem vindo ao Combine Brasil</string>
     <string name="recording">Cadastrando usuário...</string>
+    <string name="update_selective">Atualizando seletivas...</string>
+    <string name="update_tests">Aguarde, atualizando os testes...</string>
+    <string name="search_historic">Aguarde, buscando seu histórico...</string>
     <string name="sync_now">Os testes estão sendo sincronizados</string>
     <string name="erro_dados_invalidos">Dados Inválidos</string>
     <string name="logando">Entrando na sua conta</string>
@@ -85,6 +92,9 @@
     <string name="not_find">
                 Ops... Não foi encontrado nenhum resultado para a busca. Talvez o atleta ainda não foi atualizado em seu celular.
     </string>
+    <string name="search_null">Ops... Não foi encontrado nenhum resutltado para a busca.</string>
+    <string name="error_digit">Verifique se não há erro de digitação</string>
+    <string name="dicas">Pesquise por nome da seletiva ou do time.</string>
     <string name="no_connection">Infelizmente você está sem conexão com a internet. Clique na tela para continuar, ou tente quando houver internet.</string>
     <string name="click_update">Clique na tela para atualizar. </string>
     <string name="text_sync_athlete">Você cadastrou alguns atletas na seletiva, porém você estava sem conexão com a internet, e por esse motivo, os atletas não foram salvos.</string>
@@ -92,13 +102,15 @@
     -->
     <string name="order_by">Ordenar por</string>
     <string name="name">Nome</string>
-    <string name="name_title">Nome do Título</string>
+    <string name="name_title">Nome da Seletiva</string>
     <string name="notes">Observações</string>
     <string name="cep">CEP</string>
     <string name="number">Número</string>
     <string name="complement">Complemento</string>
     <string name="social_link">Mídia Social</string>
     <string name="code">Código</string>
+    <string name="date">Data</string>
+    <string name="confirm">Confirmar</string>
 
     <string name="team_name">Nome do Time</string>
     <string name="modality">Modalidade</string>
@@ -111,6 +123,14 @@
     <string name="about">Sobre o Combine</string>
     <string name="test_done">Teste concluído!</string>
     <string name="exit">Sair</string>
+    <string name="filter">Filtros</string>
+    <string name="admin">Administrador</string>
+    <string name="date_init">Data Início</string>
+    <string name="date_end">Data Fim</string>
+    <string name="avaliator">Avaliador</string>
+    <string name="aplicate">Aplicar</string>
+    <string name="filter_days">Organizar por dias:</string>
+    <string name="show_mode">Mostrar seletivas em que fui</string>
     <!--
     *********************************** TÍTULOS COMBINE **************************************************
     -->

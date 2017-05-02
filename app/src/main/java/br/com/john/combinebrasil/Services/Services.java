@@ -35,6 +35,7 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import br.com.john.combinebrasil.CreateAccountAthlete;
+import br.com.john.combinebrasil.CreateSelectiveActivity;
 import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
@@ -43,6 +44,7 @@ import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.RegisterActivity;
 import br.com.john.combinebrasil.ResultsActivity;
 import br.com.john.combinebrasil.ResultsOnlyOneActivity;
+import br.com.john.combinebrasil.TestSelectiveActivity;
 import br.com.john.combinebrasil.TimerActivity;
 
 /**
@@ -116,6 +118,13 @@ public class Services {
 
         else if(activity.getClass().getSimpleName().equals("CreateTeamActivity"))
             CreateTeamActivity.returnMessage(activity, whoCalled);
+        else if (activity.getClass().getSimpleName().equals("CreateSelectiveActivity")){
+            CreateSelectiveActivity.returnMessage(activity, whoCalled);
+        }
+
+        else if(activity.getClass().getSimpleName().equals("TestSelectiveActivity")){
+            TestSelectiveActivity.returnClickableAlert(activity, whoCalled);
+        }
     }
 
     public static boolean isOnline(Activity act) {
@@ -148,7 +157,6 @@ public class Services {
         int width = 400;
         int height = pBitmap.getHeight() * 400 / pBitmap.getWidth();
 
-
         Bitmap bitmap = Bitmap.createScaledBitmap(pBitmap, width, height, true);
 
         int heightDiff = (width - height) / 4;
@@ -157,7 +165,7 @@ public class Services {
 
         Canvas canvas = new Canvas(output);
 
-        final int color = 0xffffffff;
+        final int color = Constants.colorWhite;
         final Paint paint = new Paint();
         final Rect rect = new Rect(2, 2, width, height);
 

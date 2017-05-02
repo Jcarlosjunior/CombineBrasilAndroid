@@ -42,9 +42,11 @@ public class CreateJSON {
             object.put(Constants.SELECTIVES_NEIGHBORHOOD, selective.getNeighborhood());
             object.put(Constants.SELECTIVES_POSTALCODE, selective.getPostalCode());
             object.put(Constants.SELECTIVES_STATE, selective.getState());
-            object.put(Constants.SELECTIVES_STREET, selective.getState());
             object.put(Constants.SELECTIVES_NOTE, selective.getNotes());
             object.put(Constants.SELECTIVES_ADDRESS, selective.getAddress());
+            object.put(Constants.SELECTIVES_CODESELECTIVE, selective.getCodeSelective());
+            object.put(Constants.SELECTIVES_CANSYNC, selective.getCanSync());
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -57,6 +59,7 @@ public class CreateJSON {
             object.put(Constants.TEAM_NAME, team.getName());
             object.put(Constants.TEAM_MODALITY, team.getModality());
             object.put(Constants.TEAM_EMAIL, team.getEmail());
+            object.put(Constants.TEAM_CITY, team.getCity());
             object.put(Constants.TEAM_SOCIAL_LINK, team.getSocialLink());
         } catch (JSONException e) {
             e.printStackTrace();

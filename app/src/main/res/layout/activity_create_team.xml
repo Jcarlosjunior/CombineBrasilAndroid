@@ -67,9 +67,8 @@
                             android:paddingTop="10dp"
                             android:background="@drawable/background_edit_border"
                             android:maxLines="1"
-                            android:maxLength="9"
                             android:singleLine="true"
-                            android:inputType="number"
+                            android:inputType="text"
                             android:layout_marginRight="3sp"
                             />
 
@@ -157,7 +156,7 @@
             android:layout_height="wrap_content"
             android:foregroundGravity="bottom|center_vertical|center_horizontal"
             android:layout_gravity="bottom|center_vertical"
-            android:text="@string/create_selective"
+            android:text="@string/create_team"
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
             android:textAllCaps="true"

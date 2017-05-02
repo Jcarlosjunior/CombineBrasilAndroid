@@ -22,13 +22,20 @@ public class Selective {
     public Selective() {
     }
 
-    public Selective(String id, String title, String team, String date, String codeSelective, boolean canSync) {
+    public Selective(String id, String title, String team, String date, String codeSelective, boolean canSync, String city, String neighbothood, String state, String street, String postalCode, String notes, String address) {
         Id = id;
         Title = title;
         Team = team;
         Date = date;
         CodeSelective = codeSelective;
         CanSync = canSync;
+        City = city;
+        Neighborhood = neighbothood;
+        State = state;
+        Street = street;
+        PostalCode = postalCode;
+        Notes = notes;
+        Address = address;
     }
 
     public String getId() {

@@ -313,7 +313,14 @@ public class DeserializerJsonElements {
                             json.optString(Constants.SELECTIVES_TEAM),
                             json.optString(Constants.SELECTIVES_DATE),
                             json.optString(Constants.SELECTIVES_CODESELECTIVE),
-                            json.optBoolean(Constants.SELECTIVES_CANSYNC, false)
+                            json.optBoolean(Constants.SELECTIVES_CANSYNC, false),
+                            json.optString(Constants.SELECTIVES_CITY),
+                            json.optString(Constants.SELECTIVES_NEIGHBORHOOD),
+                            json.optString(Constants.SELECTIVES_STATE),
+                            json.optString(Constants.SELECTIVES_STREET),
+                            json.optString(Constants.SELECTIVES_POSTALCODE),
+                            json.optString(Constants.SELECTIVES_NOTE),
+                            json.optString(Constants.SELECTIVES_ADDRESS)
                     );
 
                     selectives.add(obj);

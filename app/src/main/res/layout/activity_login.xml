@@ -112,7 +112,7 @@
                             android:paddingBottom="5dp"
                             android:paddingTop="5dp"
                             android:textAlignment="center"
-                            android:textSize="12dp"
+                            android:textSize="16dp"
                             android:text="@string/inscrever"
                             android:textColor="@color/black"
                             android:id="@+id/text_register" />
