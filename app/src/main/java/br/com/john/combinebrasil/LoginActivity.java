@@ -130,7 +130,7 @@ public class LoginActivity extends Activity {
 
         SharedPreferencesAdapter.setValueStringSharedPreferences(LoginActivity.this, Constants.DATE_LOGIN, formattedDate);
 
-        Intent mainIntent = new Intent(LoginActivity.this, MenuActivity.class);
+        Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
         AllActivities.isSync = true;
         startActivity(mainIntent);
         finish();

@@ -306,13 +306,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.SELECTIVES_DATE, obj.getDate());
                 values.put(Constants.SELECTIVES_CODESELECTIVE, obj.getCodeSelective());
                 values.put(Constants.SELECTIVES_CANSYNC, obj.getDate());
-                values.put(Constants.SELECTIVES_ADDRESS, obj.getAddress());
-                values.put(Constants.SELECTIVES_CITY, obj.getCity());
-                values.put(Constants.SELECTIVES_NEIGHBORHOOD, obj.getNeighborhood());
-                values.put(Constants.SELECTIVES_STATE, obj.getState());
-                values.put(Constants.SELECTIVES_STREET, obj.getStreet());
+                values.put(Constants.SELECTIVES_ADDRESS,Services.fixEncoding(obj.getAddress()));
+                values.put(Constants.SELECTIVES_CITY, Services.fixEncoding(obj.getCity()));
+                values.put(Constants.SELECTIVES_NEIGHBORHOOD, Services.fixEncoding(obj.getNeighborhood()));
+                values.put(Constants.SELECTIVES_STATE, Services.fixEncoding(obj.getState()));
+                values.put(Constants.SELECTIVES_STREET, Services.fixEncoding(obj.getStreet()));
                 values.put(Constants.SELECTIVES_POSTALCODE, obj.getPostalCode());
-                values.put(Constants.SELECTIVES_NOTE, obj.getNotes());
+               values.put(Constants.SELECTIVES_NOTE, Services.fixEncoding(obj.getNotes()));
 
                 ret = myDataBase.insert(Constants.TABLE_SELECTIVES, null, values);
             }

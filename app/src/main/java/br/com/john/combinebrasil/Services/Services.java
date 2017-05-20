@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -243,6 +244,22 @@ public class Services {
             ret = true;
         }
         return ret;
+    }
+
+    public static String fixEncoding(String response) {
+        try {
+            byte[] u = response.toString().getBytes(
+                    "ISO-8859-1");
+            response = new String(u, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return " ";
+        }
+        try {
+            return response.replace("�", "").replace("?", "").replace("~", "").replace("'", "");
+        }catch (Exception e){
+            return " ";
+        }
     }
 
     public static String convertDate(String date){

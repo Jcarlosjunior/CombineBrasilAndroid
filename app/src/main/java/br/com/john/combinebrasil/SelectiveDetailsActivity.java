@@ -47,13 +47,16 @@ public class SelectiveDetailsActivity extends AppCompatActivity {
         TextView textName = (TextView) findViewById(R.id.text_name_selective);
         TextView textDate = (TextView) findViewById(R.id.text_date_selective);
         TextView textDetails = (TextView) findViewById(R.id.text_details_selective);
+        try {
+            textName.setText(selective.getTitle());
+            textDate.setText(Services.convertDate(selective.getDate()));
 
-        textName.setText(selective.getTitle());
-        textDate.setText(Services.convertDate(selective.getDate()));
+            textDetails.setText("Time: " + selective.getTeam() + "\n" +
+                    "Endereço: " + selective.getAddress() + "\n" +
+                    "Observações: " + selective.getNotes());
+        }catch(Exception e){
 
-        textDetails.setText("Time: "+ selective.getTeam()+ "\n"+
-                "Endereço: "+selective.getAddress() +"\n"+
-                "Observações: "+selective.getNotes());
+        }
     }
 
     private View.OnClickListener btnBackClickListener = new View.OnClickListener() {

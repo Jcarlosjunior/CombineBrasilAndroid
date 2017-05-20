@@ -175,7 +175,7 @@ public class SyncDatabase {
             db.addTeam(teamsAdd);
             db.close();
             MainActivity.textProgress.setText("Sincronizando testes");
-            String url = Constants.URL + Constants.API_SELECTIVEATHLETES+"?"+Constants.SELECTIVEATHLETES_SELECTIVE+"="+item.getId();
+            String url = Constants.URL + Constants.API_SELECTIVEATHLETES+"?"+Constants.SELECTIVEATHLETES_SELECTIVE+"=589e11e401bf3d0011a30962";//+item.getId();
             callFunc(url,
                     Constants.CALLED_GET_SELECTIVEATHLETES,  false, activity);
         } catch (SQLException sqle) {

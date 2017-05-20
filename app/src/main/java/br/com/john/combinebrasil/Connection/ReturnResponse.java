@@ -73,8 +73,9 @@ public class ReturnResponse {
                         EnterSelectiveActivity.returnGetAllSelectives(activity, response, statuCode);
                     else if(activity.getClass().getSimpleName().equals("HistoricSelectiveActivity"))
                         HistoricSelectiveActivity.returnGetAllSelectives(activity, response, statuCode);
-                    else
+                    else {
                         SyncDatabase.selectiveResponse(response);
+                    }
                 }
                 else if (whoCalled.equals(Constants.CALLED_GET_TEAM)) {
                     if(activity.getClass().getSimpleName().equals("CreateSelectiveActivity"))
