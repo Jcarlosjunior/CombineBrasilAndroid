@@ -31,7 +31,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:background="@drawable/background_edit_border"
+                android:background="@drawable/background_edit"
                 android:padding="5dp"
                 android:layout_marginLeft="10sp"
                 android:layout_marginRight="10sp"

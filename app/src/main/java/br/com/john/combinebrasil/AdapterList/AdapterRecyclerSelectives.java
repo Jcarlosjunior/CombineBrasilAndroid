@@ -3,6 +3,7 @@ package br.com.john.combinebrasil.AdapterList;
 import android.app.Activity;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,16 +48,18 @@ public class AdapterRecyclerSelectives extends RecyclerView.Adapter<AdapterRecyc
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        LinearLayout linearBackground;
+        ConstraintLayout linearBackground;
         TextView textNameSelective;
         TextView textTeamName;
         TextView textDate;
+        ImageView imgView;
         public ViewHolder(View v) {
             super(v);
-            linearBackground = (LinearLayout) v.findViewById(R.id.linear_list_selective);
+            linearBackground = (ConstraintLayout) v.findViewById(R.id.constraint_background_list);
             textNameSelective = (TextView) v.findViewById(R.id.text_name_selective_list);
             textTeamName = (TextView) v.findViewById(R.id.text_team_name_list);
             textDate = (TextView) v.findViewById(R.id.text_date_list);
+            imgView = (ImageView) v.findViewById(R.id.image_list);
         }
     }
 

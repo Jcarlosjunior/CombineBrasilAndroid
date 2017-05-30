@@ -32,7 +32,7 @@
                     android:text="nome da seletiva"
                     android:textAlignment="center"
                     android:textAllCaps="true"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/color_primary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 

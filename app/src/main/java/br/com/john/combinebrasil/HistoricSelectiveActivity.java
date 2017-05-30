@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,12 +46,12 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
     RecyclerView recyclerSelectives;
     ConstraintLayout linearProgress, linearSearchNull, constraintInfoSelective, constraintFilters, constraintCalendar;
     EditText editSearch;
-    ImageView imageClose, imageChangeDates, imageCloseFilter, imageRemoveFilters;
-    Button btnApplyFilter, btnDateInit, btnDateEnd, btnAdmin, btnAvaliator, btnCancel, btnConfirm;
-    SeekBar seekBarDays;
-    TextView textTitle, textTeamSelective, textDateSelective, textAddressSelective, textInfoSelective, textAdminSelective;
+    ImageView imageClose,  imageCloseFilter, imageRemoveFilters;
+    Button btnApplyFilter, btnCancel, btnConfirm;
+    TextView textTitle, textTeamSelective, textDateSelective, textAddressSelective, textInfoSelective, textAdminSelective, txtDateInit, txtDateEnd;
     LinearLayout linearFilter;
     MaterialCalendarView calendarDates;
+    CheckBox checkAdmin, checkAvaliator;
 
     AdapterRecyclerSelectives adapterSelectives;
 
@@ -57,7 +59,7 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
 
     Date dateInit, dateEnd;
     int daysFilter = 0;
-    boolean admin = false, avaliator = false, isFilter= false, isDateSeek = false, isDateInit = false;
+    boolean isDateInit = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +83,6 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
         constraintCalendar = (ConstraintLayout) findViewById(R.id.constraint_calendar);
 
         imageClose = (ImageView) findViewById(R.id.image_close_info);
-        imageChangeDates = (ImageView) findViewById(R.id.img_change_days_filter);
         imageRemoveFilters = (ImageView) findViewById(R.id.image_remove_all_filters);
         imageCloseFilter = (ImageView) findViewById(R.id.image_close_filter);
 
@@ -93,14 +94,16 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
         textAdminSelective = (TextView) findViewById(R.id.text_admin_selctive);
 
         btnApplyFilter = (Button) findViewById(R.id.button_apply_filter);
-        btnAdmin = (Button)findViewById(R.id.btn_admin_mode_filter);
-        btnAvaliator = (Button) findViewById(R.id.btn_avaliator_mode_filter);
-        btnDateInit = (Button) findViewById(R.id.btn_date_init);
-        btnDateEnd = (Button) findViewById(R.id.btn_date_end);
+        txtDateInit = (TextView) findViewById(R.id.txt_filter_date_init);
+        txtDateEnd = (TextView) findViewById(R.id.txt_filter_date_end);
         btnCancel = (Button) findViewById(R.id.btn_cancel_date);
         btnConfirm = (Button) findViewById(R.id.btn_confirm_date);
 
-        seekBarDays = (SeekBar) findViewById(R.id.seekbar_filter_days);
+        checkAdmin = (CheckBox) findViewById(R.id.check_admin);
+        checkAvaliator = (CheckBox) findViewById(R.id.check_avaliator);
+
+        checkAdmin.setOnCheckedChangeListener(checkedClickAdmin);
+        checkAvaliator.setOnCheckedChangeListener(checkedClickAvaliator);
 
         calendarDates = (MaterialCalendarView) findViewById(R.id.calendar_filter_selectives);
 
@@ -132,16 +135,12 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
         imageClose.setOnClickListener(clickCloseInfo);
         imageCloseFilter.setOnClickListener(cickledCloseFilter);
         imageRemoveFilters.setOnClickListener(clickedRemoveAllFilters);
-        imageChangeDates.setOnClickListener(clickedChangeDates);
-        btnAdmin.setOnClickListener(clickedAdminFilter);
-        btnAvaliator.setOnClickListener(clickedAvaliador);
-        btnDateInit.setOnClickListener(clickedDateInit);
-        btnDateEnd.setOnClickListener(clickedDateEnd);
+        txtDateInit.setOnClickListener(clickedDateInit);
+        txtDateEnd.setOnClickListener(clickedDateEnd);
         btnCancel.setOnClickListener(clickedCancelDate);
         btnConfirm.setOnClickListener(clickedConfirmDate);
         btnApplyFilter.setOnClickListener(clickedApplyFilter);
-        seekBarDays.setOnSeekBarChangeListener(seekBarChange);
-
+        constraintFilters.setOnClickListener(cickledCloseFilter);
         getAllSelectives();
         removeAllFilters();
     }
@@ -149,7 +148,6 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
     private void getAllSelectives(){
         if(Services.isOnline(HistoricSelectiveActivity.this)) {
             linearProgress.setVisibility(View.VISIBLE);
-
             String url = Constants.URL + Constants.API_SELECTIVES;
             Connection task = new Connection(url, 0, Constants.CALLED_GET_SELECTIVE, false, HistoricSelectiveActivity.this);
             task.callByJsonStringRequest();
@@ -265,7 +263,6 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
     };
 
     private View.OnClickListener cickledCloseFilter = new View.OnClickListener(){
-
         @Override
         public void onClick(View v) {
             constraintFilters.setVisibility(View.GONE);
@@ -282,22 +279,18 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
         dateEnd = null;
         dateInit = null;
         daysFilter = 0;
-        admin = false;
-        avaliator = false;
-
-        noSelectedButtonFilter(btnAdmin);
-        noSelectedButtonFilter(btnAvaliator);
-        seekBarDays.setProgress(0);
-        btnDateInit.setText(this.getString(R.string.date_init));
-        btnDateEnd.setText(this.getString(R.string.date_end));
+        checkAdmin.setChecked(false);
+        checkAvaliator.setChecked(false);
+        txtDateInit.setText(this.getString(R.string.date_init));
+        txtDateEnd.setText(this.getString(R.string.date_end));
         imageRemoveFilters.setAlpha(0.5f);
     }
 
     private void verifyFilter(){
         boolean ver = false;
-        if(admin)
+        if(checkAdmin.isChecked())
             ver = true;
-        if(avaliator)
+        if(checkAvaliator.isChecked()   )
             ver = true;
         if(dateInit != null)
             ver = true;
@@ -311,12 +304,20 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
             imageRemoveFilters.setAlpha(0.5f);
     }
 
-    private void noSelectedButtonFilter(Button button){
-        button.setBackground(this.getDrawable(R.drawable.background_button_white));
-    }
-    private void selectedButtonFilter(Button button){
-        button.setBackground(this.getDrawable(R.drawable.background_button_blue));
-    }
+    private CheckBox.OnCheckedChangeListener checkedClickAdmin = new CheckBox.OnCheckedChangeListener(){
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            verifyFilter();
+        }
+    };
+
+    private CheckBox.OnCheckedChangeListener checkedClickAvaliator = new CheckBox.OnCheckedChangeListener(){
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            verifyFilter();
+        }
+    };
+
     private View.OnClickListener clickedDateInit = new View.OnClickListener(){
         @Override
         public void onClick(View v){
@@ -348,64 +349,6 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
             calendarDates.setSelectedDate(dateEnd);
         constraintCalendar.setVisibility(View.VISIBLE);
     }
-
-    private View.OnClickListener clickedChangeDates = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            showButtonsDates();
-        }
-    };
-    private void showButtonsDates(){
-        if(isDateSeek){
-            isDateSeek=false;
-            seekBarDays.setVisibility(View.GONE);
-            btnDateEnd.setVisibility(View.VISIBLE);
-            btnDateInit.setVisibility(View.VISIBLE);
-        }
-        else {
-            isDateSeek = true;
-            seekBarDays.setVisibility(View.VISIBLE);
-            btnDateEnd.setVisibility(View.GONE);
-            btnDateInit.setVisibility(View.GONE);
-        }
-    }
-
-    private View.OnClickListener clickedAdminFilter = new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-            clickAdmin();
-        }
-    };
-    private void clickAdmin(){
-        if(admin){
-            admin = false;
-            noSelectedButtonFilter(btnAdmin);
-        }
-        else{
-            admin = true;
-            selectedButtonFilter(btnAdmin);
-        }
-        verifyFilter();
-    }
-
-    private View.OnClickListener clickedAvaliador = new View.OnClickListener(){
-        @Override
-        public void onClick(View v){
-            clickedAvaliator();
-        }
-    };
-    private void clickedAvaliator(){
-        if(avaliator){
-            avaliator = false;
-            noSelectedButtonFilter(btnAvaliator);
-        }
-        else{
-            avaliator = true;
-            selectedButtonFilter(btnAvaliator);
-        }
-        verifyFilter();
-    }
-
     private View.OnClickListener clickedCancelDate = new View.OnClickListener(){
         @Override
         public void onClick(View v){
@@ -425,12 +368,13 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
         constraintCalendar.setVisibility(View.GONE);
         if(isDateInit) {
             dateInit = calendarSelected.getDate();
-            btnDateInit.setText(convertDateCalendar(formatter.format(dateInit)));
+            txtDateInit.setText(convertDateCalendar(formatter.format(dateInit)));
         }
         else {
             dateEnd = calendarSelected.getDate();
-            btnDateEnd.setText(formatter.format(dateEnd));
+            txtDateEnd.setText(formatter.format(dateEnd));
         }
+        verifyFilter();
     }
 
     private String convertDateCalendar(String date){
@@ -440,19 +384,6 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
         return day + "/"+month+"/"+year;
     }
 
-    private SeekBar.OnSeekBarChangeListener seekBarChange = new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            daysFilter = progress;
-            verifyFilter();
-        }
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {}
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {}
-    };
-
     private View.OnClickListener clickedApplyFilter = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -460,10 +391,7 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
         }
     };
     private void applyFilter(){
-        if(isDateSeek){
-
-        }
-
+        constraintFilters.setVisibility(GONE);
     }
 
 

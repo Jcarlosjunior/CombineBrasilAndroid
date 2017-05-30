@@ -90,7 +90,7 @@ public class PostLogin extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String status) {
-        LoginActivity.afterLogin(resp, false, activity, ret);
+        LoginActivity.afterLogin(resp, activity, ret);
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{

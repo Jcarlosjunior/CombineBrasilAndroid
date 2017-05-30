@@ -321,7 +321,7 @@ public class AthletesActivity extends AppCompatActivity {
                 });
 
                 showList(athletesArrayList);
-                textOptionName.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.colorPrimary));
+                textOptionName.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.color_primary));
                 textOptionCode.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.black));
             }
         }catch (Exception e){}
@@ -337,7 +337,7 @@ public class AthletesActivity extends AppCompatActivity {
                 });
 
                 showList(athletesArrayList);
-                textOptionCode.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.colorPrimary));
+                textOptionCode.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.color_primary));
                 textOptionName.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.black));
             }
         }catch (Exception e){
@@ -351,7 +351,7 @@ public class AthletesActivity extends AppCompatActivity {
                     });
 
                     showList(athletesArrayList);
-                    textOptionCode.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.colorPrimary));
+                    textOptionCode.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.color_primary));
                     textOptionName.setTextColor(ContextCompat.getColor(AthletesActivity.this, R.color.black));
                 }
             }catch (Exception error){

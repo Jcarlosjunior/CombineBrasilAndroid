@@ -40,6 +40,7 @@ import br.com.john.combinebrasil.CreateSelectiveActivity;
 import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
+import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.RegisterActivity;
@@ -114,6 +115,8 @@ public class Services {
         else if (whoCalled.equals("exit")){
             MainActivity.returnMessageOptions(activity, whoCalled);
         }
+        else if (activity.getClass().getSimpleName().equals("LoginActivity"))
+            LoginActivity.returnMessage(activity, whoCalled);
         else if (activity.getClass().getSimpleName().equals("RegisterActivity"))
             RegisterActivity.returnMessage(activity, whoCalled);
 
@@ -122,7 +125,6 @@ public class Services {
         else if (activity.getClass().getSimpleName().equals("CreateSelectiveActivity")){
             CreateSelectiveActivity.returnMessage(activity, whoCalled);
         }
-
         else if(activity.getClass().getSimpleName().equals("TestSelectiveActivity")){
             TestSelectiveActivity.returnClickableAlert(activity, whoCalled);
         }
@@ -144,14 +146,11 @@ public class Services {
     }
     public static void changeColorEditBorderError(EditText edit, Activity act){
         edit.setBackground(act.getResources().getDrawable(R.drawable.background_edit_border_error));
-        edit.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.alert_circle, 0);
-
     }
     public static void changeColorEditBorder(EditText edit, Activity act){
-        edit.setBackground(act.getResources().getDrawable(R.drawable.background_edit_border));
-        edit.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-
-    }
+        edit.setBackground(act.getResources().getDrawable(R.drawable.background_edit));
+        //edit.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
 
     public static Bitmap getRoundedCornerBitmap(Bitmap pBitmap) {
 
@@ -269,9 +268,12 @@ public class Services {
                 String c = date.substring(i, i + 1);
                 if (c.equals("T")) {
                     break;
-                } else
+                } else {
+                    c = removeCaracteresSpecial(c);
                     dateNow = dateNow.concat(c);
+                }
             }
+
             String year = dateNow.substring(0, 4);
             String month = dateNow.substring(5, 7);
             String day = dateNow.substring(8, 10);
@@ -279,6 +281,11 @@ public class Services {
         }catch (Exception e){
             return date;
         }
+    }
+
+    private static String removeCaracteresSpecial(String text){
+        text = text.replace(",","").replace(".","").replace("]","").replace("[","").replace("\"","").replace(" ","");
+        return text;
     }
 
     public static long convertMetersinCentimeters(String meters){

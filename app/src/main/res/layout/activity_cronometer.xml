@@ -109,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:text="00:00"
                         android:textSize="30sp"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/color_primary"
                         />
                 </LinearLayout>
 
@@ -133,7 +133,7 @@
                         android:layout_height="wrap_content"
                         android:text="00:00"
                         android:textSize="30sp"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/color_primary"
                         />
                 </LinearLayout>
 
@@ -252,7 +252,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.2"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/color_primary"
                 android:textSize="22sp"
                 android:padding="20sp"
                 android:text="@string/name"
@@ -283,7 +283,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="20:00"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/color_primary"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textAlignment="center"
@@ -310,7 +310,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="20:00"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/color_primary"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textAlignment="center"
@@ -349,7 +349,7 @@
                     android:id="@+id/txt_rating_done"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/color_primary"
                     android:text="Muito alto"
                     android:textAlignment="center"
                     android:textSize="16sp"
@@ -420,7 +420,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/qualification"
                     android:textColor="@color/white"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/color_primary"
                     android:layout_margin="1dp"
                     android:paddingBottom="15dp"
                     android:paddingTop="15dp"
@@ -548,7 +548,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Nome do Teste"
-                                android:textColor="@color/colorPrimary"
+                                android:textColor="@color/color_primary"
                                 android:gravity="center"
                                 android:textSize="18sp"
                                 android:padding="10sp" />
@@ -598,7 +598,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Nome do Jogador"
-                                android:textColor="@color/colorPrimary"
+                                android:textColor="@color/color_primary"
                                 android:gravity="center"
                                 android:textSize="18sp"
                                 android:padding="10sp" />

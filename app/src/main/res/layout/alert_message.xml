@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:text="Mensagem"
                 android:textColor="@color/white"
-                android:background="@color/colorPrimary"
+                android:background="@color/color_primary"
                 android:layout_margin="1dp"
                 android:paddingBottom="15dp"
                 android:paddingTop="15dp"

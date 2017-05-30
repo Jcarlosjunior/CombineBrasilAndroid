@@ -16,6 +16,7 @@ public class Team {
     private String PhoneNumber;
     private String SocialLink;
     private String Training;
+    private String urlImage;
 
     public Team(){}
 
@@ -114,4 +115,11 @@ public class Team {
         Training = training;
     }
 
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
 }

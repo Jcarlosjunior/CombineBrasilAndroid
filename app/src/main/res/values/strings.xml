@@ -1,13 +1,44 @@
 <resources>
     <string name="app_name">Combine Brasil</string>
+    <string name="facebook_app_id">424941101232356</string>
+    <string name="fb_login_protocol_scheme">fb424941101232356</string>
+
     <string name="User">Usuário</string>
     <string name="Password">Senha</string>
     <string name="confirm_password">Confirme a senha</string>
     <string name="Entrar">Entrar</string>
+    <string name="entrar_facebook">Entrar com o Facebook</string>
+    <string name="nao_inscrito">Não é inscrito?</string>
+    <string name="registre_se">Registre-se agora!</string>
     <string name="register">Cadastrar</string>
+    <string name="register_facebook">Cadastrar com facebook</string>
+    <string name="nome">Nome</string>
+    <string name="email">E-mail</string>
+    <string name="logando">Entrando na sua conta</string>
+    <string name="recording">Cadastrando usuário</string>
+    <string name="home">Home</string>
+    <string name="meu_perfil">Meu Perfil</string>
+    <string name="cadastrar_atleta">Cadastrar Atleta</string>
+    <string name="update">Atualizar</string>
+    <string name="help">Ajuda</string>
+    <string name="entre_seletiva">Entrar em uma seletiva</string>
+    <string name="codigo">Código</string>
+    <string name="enter_selective">Para ser avaliador de uma seletiva, digite o código informado ao adminstrador</string>
+    <string name="confirm">Confirmar</string>
+    <string name="filter_by">Filtrar por</string>
+    <string name="date_init">Data Início</string>
+    <string name="date_end">Data Fim</string>
     <string name="create_selective">Criar seletiva</string>
     <string name="create_team">Criar Time</string>
-    <string name="enter_selective">Ser avaliador da seletiva</string>
+    <string name="team">Time</string>
+    <string name="participation">Participação como:</string>
+    <string name="selecionar_time">Selecionar Time</string>
+    <string name="add_time">Adicionar novo time</string>
+    <string name="proximo_passo">Próximo Passo</string>
+    <string name="update_teams">Autlizando equipes</string>
+    <string name="try_again">Tentar novamente</string>
+    <string name="info_selective">Informações da seletiva</string>
+
     <string name="inscrever">Inscreva-se e melhore suas seletivas</string>
     <string name="testes">Testes</string>
     <string name="result">Resultado</string>
@@ -19,11 +50,11 @@
     <string name="adicionar">Adicionar</string>
     <string name="salvar_dados">Salvar resultados</string>
     <string name="inconclusive">Dado Incoclusivo</string>
-    <string name="nome">Nome</string>
+
     <string name="nome_opcional">Nome (Opcional)</string>
     <string name="code_selective">Código da selectiva</string>
     <string name="code_athlete">Código do atleta</string>
-    <string name="email">E-mail</string>
+
     <string name="email_contact">E-mail para contato</string>
     <string name="city">Cidade</string>
     <string name="neighborhood">Bairro</string>
@@ -34,7 +65,6 @@
     <string name="address">Endereço </string>
     <string name="phone">Telfone ex:(xx)xxxxx-xxxx</string>
     <string name="position">Posição Desejável</string>
-    <string name="team">Time</string>
     <string name="nascimento">Data de Nascimento</string>
     <string name="date_selective">Data da Seletiva</string>
     <string name="local_selective">Onde irá acontecer a seletiva</string>
@@ -76,13 +106,13 @@
     -->
     <string name="carregando_testes">Os testes estão sendo carregados</string>
     <string name="bem_vindo">Bem vindo ao Combine Brasil</string>
-    <string name="recording">Cadastrando usuário...</string>
+
     <string name="update_selective">Atualizando seletivas...</string>
     <string name="update_tests">Aguarde, atualizando os testes...</string>
     <string name="search_historic">Aguarde, buscando seu histórico...</string>
     <string name="sync_now">Os testes estão sendo sincronizados</string>
     <string name="erro_dados_invalidos">Dados Inválidos</string>
-    <string name="logando">Entrando na sua conta</string>
+
     <string name="add_account">Criando atleta</string>
     <string name="qualification_message">Qualifique a atuação do atleta no teste.</string>
     <string name="wingspan_message">Nos testes de salto vertical, é necessário a envergadura do atleta,
@@ -95,7 +125,7 @@
     <string name="search_null">Ops... Não foi encontrado nenhum resutltado para a busca.</string>
     <string name="error_digit">Verifique se não há erro de digitação</string>
     <string name="dicas">Pesquise por nome da seletiva ou do time.</string>
-    <string name="no_connection">Infelizmente você está sem conexão com a internet. Clique na tela para continuar, ou tente quando houver internet.</string>
+    <string name="no_connection">Ops... &lt;br /&gt;Aparentemente seu aparelho está sem conexão com a internet. &lt;br /&gt;Tente se conectar novamente. </string>
     <string name="click_update">Clique na tela para atualizar. </string>
     <string name="text_sync_athlete">Você cadastrou alguns atletas na seletiva, porém você estava sem conexão com a internet, e por esse motivo, os atletas não foram salvos.</string>
     <!-- ******************************** ITENS MENUS ****************************************************
@@ -110,14 +140,14 @@
     <string name="social_link">Mídia Social</string>
     <string name="code">Código</string>
     <string name="date">Data</string>
-    <string name="confirm">Confirmar</string>
+
 
     <string name="team_name">Nome do Time</string>
     <string name="modality">Modalidade</string>
 
     <string name="create">Criar Atleta</string>
-    <string name="update">Atualizar</string>
-    <string name="help">Ajuda</string>
+
+
     <string name="sync">Sincronizar</string>
     <string name="tests_athletes">Testes e atletas</string>
     <string name="about">Sobre o Combine</string>
@@ -125,8 +155,6 @@
     <string name="exit">Sair</string>
     <string name="filter">Filtros</string>
     <string name="admin">Administrador</string>
-    <string name="date_init">Data Início</string>
-    <string name="date_end">Data Fim</string>
     <string name="avaliator">Avaliador</string>
     <string name="aplicate">Aplicar</string>
     <string name="filter_days">Organizar por dias:</string>

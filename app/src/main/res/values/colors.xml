@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#004071</color>
-    <color name="colorPrimaryDark">#00355d</color>
+    <color name="color_primary">#004071</color>
+    <color name="color_facebook">#3b5998</color>
+    <color name="color_facebook_focused">#324c82</color>
+    <color name="color_primary_dark">#091f4f</color>
+
+
     <color name="colorPrimaryLight">#8d00355d</color>
     <color name="black">#000</color>
     <color name="grey">#e2e2e2</color>
     <color name="white">#ffffff</color>
     <color name="white_transparent">#88ffffff</color>
-    <color name="whiteDark">#f4f4f4</color>
+    <color name="whiteDark">#fafafa</color>
     <color name="greyDark">#7d7d7d</color>
     <color name="red_status">#c74437</color>
-    <color name="red_dark">#FFB71504</color>
-    <color name="grey_transparent">#47dddddd</color>
-    <color name="grey_transparent_menu">#bfcccccc</color>
+    <color name="red_dark">#e61b06</color>
+    <color name="grey_transparent">#61dddddd</color>
+    <color name="grey_transparent_menu">#57c2c2c2</color>
     <color name="dark_transparent">#d9000000</color>
-    <color name="dark">#434343</color>
+    <color name="dark">#444444</color>
     <color name="yellow">#ffde00</color>
     <color name="green">#3abf5a</color>
     <color name="green_done">#e23fb95c</color>

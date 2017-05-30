@@ -77,24 +77,6 @@ public class Connection extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         try {
                             ReturnError.getInstance().goTo(whoCalled, getActivity(), getMessage(error), error.networkResponse.statusCode);
-
-                            /*if (error.networkResponse.statusCode == 400)
-                                Services.messageAlert(getActivity(), "Erro!", "código 400\n requisição incorreta", "");
-                            else if (error.networkResponse.statusCode == 401)
-                                Services.messageAlert(getActivity(),"Erro!", "código 401\n requisição não autorizada","");
-                            else
-                                ReturnError.getInstance().goTo(whoCalled, getActivity(), getMessage(error));
-                            //se voce estiver debugando altere essa variável
-                            if (Constants.debug) {
-                                String statusCode = String.valueOf(error.networkResponse.statusCode);
-                                String mensagem = new String(error.networkResponse.data);
-                                String e = new String(String.valueOf(error));
-                                if (error.getMessage() == null)
-                                    Services.messageAlert(getActivity(),"Erro", e, "");
-                                else
-                                    Services.messageAlert(getActivity(),statusCode + " - Erro!", error.getMessage(), "");
-                                Services.messageAlert(getActivity(),"Erro Mensagem", mensagem, "");
-                            }*/
                         }catch (Exception e){
                             Services.messageAlert(activity, "API indisponível", "tente novamente mais tarde", "" );
                         }

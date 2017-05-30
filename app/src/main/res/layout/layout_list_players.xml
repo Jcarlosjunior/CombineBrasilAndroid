@@ -32,7 +32,7 @@
                     android:text="Nome do Jogador"
                     android:layout_marginBottom="10sp"
                     android:singleLine="true"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/color_primary_dark"
                     android:textSize="18sp"/>
 
                 <TextView
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:text="Codigo"
                     android:layout_marginBottom="10sp"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/color_primary_dark"
                     android:textAlignment="textEnd"
                     android:textSize="18sp"/>
             </LinearLayout>

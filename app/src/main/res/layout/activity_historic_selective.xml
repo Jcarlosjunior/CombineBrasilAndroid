@@ -24,23 +24,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="0.4"
-        android:background="@drawable/background_edit_border"
         android:drawableStart="@drawable/search"
+        android:drawableTint="@color/color_primary"
+        android:drawablePadding="10dp"
         android:ems="10"
         android:hint="@string/search"
         android:inputType="textPersonName"
-        android:padding="5dp"
-        android:textAlignment="center"
-
+        android:padding="15dp"
+        android:background="@color/white"
         android:textColorHint="@color/greyDark"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:visibility="visible"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_historic_selective"
@@ -55,8 +53,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_search"
-        app:layout_constraintVertical_bias="1.0"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
@@ -237,7 +234,7 @@
                 android:id="@+id/constraintLayout3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@color/color_primary"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -300,7 +297,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/team"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/color_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -327,7 +324,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/date_selective"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/color_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -354,7 +351,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/address"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/color_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -381,7 +378,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/admin_selective"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/color_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -408,7 +405,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:text="FOram inscritos 140 pessoas, na seletiva"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/color_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -422,252 +419,214 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraint_filters_selective"
+        android:animateLayoutChanges="true"
+        android:background="@color/grey_transparent"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/white"
         android:clickable="true"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <Button
-            android:id="@+id/button_apply_filter"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginStart="24dp"
-            android:background="@drawable/background_button_blue"
-            android:text="@string/aplicate"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraintLayout2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_border"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="32dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp">
 
-            <ImageView
-                android:id="@+id/image_remove_all_filters"
-                android:layout_width="wrap_content"
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="0dp"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
-                app:srcCompat="@drawable/ic_delete_sweep_white_36dp" />
-
-            <ImageView
-                android:id="@+id/image_close_filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginLeft="0dp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.545"
-                app:srcCompat="@drawable/ic_keyboard_arrow_down_white_36dp" />
+                android:background="@color/color_primary"
+                android:id="@+id/constraintLayout"
+                app:layout_constraintHorizontal_bias="0.0">
+
+                <ImageView
+                    android:id="@+id/image_close_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:padding="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.545"
+                    app:srcCompat="@drawable/close" />
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/filter_by"
+                    android:textAlignment="center"
+                    android:padding="10dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintRight_toLeftOf="@+id/image_remove_all_filters"
+                    android:layout_marginRight="0dp"
+                    app:layout_constraintLeft_toRightOf="@+id/image_close_filter"
+                    android:layout_marginLeft="0dp"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="0dp" />
+
+                <ImageView
+                    android:id="@+id/image_remove_all_filters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:padding="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/ic_delete_sweep_white_24dp" />
+
+            </android.support.constraint.ConstraintLayout>
+
+
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/txt_filter_date_init"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:drawableLeft="@drawable/ic_calendar"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:text="@string/date_init"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+            <TextView
+                android:id="@+id/txt_filter_date_end"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="8dp"
+                android:drawableLeft="@drawable/ic_calendar"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:text="@string/date_end"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+                android:layout_marginRight="16dp"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <TextView
+                android:id="@+id/txt_filter_team"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:drawableLeft="@drawable/ic_star"
+                android:drawablePadding="10dp"
+                android:padding="10dp"
+                android:text="@string/team"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/txt_filter_date_init" />
+
+            <TextView
+                android:id="@+id/txt_filter_participation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:paddingStart="10dp"
+                android:drawableLeft="@drawable/ic_person"
+                android:drawablePadding="10dp"
+                android:text="@string/participation"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/txt_filter_team" />
+
+            <CheckBox
+                android:id="@+id/check_admin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/filter"
+                android:text="@string/admin"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                style="@style/CheckBoxAppTheme"
+                app:layout_constraintTop_toBottomOf="@+id/txt_filter_participation"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <CheckBox
+                android:id="@+id/check_avaliator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/avaliator"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/txt_filter_participation"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                style="@style/CheckBoxAppTheme"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/check_admin"
+                 />
+
+            <Button
+                android:id="@+id/button_apply_filter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_button_blue"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:text="@string/aplicate"
                 android:textStyle="bold"
+                android:layout_marginEnd="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/image_close_filter"
-                app:layout_constraintRight_toLeftOf="@+id/image_remove_all_filters"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/check_admin"
+                android:layout_marginBottom="32dp" />
 
         </android.support.constraint.ConstraintLayout>
 
-        <ScrollView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/button_apply_filter"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-            app:layout_constraintVertical_bias="1.0">
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/constraintLayout4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/filter_days"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/img_change_days_filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView8"
-                    app:srcCompat="@drawable/ic_swap_horiz_black_24dp" />
-
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/constraint_dates"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:animateLayoutChanges="true"
-                    android:visibility="visible"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/img_change_days_filter"
-                    app:layout_constraintTop_toBottomOf="@+id/textView8">
-
-                    <SeekBar
-                        android:id="@+id/seekbar_filter_days"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginStart="8dp"
-                        android:max="90"
-                        android:progress="0"
-                        android:visibility="visible"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <Button
-                        android:id="@+id/btn_date_init"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginLeft="16dp"
-                        android:background="@drawable/background_button_white"
-                        android:padding="0dp"
-                        android:text="@string/date_init"
-                        android:textAllCaps="false"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
-
-                    <Button
-                        android:id="@+id/btn_date_end"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:background="@drawable/background_button_white"
-                        android:padding="0dp"
-                        android:text="@string/date_end"
-                        android:textAllCaps="false"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toRightOf="@+id/btn_date_init"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
-                </android.support.constraint.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/show_mode"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraint_dates" />
-
-                <Button
-                    android:id="@+id/btn_avaliator_mode_filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="7dp"
-                    android:background="@drawable/background_button_white"
-                    android:padding="0dp"
-                    android:text="@string/avaliator"
-                    android:textAllCaps="false"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toRightOf="@+id/btn_admin_mode_filter"
-                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-                <Button
-                    android:id="@+id/btn_admin_mode_filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/background_button_white"
-                    android:padding="0dp"
-                    android:text="@string/admin"
-                    android:textAllCaps="false"
-                    android:textSize="12sp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
-            </android.support.constraint.ConstraintLayout>
-        </ScrollView>
-
-
-    </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraint_calendar"
@@ -686,18 +645,18 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="0dp"
             android:layout_marginEnd="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="0dp"
             android:background="@drawable/background_border"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintVertical_bias="0.51">
 
             <Button
                 android:id="@+id/btn_confirm_date"
@@ -706,11 +665,10 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="0dp"
                 android:background="@color/white"
                 android:text="@string/confirm"
                 android:textAllCaps="true"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/color_primary"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -727,7 +685,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="0dp"
                 android:background="@color/white"
                 android:text="@string/cancel"
                 android:textAllCaps="true"

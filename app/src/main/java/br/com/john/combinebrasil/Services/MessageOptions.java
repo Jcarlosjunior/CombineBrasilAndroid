@@ -2,6 +2,7 @@ package br.com.john.combinebrasil.Services;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +15,7 @@ import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
+import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.ResultsActivity;
@@ -76,7 +78,10 @@ public class MessageOptions {
 
     private void methodPositive(){
         alerta.hide();
-        if(act.getClass().getSimpleName().equals(Constants.CRONOMETER_ACTIVITY)){
+        if(whoCalled.equals("exit")){
+            exit();
+        }
+        else if(act.getClass().getSimpleName().equals(Constants.CRONOMETER_ACTIVITY)){
             CronometerActivity.getMethodOutActivity(act, whoCalled);
         }
         else if(act.getClass().getSimpleName().equals(Constants.CRONOMETER_ONLY_ONE_ACTIVITY))
@@ -99,5 +104,12 @@ public class MessageOptions {
         }
         else if(act.getClass().getSimpleName().equals("AthletesActivity"))
             AthletesActivity.returnOptions(act,whoCalled);
+    }
+    private void exit(){
+        SharedPreferencesAdapter.cleanAllShared(act);
+        act.deleteDatabase(Constants.NAME_DATABASE);
+        Intent i = new Intent(act, LoginActivity.class);
+        act.startActivity(i);
+        act.finish();
     }
 }

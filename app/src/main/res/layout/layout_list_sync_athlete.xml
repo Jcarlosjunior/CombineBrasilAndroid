@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:text="Nome do Jogador"
                     android:layout_marginBottom="10sp"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/color_primary_dark"
                     android:singleLine="true"
                     android:textSize="20sp"/>
 
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:text="Codigo"
                     android:layout_marginBottom="10sp"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/color_primary_dark"
                     android:textSize="18sp"
                     android:textAlignment="textEnd"
                     android:singleLine="true"

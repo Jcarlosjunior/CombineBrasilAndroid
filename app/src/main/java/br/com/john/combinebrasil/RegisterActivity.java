@@ -2,6 +2,8 @@ package br.com.john.combinebrasil;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,8 +37,8 @@ import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
 public class RegisterActivity extends AppCompatActivity {
     Toolbar toolbar;
     EditText editUser, editEmail, editPassword, editConfirmPassword;
-    Button btnRegister;
-    LinearLayout linearProgress;
+    Button btnRegister, btnRegisterFacebook;
+    ConstraintLayout linearProgress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,18 +53,38 @@ public class RegisterActivity extends AppCompatActivity {
         linearAddAccount.setVisibility(View.GONE);
         ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
         imgSearch.setVisibility(View.GONE);
+        TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
+        textTitle.setText(R.string.register);
 
         editUser = (EditText) findViewById(R.id.edit_user);
         editEmail = (EditText) findViewById(R.id.edit_email);
         editPassword = (EditText) findViewById(R.id.edit_password);
         editConfirmPassword = (EditText) findViewById(R.id.edit_confirm_password);
         btnRegister = (Button) findViewById(R.id.btn_register);
-        linearProgress = (LinearLayout) findViewById(R.id.linear_progress);
-
+        linearProgress = (ConstraintLayout) findViewById(R.id.linear_progress_login);
+        btnRegisterFacebook = (Button) findViewById(R.id.btn_register_facebook);
         btnRegister.setOnClickListener(clickRegister);
         editConfirmPassword.addTextChangedListener(textConfirm);
+
+        Bundle extras = getIntent().getExtras();
+
+        if(extras != null){
+            boolean loginFacebook = extras.getBoolean("loginFacebook");
+            if(loginFacebook)
+                createUserByFacebook(extras);
+        }
     }
 
+    private void createUserByFacebook(Bundle extras){
+        editPassword.setText(extras.getString("pswd"));
+        editConfirmPassword.setText(extras.getString("pswd"));
+        editEmail.setText(extras.getString("email"));
+        editUser.setText(extras.getString("name"));
+
+        editPassword.setEnabled(false);
+        editConfirmPassword.setEnabled(false);
+        btnRegisterFacebook.setVisibility(View.GONE);
+    }
 
     private View.OnClickListener btnBackClickListener = new View.OnClickListener(){
         @Override
