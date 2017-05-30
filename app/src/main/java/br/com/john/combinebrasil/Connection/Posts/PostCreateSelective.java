@@ -25,6 +25,7 @@ import java.io.UnsupportedEncodingException;
 import br.com.john.combinebrasil.CreateSelectiveActivity;
 import br.com.john.combinebrasil.RegisterActivity;
 import br.com.john.combinebrasil.Services.Constants;
+import br.com.john.combinebrasil.TestSelectiveActivity;
 
 
 /**
@@ -88,7 +89,7 @@ public class PostCreateSelective extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String status) {
-        CreateSelectiveActivity.returnCreateSelective(activity, resp, result);
+        TestSelectiveActivity.returnCreateSelective(activity, resp, result);
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{

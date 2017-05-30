@@ -79,9 +79,7 @@ public class ReturnResponse {
                     }
                 }
                 else if (whoCalled.equals(Constants.CALLED_GET_TEAM)) {
-                    if(activity.getClass().getSimpleName().equals("CreateSelectiveActivity"))
-                        CreateSelectiveActivity.returnGetAllTeams(activity, response, statuCode);
-                    else if(activity.getClass().getSimpleName().equals("ChooseTeamSelectiveActivity"))
+                    if(activity.getClass().getSimpleName().equals("ChooseTeamSelectiveActivity"))
                         ChooseTeamSelectiveActivity.returnGetAllTeams(activity, response, statuCode);
                     else
                         SyncDatabase.teamResponse(response);

@@ -122,9 +122,6 @@ public class Services {
 
         else if(activity.getClass().getSimpleName().equals("CreateTeamActivity"))
             CreateTeamActivity.returnMessage(activity, whoCalled);
-        else if (activity.getClass().getSimpleName().equals("CreateSelectiveActivity")){
-            CreateSelectiveActivity.returnMessage(activity, whoCalled);
-        }
         else if(activity.getClass().getSimpleName().equals("TestSelectiveActivity")){
             TestSelectiveActivity.returnClickableAlert(activity, whoCalled);
         }

@@ -19,12 +19,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerChooseTestSelective;
+import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Connection.Connection;
+import br.com.john.combinebrasil.Connection.JSONServices.CreateJSON;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
+import br.com.john.combinebrasil.Connection.Posts.PostCreateSelective;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
@@ -47,6 +54,8 @@ public class TestSelectiveActivity extends AppCompatActivity {
     FloatingActionButton buttonDone;
 
     CoordinatorLayout coordinatorLayout;
+
+    HashMap<String, String> hashMapSelective;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +81,8 @@ public class TestSelectiveActivity extends AppCompatActivity {
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordination_tests);
 
+        hashMapSelective = CreateSelectiveActivity.hashInfoSelective;
+
         tests = new ArrayList<TestTypes>();
         testsChoose = new ArrayList<TestTypes>();
 
@@ -96,12 +107,14 @@ public class TestSelectiveActivity extends AppCompatActivity {
     public static void returnUpdateTests(Activity act, int status, String result){
         ((TestSelectiveActivity)act).returnUpdateTests(status, result);
     }
+
     private void returnUpdateTests(int status, String result){
         linearProgress.setVisibility(View.GONE);
         if(status == 200 || status == 201) {
             verifyResult(result);
         }
     }
+
     private void verifyResult(String result){
         DeserializerJsonElements des = new DeserializerJsonElements(result);
         tests = des.getTestTypes();
@@ -142,6 +155,7 @@ public class TestSelectiveActivity extends AppCompatActivity {
     public static boolean testExist(Activity act, String id){
         return ((TestSelectiveActivity) act).findTestChoose(id);
     }
+
     private boolean findTestChoose(String id){
         boolean ret = false;
         for (int position=0; position<testsChoose.size(); position++) {
@@ -156,6 +170,7 @@ public class TestSelectiveActivity extends AppCompatActivity {
     public static void clickTestChoose(Activity act, String id, int position){
         ((TestSelectiveActivity) act).clickTestChoose(id, position);
     }
+
     private void clickTestChoose(String id, int position){
         boolean ret = findTestChoose(id);
         if(!ret)
@@ -186,6 +201,7 @@ public class TestSelectiveActivity extends AppCompatActivity {
             removeAllTests();
         }
     };
+
     private void removeAllTests(){
         int sizeTest = testsChoose.size();
         for(int i = 0; i<=sizeTest-1; i++){
@@ -213,9 +229,43 @@ public class TestSelectiveActivity extends AppCompatActivity {
         snackbar.show();
     }
 
+    private void createSelective(){
+        if(Services.isOnline(TestSelectiveActivity.this)){
+            linearProgress.setVisibility(View.VISIBLE);
+            textProgress.setText("Criando sua seletiva");
+
+            String url = Constants.URL + Constants.API_SELECTIVES;
+
+            PostCreateSelective post = new PostCreateSelective();
+            post.setActivity(TestSelectiveActivity.this);
+            post.setObjPut(CreateJSON.createObjectSelective(createObjectSelective()));
+            post.execute(url);
+        }
+    }
+
+    public static void returnCreateSelective(Activity act, String response, String result){
+        ((TestSelectiveActivity)act).returnCreateSelective(response, result);
+    }
+
+    private void returnCreateSelective(String response, String result){
+        linearProgress.setVisibility(View.GONE);
+        if(response.toUpperCase().equals("OK")){
+            try {
+                JSONObject json = new JSONObject(result);
+                String code = json.getString(Constants.SELECTIVES_CODESELECTIVE);
+                Services.messageAlert(this, "Seletiva criada!!", "Parabéns a sua seletiva foi criada", "createSelective");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
     public static void returnClickableAlert(Activity act, String whoCalled){
         ((TestSelectiveActivity)act).returnClickableAlert(whoCalled);
     }
+
     private void returnClickableAlert(String whoCalled){
         if(whoCalled.equals(messageSelectiveCreate))
             finishAfterCreateSelective();
@@ -223,6 +273,7 @@ public class TestSelectiveActivity extends AppCompatActivity {
 
     private void finishAfterCreateSelective(){
         CreateSelectiveActivity.finishActity();
+        ChooseTeamSelectiveActivity.finishActity();
         this.finish();
     }
 
@@ -232,4 +283,39 @@ public class TestSelectiveActivity extends AppCompatActivity {
             TestSelectiveActivity.this.finish();
         }
     };
+
+    private Selective createObjectSelective() {
+        String date = Services.convertDate(hashMapSelective.get("date"));
+        Selective selective = new Selective();
+        selective.setTeam(hashMapSelective.get("team"));
+        selective.setTitle(hashMapSelective.get("title"));
+        selective.setCity(hashMapSelective.get("city"));
+        selective.setDate(date);
+        selective.setNeighborhood(hashMapSelective.get("neighborhood"));
+        selective.setPostalCode(hashMapSelective.get("cep"));
+        selective.setState(hashMapSelective.get("state"));
+        selective.setStreet(hashMapSelective.get("street"));
+        selective.setNotes(hashMapSelective.get("notes"));
+        selective.setAddress(returnAddress());
+        selective.setCanSync(true);
+        selective.setCodeSelective("");
+        selective.setCodeSelective(returnCodeSelective());
+        return selective;
+    }
+
+    private String returnAddress(){
+        return hashMapSelective.get("cep")+" ("+hashMapSelective.get("neighborhood")+
+                " - "+hashMapSelective.get("city")+
+                ", "+hashMapSelective.get("street")+
+                " - "+hashMapSelective.get("state")+
+                ") - "+hashMapSelective.get("complement");
+    }
+
+    private String returnCodeSelective(){
+        DatabaseHelper db = new DatabaseHelper(this);
+        db.openDataBase();
+        return  String.format(hashMapSelective.get("title").toString().substring(0,2)
+                +db.getNameTeamByIdTeam(hashMapSelective.get("team").toString()).toString().substring(0,2)
+                +hashMapSelective.get("date").toString().substring(0,2)).trim().toUpperCase();
+    }
 }

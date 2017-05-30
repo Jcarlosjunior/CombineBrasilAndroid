@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -19,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -38,7 +41,7 @@ public class ChooseTeamSelectiveActivity extends AppCompatActivity {
     Toolbar toolbar;
     ViewPager pager;
     ArrayList<Team> teams;
-    ConstraintLayout constraintProgress, constraintNotConnection;
+    public static Activity act;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,13 +61,11 @@ public class ChooseTeamSelectiveActivity extends AppCompatActivity {
         imgSearch.setVisibility(View.GONE);
         TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
         textTitle.setText(R.string.create_selective);
-
+        act = ChooseTeamSelectiveActivity.this;
         btnAddTeam= (Button) findViewById(R.id.button_add_team);
         btnNextPass = (Button) findViewById(R.id.button_next_pass);
         imgPrevious = (ImageView) findViewById(R.id.img_previous);
         imgNext = (ImageView) findViewById(R.id.img_next);
-        constraintProgress = (ConstraintLayout) findViewById(R.id.constraint_progress);
-        constraintNotConnection = (ConstraintLayout) findViewById(R.id.constraint_not_connection);
         btnAddTeam.setOnClickListener(clickAddTeamListener);
         btnNextPass.setOnClickListener(clickNextPassListener);
         imgPrevious.setOnClickListener(btnPreviousListener);
@@ -93,7 +94,7 @@ public class ChooseTeamSelectiveActivity extends AppCompatActivity {
     private void getTeams(){
         if(Services.isOnline(ChooseTeamSelectiveActivity.this)) {
             hideNotConnect();
-            constraintProgress.setVisibility(View.VISIBLE);
+            showProgress(getString(R.string.update_teams));
             String url = Constants.URL + Constants.API_TEAMS;
             Connection task = new Connection(url, 0, Constants.CALLED_GET_TEAM, false, ChooseTeamSelectiveActivity.this);
             task.callByJsonStringRequest();
@@ -107,7 +108,7 @@ public class ChooseTeamSelectiveActivity extends AppCompatActivity {
     }
 
     private void returnGetAllTeams(String response, int status){
-        constraintProgress.setVisibility(View.GONE);
+        hideProgress();
         if(status == 200 || status == 201) {
             DeserializerJsonElements des = new DeserializerJsonElements(response);
             ArrayList<Team> teams = des.getTeam();
@@ -159,6 +160,7 @@ public class ChooseTeamSelectiveActivity extends AppCompatActivity {
     private int getItem(int i) {
         return pager.getCurrentItem() + i;
     }
+
     private View.OnClickListener btnClickListenter = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -180,10 +182,12 @@ public class ChooseTeamSelectiveActivity extends AppCompatActivity {
             nextPass();
         }
     };
+
     private void nextPass(){
         Toast.makeText(ChooseTeamSelectiveActivity.this,"Selected:" + teams.get(getItem(0)).getId(),Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(ChooseTeamSelectiveActivity.this, CreateSelectiveActivity.class);
         intent.putExtra("team_choose", teams.get(getItem(0)).getId());
+        startActivity(intent);
     }
 
     private void showNotConnect(){
@@ -202,5 +206,22 @@ public class ChooseTeamSelectiveActivity extends AppCompatActivity {
     private void hideNotConnect(){
         ConstraintLayout constraintNoConnect = (ConstraintLayout) findViewById(R.id.constraint_not_connection);
         constraintNoConnect.setVisibility(View.GONE);
+    }
+
+    private void showProgress(String message){
+        ConstraintLayout constraintProgress = (ConstraintLayout) findViewById(R.id.constraint_progress);
+        TextView textProgress = (TextView) findViewById(R.id.text_progress);
+        textProgress.setText(message);
+        constraintProgress.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgress (){
+        ConstraintLayout constraintProgress = (ConstraintLayout) findViewById(R.id.constraint_progress);
+        constraintProgress.setVisibility(View.GONE);
+    }
+
+
+    public static void finishActity (){
+        ((ChooseTeamSelectiveActivity)act).finish();
     }
 }

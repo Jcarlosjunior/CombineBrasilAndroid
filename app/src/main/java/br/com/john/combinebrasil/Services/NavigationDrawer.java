@@ -85,7 +85,7 @@ public class NavigationDrawer {
                 })
                 .build();
         ImageView view = headerResult.getHeaderBackgroundView();
-        Glide.with(mActivity).load("https://openclipart.org/image/2400px/svg_to_png/211821/matt-icons_preferences-desktop-personal.png").into(view);
+        Glide.with(mActivity).load("https://www.tnwinc.com/wp-content/uploads/2013/11/bullying-and-harassment-at-work-dolphins-700x300.jpg").into(view);
         Drawer result = new DrawerBuilder()
                 .withActivity(mActivity)
                 .withToolbar(mToolbar)
