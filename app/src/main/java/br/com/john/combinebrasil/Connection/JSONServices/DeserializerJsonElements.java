@@ -299,7 +299,7 @@ public class DeserializerJsonElements {
     /***************************************
      * SELECTIVE
      ********************************************/
-    public ArrayList<Selective> getSelective() {
+    public ArrayList<Selective> getSelectives() {
         ArrayList<Selective> selectives = new ArrayList<Selective>();
         try {
             JSONArray jsonArray = new JSONArray(response);
@@ -333,6 +333,35 @@ public class DeserializerJsonElements {
         return selectives;
     }
 
+    public Selective getSelective() {
+        Selective selective = new Selective();
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+
+            for(int i=0; i<=jsonArray.length()-1; i++){
+                JSONObject json = new JSONObject(jsonArray.getString(i));
+                selective = new Selective(
+                        json.optString(Constants.SELECTIVES_ID),
+                        json.optString(Constants.SELECTIVES_TITLE),
+                        json.optString(Constants.SELECTIVES_DATE),
+                        json.optString(Constants.SELECTIVES_CODESELECTIVE),
+                        json.optString(Constants.SELECTIVES_DATE),
+                        json.optBoolean(Constants.SELECTIVES_DATE, true),
+                        json.optString(Constants.SELECTIVES_CITY),
+                        json.optString(Constants.SELECTIVES_NEIGHBORHOOD),
+                        json.optString(Constants.SELECTIVES_STATE),
+                        json.optString(Constants.SELECTIVES_STREET),
+                        json.optString(Constants.SELECTIVES_POSTALCODE),
+                        json.optString(Constants.SELECTIVES_NOTE),
+                        json.optString(Constants.SELECTIVES_ADDRESS)
+                );
+            }
+        } catch (JSONException e) {
+            selective = null;
+            Log.i("ERROR: getTeamUser", e.getMessage());
+        }
+        return selective;
+    }
     /***************************************
      * TEAMUSERS
      ********************************************/
@@ -466,6 +495,37 @@ public class DeserializerJsonElements {
                     );
 
                     testses.add(obj);
+                }
+            }
+        } catch (JSONException e) {
+            testses = null;
+            Log.i("ERROR: getPositions", e.getMessage());
+        }
+        return testses;
+    }
+
+    public ArrayList<TestTypes> getSelectiveTestType() {
+        ArrayList<TestTypes> testses = new ArrayList<TestTypes>();
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            if (jsonArray.length() > 0) {
+                for (int i = 0; i <= jsonArray.length() - 1; i++) {
+                    JSONObject json = new JSONObject(jsonArray.getString(i));
+                    json = new JSONObject(json.getString("testType"));
+
+                    TestTypes obj = new TestTypes(
+                            json.optString(Constants.TESTTYPES_ID),
+                            json.optString(Constants.TESTTYPES_NAME),
+                            json.optString(Constants.TESTTYPES_ATTEMPTSLIMIT),
+                            json.optBoolean(Constants.TESTTYPES_VISIBLETOREPORT),
+                            json.optString(Constants.TESTTYPES_DESCRIPTION),
+                            json.optString(Constants.TESTTYPES_VALUETYPES),
+                            json.optString(Constants.TESTTYPES_ICONIMAGEURL),
+                            json.optString(Constants.TESTTYPES_TUTORIALIMAGEURL)
+                    );
+
+                        testses.add(obj);
+
                 }
             }
         } catch (JSONException e) {

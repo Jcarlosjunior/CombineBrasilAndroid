@@ -136,7 +136,7 @@ public class TestsFragment extends Fragment {
         });
 
         try {
-            MainActivity.linearProgress.setVisibility(View.VISIBLE);
+            MainActivity.constraintProgress.setVisibility(View.VISIBLE);
             SyncDatabase sync = new SyncDatabase(AllActivities.mainActivity);
 
         } catch (IOException e) {
@@ -191,7 +191,7 @@ public class TestsFragment extends Fragment {
     private static void inflateRecyclerView(ArrayList<TestTypes> testsArrayList, String[] values){
         AdapterRecyclerTests adapterTests = new AdapterRecyclerTests(AllActivities.mainActivity,testsArrayList, values);
         adapterTests.setHomeActivity(AllActivities.mainActivity);
-        MainActivity.linearProgress.setVisibility(View.GONE);
+        MainActivity.constraintProgress.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
         mRecyclerView.setLayoutManager(new GridLayoutManager(AllActivities.mainActivity, 2));//numero de colunas
         mRecyclerView.setAdapter(adapterTests);

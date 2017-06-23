@@ -9,10 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -45,10 +47,18 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent mainIntent;
-                if(SharedPreferencesAdapter.getLoggedSharedPreferences(SplashScreenActivity.this))
-                   mainIntent = new Intent(SplashScreenActivity.this, MenuActivity.class);
-                else
+                if(SharedPreferencesAdapter.getLoggedSharedPreferences(SplashScreenActivity.this)) {
+                    if(SharedPreferencesAdapter.getEnterSelectiveSharedPreferences(SplashScreenActivity.this)) {
+                        AllActivities.isSync = false;
+                        mainIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                    }
+                    else
+                        mainIntent = new Intent(SplashScreenActivity.this, MenuActivity.class);
+                }
+                else {
+                    AllActivities.isSync = true;
                     mainIntent = new Intent(SplashScreenActivity.this, IntroActivity.class);
+                }
                 startActivity(mainIntent);
                 finish();
 

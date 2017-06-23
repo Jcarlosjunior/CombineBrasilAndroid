@@ -130,7 +130,6 @@ public class EnterSelectiveActivity extends AppCompatActivity {
     private void getAllSelectives(){
         if(Services.isOnline(EnterSelectiveActivity.this)) {
             linearProgress.setVisibility(View.VISIBLE);
-
             String url = Constants.URL + Constants.API_SELECTIVES;
             Connection task = new Connection(url, 0, Constants.CALLED_GET_SELECTIVE, false, EnterSelectiveActivity.this);
             task.callByJsonStringRequest();
@@ -145,7 +144,7 @@ public class EnterSelectiveActivity extends AppCompatActivity {
         linearProgress.setVisibility(View.GONE);
         if(status == 200 || status == 201) {
             DeserializerJsonElements des = new DeserializerJsonElements(response);
-            selectives = des.getSelective();
+            selectives = des.getSelectives();
             try{
                 if (selectives!=null)
                     recordingTeams(selectives);

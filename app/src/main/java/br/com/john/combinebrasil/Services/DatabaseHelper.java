@@ -321,6 +321,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void addSelective(Selective obj) {
+        long ret = 0;
+        this.openDataBase();
+        try{
+            ContentValues values = new ContentValues();
+            values.put(Constants.SELECTIVES_ID, obj.getId());
+            values.put(Constants.SELECTIVES_TITLE, obj.getTitle());
+            values.put(Constants.SELECTIVES_TEAM, this.getNameTeamByIdTeam(obj.getTeam()));
+            values.put(Constants.SELECTIVES_DATE, obj.getDate());
+            values.put(Constants.SELECTIVES_CODESELECTIVE, obj.getCodeSelective());
+            values.put(Constants.SELECTIVES_CANSYNC, obj.getDate());
+            values.put(Constants.SELECTIVES_ADDRESS,Services.fixEncoding(obj.getAddress()));
+            values.put(Constants.SELECTIVES_CITY, Services.fixEncoding(obj.getCity()));
+            values.put(Constants.SELECTIVES_NEIGHBORHOOD, Services.fixEncoding(obj.getNeighborhood()));
+            values.put(Constants.SELECTIVES_STATE, Services.fixEncoding(obj.getState()));
+            values.put(Constants.SELECTIVES_STREET, Services.fixEncoding(obj.getStreet()));
+            values.put(Constants.SELECTIVES_POSTALCODE, obj.getPostalCode());
+            values.put(Constants.SELECTIVES_NOTE, Services.fixEncoding(obj.getNotes()));
+
+            ret = myDataBase.insert(Constants.TABLE_SELECTIVES, null, values);
+
+        }catch (Exception e){
+            Log.i("Error", e.getMessage());
+        }
+    }
+
+
     public void addTeamUsers(ArrayList<TeamUsers> teamUserses) {
         long ret = 0;
         this.openDataBase();
@@ -488,9 +515,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteCestas() {
+    public void deleteTable(String table) {
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(Constants.TESTS, null, null);
+        db.delete(table, null, null);
         db.close();
     }
 

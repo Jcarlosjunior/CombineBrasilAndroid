@@ -9,16 +9,11 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,21 +21,19 @@ import java.util.ArrayList;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.Services.Constants;
-import br.com.john.combinebrasil.TestSelectiveActivity;
 
 /**
- * Created by GTAC on 24/04/2017.
+ * Created by GTAC on 22/06/2017.
  */
 
 
-public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<AdapterRecyclerChooseTestSelective.ViewHolder> {
+public class AdapterRecyclerTestInfo extends RecyclerView.Adapter<AdapterRecyclerTestInfo.ViewHolder> {
     private String[] values;
-    public static String[] valuesID;
     private ArrayList<TestTypes> list;
     private Activity act;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AdapterRecyclerChooseTestSelective(Activity act, ArrayList<TestTypes> list, String[] values) {
+    public AdapterRecyclerTestInfo(Activity act, ArrayList<TestTypes> list, String[] values) {
         super();
         this.list = list;
         this.values = values;
@@ -53,16 +46,12 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView txtName;
-        public ConstraintLayout listItem;
         public ImageView imageIcon;
-        public CheckBox checkTest;
 
         public ViewHolder(View v) {
             super(v);
             txtName = (TextView) v.findViewById(R.id.text_name_test);
-            checkTest = (CheckBox) v.findViewById(R.id.check_box_test);
             imageIcon = (ImageView) v.findViewById(R.id.icon);
-            listItem = (ConstraintLayout) v.findViewById(R.id.linear_list);
         }
     }
 
@@ -72,9 +61,9 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
 
     // Create new views (invoked by the layout manager)
     @Override
-    public AdapterRecyclerChooseTestSelective.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterRecyclerTestInfo.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_test_choose, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_test_info, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -83,16 +72,8 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-            chosseIcon(list.get(position).getIconImageURL(), holder.imageIcon, false);
-            holder.txtName.setText(list.get(position).getName());
-
-            holder.checkTest.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (act.getClass().getSimpleName().equals("TestSelectiveActivity"))
-                        TestSelectiveActivity.clickTestChoose(act, list.get(position).getId(), position);
-                }
-            });
+        chosseIcon(list.get(position).getIconImageURL(), holder.imageIcon, false);
+        holder.txtName.setText(list.get(position).getName());
     }
 
     @Override
@@ -101,7 +82,7 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
     }
 
     private void chosseIcon(String id, ImageView img, boolean clicked){
-        int color = clicked == true?Constants.colorBlue : Constants.colorWhite;
+        int color = clicked == true? Constants.colorBlue : Constants.colorWhite;
 
         if(id.equals("icon_w_five"))
             img.setImageBitmap(getRoundedCornerBitmap(((BitmapDrawable) act.getResources()

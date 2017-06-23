@@ -24,11 +24,13 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import br.com.john.combinebrasil.AdapterList.AdapterCoverflow;
 import br.com.john.combinebrasil.Classes.Team;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
+import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Services;
@@ -120,6 +122,8 @@ public class ChooseTeamSelectiveActivity extends AppCompatActivity {
                 }
             }catch (Exception e){Log.i("Exception: ", e.getMessage());}
         }
+        else
+            Services.messageAlert(this, "Aviso",response,"hide");
     }
 
     private void recordingTeams(ArrayList<Team> teams){
@@ -184,9 +188,10 @@ public class ChooseTeamSelectiveActivity extends AppCompatActivity {
     };
 
     private void nextPass(){
-        Toast.makeText(ChooseTeamSelectiveActivity.this,"Selected:" + teams.get(getItem(0)).getId(),Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(ChooseTeamSelectiveActivity.this, CreateSelectiveActivity.class);
-        intent.putExtra("team_choose", teams.get(getItem(0)).getId());
+        Toast.makeText(ChooseTeamSelectiveActivity.this,"Selected:" + teams.get(getItem(0)).getName(),Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(ChooseTeamSelectiveActivity.this, LocalSelectiveActivity.class);
+        AllActivities.hashInfoSelective = new HashMap<String, String>();
+        AllActivities.hashInfoSelective.put("team", teams.get(getItem(0)).getId());
         startActivity(intent);
     }
 

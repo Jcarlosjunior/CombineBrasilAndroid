@@ -29,7 +29,7 @@ public class Constants {
     public static final String API_SELECTIVEATHLETES = "api/selectiveAthletes";
     public static final String API_TEAMS = "api/teams";
     public static final String API_TESTTYPES = "api/testTypes";
-
+    public static final String API_SELECTIVE_TESTTYPES = "api/selectiveTestTypes";
     public static final String API_SELECTIVES = "api/selectives";
     public static final String API_TEAMUSERS = "api/teamUsers";
     public static final String API_TESTS = "api/tests";
@@ -85,6 +85,7 @@ public class Constants {
     //SHARED PREFERENCES
     public static final String TIMER_CHRONOMETER = "timer_chronometer",
             ID = "Id",
+            ENTER_SELECTIVE = "Enter_selective",
             LOGGED="Logged";
 
     /*

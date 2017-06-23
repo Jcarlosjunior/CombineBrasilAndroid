@@ -1,11 +1,13 @@
 package br.com.john.combinebrasil.Connection.JSONServices;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.Team;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.Services;
 
@@ -36,7 +38,7 @@ public class CreateJSON {
         JSONObject object = new JSONObject();
         try {
             object.put(Constants.SELECTIVES_TEAM, selective.getTeam());
-            object.put(Constants.SELECTIVES_DATE, selective.getDate());
+
             object.put(Constants.SELECTIVES_TITLE, selective.getTitle());
             object.put(Constants.SELECTIVES_CITY, selective.getCity());
             object.put(Constants.SELECTIVES_NEIGHBORHOOD, selective.getNeighborhood());
@@ -46,6 +48,17 @@ public class CreateJSON {
             object.put(Constants.SELECTIVES_ADDRESS, selective.getAddress());
             object.put(Constants.SELECTIVES_CODESELECTIVE, selective.getCodeSelective());
             object.put(Constants.SELECTIVES_CANSYNC, selective.getCanSync());
+
+            JSONArray jsonDates = new JSONArray();
+            jsonDates.put(AllActivities.hashInfoSelective.get("date"));
+            if(AllActivities.hashInfoSelective.get("dateSecond") !=null || !(AllActivities.hashInfoSelective.get("dateSecond").equals("")))
+                jsonDates.put(AllActivities.hashInfoSelective.get("dateSecond"));
+
+            if(AllActivities.hashInfoSelective.get("dateThird") !=null || !(AllActivities.hashInfoSelective.get("dateSecond").equals("")))
+                jsonDates.put(AllActivities.hashInfoSelective.get("dateThird"));
+
+            object.put(Constants.SELECTIVES_DATE, jsonDates);
+
 
         } catch (JSONException e) {
             e.printStackTrace();

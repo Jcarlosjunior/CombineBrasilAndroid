@@ -58,7 +58,7 @@ public class SyncDatabase {
 
     public static void hideProgress(String nameActivity){
         if(nameActivity.toString().equals(Constants.MAIN_ACTIVITY))
-            MainActivity.linearProgress.setVisibility(View.GONE);
+            MainActivity.constraintProgress.setVisibility(View.GONE);
         else if(nameActivity.toString().equals(Constants.LOGIN_ACTIVITY))
             LoginActivity.linearProgress.setVisibility(View.GONE);
 
@@ -129,7 +129,7 @@ public class SyncDatabase {
     /******************************************SELECTIVE*******************************************/
     public static void selectiveResponse(String response) {
         DeserializerJsonElements des = new DeserializerJsonElements(response);
-        ArrayList<Selective> selectives = des.getSelective();
+        ArrayList<Selective> selectives = des.getSelectives();
         DatabaseHelper db = new DatabaseHelper(activity);
         try {
             db.createDataBase();

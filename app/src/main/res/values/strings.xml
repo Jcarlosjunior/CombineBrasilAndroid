@@ -24,7 +24,7 @@
     <string name="entre_seletiva">Entrar em uma seletiva</string>
     <string name="codigo">Código</string>
     <string name="enter_selective">Para ser avaliador de uma seletiva, digite o código informado ao adminstrador</string>
-    <string name="confirm">Confirmar</string>
+    <string name="confirm">Confirmaçao</string>
     <string name="filter_by">Filtrar por</string>
     <string name="date_init">Data Início</string>
     <string name="date_end">Data Fim</string>
@@ -33,11 +33,23 @@
     <string name="team">Time</string>
     <string name="participation">Participação como:</string>
     <string name="selecionar_time">Selecionar Time</string>
+    <string name="selecionar_testes">Selecionar Testes</string>
     <string name="add_time">Adicionar novo time</string>
     <string name="proximo_passo">Próximo Passo</string>
     <string name="update_teams">Atualizando equipes</string>
+    <string name="update_tests">Atualizando testes</string>
     <string name="try_again">Tentar novamente</string>
+    <string name="local_selective">Local da Seletiva</string>
     <string name="info_selective">Informações da seletiva</string>
+    <string name="verify_selective">Verificando seletiva</string>
+    <string name="revisao">Revisão</string>
+    <string name="detalhes">Detalhes</string>
+    <string name="observacoes">Observações</string>
+    <string name="finalizar">Finalizar</string>
+    <string name="politica_privacidade">Política de Privacidade</string>
+    <string name="confirmacao">Confirmação</string>
+    <string name="termos_de_uso">Termos de Uso</string>
+    <string name="aceito">Aceito</string>
 
     <string name="inscrever">Inscreva-se e melhore suas seletivas</string>
     <string name="testes">Testes</string>
@@ -67,7 +79,6 @@
     <string name="position">Posição Desejável</string>
     <string name="nascimento">Data de Nascimento</string>
     <string name="date_selective">Data da Seletiva</string>
-    <string name="local_selective">Onde irá acontecer a seletiva</string>
     <string name="message_social_link">Para ficarmos sempre atualizados, queremos algum meio em mídia social do time (facebook, instagram, site, etc.)</string>
     <string name="dia">Dia</string>
     <string name="mes">Mês</string>
@@ -108,7 +119,6 @@
     <string name="bem_vindo">Bem vindo ao Combine Brasil</string>
 
     <string name="update_selective">Atualizando seletivas...</string>
-    <string name="update_tests">Aguarde, atualizando os testes...</string>
     <string name="search_historic">Aguarde, buscando seu histórico...</string>
     <string name="sync_now">Os testes estão sendo sincronizados</string>
     <string name="erro_dados_invalidos">Dados Inválidos</string>
@@ -174,4 +184,5 @@
     <string name="title_activity_timer">TimerActivity</string>
     <string name="hello_round">Hello Round World!</string>
     <string name="hello_square">Hello Square World!</string>
+    <string name="title_activity_info_selective_create">InfoSelectiveCreateActivity</string>
 </resources>

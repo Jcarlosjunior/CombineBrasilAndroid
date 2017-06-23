@@ -15,8 +15,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -40,8 +42,10 @@ import br.com.john.combinebrasil.CreateSelectiveActivity;
 import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
+import br.com.john.combinebrasil.InfoSelectiveCreateActivity;
 import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
+import br.com.john.combinebrasil.MenuActivity;
 import br.com.john.combinebrasil.R;
 import br.com.john.combinebrasil.RegisterActivity;
 import br.com.john.combinebrasil.ResultsActivity;
@@ -124,6 +128,14 @@ public class Services {
             CreateTeamActivity.returnMessage(activity, whoCalled);
         else if(activity.getClass().getSimpleName().equals("TestSelectiveActivity")){
             TestSelectiveActivity.returnClickableAlert(activity, whoCalled);
+        }
+        else if(activity.getClass().getSimpleName().equals("InfoSelectiveCreateActivity")){
+            InfoSelectiveCreateActivity.returnClickableAlert(activity, whoCalled);
+        }
+
+        else if(activity.getClass().getSimpleName().equals("MenuActivity")){
+            if(whoCalled.equals("CODE_OK"))
+                MenuActivity.returnMessageAlert(activity, whoCalled);
         }
     }
 

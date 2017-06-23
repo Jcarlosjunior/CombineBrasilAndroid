@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 import br.com.john.combinebrasil.CreateSelectiveActivity;
+import br.com.john.combinebrasil.InfoSelectiveCreateActivity;
 import br.com.john.combinebrasil.RegisterActivity;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.TestSelectiveActivity;
@@ -89,7 +90,7 @@ public class PostCreateSelective extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String status) {
-        TestSelectiveActivity.returnCreateSelective(activity, resp, result);
+        InfoSelectiveCreateActivity.returnCreateSelective(activity, resp, result);
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{

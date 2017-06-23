@@ -13,8 +13,10 @@ import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CreateSelectiveActivity;
 import br.com.john.combinebrasil.EnterSelectiveActivity;
 import br.com.john.combinebrasil.HistoricSelectiveActivity;
+import br.com.john.combinebrasil.LocalSelectiveActivity;
 import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
+import br.com.john.combinebrasil.MenuActivity;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.SyncDatabase;
 import br.com.john.combinebrasil.SyncAthleteActivity;
@@ -45,21 +47,22 @@ public class ReturnError {
                     EnterSelectiveActivity.returnGetAllSelectives(activity, message, statusError);
                 else if(activity.getClass().getSimpleName().equals("EnterSelectiveActivity"))
                     HistoricSelectiveActivity.returnGetAllSelectives(activity, message, statusError);
-
+                else if(activity.getClass().getSimpleName().equals("MenuActivity"))
+                    MenuActivity.returnGetSelectiveByCode(activity, message, statusError);
             }
 
             else if(whoCalled.equals("UPDATE_SELECTIVEATHLETE")) {
                 if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
                     SyncAthleteActivity.updateSelectiveAthlete(activity, "FAIL", message);
-                else if (activity.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY))
-                    MainActivity.updateSelectiveAthlete(activity, message);
+                //else if (activity.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY))
+                    //MainActivity.updateSelectiveAthlete(activity, message);
             }
 
             else if(whoCalled.equals("UPDATE_ATHLETE")) {
                 if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
                     SyncAthleteActivity.updateAthlete(activity, message);
-                else if (activity.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY))
-                    MainActivity.updateAthlete(activity, message);
+                //else if (activity.getClass().getSimpleName().equals(Constants.MAIN_ACTIVITY))
+                    //MainActivity.updateAthlete(activity, message);
             }
 
             else if(whoCalled.equals("UpdateSelectiveAthletes")){
@@ -79,9 +82,11 @@ public class ReturnError {
             else if (whoCalled.equals(Constants.CALLED_GET_TESTTYPES)) {
                 if (activity.getClass().getSimpleName().equals("TestSelectiveActivity"))
                     TestSelectiveActivity.returnUpdateTests(activity, statusError, message);
+                else if(activity.getClass().getSimpleName().equals("MainActivity"))
+                    MainActivity.testResponse(activity, message, statusError);
             }
             else if(whoCalled.equals(Constants.CALLED_GET_CEP))
-                CreateSelectiveActivity.returnCEP(activity, message, statusError);
+                LocalSelectiveActivity.returnCEP(activity, message, statusError);
 
             else if (whoCalled.equals(Constants.CALLED_GET_TEAM)) {
                 if(activity.getClass().getSimpleName().equals("ChooseTeamSelectiveActivity"))

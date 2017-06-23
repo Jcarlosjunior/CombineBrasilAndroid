@@ -1,6 +1,7 @@
 package br.com.john.combinebrasil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -40,20 +41,16 @@ import br.com.john.combinebrasil.Services.Services;
 public class TestSelectiveActivity extends AppCompatActivity {
     public static final String messageSelectiveCreate = "SELECTIVE_CREATE_OK";
     ConstraintLayout linearProgress;
-    LinearLayout linearNotConnection;
+    ConstraintLayout linearNotConnection;
     TextView textProgress;
     Toolbar toolbar;
     RecyclerView recyclerViewTests;
+    Button btnNextPass, btnTryAgain;
     private int positionRemove = 0;
-
     ArrayList<TestTypes> tests;
     private static ArrayList<TestTypes> testsChoose;
     AdapterRecyclerChooseTestSelective adapterRecyclerTests;
-
     LinearLayout linearDelete;
-    FloatingActionButton buttonDone;
-
-    CoordinatorLayout coordinatorLayout;
 
     HashMap<String, String> hashMapSelective;
 
@@ -73,15 +70,16 @@ public class TestSelectiveActivity extends AppCompatActivity {
         btnBack.setOnClickListener(btnBackClickListener);
         recyclerViewTests = (RecyclerView) findViewById(R.id.recycler_tests_selective);
 
-        linearProgress = (ConstraintLayout) findViewById(R.id.linear_progress);
+        linearNotConnection = (ConstraintLayout) findViewById(R.id.constraint_not_connection);
+        linearProgress = (ConstraintLayout) findViewById(R.id.constraint_progress);
         textProgress = (TextView) findViewById(R.id.text_progress);
 
-        buttonDone = (FloatingActionButton) findViewById(R.id.fab_upload_done);
-        buttonDone.setOnClickListener(clickDoneTests);
+        btnTryAgain = (Button) findViewById(R.id.btn_try_again_connect);
+        btnTryAgain.setOnClickListener(clickListenerTryAgain);
+        btnNextPass = (Button) findViewById(R.id.button_next_pass);
+        btnNextPass.setOnClickListener(clickDoneTests);
 
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordination_tests);
-
-        hashMapSelective = CreateSelectiveActivity.hashInfoSelective;
+        hashMapSelective = AllActivities.hashInfoSelective;
 
         tests = new ArrayList<TestTypes>();
         testsChoose = new ArrayList<TestTypes>();
@@ -147,8 +145,9 @@ public class TestSelectiveActivity extends AppCompatActivity {
     private void inflateRecyclerView(String[] values){
         recyclerViewTests.setHasFixedSize(true);
         recyclerViewTests.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewTests.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerViewTests.setLayoutManager(new GridLayoutManager(this, 1));
         adapterRecyclerTests = new AdapterRecyclerChooseTestSelective(TestSelectiveActivity.this, tests, values);
+        adapterRecyclerTests.valuesID = new String[values.length];
         recyclerViewTests.setAdapter(adapterRecyclerTests);
     }
 
@@ -180,17 +179,17 @@ public class TestSelectiveActivity extends AppCompatActivity {
 
         showOrHideRemove();
 
-        adapterRecyclerTests.notifyItemChanged(position);
+        //adapterRecyclerTests.notifyItemChanged(position);
     }
 
     private void showOrHideRemove(){
         if(!testsChoose.isEmpty()){
             linearDelete.setVisibility(View.VISIBLE);
-            buttonDone.setVisibility(View.VISIBLE);
+            btnNextPass.setVisibility(View.VISIBLE);
         }
         else{
             linearDelete.setVisibility(View.GONE);
-            buttonDone.setVisibility(View.GONE);
+            btnNextPass.setVisibility(View.GONE);
         }
     }
 
@@ -222,15 +221,23 @@ public class TestSelectiveActivity extends AppCompatActivity {
         }
     };
 
-    private void doneTests(){
-        Services.messageAlert(this, "Mensagem","Testes adicionado a seletiva", messageSelectiveCreate);
-        Snackbar snackbar = Snackbar
-                .make(coordinatorLayout, "Adicionado", Snackbar.LENGTH_SHORT);
-        snackbar.show();
+    private void doneTests() {
+        createSelective();
     }
 
     private void createSelective(){
-        if(Services.isOnline(TestSelectiveActivity.this)){
+        Intent i = new Intent(TestSelectiveActivity.this, InfoSelectiveCreateActivity.class);
+
+        ArrayList<String> testsChoose = new ArrayList<>();
+
+        for (TestTypes test :  this.testsChoose) {
+            testsChoose.add(test.getId());
+        }
+        i.putStringArrayListExtra("testsChoose", testsChoose);
+        startActivity(i);
+
+
+        /*if(Services.isOnline(TestSelectiveActivity.this)){
             linearProgress.setVisibility(View.VISIBLE);
             textProgress.setText("Criando sua seletiva");
 
@@ -240,10 +247,18 @@ public class TestSelectiveActivity extends AppCompatActivity {
             post.setActivity(TestSelectiveActivity.this);
             post.setObjPut(CreateJSON.createObjectSelective(createObjectSelective()));
             post.execute(url);
-        }
+        }*/
     }
 
-    public static void returnCreateSelective(Activity act, String response, String result){
+    private View.OnClickListener clickListenerTryAgain = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            callUpdateTests();
+        }
+    };
+
+
+    /*public static void returnCreateSelective(Activity act, String response, String result){
         ((TestSelectiveActivity)act).returnCreateSelective(response, result);
     }
 
@@ -276,13 +291,6 @@ public class TestSelectiveActivity extends AppCompatActivity {
         ChooseTeamSelectiveActivity.finishActity();
         this.finish();
     }
-
-    private View.OnClickListener btnBackClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            TestSelectiveActivity.this.finish();
-        }
-    };
 
     private Selective createObjectSelective() {
         String date = Services.convertDate(hashMapSelective.get("date"));
@@ -317,5 +325,28 @@ public class TestSelectiveActivity extends AppCompatActivity {
         return  String.format(hashMapSelective.get("title").toString().substring(0,2)
                 +db.getNameTeamByIdTeam(hashMapSelective.get("team").toString()).toString().substring(0,2)
                 +hashMapSelective.get("date").toString().substring(0,2)).trim().toUpperCase();
+    }
+    */
+
+    private View.OnClickListener btnBackClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            TestSelectiveActivity.this.finish();
+        }
+    };
+
+    public static void returnClickableAlert(Activity act, String whoCalled){
+        ((TestSelectiveActivity)act).returnClickableAlert(whoCalled);
+    }
+
+    private void returnClickableAlert(String whoCalled){
+        if(whoCalled.equals(messageSelectiveCreate))
+            finishAfterCreateSelective();
+    }
+
+    private void finishAfterCreateSelective(){
+        CreateSelectiveActivity.finishActity();
+        ChooseTeamSelectiveActivity.finishActity();
+        this.finish();
     }
 }

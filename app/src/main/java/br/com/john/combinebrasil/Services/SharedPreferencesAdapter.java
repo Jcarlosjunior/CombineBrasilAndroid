@@ -34,6 +34,19 @@ public class SharedPreferencesAdapter {
         return logged;
     }
 
+
+    public static void setEnterSelectiveSharedPreferences (Context ctx, boolean logged){
+        editor = ctx.getSharedPreferences(MY_PREFERENCES, ctx.MODE_PRIVATE).edit();
+        editor.putBoolean(Constants.ENTER_SELECTIVE, logged);
+        editor.commit();
+    }
+
+    public static boolean getEnterSelectiveSharedPreferences(Context ctx){
+        shared = ctx.getSharedPreferences(MY_PREFERENCES, ctx.MODE_PRIVATE);
+        boolean logged = shared.getBoolean(Constants.ENTER_SELECTIVE, false);
+        return logged;
+    }
+
     public static void setValueStringSharedPreferences (Context ctx,String key, String value){
         editor = ctx.getSharedPreferences(MY_PREFERENCES, ctx.MODE_PRIVATE).edit();
         editor.putString(key, value);

@@ -162,7 +162,7 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
         linearProgress.setVisibility(GONE);
         if(status == 200 || status == 201) {
             DeserializerJsonElements des = new DeserializerJsonElements(response);
-            selectives = des.getSelective();
+            selectives = des.getSelectives();
             try{
                 if (selectives!=null)
                     recordingSelectives(selectives);
