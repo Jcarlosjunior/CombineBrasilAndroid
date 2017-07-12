@@ -46,10 +46,12 @@
     <string name="detalhes">Detalhes</string>
     <string name="observacoes">Observações</string>
     <string name="finalizar">Finalizar</string>
-    <string name="politica_privacidade">Política de Privacidade</string>
+    <string name="aceitar_termos_de_uso">Aceitar Termos de Uso</string>
     <string name="confirmacao">Confirmação</string>
     <string name="termos_de_uso">Termos de Uso</string>
     <string name="aceito">Aceito</string>
+    <string name="create_selective_success">Seletiva criada</string>
+    <string name="voltar_ao_menu">Voltar ao Menu</string>
 
     <string name="inscrever">Inscreva-se e melhore suas seletivas</string>
     <string name="testes">Testes</string>
@@ -66,6 +68,7 @@
     <string name="nome_opcional">Nome (Opcional)</string>
     <string name="code_selective">Código da selectiva</string>
     <string name="code_athlete">Código do atleta</string>
+    <string name="message_create_selective">Parabéns, sua seletiva foi criada com sucesso. Agora para que ela role, nós aqui do Combine Brasil, iremos analisa-lá e autoriza-lá. Se precisarmos de alguma informação faltando, fica esperto que a entraremos em contato, mas se tudo estiver certinho, já era, vamos lá descobrir o melhor do atleta!!!</string>
 
     <string name="email_contact">E-mail para contato</string>
     <string name="city">Cidade</string>
@@ -101,7 +104,6 @@
     <string name="edit_athlete">Editar atleta</string>
     <string name="value_error">Valor inválido</string>
     <string name="open_terms">O atleta deve aceitar o termos de serviço</string>
-    <string name="terms">Aceitar termos de serviços?</string>
     <string name="terms_title">TERMO DE RESPONSABILIDADE, CONDIÇOES FÍSICAS E USO DE IMAGEM</string>
     <string name="save_Athletes">Salvar atletas</string>
     <string name="alter_timer">Alterar tempo</string>

@@ -168,7 +168,7 @@
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/constraint_details"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="48dp"
@@ -233,7 +233,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/local_selective"
+                        android:text="@string/address"
                         android:textColor="@color/color_primary"
                         android:textStyle="bold"
                         android:textSize="14sp"
@@ -254,6 +254,85 @@
                         android:layout_marginTop="8dp"
                         app:layout_constraintTop_toBottomOf="@+id/text_date_selective_details"
                         app:layout_constraintLeft_toRightOf="@+id/textView10"
+                        android:layout_marginLeft="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/neighborhood"
+                        android:textColor="@color/color_primary"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:id="@+id/textView11"
+                        app:layout_constraintTop_toTopOf="@+id/text_neighborhood_selective_details" />
+
+                    <TextView
+                        android:id="@+id/text_neighborhood_selective_details"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="das"
+                        android:singleLine="false"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/text_local_selective_details"
+                        app:layout_constraintLeft_toRightOf="@+id/textView11"
+                        android:layout_marginLeft="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/city"
+                        android:textColor="@color/color_primary"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:id="@+id/textView12"
+                        app:layout_constraintTop_toTopOf="@+id/text_city_selective_details" />
+
+                    <TextView
+                        android:id="@+id/text_city_selective_details"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="das"
+                        android:singleLine="false"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/text_neighborhood_selective_details"
+                        app:layout_constraintLeft_toRightOf="@+id/textView12"
+                        android:layout_marginLeft="8dp" />
+
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/city"
+                        android:textColor="@color/color_primary"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:id="@+id/textView13"
+                        app:layout_constraintTop_toTopOf="@+id/text_cep_selective_details" />
+
+                    <TextView
+                        android:id="@+id/text_cep_selective_details"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="das"
+                        android:singleLine="false"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/text_city_selective_details"
+                        app:layout_constraintLeft_toRightOf="@+id/textView13"
                         android:layout_marginLeft="8dp" />
 
                 </android.support.constraint.ConstraintLayout>
@@ -374,22 +453,34 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toTopOf="@+id/text_politica_privacidade" />
 
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:id="@+id/check_box_terms"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.201"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/politica_privacidade"
+            android:text="@string/aceitar_termos_de_uso"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="7dp"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="24dp"
             android:id="@+id/text_politica_privacidade"
-            app:layout_constraintHorizontal_bias="0.501"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            app:layout_constraintLeft_toRightOf="@+id/check_box_terms"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintHorizontal_bias="0.016"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="16dp" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -529,9 +620,9 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraint_privacy"
-        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         android:background="@color/grey_transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -580,7 +671,7 @@
                     <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/termos_de_uso"
+                    android:text="@string/aceitar_termos_de_uso"
                     android:textStyle="bold"
                     android:textAlignment="center"
                     android:textColor="@color/black"
@@ -608,64 +699,12 @@
                         android:layout_marginTop="8dp"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        android:layout_marginStart="8dp" />
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        android:layout_marginBottom="8dp" />
                 </android.support.constraint.ConstraintLayout>
             </ScrollView>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="24dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/scrollView4">
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5">
-                    <Button
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        android:paddingTop="0dp"
-                        android:paddingBottom="0dp"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginEnd="8dp"
-                        android:text="@string/cancel"
-                        android:background="@drawable/background_button_white"
-                        app:layout_constraintRight_toRightOf="parent"
-                        android:id="@+id/btn_cancel_confirm"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </android.support.constraint.ConstraintLayout>
-
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5">
-                    <Button
-                        android:id="@+id/btn_accepted_confirm"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginRight="32dp"
-                        android:paddingBottom="0dp"
-                        app:layout_constraintRight_toRightOf="parent"
-                        android:layout_marginLeft="8dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:background="@drawable/background_button_blue"
-                        android:text="@string/aceito"
-                        android:textColor="@color/white"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="32dp" />
-                </android.support.constraint.ConstraintLayout>
-            </LinearLayout>
-
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>

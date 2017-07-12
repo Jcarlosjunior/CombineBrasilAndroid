@@ -49,15 +49,6 @@ public class IntroActivity extends AppIntro {
         color[4] = Color.parseColor("#F44336");
         color[5] = Color.parseColor("#4CAF50");
 
-        //setCustomTransformer(new ParallaxPageTransformer());
-
-        // OPTIONAL METHODS
-        // Override bar/separator color.
-        //changeColor(Color.parseColor("#3F51B5"));
-        //setBarColor(Color.parseColor("#3F51B5"));
-        //setSeparatorColor(Color.parseColor("#2196F3"));
-
-        // Hide Skip/Done button.
         setColorTransitionsEnabled(true);
         showSkipButton(true);
         setDoneText("Pronto");
@@ -72,7 +63,7 @@ public class IntroActivity extends AppIntro {
         setVibrateIntensity(30);
     }
     private void loadMainActivity(){
-        Intent intent = new Intent();
+        Intent intent = null;
         if(SharedPreferencesAdapter.getLoggedSharedPreferences(IntroActivity.this))
             intent = new Intent(this, MainActivity.class);
         else
@@ -97,7 +88,7 @@ public class IntroActivity extends AppIntro {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
+
     }
 
     @Override

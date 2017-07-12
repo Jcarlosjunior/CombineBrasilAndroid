@@ -36,8 +36,10 @@ import br.com.john.combinebrasil.TestSelectiveActivity;
 public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<AdapterRecyclerChooseTestSelective.ViewHolder> {
     private String[] values;
     public static String[] valuesID;
-    private ArrayList<TestTypes> list;
+    public static ArrayList<TestTypes> list;
     private Activity act;
+
+    private static ArrayList<TestTypes> testsChoose;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public AdapterRecyclerChooseTestSelective(Activity act, ArrayList<TestTypes> list, String[] values) {
@@ -45,6 +47,9 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
         this.list = list;
         this.values = values;
         this.act = act;
+        testsChoose = new ArrayList<TestTypes>();
+        valuesID = new String[list.size()];
+
     }
 
     // Provide a reference to the views for each data item
@@ -63,6 +68,13 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
             checkTest = (CheckBox) v.findViewById(R.id.check_box_test);
             imageIcon = (ImageView) v.findViewById(R.id.icon);
             listItem = (ConstraintLayout) v.findViewById(R.id.linear_list);
+
+            listItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickedItemList(ViewHolder.this.getAdapterPosition());
+                }
+            });
         }
     }
 
@@ -83,24 +95,47 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-            chosseIcon(list.get(position).getIconImageURL(), holder.imageIcon, false);
-            holder.txtName.setText(list.get(position).getName());
+        //chosseIcon(list.get(holder.getPosition()).getIconImageURL(), holder.imageIcon, false);
+        holder.txtName.setText(list.get(holder.getPosition()).getName());
 
-            holder.checkTest.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (act.getClass().getSimpleName().equals("TestSelectiveActivity"))
-                        TestSelectiveActivity.clickTestChoose(act, list.get(position).getId(), position);
-                }
-            });
+        //in some cases, it will prevent unwanted situations
+        holder.checkTest.setOnCheckedChangeListener(null);
+
+        //if true, your checkbox will be selected, else unselected
+        holder.checkTest.setChecked(list.get(position).isSelected());
+
+        holder.checkTest.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                list.get(holder.getAdapterPosition()).setSelected(isChecked);
+                showOrHideRemove();
+            }
+        });
     }
+
+    private void showOrHideRemove(){
+        int count = 0;
+        for (TestTypes testType : list){
+            if(testType.isSelected())
+                count = count + 1;
+            }
+        if(count > 0){
+            TestSelectiveActivity.linearDelete.setVisibility(View.VISIBLE);
+            TestSelectiveActivity.btnNextPass.setVisibility(View.VISIBLE);
+        }
+        else{
+            TestSelectiveActivity.linearDelete.setVisibility(View.GONE);
+            TestSelectiveActivity.btnNextPass.setVisibility(View.GONE);
+        }
+    }
+
 
     @Override
     public int getItemCount() {
         return (null != list ? list.size() : 0);
     }
 
-    private void chosseIcon(String id, ImageView img, boolean clicked){
+    private void chooseIcon(String id, ImageView img, boolean clicked){
         int color = clicked == true?Constants.colorBlue : Constants.colorWhite;
 
         if(id.equals("icon_w_five"))
@@ -157,4 +192,7 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
         return output;
     }
 
+    private void clickedItemList(int position){
+        TestSelectiveActivity.showInfoTest(act, position);
+    };
 }

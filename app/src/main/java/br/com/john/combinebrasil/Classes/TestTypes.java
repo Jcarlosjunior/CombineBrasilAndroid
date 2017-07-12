@@ -13,6 +13,7 @@ public class TestTypes {
     private String ValueType;
     private String IconImageURL;
     private String TutorialImageURL;
+    private boolean Selected;
 
     public TestTypes(){}
 
@@ -89,5 +90,13 @@ public class TestTypes {
 
     public void setTutorialImageURL(String tutorialImageURL) {
         TutorialImageURL = tutorialImageURL;
+    }
+
+    public boolean isSelected() {
+        return Selected;
+    }
+
+    public void setSelected(boolean selected) {
+        Selected = selected;
     }
 }

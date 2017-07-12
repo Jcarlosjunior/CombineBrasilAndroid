@@ -92,8 +92,8 @@ public class LoginActivity extends Activity {
     public View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            editLogin.setText("teste@teste.com.br");
-            editPassword.setText("teste");
+            editLogin.setText("jonathansps22@hotmail.com");
+            editPassword.setText("1582318081780553");
             return true;
         }
     };
@@ -117,7 +117,6 @@ public class LoginActivity extends Activity {
         return ver;
     }
 
-
     private void callLogin(String user, String pswd) {
             if (Services.isOnline(this)) {
                 linearProgress.setVisibility(View.VISIBLE);
@@ -137,6 +136,7 @@ public class LoginActivity extends Activity {
         try {
             object.put("email", email);
             object.put("password", pswd);
+            Log.i("password", pswd);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -182,7 +182,6 @@ public class LoginActivity extends Activity {
         linearProgress.setVisibility(View.GONE);
         String message = "";
         if(statusCode == 400) {
-            message = "";
             JSONObject json = null;
             try {
                 json = new JSONObject(response);
@@ -206,7 +205,7 @@ public class LoginActivity extends Activity {
         intent.putExtra("pswd", id);
         intent.putExtra("birthday", birthday);
         startActivity(intent);
-    }
+    }//1582318081780553
 
 
     public boolean validateEmail(EditText edit){
@@ -279,6 +278,7 @@ public class LoginActivity extends Activity {
                         }
                     });
             loginButton.performClick();
+
         } catch (FacebookException e) {
             Log.i("LoginFacebook", "Exception "+e.getMessage().toString());
         }
@@ -289,7 +289,9 @@ public class LoginActivity extends Activity {
             id = object.getString("id");
             try {
                 URL profile_pic = new URL("http://graph.facebook.com/" + id + "/picture?type=large");
+                SharedPreferencesAdapter.setValueStringSharedPreferences(this, "profile_pic", profile_pic.toString());
                 Log.i("profile_pic", profile_pic + "");
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

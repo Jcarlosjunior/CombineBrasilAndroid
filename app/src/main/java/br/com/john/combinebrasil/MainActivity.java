@@ -70,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
         AllActivities.mainActivity = MainActivity.this;
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        navigationDrawer = new NavigationDrawer(savedInstanceState, this, toolbar, true);
+        DatabaseHelper db = new DatabaseHelper(this);
+        User user = db.getUser();
+        navigationDrawer = new NavigationDrawer(savedInstanceState, this, toolbar, true, user);
         navigationDrawer.createNavigationAccess();
 
         LinearLayout linearBacktoolbar = (LinearLayout) findViewById(R.id.linear_back_button);

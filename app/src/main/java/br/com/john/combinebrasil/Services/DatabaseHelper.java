@@ -492,7 +492,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }catch (Exception e){
             Log.i("Error", e.getMessage());
         }
+        this.close();
     }
+
+
+
 
     public void addUsers(ArrayList<User> listUser) {
         long ret = 0;
@@ -1117,7 +1121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        String selectQuery = "SELECT * FROM " + Constants.TABLE_USER;
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_USER+" LIMIT 1";
         Cursor c = db.rawQuery(selectQuery, null);
 
         User item = new User();

@@ -17,7 +17,7 @@ public class Constants {
    public static final String URL = "https://combine-api.herokuapp.com/"; //Ambiente de testes
    //public static final String URL = "http://production-combine-api.herokuapp.com/"; //Produção
  public static final String AUTHENTICATION =
-         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IkF0aGxldGUgRm9ybSIsImlhdCI6MTQ4NjQ2NzI3NX0.Dy_2y2yRvYXp1N4_GylIzse-Mt3zX6O35rvddqKRV_g";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IkF0aGxldGUgRm9ybSIsImlhdCI6MTQ4NjQ2NzI3NX0.Dy_2y2yRvYXp1N4_GylIzse-Mt3zX6O35rvddqKRV_g";
 
    public static final String URLCep = "https://viacep.com.br/ws/";
 
@@ -184,6 +184,7 @@ public class Constants {
     public static final String TESTTYPES_VALUETYPES= "valueType";
     public static final String TESTTYPES_ICONIMAGEURL= "iconImageUrl";
     public static final String TESTTYPES_TUTORIALIMAGEURL= "tutorialImageUrl";
+    public static final String TESTTYPES_SELECTIVE= "testTypes";
 
     /************************************TESTS*******************************************/
     public static final String TABLE_TESTS = "Tests";

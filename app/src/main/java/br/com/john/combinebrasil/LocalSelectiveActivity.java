@@ -203,7 +203,6 @@ public class LocalSelectiveActivity extends AppCompatActivity {
     private View.OnClickListener clickCreateSelective = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //createSelective();
             if(verifyFields()) {
                 callChooseTestsSelective();
             }

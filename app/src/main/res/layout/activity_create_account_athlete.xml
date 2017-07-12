@@ -448,7 +448,7 @@
                                     android:id="@+id/check_terms"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/terms"
+                                    android:text="@string/aceitar_termos_de_uso"
                                     android:textColor="@color/color_primary"
                                     android:textAlignment="viewStart"
                                     />

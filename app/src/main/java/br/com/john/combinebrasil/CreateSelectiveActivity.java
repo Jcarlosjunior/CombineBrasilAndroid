@@ -84,7 +84,7 @@ public class CreateSelectiveActivity extends AppCompatActivity{
         LinearLayout btnBack = (LinearLayout) findViewById(R.id.linear_back_button);
         btnBack.setOnClickListener(btnBackClickListener);
 
-        act = this;
+        act = CreateSelectiveActivity.this;
         textProgress = (TextView) findViewById(R.id.text_progress);
         linearProgress = (LinearLayout) findViewById(R.id.linear_progress);
 
@@ -127,6 +127,7 @@ public class CreateSelectiveActivity extends AppCompatActivity{
             }
         });
         imgAddDate.setVisibility(View.INVISIBLE);
+
     }
 
     public static float dpToPx(Context context, float valueInDp) {
@@ -143,7 +144,6 @@ public class CreateSelectiveActivity extends AppCompatActivity{
     private View.OnClickListener clickCreateSelective = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //createSelective();
             if(verifyFields()) {
                 callChooseTestsSelective();
             }
@@ -154,8 +154,21 @@ public class CreateSelectiveActivity extends AppCompatActivity{
         boolean ver = true;
         if(!validaEdit(editTitle))
             ver = false;
+        if(!validaDate(textDate))
+            ver = false;
         if(!ver)
             Services.messageAlert(this, "Alerta","Dados inválidos, por favor, verifique para continuar.","");
+        return ver;
+    }
+
+    public boolean validaDate(TextView date) {
+        boolean ver = false;
+        if(!(date.getText().length()==0)) {
+            date.setBackground(act.getResources().getDrawable(R.drawable.background_edit));
+            ver = true;
+        }
+        else
+            date.setBackground(act.getResources().getDrawable(R.drawable.background_edit_border_error));
         return ver;
     }
 
@@ -222,7 +235,7 @@ public class CreateSelectiveActivity extends AppCompatActivity{
                 if(textDate.getText().length()==0)
                     calendarDates.setSelectedDate(c);
                 else{
-                    Date d = convertStringInDate(textDate.getText().toString());
+                    Date d = Services.convertStringInDate(textDate.getText().toString(), "yyyy/MM/dd",'/');
                     c.setTime(d);
                     calendarDates.setSelectedDate(c);
                 }
@@ -231,7 +244,7 @@ public class CreateSelectiveActivity extends AppCompatActivity{
                 if(textSecondDate.getText().length()==0)
                     calendarDates.setSelectedDate(c);
                 else{
-                    Date d = convertStringInDate(textSecondDate.getText().toString());
+                    Date d = Services.convertStringInDate(textSecondDate.getText().toString(), "yyyy/MM/dd",'/');
                     c.setTime(d);
                     calendarDates.setSelectedDate(c);
                 }
@@ -240,29 +253,11 @@ public class CreateSelectiveActivity extends AppCompatActivity{
                 if(textThirdDate.getText().length()==0)
                     calendarDates.setSelectedDate(c);
                 else{
-                    Date d = convertStringInDate(textThirdDate.getText().toString());
+                    Date d = Services.convertStringInDate(textThirdDate.getText().toString(), "yyyy/MM/dd",'/');
                     c.setTime(d);
                     calendarDates.setSelectedDate(c);
                 }
                 break;
-        }
-    }
-
-    private Date convertStringInDate(String dateStrg){
-        try {
-            String day =  dateStrg.substring(0,2);
-            String month = dateStrg.substring(3,5);
-            String year = dateStrg.substring(6,dateStrg.length());
-            String date =  year + "/"+month+"/"+day;
-
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-
-            Date d = (Date) formatter.parse(date);
-            return d;
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return  null;
         }
     }
 
@@ -425,5 +420,9 @@ public class CreateSelectiveActivity extends AppCompatActivity{
             return true;
         }
     };
+
+    public static void finishOhterActivity(){
+        ((CreateSelectiveActivity)act).finish();
+    }
 
 }

@@ -35,13 +35,12 @@ import br.com.john.combinebrasil.TestSelectiveActivity;
  * Created by GTAC on 17/03/2017.
  */
 
-public class PostCreateSelective extends AsyncTask<String, String, String> {
+public class PostTestsSelectives extends AsyncTask<String, String, String> {
     private Activity activity;
     private JSONObject objPut;
     int statusCode=0;
     String resp = "";
     String result = "";
-    int method = 0;
 
     protected void onPreExecute() {
         super.onPreExecute();
@@ -94,10 +93,7 @@ public class PostCreateSelective extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String status) {
-        if(method == InfoSelectiveCreateActivity.METHOD_CREATE_SELECTVE)
-            InfoSelectiveCreateActivity.returnCreateSelective(activity, resp, result);
-        else if(method == InfoSelectiveCreateActivity.METHOD_TESTS_SELECTIVE)
-            InfoSelectiveCreateActivity.returnCreateTestsSelective(activity, resp, result);
+        InfoSelectiveCreateActivity.returnCreateTestsSelective(activity, resp, result);
     }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
@@ -118,9 +114,4 @@ public class PostCreateSelective extends AsyncTask<String, String, String> {
     public void setActivity(Activity activity) {
         this.activity = activity;
     }
-
-    public void setMethod(int method){
-        this.method = method;
-    }
-
 }

@@ -1,10 +1,9 @@
 package br.com.john.combinebrasil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,17 +20,16 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import br.com.john.combinebrasil.AdapterList.AdapterRecyclerChooseTestSelective;
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerTestInfo;
-import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Connection.JSONServices.CreateJSON;
+import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostCreateSelective;
+import br.com.john.combinebrasil.Connection.Posts.PostTestsSelectives;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
@@ -40,14 +40,19 @@ import static br.com.john.combinebrasil.TestSelectiveActivity.messageSelectiveCr
 public class InfoSelectiveCreateActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView textTeamInfo, textDetailsInfo, textObservationInfo, textTestsInfo, textNameSelective,
-            textDateSelective, textLocalSelective, textObservationsDetails, textPrivacy, textTermsPrivacy, textProgress;
+            textDateSelective, textLocalSelective, textCityInfoSelective, textNeighBorhoodSelective, textCepInfoSelective, textObservationsDetails, textPrivacy, textTermsPrivacy, textProgress;
     ImageView imgTeamChoose, imgshowMoreTeam, imgShowMoreObservations, imgShowMoreDetails, imgShowMoreTests;
     ConstraintLayout constraintDetailsInfo, constraintProgress, constraintNotConnection, constraintPrivacy;
-    Button btnFinish, btnCancel, btnAccepted, btnTryAgain;
+    Button btnFinish, btnTryAgain;
     RecyclerView recyclerTests;
     AdapterRecyclerTestInfo adapterRecyclerTests;
     boolean isAcceptedPrivacy;
     HashMap<String, String> hashMapSelective;
+    public static Activity act;
+    String code = "";
+    ArrayList<String> testChooses;
+    public static final int METHOD_CREATE_SELECTVE = 0, METHOD_TESTS_SELECTIVE =1;
+    CheckBox checkBoxTerms;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +66,8 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
         imgSearch.setVisibility(View.GONE);
         LinearLayout btnBack = (LinearLayout) findViewById(R.id.linear_back_button);
         btnBack.setOnClickListener(btnBackClickListener);
+        TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
+        textTitle.setText(R.string.create_selective);
 
         textTeamInfo = (TextView) findViewById(R.id.text_team_info);
         textDetailsInfo = (TextView) findViewById(R.id.text_detalhes_info);
@@ -69,6 +76,9 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
         textNameSelective = (TextView) findViewById(R.id.text_name_selective_details);
         textDateSelective = (TextView) findViewById(R.id.text_date_selective_details);
         textLocalSelective = (TextView) findViewById(R.id.text_local_selective_details);
+        textCityInfoSelective = (TextView) findViewById(R.id.text_city_selective_details);
+        textNeighBorhoodSelective = (TextView) findViewById(R.id.text_neighborhood_selective_details);
+        textCepInfoSelective = (TextView) findViewById(R.id.text_cep_selective_details);
         textPrivacy = (TextView) findViewById(R.id.text_politica_privacidade);
         textTermsPrivacy = (TextView) findViewById(R.id.text_terms_privacy);
         textObservationsDetails = (TextView) findViewById(R.id.text_observations_details);
@@ -86,30 +96,41 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
         constraintNotConnection = (ConstraintLayout) findViewById(R.id.constraint_not_connection);
 
         btnFinish = (Button) findViewById(R.id.btn_create_selective);
-        btnCancel = (Button) findViewById(R.id.btn_cancel_confirm);
-        btnAccepted = (Button) findViewById(R.id.btn_accepted_confirm);
         btnTryAgain = (Button) findViewById(R.id.btn_try_again_connect);
 
         recyclerTests=(RecyclerView) findViewById(R.id.recycler_tests_info);
 
+        checkBoxTerms = (CheckBox) findViewById(R.id.check_box_terms);
         textTeamInfo.setOnClickListener(btnShowMoteTeam);
         textDetailsInfo.setOnClickListener(btnShowMoteDetails);
         textObservationInfo.setOnClickListener(btnShowMoteObservation);
         textTestsInfo.setOnClickListener(btnShowMoteTests);
 
         btnTryAgain.setOnClickListener(btnClickedTryAgain);
-        btnAccepted.setOnClickListener(btnAcceptedClickListener);
-        btnCancel.setOnClickListener(btnCancelClickListener);
         btnFinish.setOnClickListener(btnCreateSelectiveClickListener);
         textPrivacy.setOnClickListener(textClickedPrivacy);
 
+        checkBoxTerms.setOnCheckedChangeListener(checkChangedListener);
+
         hashMapSelective = AllActivities.hashInfoSelective;
+         act = InfoSelectiveCreateActivity.this;
 
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
-            ArrayList<String> testChooses = extras.getStringArrayList("testsChoose");
+            testChooses = extras.getStringArrayList("testsChoose");
             getTestsChoosesinBD(testChooses);
         }
+        showInfosSelective();
+    }
+
+    private void showInfosSelective(){
+        textNameSelective.setText(hashMapSelective.get("title"));
+        textDateSelective.setText("");
+        textLocalSelective.setText(hashMapSelective.get("street") + " " + hashMapSelective.get("number")!=null && !(hashMapSelective.get("number").equals(""))? hashMapSelective.get("number") : "");
+        textCityInfoSelective.setText(hashMapSelective.get("city") +"-"+hashMapSelective.get("state"));
+        textNeighBorhoodSelective.setText(hashMapSelective.get("neighborhood"));
+        textCepInfoSelective.setText(hashMapSelective.get("cep"));
+        textObservationsDetails.setText("");
     }
 
     private void getTestsChoosesinBD(ArrayList<String> testChooses){
@@ -215,19 +236,10 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
         }
     };
 
-    private View.OnClickListener btnCancelClickListener = new View.OnClickListener() {
+    private CheckBox.OnCheckedChangeListener checkChangedListener = new  CheckBox.OnCheckedChangeListener() {
         @Override
-        public void onClick(View v) {
-            constraintPrivacy.setVisibility(View.GONE);
-        }
-    };
-
-    private View.OnClickListener btnAcceptedClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            isAcceptedPrivacy = true;
-            constraintPrivacy.setVisibility(View.GONE);
-            textPrivacy.setVisibility(View.GONE);
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            isAcceptedPrivacy = isChecked;
         }
     };
 
@@ -247,14 +259,18 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
                 textProgress.setText("Criando sua seletiva");
                 createSelective();
             }
-            constraintNotConnection.setVisibility(View.VISIBLE);
+            else
+                constraintNotConnection.setVisibility(View.VISIBLE);
         }
+        else
+            constraintPrivacy.setVisibility(View.VISIBLE);
     }
 
     private void createSelective(){
         String url = Constants.URL + Constants.API_SELECTIVES;
         PostCreateSelective post = new PostCreateSelective();
         post.setActivity(InfoSelectiveCreateActivity.this);
+        post.setMethod(METHOD_CREATE_SELECTVE);
         post.setObjPut(CreateJSON.createObjectSelective(createObjectSelective()));
         post.execute(url);
     }
@@ -268,13 +284,50 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
         if(response.toUpperCase().equals("OK")){
             try {
                 JSONObject json = new JSONObject(result);
-                String code = json.getString(Constants.SELECTIVES_CODESELECTIVE);
-                Services.messageAlert(this, "Seletiva criada!!", "Parabéns a sua seletiva foi criada", "createSelective");
+                DeserializerJsonElements des = new DeserializerJsonElements(result);
+                Selective selective = des.getSelective();
+                code =  json.getString(Constants.SELECTIVES_CODESELECTIVE);
+                callPostTestsSelective(selective);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
 
+    private void callPostTestsSelective(Selective selective){
+        if(Services.isOnline(this)){
+            constraintProgress.setVisibility(View.VISIBLE);
+            textProgress.setText("Criando Testes da seletiva");
+            createTestsSelective(selective.getId());
+        }
+        else
+            constraintNotConnection.setVisibility(View.VISIBLE);
+    }
+
+    private void createTestsSelective(String id){
+        String url = Constants.URL + Constants.API_SELECTIVE_TESTTYPES;
+        PostCreateSelective post = new PostCreateSelective();
+        post.setActivity(InfoSelectiveCreateActivity.this);
+        post.setMethod(METHOD_TESTS_SELECTIVE);
+        post.setObjPut(CreateJSON.createObjectTestsSelectives(id, testChooses));
+        post.execute(url);
+    }
+
+    public static void returnCreateTestsSelective(Activity act, String response, String result){
+        ((InfoSelectiveCreateActivity)act).returnCreateTestsSelective(response, result);
+    }
+
+    private void returnCreateTestsSelective(String response, String result){
+        constraintProgress.setVisibility(View.GONE);
+        if(response.toUpperCase().equals("OK")){
+            try {
+                Intent i = new Intent(InfoSelectiveCreateActivity.this, SelectiveCreatedSuccessActivity.class);
+                i.putExtra("code", code);
+                startActivity(i);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -308,7 +361,6 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
         selective.setAddress(returnAddress());
         selective.setCanSync(true);
         selective.setCodeSelective("");
-        selective.setCodeSelective(returnCodeSelective());
         return selective;
     }
 
@@ -331,8 +383,11 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
     private View.OnClickListener btnClickedTryAgain = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            callCreateSelective();
+                callCreateSelective();
         }
     };
 
+    public static void finishOhterActivity(){
+        ((InfoSelectiveCreateActivity)act).finish();
+    }
 }

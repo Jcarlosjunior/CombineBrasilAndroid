@@ -33,8 +33,10 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import br.com.john.combinebrasil.CreateAccountAthlete;
@@ -158,8 +160,7 @@ public class Services {
     }
     public static void changeColorEditBorder(EditText edit, Activity act){
         edit.setBackground(act.getResources().getDrawable(R.drawable.background_edit));
-        //edit.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        }
+    }
 
     public static Bitmap getRoundedCornerBitmap(Bitmap pBitmap) {
 
@@ -523,5 +524,23 @@ public class Services {
         }
 
         return ret;
+    }
+
+    public static Date convertStringInDate(String dateStrg, String strFormat, char divide){
+        try {
+            String day =  dateStrg.substring(0,2);
+            String month = dateStrg.substring(3,5);
+            String year = dateStrg.substring(6,dateStrg.length());
+            String date =  year + divide+month+divide+day;
+
+            SimpleDateFormat formatter = new SimpleDateFormat(strFormat);
+
+            Date d = (Date) formatter.parse(date);
+            return d;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return  null;
+        }
     }
 }

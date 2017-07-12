@@ -48,12 +48,12 @@ public class CreateTeamActivity extends AppCompatActivity {
         LinearLayout btnBack = (LinearLayout) findViewById(R.id.linear_back_button);
         btnBack.setOnClickListener(btnBackClickListener);
 
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_create_team);
+        /*coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_create_team);
         spinnerModality =(MaterialBetterSpinner) findViewById(R.id.spinner_modality);
         editTeam = (EditText) findViewById(R.id.edit_name_team);
         editEmail = (EditText) findViewById(R.id.edit_email_team);
         editCity = (EditText) findViewById(R.id.edit_city_team);
-        editSocialLink = (EditText) findViewById(R.id.edit_social_link);
+        editSocialLink = (EditText) findViewById(R.id.edit_social_link);*/
         btnCreate = (Button) findViewById(R.id.btn_create_team);
         btnCreate.setOnClickListener(clickCreateTeam);
 

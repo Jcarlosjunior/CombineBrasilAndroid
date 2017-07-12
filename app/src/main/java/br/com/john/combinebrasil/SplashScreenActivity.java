@@ -15,6 +15,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import br.com.john.combinebrasil.Services.AllActivities;
+import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -27,6 +28,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         try {
+          //  SharedPreferencesAdapter.setLoggedSharedPreferences(this, true);
+          //  SharedPreferencesAdapter.setValueStringSharedPreferences(this, Constants.LOGIN_EMAIL, "5929a51532976b0011ae8a16");
+
+
             PackageInfo info = getPackageManager().getPackageInfo(
                     getPackageName(),
                     PackageManager.GET_SIGNATURES);
@@ -42,6 +47,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         catch (NoSuchAlgorithmException e) {
 
         }
+
 
         new Handler().postDelayed(new Runnable() {
             @Override

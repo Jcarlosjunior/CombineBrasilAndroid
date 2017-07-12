@@ -4,8 +4,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.Team;
+import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
@@ -50,14 +56,44 @@ public class CreateJSON {
             object.put(Constants.SELECTIVES_CANSYNC, selective.getCanSync());
 
             JSONArray jsonDates = new JSONArray();
-            jsonDates.put(AllActivities.hashInfoSelective.get("date"));
-            if(AllActivities.hashInfoSelective.get("dateSecond") !=null || !(AllActivities.hashInfoSelective.get("dateSecond").equals("")))
-                jsonDates.put(AllActivities.hashInfoSelective.get("dateSecond"));
+            jsonDates.put(convertStringInDate(AllActivities.hashInfoSelective.get("date")));
+            if(AllActivities.hashInfoSelective.get("dateSecond") !=null && !(AllActivities.hashInfoSelective.get("dateSecond").equals("")))
+                jsonDates.put(convertStringInDate(AllActivities.hashInfoSelective.get("dateSecond")));
 
-            if(AllActivities.hashInfoSelective.get("dateThird") !=null || !(AllActivities.hashInfoSelective.get("dateSecond").equals("")))
-                jsonDates.put(AllActivities.hashInfoSelective.get("dateThird"));
+            if(AllActivities.hashInfoSelective.get("dateThird") !=null && !(AllActivities.hashInfoSelective.get("dateThird").equals("")))
+                jsonDates.put(convertStringInDate(AllActivities.hashInfoSelective.get("dateThird")));
 
             object.put(Constants.SELECTIVES_DATE, jsonDates);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+    private static String convertStringInDate(String dateStrg){
+        try {
+            String day = dateStrg.substring(0, 2);
+            String month = dateStrg.substring(3, 5);
+            String year = dateStrg.substring(6, dateStrg.length());
+            return year + "-" + month + '-' + day;
+        }catch (Exception e){
+            return  "";
+        }
+
+    }
+
+    public static JSONObject createObjectTestsSelectives(String selective, ArrayList<String> testTypes) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put(Constants.TESTS_SELECTIVE, selective);
+            JSONArray jsonDates = new JSONArray();
+
+            for(String test : testTypes){
+                jsonDates.put(test.toString());
+            }
+            object.put(Constants.TESTTYPES_SELECTIVE, jsonDates);
 
 
         } catch (JSONException e) {

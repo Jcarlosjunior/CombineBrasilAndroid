@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.Team;
+import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Services.AllActivities;
@@ -32,6 +33,7 @@ import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.NavigationDrawer;
 import br.com.john.combinebrasil.Services.Services;
+import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
 
 public class MenuActivity extends AppCompatActivity {
     private ImageView linearCreateSelective;
@@ -70,9 +72,7 @@ public class MenuActivity extends AppCompatActivity {
 
         linearHistoricSelective = (ImageView) findViewById(R.id.linear_historic_selective);
         linearHistoricSelective.setOnClickListener(clickHistoricSelective);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        navigationDrawer = new NavigationDrawer(savedInstanceState, this, toolbar, true);
-        navigationDrawer.createNavigationAccess();
+
 
         editCode = (EditText) findViewById(R.id.edit_code);
         btnConfirmCode = (Button) findViewById(R.id.btn_confirm_code);
@@ -84,6 +84,12 @@ public class MenuActivity extends AppCompatActivity {
         constraintDialogEnterSelective.setOnClickListener(clickHideEnterSelective);
         enabledOrDisabledBtn(btnConfirmCode, false);
         editCode.addTextChangedListener(textWatcher);
+
+        DatabaseHelper db = new DatabaseHelper(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        navigationDrawer = new NavigationDrawer(savedInstanceState, this, toolbar, true, db.getUser());
+        navigationDrawer.createNavigationAccess();
     }
     private TextWatcher textWatcher = new TextWatcher() {
         @Override

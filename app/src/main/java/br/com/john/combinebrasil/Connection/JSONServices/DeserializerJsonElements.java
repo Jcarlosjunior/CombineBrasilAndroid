@@ -40,9 +40,12 @@ public class DeserializerJsonElements {
         User login = new User();
         try {
             JSONObject json = new JSONObject(this.response);
-            login.setEmail(json.optString(Constants.LOGIN_EMAIL));
-            login.setIsAdmin(json.optBoolean(Constants.LOGIN_ISADMIN));
-            login.setCanWrite(json.optBoolean(Constants.LOGIN_CANWRITE));
+            login.setId(json.optString(Constants.USER_ID));
+            login.setName(json.optString(Constants.USER_NAME));
+            login.setEmail(json.optString(Constants.USER_EMAIL));
+            login.setIsAdmin(json.optBoolean(Constants.USER_ISADMIN));
+            login.setCanWrite(json.optBoolean(Constants.USER_CANWRITE));
+            login.setToken(json.optString(Constants.USER_TOKEN));
         } catch (JSONException jsonExc) {
             Log.i("JSON ERROR", jsonExc.toString());
         }
@@ -336,29 +339,25 @@ public class DeserializerJsonElements {
     public Selective getSelective() {
         Selective selective = new Selective();
         try {
-            JSONArray jsonArray = new JSONArray(response);
-
-            for(int i=0; i<=jsonArray.length()-1; i++){
-                JSONObject json = new JSONObject(jsonArray.getString(i));
-                selective = new Selective(
-                        json.optString(Constants.SELECTIVES_ID),
-                        json.optString(Constants.SELECTIVES_TITLE),
-                        json.optString(Constants.SELECTIVES_DATE),
-                        json.optString(Constants.SELECTIVES_CODESELECTIVE),
-                        json.optString(Constants.SELECTIVES_DATE),
-                        json.optBoolean(Constants.SELECTIVES_DATE, true),
-                        json.optString(Constants.SELECTIVES_CITY),
-                        json.optString(Constants.SELECTIVES_NEIGHBORHOOD),
-                        json.optString(Constants.SELECTIVES_STATE),
-                        json.optString(Constants.SELECTIVES_STREET),
-                        json.optString(Constants.SELECTIVES_POSTALCODE),
-                        json.optString(Constants.SELECTIVES_NOTE),
-                        json.optString(Constants.SELECTIVES_ADDRESS)
-                );
-            }
+            JSONObject json = new JSONObject(response);
+            selective = new Selective(
+                    json.optString(Constants.SELECTIVES_ID),
+                    json.optString(Constants.SELECTIVES_TITLE),
+                    json.optString(Constants.SELECTIVES_DATE),
+                    json.optString(Constants.SELECTIVES_CODESELECTIVE),
+                    json.optString(Constants.SELECTIVES_DATE),
+                    json.optBoolean(Constants.SELECTIVES_DATE, true),
+                    json.optString(Constants.SELECTIVES_CITY),
+                    json.optString(Constants.SELECTIVES_NEIGHBORHOOD),
+                    json.optString(Constants.SELECTIVES_STATE),
+                    json.optString(Constants.SELECTIVES_STREET),
+                    json.optString(Constants.SELECTIVES_POSTALCODE),
+                    json.optString(Constants.SELECTIVES_NOTE),
+                    json.optString(Constants.SELECTIVES_ADDRESS)
+            );
         } catch (JSONException e) {
             selective = null;
-            Log.i("ERROR: getTeamUser", e.getMessage());
+            Log.i("ERROR: getSelective", e.getMessage());
         }
         return selective;
     }

@@ -104,7 +104,8 @@
         <activity
             android:name=".InfoSelectiveCreateActivity"
             android:label="@string/title_activity_info_selective_create"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".SelectiveCreatedSuccessActivity"></activity>
     </application>
 
 </manifest>

@@ -175,8 +175,8 @@ public class ChooseTeamSelectiveActivity extends AppCompatActivity {
     private View.OnClickListener clickAddTeamListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //Intent intent = new Intent(ChooseTeamSelectiveActivity.this, AddTeamActivity.class);
-           // startActivity(intent);
+            Intent intent = new Intent(ChooseTeamSelectiveActivity.this, CreateTeamActivity.class);
+            startActivity(intent);
         }
     };
 
@@ -188,7 +188,6 @@ public class ChooseTeamSelectiveActivity extends AppCompatActivity {
     };
 
     private void nextPass(){
-        Toast.makeText(ChooseTeamSelectiveActivity.this,"Selected:" + teams.get(getItem(0)).getName(),Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(ChooseTeamSelectiveActivity.this, LocalSelectiveActivity.class);
         AllActivities.hashInfoSelective = new HashMap<String, String>();
         AllActivities.hashInfoSelective.put("team", teams.get(getItem(0)).getId());
