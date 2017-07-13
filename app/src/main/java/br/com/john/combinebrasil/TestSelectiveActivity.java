@@ -36,7 +36,7 @@ public class TestSelectiveActivity extends AppCompatActivity {
     TextView textProgress;
     Toolbar toolbar;
     RecyclerView recyclerViewTests;
-    public static Button btnNextPass;
+    public static Button btnNextPass, btnCloseMessage;
     Button btnTryAgain;
     ArrayList<TestTypes> tests;
     AdapterRecyclerChooseTestSelective adapterRecyclerTests;
@@ -69,6 +69,9 @@ public class TestSelectiveActivity extends AppCompatActivity {
         btnTryAgain.setOnClickListener(clickListenerTryAgain);
         btnNextPass = (Button) findViewById(R.id.button_next_pass);
         btnNextPass.setOnClickListener(clickDoneTests);
+        btnNextPass.setVisibility(View.GONE);
+        btnCloseMessage=(Button) findViewById(R.id.btn_close_message_tests);
+        btnCloseMessage.setOnClickListener(clickMessageDefault);
 
         hashMapSelective = AllActivities.hashInfoSelective;
 
@@ -127,6 +130,18 @@ public class TestSelectiveActivity extends AppCompatActivity {
         if(!(tests == null || tests.size()==0)){
             String[] values = new String[tests.size()];
             for(int i=0; i <=tests.size()-1; i++){
+                tests.get(i).setDefaultTest(i<=7 ? true : false);
+
+                if(tests.get(i).isDefaultTest())
+                    tests.get(i).setSelected(true);
+                else
+                    tests.get(i).setSelected(false);
+
+                if(i%2 > 0)
+                    tests.get(i).setIconImageURL("http://jeremybeynon.com/wp-content/uploads/2014/12/nfl-logo.jpg");
+                else
+                    tests.get(i).setIconImageURL("http://pontepretagorilas.com.br/wp-content/uploads/2017/04/timthumb-1-128x128.png");
+
                 values[i] = tests.get(i).getId();
             }
             inflateRecyclerView(values);
@@ -257,4 +272,16 @@ public class TestSelectiveActivity extends AppCompatActivity {
             constraintInfoTest.setVisibility(View.GONE);
         }
     };
+
+    private View.OnClickListener clickMessageDefault = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            closeMessageTestDefault();
+        }
+    };
+
+    private void closeMessageTestDefault(){
+        ConstraintLayout constraint = (ConstraintLayout) findViewById(R.id.constraint_message_test_default);
+        constraint.setVisibility(View.GONE);
+    }
 }

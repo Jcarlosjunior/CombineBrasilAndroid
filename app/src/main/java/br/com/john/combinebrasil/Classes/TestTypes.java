@@ -14,8 +14,14 @@ public class TestTypes {
     private String IconImageURL;
     private String TutorialImageURL;
     private boolean Selected;
+    private boolean DefaultTest;
+    private int EquivalentTest;
 
-    public TestTypes(){}
+    public TestTypes(){
+        VisibleToReport = false;
+        Selected = false;
+        DefaultTest = false;
+    }
 
     public TestTypes(String id, String name, String attemptsLimit, boolean visibleToReport, String description, String valueType, String iconImageURL, String tutorialImageURL) {
         Id = id;
@@ -98,5 +104,21 @@ public class TestTypes {
 
     public void setSelected(boolean selected) {
         Selected = selected;
+    }
+
+    public boolean isDefaultTest() {
+        return DefaultTest;
+    }
+
+    public void setDefaultTest(boolean defaultTest) {
+        DefaultTest = defaultTest;
+    }
+
+    public int getEquivalentTest() {
+        return EquivalentTest;
+    }
+
+    public void setEquivalentTest(int equivalentTest) {
+        EquivalentTest = equivalentTest;
     }
 }

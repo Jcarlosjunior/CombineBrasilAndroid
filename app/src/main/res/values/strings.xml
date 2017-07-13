@@ -52,6 +52,8 @@
     <string name="aceito">Aceito</string>
     <string name="create_selective_success">Seletiva criada</string>
     <string name="voltar_ao_menu">Voltar ao Menu</string>
+    <string name="title_tests">Os testes</string>
+    <string name="text_tests_default">Ao escolher nossos testes, existem alguns testes padrões, que já estarão selecionados. Com esses testes padrões, conseguimos extrair o máximo de análises e certezas ao informar as posições corentes dos atletas. Para realizar a seletiva do seu, você poderá customizar os testes, porém certifique-se de que o testes selecionados seguem o modelo homolodado Combine Brasil Seletivas.</string>
 
     <string name="inscrever">Inscreva-se e melhore suas seletivas</string>
     <string name="testes">Testes</string>

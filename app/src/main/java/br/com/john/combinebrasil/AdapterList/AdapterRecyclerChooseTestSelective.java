@@ -3,6 +3,7 @@ package br.com.john.combinebrasil.AdapterList;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -21,7 +22,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import junit.framework.Test;
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.R;
@@ -38,7 +46,7 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
     public static String[] valuesID;
     public static ArrayList<TestTypes> list;
     private Activity act;
-
+    private static ArrayList<ViewHolder> holderList;
     private static ArrayList<TestTypes> testsChoose;
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -48,6 +56,7 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
         this.values = values;
         this.act = act;
         testsChoose = new ArrayList<TestTypes>();
+        holderList = new ArrayList<ViewHolder>();
         valuesID = new String[list.size()];
 
     }
@@ -58,9 +67,11 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView txtName;
-        public ConstraintLayout listItem;
+        public TextView txtInfoDefaultTest;
+        public ConstraintLayout listItem, constraintInfoEquivalentTest;
         public ImageView imageIcon;
         public CheckBox checkTest;
+
 
         public ViewHolder(View v) {
             super(v);
@@ -68,6 +79,8 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
             checkTest = (CheckBox) v.findViewById(R.id.check_box_test);
             imageIcon = (ImageView) v.findViewById(R.id.icon);
             listItem = (ConstraintLayout) v.findViewById(R.id.linear_list);
+            txtInfoDefaultTest = (TextView) v.findViewById(R.id.text_info_test_default);
+            //constraintInfoEquivalentTest = (ConstraintLayout) v.findViewById(R.id.constraint_equivalent);
 
             listItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -98,6 +111,15 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
         //chosseIcon(list.get(holder.getPosition()).getIconImageURL(), holder.imageIcon, false);
         holder.txtName.setText(list.get(holder.getPosition()).getName());
 
+        holder.txtInfoDefaultTest.setText("Teste padrão para relatório");
+        if(list.get(position).isDefaultTest())
+            holder.txtInfoDefaultTest.setVisibility(View.VISIBLE);
+        else
+            holder.txtInfoDefaultTest.setVisibility(View.GONE);
+
+        Picasso.with(act)
+                .load(list.get(position).getIconImageURL())
+                .into(holder.imageIcon);
         //in some cases, it will prevent unwanted situations
         holder.checkTest.setOnCheckedChangeListener(null);
 
@@ -109,8 +131,12 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 list.get(holder.getAdapterPosition()).setSelected(isChecked);
                 showOrHideRemove();
+                verifyTetsDefault(holder, holder.getAdapterPosition());
             }
         });
+        if(holder!=null && !holderList.contains(holder))
+            holderList.add(holder);
+
     }
 
     private void showOrHideRemove(){
@@ -129,7 +155,21 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
         }
     }
 
-
+    private void verifyTetsDefault(ViewHolder holder, int position){
+        if(list.get(position).isDefaultTest()){
+            if(!list.get(position).isSelected()){
+                for (int x = 0; x<=list.size()-1;x++ ) {
+                    if(list.get(x).getEquivalentTest() == list.get(position).getEquivalentTest()){
+                        Random rnd = new Random();
+                        int color = Color.argb(15, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                        if(x<holderList.size())
+                            holderList.get(x).listItem.setBackgroundColor(color);
+                        //holder.listItem.setBackgroundColor(color);
+                    }
+                }
+            }
+        }
+    }
     @Override
     public int getItemCount() {
         return (null != list ? list.size() : 0);
