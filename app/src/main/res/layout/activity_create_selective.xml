@@ -27,11 +27,8 @@
         android:id="@+id/constraintLayout2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include"
-        android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="0dp"
         app:layout_constraintVertical_bias="0.0"
-        android:layout_marginRight="0dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.0">
 
@@ -44,9 +41,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:id="@+id/scrollView3"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="0dp">
+                app:layout_constraintBottom_toBottomOf="parent">
                 <android.support.constraint.ConstraintLayout
                     android:animateLayoutChanges="true"
                     android:layout_width="match_parent"
@@ -85,7 +80,6 @@
                         android:id="@+id/txt_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="0dp"
                         android:layout_marginLeft="48dp"
                         android:layout_marginStart="48dp"
                         android:background="@drawable/background_edit"
@@ -102,9 +96,7 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imageView3"
                         tools:ignore="RtlHardcoded,SpUsage"
-                        app:layout_constraintRight_toLeftOf="@+id/img_add_date"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginRight="8dp" />
+                        app:layout_constraintRight_toLeftOf="@+id/img_add_date" />
                     <ImageView
                         android:id="@+id/img_add_date"
                         android:layout_width="0dp"
@@ -112,23 +104,20 @@
                         android:src="@drawable/ic_add"
                         android:layout_marginRight="48dp"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:layout_marginTop="0dp"
                         android:padding="10dp"
                         app:layout_constraintTop_toBottomOf="@+id/imageView3"
-                        android:layout_marginBottom="0dp"
-                        app:layout_constraintBottom_toTopOf="@+id/txt_date_second" />
+                        app:layout_constraintBottom_toTopOf="@+id/txt_date_second"
+                        android:layout_marginEnd="48dp" />
 
                     <TextView
                         android:id="@+id/txt_date_second"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="0dp"
-                        android:layout_marginLeft="48dp"
-                        android:layout_marginStart="48dp"
                         android:background="@drawable/background_edit"
                         android:drawableLeft="@drawable/ic_calendar"
                         android:drawablePadding="10dp"
                         android:visibility="gone"
+                        android:layout_marginStart="48dp"
                         android:hint="@string/date_selective"
                         android:inputType="textPersonName"
                         android:maxLines="1"
@@ -139,30 +128,23 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txt_date"
                         tools:ignore="RtlHardcoded,SpUsage"
-                        app:layout_constraintRight_toLeftOf="@+id/img_add_second_date"
-                        android:layout_marginRight="0dp" />
-
+                        app:layout_constraintRight_toLeftOf="@+id/img_add_second_date" />
                     <ImageView
                         android:id="@+id/img_add_second_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_add"
-                        android:layout_marginRight="48dp"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:layout_marginTop="0dp"
                         android:padding="10dp"
+                        android:layout_marginEnd="48dp"
                         android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@+id/txt_date"
-                        android:layout_marginBottom="0dp"
                         app:layout_constraintBottom_toTopOf="@+id/txt_date_third" />
 
                     <TextView
                         android:id="@+id/txt_date_third"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="0dp"
-                        android:layout_marginLeft="48dp"
-                        android:layout_marginStart="48dp"
                         android:visibility="gone"
                         android:background="@drawable/background_edit"
                         android:drawableLeft="@drawable/ic_calendar"
@@ -171,28 +153,25 @@
                         android:inputType="textPersonName"
                         android:maxLines="1"
                         android:paddingTop="10dp"
+                        android:layout_marginStart="48dp"
                         android:textColor="@color/color_primary"
                         android:textColorHint="@color/greyDark"
                         android:textSize="14dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txt_date_second"
                         tools:ignore="RtlHardcoded,SpUsage"
-                        android:layout_marginTop="0dp"
-                        app:layout_constraintRight_toLeftOf="@+id/img_add_third_date"
-                        android:layout_marginRight="0dp" />
+                        app:layout_constraintRight_toLeftOf="@+id/img_add_third_date" />
 
                     <ImageView
                         android:id="@+id/img_add_third_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_add"
-                        android:layout_marginRight="48dp"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:layout_marginTop="0dp"
                         android:padding="10dp"
                         android:visibility="gone"
+                        android:layout_marginEnd="48dp"
                         app:layout_constraintTop_toBottomOf="@+id/txt_date_second"
-                        android:layout_marginBottom="0dp"
                         app:layout_constraintBottom_toTopOf="@+id/edit_title" />
 
                     <EditText
@@ -265,7 +244,6 @@
             android:layout_marginStart="48dp"
             android:layout_marginEnd="48dp"
             android:layout_marginBottom="32dp"
-            android:layout_marginTop="32dp"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="1.0" />
@@ -416,21 +394,19 @@
         android:visibility="gone"
         android:animateLayoutChanges="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.50">
+        app:layout_constraintVertical_bias="0.0">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
             android:layout_marginEnd="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="0dp"
             android:background="@drawable/background_border"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -447,21 +423,22 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="20dp"
                 android:clickable="true"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="0.0" />
 
             <Button
                 android:id="@+id/btn_confirm_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:background="@color/white"
-                android:text="@string/confirm"
+                android:text="@string/chosse_time"
                 android:textAllCaps="true"
                 android:textColor="@color/color_primary"
                 android:textSize="14sp"
@@ -469,13 +446,13 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/calendar_dates"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="1.0" />
 
             <Button
                 android:id="@+id/btn_cancel_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
@@ -487,17 +464,153 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.8"
+                app:layout_constraintHorizontal_bias="0.797"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/btn_confirm_date"
-                app:layout_constraintTop_toBottomOf="@+id/calendar_dates"
-                app:layout_constraintVertical_bias="0.0" />
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/calendar_dates" />
+        </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_time"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/grey_transparent"
+        android:clickable="true"
+        android:visibility="gone"
+        android:animateLayoutChanges="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginStart="32dp"
+            android:background="@drawable/background_border"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.498">
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/time_selective"
+                android:textColor="@color/color_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/number_picker_hour"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_cancel_time"
+                app:layout_constraintRight_toLeftOf="@+id/textView19"
+                app:layout_constraintTop_toBottomOf="@+id/textView18"
+                app:np_dividerColor="@color/color_primary"
+                app:np_max="23"
+                app:np_min="00"
+                app:np_value="00"
+                app:np_textColor="@color/color_primary" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:text=":"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/number_picker_min"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/number_picker_min" />
 
 
+            <Button
+                android:id="@+id/btn_confirm_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="32dp"
+                android:background="@color/white"
+                android:text="@string/confirm"
+                android:textAllCaps="true"
+                android:textColor="@color/color_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <Button
+                android:id="@+id/btn_cancel_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:background="@color/white"
+                android:text="@string/choose_date"
+                android:textAllCaps="true"
+                android:textColor="@color/greyDark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/btn_confirm_time"
+                android:layout_marginRight="8dp" />
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/number_picker_min"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_cancel_time"
+                app:layout_constraintLeft_toRightOf="@+id/textView19"
+                app:layout_constraintTop_toBottomOf="@+id/textView18"
+                app:np_dividerColor="@color/color_primary"
+                app:np_max="59"
+                app:np_min="00"
+                app:np_value="00"
+                app:np_textColor="@color/color_primary" />
 
         </android.support.constraint.ConstraintLayout>
 
 
     </android.support.constraint.ConstraintLayout>
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>

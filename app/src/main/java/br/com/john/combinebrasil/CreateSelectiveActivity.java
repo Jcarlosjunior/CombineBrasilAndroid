@@ -3,73 +3,49 @@ package br.com.john.combinebrasil;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.SQLException;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.shawnlin.numberpicker.NumberPicker;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
-import br.com.john.combinebrasil.Classes.Athletes;
-import br.com.john.combinebrasil.Classes.CEP;
-import br.com.john.combinebrasil.Classes.Selective;
-import br.com.john.combinebrasil.Classes.Team;
-import br.com.john.combinebrasil.Connection.Connection;
-import br.com.john.combinebrasil.Connection.JSONServices.CreateJSON;
-import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
-import br.com.john.combinebrasil.Connection.Posts.PostCreateSelective;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
-import br.com.john.combinebrasil.Services.DatabaseHelper;
-import br.com.john.combinebrasil.Services.Mask;
 import br.com.john.combinebrasil.Services.Services;
 
 public class CreateSelectiveActivity extends AppCompatActivity{
     EditText editTitle, editNotes;
     TextView textDate, textSecondDate, textThirdDate;
     LinearLayout linearProgress;
-    Button btnCreateSelective, btnCancel, btnConfirm;
+    Button btnCreateSelective, btnCancelDate, btnConfirmDate, btnConfirmTime, btnCancelTime;
     ImageView imgAddDate, imgAddSecondDate, imgAddThirdDate;
     TextView textProgress;
     Toolbar toolbar;
+    NumberPicker nPHour, nPminute;
 
     public static Activity act;
-    public HashMap<String, String> hashInfoSelective;
     MaterialCalendarView calendarDates;
-    ConstraintLayout constraintCalendar;
+    ConstraintLayout constraintCalendar, constraintTime;
     private int dateClicked = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +75,16 @@ public class CreateSelectiveActivity extends AppCompatActivity{
         editNotes = (EditText) findViewById(R.id.edit_notes);
         btnCreateSelective = (Button) findViewById(R.id.btn_create_selective);
         constraintCalendar = (ConstraintLayout) findViewById(R.id.constraint_calendar);
-        btnCancel = (Button) findViewById(R.id.btn_cancel_date);
-        btnConfirm = (Button) findViewById(R.id.btn_confirm_date);
+        constraintTime = (ConstraintLayout) findViewById(R.id.constraint_time);
+        btnCancelDate = (Button) findViewById(R.id.btn_cancel_date);
+        btnConfirmDate = (Button) findViewById(R.id.btn_confirm_date);
+        btnConfirmTime = (Button) findViewById(R.id.btn_confirm_time);
+        btnCancelTime = (Button) findViewById(R.id.btn_cancel_time);
+
+        nPHour = (NumberPicker) findViewById(R.id.number_picker_hour);
+        nPminute = (NumberPicker) findViewById(R.id.number_picker_min);
+        nPHour.setFormatter("%02d");
+        nPminute.setFormatter("%02d");
 
         calendarDates = (MaterialCalendarView) findViewById(R.id.calendar_dates);
         textDate.setOnClickListener(clickedDateListener);
@@ -108,9 +92,11 @@ public class CreateSelectiveActivity extends AppCompatActivity{
         textThirdDate.setOnClickListener(clickedThirdDateListener);
         imgAddSecondDate.setOnClickListener(clickedAddSecondDate);
         imgAddThirdDate.setOnClickListener(clickedAddThirdDate);
-        btnCancel.setOnClickListener(clickedCancelDate);
-        btnConfirm.setOnClickListener(clickedConfirmDate);
+        btnCancelDate.setOnClickListener(clickedCancelDate);
+        btnConfirmDate.setOnClickListener(clickedConfirmDate);
         btnCreateSelective.setOnClickListener(clickCreateSelective);
+        btnCancelTime.setOnClickListener(clickCloseTime);
+        btnConfirmTime.setOnClickListener(clickConfirmTime);
         btnCreateSelective.setOnLongClickListener(longCreateSelective);
         textSecondDate.addTextChangedListener(textChangeSecond);
 
@@ -280,7 +266,9 @@ public class CreateSelectiveActivity extends AppCompatActivity{
                 textDate.setText(convertDateCalendar(formatter.format(date)));
                 imgAddDate.setVisibility(View.VISIBLE);
                 imgAddDate.setOnClickListener(clickedAddDate);
-                constraintCalendar.setVisibility(View.GONE);
+
+                showTimeChoose();
+                //constraintCalendar.setVisibility(View.GONE);
             }
             else
                 Toast.makeText(this, "A data selecionada deve ser maior que a data atual.", Toast.LENGTH_SHORT).show();
@@ -288,7 +276,9 @@ public class CreateSelectiveActivity extends AppCompatActivity{
         else if(dateClicked==2) {
             if(verifyDate(textDate.getText().toString(), convertDateCalendar(formatter.format(date)))) {
                 textSecondDate.setText(convertDateCalendar(formatter.format(date)));
-                constraintCalendar.setVisibility(View.GONE);
+                constraintTime.setVisibility(View.VISIBLE);
+                showTimeChoose();
+                //constraintCalendar.setVisibility(View.GONE);
             }
             else
                 Toast.makeText(this, "A segunda deve ser maior que a primeira selecionada.", Toast.LENGTH_SHORT).show();
@@ -296,12 +286,51 @@ public class CreateSelectiveActivity extends AppCompatActivity{
         else {
             if(verifyDate(textSecondDate.getText().toString(), convertDateCalendar(formatter.format(date)))) {
                 textThirdDate.setText(convertDateCalendar(formatter.format(date)));
-                constraintCalendar.setVisibility(View.GONE);
+                constraintTime.setVisibility(View.VISIBLE);
+                showTimeChoose();
+                //constraintCalendar.setVisibility(View.GONE);
             }
             else
                 Toast.makeText(this, "A terceira deve ser maior que a segunda selecionada.", Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    private void showTimeChoose(){
+        nPHour.setValue(0);
+        nPminute.setValue(0);
+
+        constraintTime.setVisibility(View.VISIBLE);
+    }
+
+    private View.OnClickListener clickCloseTime = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            constraintTime.setVisibility(View.GONE);
+        }
+    };
+
+    private View.OnClickListener clickConfirmTime = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            confirmTime();
+        }
+    };
+
+    private void confirmTime(){
+        String hour = String.format("%02d", nPHour.getValue());
+        String minute = String.format("%02d", nPminute.getValue());
+
+        switch (dateClicked){
+            case 1 : textDate.setText(textDate.getText().toString()+" - "+ hour+":"+minute);
+                break;
+            case 2 : textSecondDate.setText(textSecondDate.getText().toString()+" - "+ hour+":"+minute);
+                break;
+            case 3 : textThirdDate.setText(textThirdDate.getText().toString()+" - "+ hour+":"+minute);
+        }
+
+        constraintTime.setVisibility(View.GONE);
+        constraintCalendar.setVisibility(View.GONE);
     }
 
     private boolean verifyDate(String dtPrincipal,String dtValid){
@@ -351,6 +380,7 @@ public class CreateSelectiveActivity extends AppCompatActivity{
     private void clickAddSecondDate(){
         String text = textSecondDate.getText().toString();
         if(text.equals("")){
+            textSecondDate.setText("");
             hideDate(textSecondDate, imgAddSecondDate);
             showDate(textDate, imgAddDate);
             imgAddDate.setImageDrawable(getDrawable(R.drawable.ic_add));
@@ -387,15 +417,16 @@ public class CreateSelectiveActivity extends AppCompatActivity{
     };
 
     private void clickAddSThirdDate(){
-            hideDate(textThirdDate, imgAddThirdDate);
-            imgAddSecondDate.setVisibility(View.VISIBLE);
-            imgAddSecondDate.setImageDrawable(getDrawable(R.drawable.ic_add));
+        textThirdDate.setText("");
+        hideDate(textThirdDate, imgAddThirdDate);
+        imgAddSecondDate.setVisibility(View.VISIBLE);
+        imgAddSecondDate.setImageDrawable(getDrawable(R.drawable.ic_add));
     }
 
     private String convertDateCalendar(String date){
         String month =  date.substring(0,2);
         String day = date.substring(3,5);
-        String year = date.substring(6,date.length());
+        String year = date.substring(6, 10);
         return day + "/"+month+"/"+year;
     }
 

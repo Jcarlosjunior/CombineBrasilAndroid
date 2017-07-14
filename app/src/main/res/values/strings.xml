@@ -24,7 +24,9 @@
     <string name="entre_seletiva">Entrar em uma seletiva</string>
     <string name="codigo">Código</string>
     <string name="enter_selective">Para ser avaliador de uma seletiva, digite o código informado ao adminstrador</string>
-    <string name="confirm">Confirmaçao</string>
+    <string name="confirm">Confirmar</string>
+    <string name="chosse_time">escolher hora</string>
+    <string name="time_selective">Escolha a hora da seletiva</string>
     <string name="filter_by">Filtrar por</string>
     <string name="date_init">Data Início</string>
     <string name="date_end">Data Fim</string>
@@ -53,6 +55,7 @@
     <string name="create_selective_success">Seletiva criada</string>
     <string name="voltar_ao_menu">Voltar ao Menu</string>
     <string name="title_tests">Os testes</string>
+    <string name="number_picker_formatter">0</string>
     <string name="text_tests_default">Ao escolher nossos testes, existem alguns testes padrões, que já estarão selecionados. Com esses testes padrões, conseguimos extrair o máximo de análises e certezas ao informar as posições corentes dos atletas. Para realizar a seletiva do seu, você poderá customizar os testes, porém certifique-se de que o testes selecionados seguem o modelo homolodado Combine Brasil Seletivas.</string>
 
     <string name="inscrever">Inscreva-se e melhore suas seletivas</string>
@@ -99,6 +102,7 @@
     <string name="ready">Pronto</string>
     <string name="search">Buscar</string>
     <string name="cancel">Cancelar</string>
+    <string name="choose_date">Escolher outra data</string>
     <string name="update_ok">Tudo atualizado</string>
     <string name="back_to_test">Voltar para o teste</string>
     <string name="go_to_sync">Sincronizar teste</string>
@@ -179,6 +183,20 @@
     <string name="combine_tests">Combine Brasil - Testes</string>
 
     <string name="lorem">Aenean placerat. In vulputate urna eu arcu. Aliquam erat volutpat. Suspendisse potenti.
+        Morbi mattis felis at nunc. Duis viverra diam non justo. In nisl. Nullam sit amet magna in magna gravida vehicula.
+        Mauris tincidunt sem sed arcu. Nunc posuere. Nullam lectus justo, Aenean placerat. In vulputate urna eu arcu. Aliquam erat volutpat. Suspendisse potenti.
+        Morbi mattis felis at nunc. Duis viverra diam non justo. In nisl. Nullam sit amet magna in magna gravida vehicula.
+        Mauris tincidunt sem sed arcu. Nunc posuere. Nullam lectus justo,Aenean placerat. In vulputate urna eu arcu. Aliquam erat volutpat. Suspendisse potenti.
+        Morbi mattis felis at nunc. Duis viverra diam non justo. In nisl. Nullam sit amet magna in magna gravida vehicula.
+        Mauris tincidunt sem sed arcu. Nunc posuere. Nullam lectus justo,Aenean placerat. In vulputate urna eu arcu. Aliquam erat volutpat. Suspendisse potenti.
+        Morbi mattis felis at nunc. Duis viverra diam non justo. In nisl. Nullam sit amet magna in magna gravida vehicula.
+        Mauris tincidunt sem sed arcu. Nunc posuere. Nullam lectus justo,Aenean placerat. In vulputate urna eu arcu. Aliquam erat volutpat. Suspendisse potenti.
+        Morbi mattis felis at nunc. Duis viverra diam non justo. In nisl. Nullam sit amet magna in magna gravida vehicula.
+        Mauris tincidunt sem sed arcu. Nunc posuere. Nullam lectus justo,Aenean placerat. In vulputate urna eu arcu. Aliquam erat volutpat. Suspendisse potenti.
+        Morbi mattis felis at nunc. Duis viverra diam non justo. In nisl. Nullam sit amet magna in magna gravida vehicula.
+        Mauris tincidunt sem sed arcu. Nunc posuere. Nullam lectus justo,Aenean placerat. In vulputate urna eu arcu. Aliquam erat volutpat. Suspendisse potenti.
+        Morbi mattis felis at nunc. Duis viverra diam non justo. In nisl. Nullam sit amet magna in magna gravida vehicula.
+        Mauris tincidunt sem sed arcu. Nunc posuere. Nullam lectus justo,Aenean placerat. In vulputate urna eu arcu. Aliquam erat volutpat. Suspendisse potenti.
         Morbi mattis felis at nunc. Duis viverra diam non justo. In nisl. Nullam sit amet magna in magna gravida vehicula.
         Mauris tincidunt sem sed arcu. Nunc posuere. Nullam lectus justo,</string>
 

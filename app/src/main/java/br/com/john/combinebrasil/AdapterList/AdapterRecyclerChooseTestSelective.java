@@ -131,7 +131,7 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 list.get(holder.getAdapterPosition()).setSelected(isChecked);
                 showOrHideRemove();
-                verifyTetsDefault(holder, holder.getAdapterPosition());
+                verifyTetsDefault(holder.getAdapterPosition());
             }
         });
         if(holder!=null && !holderList.contains(holder))
@@ -155,16 +155,23 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
         }
     }
 
-    private void verifyTetsDefault(ViewHolder holder, int position){
+    private void verifyTetsDefault(int position){
         if(list.get(position).isDefaultTest()){
             if(!list.get(position).isSelected()){
+                Random rnd = new Random();
+                int color = Color.argb(15, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
                 for (int x = 0; x<=list.size()-1;x++ ) {
                     if(list.get(x).getEquivalentTest() == list.get(position).getEquivalentTest()){
-                        Random rnd = new Random();
-                        int color = Color.argb(15, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
                         if(x<holderList.size())
-                            holderList.get(x).listItem.setBackgroundColor(color);
-                        //holder.listItem.setBackgroundColor(color);
+                            holderList.get(x).listItem.setBackgroundColor(color);//holder.listItem.setBackgroundColor(color);
+                    }
+                }
+            }
+            else{
+                for (int x = 0; x<=list.size()-1;x++ ) {
+                    if(list.get(x).getEquivalentTest() == list.get(position).getEquivalentTest()){
+                        if(x<holderList.size())
+                            holderList.get(x).listItem.setBackground(act.getDrawable(R.drawable.background_line_list));
                     }
                 }
             }

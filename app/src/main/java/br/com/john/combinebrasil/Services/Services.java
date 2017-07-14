@@ -530,7 +530,7 @@ public class Services {
         try {
             String day =  dateStrg.substring(0,2);
             String month = dateStrg.substring(3,5);
-            String year = dateStrg.substring(6,dateStrg.length());
+            String year = dateStrg.substring(6,10);
             String date =  year + divide+month+divide+day;
 
             SimpleDateFormat formatter = new SimpleDateFormat(strFormat);

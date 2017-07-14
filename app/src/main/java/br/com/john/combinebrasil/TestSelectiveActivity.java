@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -101,6 +102,8 @@ public class TestSelectiveActivity extends AppCompatActivity {
     }
 
     private void returnUpdateTests(int status, String result){
+        ConstraintLayout constraint = (ConstraintLayout) findViewById(R.id.constraint_message_test_default);
+        constraint.setVisibility(View.VISIBLE);
         linearProgress.setVisibility(View.GONE);
         if(status == 200 || status == 201) {
             verifyResult(result);
@@ -137,11 +140,14 @@ public class TestSelectiveActivity extends AppCompatActivity {
                 else
                     tests.get(i).setSelected(false);
 
-                if(i%2 > 0)
+                if(i%2 > 0) {
+                    tests.get(i).setEquivalentTest(1);
                     tests.get(i).setIconImageURL("http://jeremybeynon.com/wp-content/uploads/2014/12/nfl-logo.jpg");
-                else
+                }
+                else {
+                    tests.get(i).setEquivalentTest(2);
                     tests.get(i).setIconImageURL("http://pontepretagorilas.com.br/wp-content/uploads/2017/04/timthumb-1-128x128.png");
-
+                }
                 values[i] = tests.get(i).getId();
             }
             inflateRecyclerView(values);
@@ -256,6 +262,8 @@ public class TestSelectiveActivity extends AppCompatActivity {
         TextView textTitle = (TextView) findViewById(R.id.text_title_test);
         TextView textDescription = (TextView) findViewById(R.id.text_description_test);
         Button btnClose = (Button) findViewById(R.id.btn_close);
+        ScrollView scroll = (ScrollView) findViewById(R.id.scrollView5);
+        scroll.setScrollY(0);
 
         TestTypes test = tests.get(position);
 
