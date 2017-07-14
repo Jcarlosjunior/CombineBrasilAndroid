@@ -4,18 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.Team;
-import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
-import br.com.john.combinebrasil.Services.Services;
 
 /**
  * Created by GTAC on 31/01/2017.
@@ -76,8 +71,11 @@ public class CreateJSON {
         try {
             String day = dateStrg.substring(0, 2);
             String month = dateStrg.substring(3, 5);
-            String year = dateStrg.substring(6, dateStrg.length());
-            return year + "-" + month + '-' + day;
+            String year = dateStrg.substring(6, 10);
+
+            String hour = dateStrg.substring(13, 15);
+            String minut = dateStrg.substring(16, dateStrg.length());
+            return year + "-" + month + '-' + day +" "+hour+":"+minut;
         }catch (Exception e){
             return  "";
         }
