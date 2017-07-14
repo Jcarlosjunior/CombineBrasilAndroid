@@ -165,6 +165,8 @@ public class LoginActivity extends Activity {
     private void saveUser(User user){
         SharedPreferencesAdapter.setLoggedSharedPreferences(LoginActivity.this, true);
         SharedPreferencesAdapter.setValueStringSharedPreferences(LoginActivity.this, Constants.LOGIN_EMAIL, user.getEmail());
+        SharedPreferencesAdapter.setValueStringSharedPreferences(LoginActivity.this, Constants.USER_TOKEN, user.getToken());
+
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => " + c.getTime());
 
