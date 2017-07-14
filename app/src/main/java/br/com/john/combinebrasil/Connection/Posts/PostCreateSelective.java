@@ -35,62 +35,7 @@ import br.com.john.combinebrasil.TestSelectiveActivity;
  * Created by GTAC on 17/03/2017.
  */
 
-public class PostCreateSelective extends AsyncTask<String, String, String> {
-    private Activity activity;
-    private JSONObject objPut;
-    int statusCode=0;
-    String resp = "";
-    String result = "";
-    int method = 0;
-
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
-
-    @Override
-    protected String doInBackground(String... params) {
-        final HttpParams httpParams = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
-        HttpConnectionParams.setSoTimeout(httpParams, 10000);
-        HttpClient client;
-
-        client = new DefaultHttpClient(httpParams);
-
-        HttpPost post = new HttpPost(params[0]); //strings[0] == url
-
-        post.setHeader("content-type", "application/json");
-        post.setHeader("Accept", "application/json");
-        post.setHeader("authorization", Constants.AUTHENTICATION);
-
-
-        StringEntity entity = null;
-        try {
-            entity = new StringEntity(objPut.toString(), HTTP.UTF_8);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return e.getMessage();
-        }
-        post.setEntity(entity);
-        HttpResponse response = null;
-        try {
-            response = client.execute(post);
-            statusCode =response.getStatusLine().getStatusCode();
-            if(statusCode==201 || statusCode ==200)
-                resp="OK";
-            else
-                resp="FAIL";
-
-            InputStream inputStream  = response.getEntity().getContent();
-
-            result = convertInputStreamToString(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-            resp = "FAIL";
-        }
-        return resp;
-    }
-
-    protected void onProgressUpdate(String... progress) { }
+public class PostCreateSelective extends PostBase {
 
     @Override
     protected void onPostExecute(String status) {
@@ -98,29 +43,6 @@ public class PostCreateSelective extends AsyncTask<String, String, String> {
             InfoSelectiveCreateActivity.returnCreateSelective(activity, resp, result);
         else if(method == InfoSelectiveCreateActivity.METHOD_TESTS_SELECTIVE)
             InfoSelectiveCreateActivity.returnCreateTestsSelective(activity, resp, result);
-    }
-
-    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-        while((line = bufferedReader.readLine()) != null)
-            result += line;
-
-        inputStream.close();
-        return result;
-    }
-
-    public void setObjPut(JSONObject objPut){
-        this.objPut = objPut;
-    }
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
-
-    public void setMethod(int method){
-        this.method = method;
     }
 
 }

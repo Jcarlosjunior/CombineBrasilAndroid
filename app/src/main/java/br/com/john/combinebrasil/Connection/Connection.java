@@ -27,6 +27,7 @@ import java.util.Map;
 
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.Services;
+import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
 
 
 public class Connection extends AppCompatActivity {
@@ -112,7 +113,13 @@ public class Connection extends AppCompatActivity {
                 header.put("Content-Type", "application/json; charset=utf-8");
                 //header.put("Content-Type","application/x-www-form-urlencoded");
                 header.put("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
-                header.put("authorization", Constants.AUTHENTICATION);
+                header.put("app-authorization", Constants.AUTHENTICATION);
+
+                String userToken = SharedPreferencesAdapter.getValueStringSharedPreferences(getActivity(), Constants.USER_TOKEN);
+
+                if (userToken != null) {
+                    header.put("authorization", userToken);
+                }
 
                 return header;
             }
