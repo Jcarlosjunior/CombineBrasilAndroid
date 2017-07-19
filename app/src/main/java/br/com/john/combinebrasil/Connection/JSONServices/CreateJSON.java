@@ -39,7 +39,6 @@ public class CreateJSON {
         JSONObject object = new JSONObject();
         try {
             object.put(Constants.SELECTIVES_TEAM, selective.getTeam());
-
             object.put(Constants.SELECTIVES_TITLE, selective.getTitle());
             object.put(Constants.SELECTIVES_CITY, selective.getCity());
             object.put(Constants.SELECTIVES_NEIGHBORHOOD, selective.getNeighborhood());
@@ -47,7 +46,7 @@ public class CreateJSON {
             object.put(Constants.SELECTIVES_STATE, selective.getState());
             object.put(Constants.SELECTIVES_NOTE, selective.getNotes());
             object.put(Constants.SELECTIVES_ADDRESS, selective.getAddress());
-            object.put(Constants.SELECTIVES_CODESELECTIVE, selective.getCodeSelective());
+            //object.put(Constants.SELECTIVES_CODESELECTIVE, selective.getCodeSelective());
             object.put(Constants.SELECTIVES_CANSYNC, selective.getCanSync());
 
             JSONArray jsonDates = new JSONArray();
@@ -59,8 +58,6 @@ public class CreateJSON {
                 jsonDates.put(convertStringInDate(AllActivities.hashInfoSelective.get("dateThird")));
 
             object.put(Constants.SELECTIVES_DATE, jsonDates);
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -103,10 +100,13 @@ public class CreateJSON {
     public static JSONObject createObjectTeam(Team team) {
         JSONObject object = new JSONObject();
         try {
+            object.put("isStarTeam", false);
+            object.put(Constants.TEAM_PRESIDENTNAME, team.getPresidentName());
             object.put(Constants.TEAM_NAME, team.getName());
             object.put(Constants.TEAM_MODALITY, team.getModality());
             object.put(Constants.TEAM_EMAIL, team.getEmail());
             object.put(Constants.TEAM_CITY, team.getCity());
+            object.put(Constants.TEAM_ADDRESS, team.getAddres());
             object.put(Constants.TEAM_SOCIAL_LINK, team.getSocialLink());
         } catch (JSONException e) {
             e.printStackTrace();

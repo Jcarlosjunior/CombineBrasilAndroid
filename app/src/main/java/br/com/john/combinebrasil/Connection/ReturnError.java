@@ -11,6 +11,7 @@ import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.ChooseTeamSelectiveActivity;
 import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CreateSelectiveActivity;
+import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.EnterSelectiveActivity;
 import br.com.john.combinebrasil.HistoricSelectiveActivity;
 import br.com.john.combinebrasil.LocalSelectiveActivity;
@@ -86,7 +87,10 @@ public class ReturnError {
                     MainActivity.testResponse(activity, message, statusError);
             }
             else if(whoCalled.equals(Constants.CALLED_GET_CEP))
-                LocalSelectiveActivity.returnCEP(activity, message, statusError);
+                if(activity.getClass().getSimpleName().equals("LocalSelectiveActivity"))
+                    LocalSelectiveActivity.returnCEP(activity, message, statusError);
+                else if(activity.getClass().getSimpleName().equals("CreateTeamActivity"))
+                    CreateTeamActivity.returnCEP(activity, message, statusError);
 
             else if (whoCalled.equals(Constants.CALLED_GET_TEAM)) {
                 if(activity.getClass().getSimpleName().equals("ChooseTeamSelectiveActivity"))

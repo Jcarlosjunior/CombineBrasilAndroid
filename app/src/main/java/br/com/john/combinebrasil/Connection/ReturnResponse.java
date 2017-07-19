@@ -15,6 +15,7 @@ import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.ChooseTeamSelectiveActivity;
 import br.com.john.combinebrasil.CreateAccountAthlete;
 import br.com.john.combinebrasil.CreateSelectiveActivity;
+import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
 import br.com.john.combinebrasil.EnterSelectiveActivity;
 import br.com.john.combinebrasil.HistoricSelectiveActivity;
@@ -148,8 +149,12 @@ public class ReturnResponse {
                         AthletesActivity.returnUpdateAthletes(activity, response, statuCode);
                 }
 
-                else if(whoCalled.equals(Constants.CALLED_GET_CEP))
-                    LocalSelectiveActivity.returnCEP(activity, response, statuCode);
+                else if(whoCalled.equals(Constants.CALLED_GET_CEP)) {
+                    if(activity.getClass().getSimpleName().equals("LocalSelectiveActivity"))
+                        LocalSelectiveActivity.returnCEP(activity, response, statuCode);
+                    else if(activity.getClass().getSimpleName().equals("CreateTeamActivity"))
+                        CreateTeamActivity.returnCEP(activity, response, statuCode);
+                }
             }
         } catch (Exception e) {
             Log.i("ERRO", e.toString());

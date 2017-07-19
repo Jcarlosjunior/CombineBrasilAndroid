@@ -40,10 +40,11 @@ import static br.com.john.combinebrasil.TestSelectiveActivity.messageSelectiveCr
 public class InfoSelectiveCreateActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView textTeamInfo, textDetailsInfo, textObservationInfo, textTestsInfo, textNameSelective,
-            textDateSelective, textLocalSelective, textCityInfoSelective, textNeighBorhoodSelective, textCepInfoSelective, textObservationsDetails, textPrivacy, textTermsPrivacy, textProgress;
+            textDateSelective, textLocalSelective, textCityInfoSelective, textNeighBorhoodSelective, textCepInfoSelective,
+            textObservationsDetails, textPrivacy, textTermsPrivacy, textProgress, textPrice;
     ImageView imgTeamChoose, imgshowMoreTeam, imgShowMoreObservations, imgShowMoreDetails, imgShowMoreTests;
     ConstraintLayout constraintDetailsInfo, constraintProgress, constraintNotConnection, constraintPrivacy;
-    Button btnFinish, btnTryAgain;
+    Button btnFinish, btnTryAgain, btnClosePrivacy;
     RecyclerView recyclerTests;
     AdapterRecyclerTestInfo adapterRecyclerTests;
     boolean isAcceptedPrivacy;
@@ -83,6 +84,7 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
         textTermsPrivacy = (TextView) findViewById(R.id.text_terms_privacy);
         textObservationsDetails = (TextView) findViewById(R.id.text_observations_details);
         textProgress = (TextView) findViewById(R.id.text_progress);
+        textPrice = (TextView) findViewById(R.id.text_price_selective);
 
         imgTeamChoose = (ImageView) findViewById(R.id.img_team_choose);
         imgshowMoreTeam = (ImageView) findViewById(R.id.img_show_more_team);
@@ -97,6 +99,7 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
 
         btnFinish = (Button) findViewById(R.id.btn_create_selective);
         btnTryAgain = (Button) findViewById(R.id.btn_try_again_connect);
+        btnClosePrivacy = (Button) findViewById(R.id.btn_close_privacy);
 
         recyclerTests=(RecyclerView) findViewById(R.id.recycler_tests_info);
 
@@ -108,6 +111,7 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
 
         btnTryAgain.setOnClickListener(btnClickedTryAgain);
         btnFinish.setOnClickListener(btnCreateSelectiveClickListener);
+        btnClosePrivacy.setOnClickListener(clickedClosePrivacy);
         textPrivacy.setOnClickListener(textClickedPrivacy);
 
         checkBoxTerms.setOnCheckedChangeListener(checkChangedListener);
@@ -130,7 +134,8 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
         textCityInfoSelective.setText(hashMapSelective.get("city") +"-"+hashMapSelective.get("state"));
         textNeighBorhoodSelective.setText(hashMapSelective.get("neighborhood"));
         textCepInfoSelective.setText(hashMapSelective.get("cep"));
-        textObservationsDetails.setText("");
+        textObservationsDetails.setText(hashMapSelective.get("notes") != null ? hashMapSelective.get("notes") : "");
+        textPrice.setText(hashMapSelective.get("price") != null ? "R$ "+hashMapSelective.get("price") : "R$ 0,00");
     }
 
     private void getTestsChoosesinBD(ArrayList<String> testChooses){
@@ -141,6 +146,7 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
             tests.add(db.getTestTypeFromId(id));
             db.close();
         }
+        textTestsInfo.setText("Testes ("+tests.size() +")");
         inflateListTests(tests);
     }
 
@@ -250,6 +256,13 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
         }
     };
 
+    private View.OnClickListener clickedClosePrivacy = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            constraintPrivacy.setVisibility(View.GONE);
+        }
+    };
+
 
     /************************* CRIAÇÃO DE SELETIVA ***********/
     private void callCreateSelective(){
@@ -286,7 +299,7 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
                 JSONObject json = new JSONObject(result);
                 DeserializerJsonElements des = new DeserializerJsonElements(result);
                 Selective selective = des.getSelective();
-                code =  json.getString(Constants.SELECTIVES_CODESELECTIVE);
+                code = json.getString(Constants.SELECTIVES_CODESELECTIVE);
                 callPostTestsSelective(selective);
 
             } catch (JSONException e) {
@@ -384,6 +397,13 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
                 callCreateSelective();
+        }
+    };
+
+    private View.OnClickListener clickedCheckBoxTerms = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+
         }
     };
 

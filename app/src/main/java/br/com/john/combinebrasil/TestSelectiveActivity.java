@@ -151,6 +151,7 @@ public class TestSelectiveActivity extends AppCompatActivity {
                 values[i] = tests.get(i).getId();
             }
             inflateRecyclerView(values);
+            adapterRecyclerTests.showOrHideRemove();
         }
     }
 
@@ -161,19 +162,6 @@ public class TestSelectiveActivity extends AppCompatActivity {
         adapterRecyclerTests = new AdapterRecyclerChooseTestSelective(TestSelectiveActivity.this, tests, values);
         adapterRecyclerTests.valuesID = new String[values.length];
         recyclerViewTests.setAdapter(adapterRecyclerTests);
-    }
-
-    private void showOrHideRemove(){
-        for (TestTypes testType : adapterRecyclerTests.list){
-            if(testType.isSelected()){
-                TestSelectiveActivity.linearDelete.setVisibility(View.VISIBLE);
-                TestSelectiveActivity.btnNextPass.setVisibility(View.VISIBLE);
-            }
-            else{
-                TestSelectiveActivity.linearDelete.setVisibility(View.GONE);
-                TestSelectiveActivity.btnNextPass.setVisibility(View.GONE);
-            }
-        }
     }
 
     private View.OnClickListener clickedRemoveTests= new View.OnClickListener(){
@@ -193,7 +181,8 @@ public class TestSelectiveActivity extends AppCompatActivity {
             }
             count++;
         }
-        showOrHideRemove();
+        TestSelectiveActivity.linearDelete.setVisibility(View.GONE);
+        TestSelectiveActivity.btnNextPass.setVisibility(View.GONE);
     }
 
     private View.OnClickListener clickDoneTests = new View.OnClickListener(){

@@ -184,7 +184,7 @@ public class MenuActivity extends AppCompatActivity {
         hideProgress();
         if(status == 200 || status == 201) {
             DeserializerJsonElements des = new DeserializerJsonElements(response);
-            Selective selective = des.getSelective();
+            Selective selective = des.getSelectives().get(0);
                 try{
                     if (selective!=null) {
                         this.selective = selective;
@@ -193,10 +193,13 @@ public class MenuActivity extends AppCompatActivity {
                         db.addSelective(selective);
                         Services.messageAlert(this, "Mensagem","Parabéns, você acaba de entrar na "+selective.getTitle(),"CODE_OK");
                 }
+                else
+                    Services.messageAlert(MenuActivity.this, "Aviso", "O código inserido não existe.", "hide");
             }catch (Exception e){
                 Log.i("Exception: ", e.getMessage());}
         }else
             Services.messageAlert(MenuActivity.this, "Aviso", "O código inserido não existe.", "hide");
+
     }
 
     private void openSelective(Selective selective){

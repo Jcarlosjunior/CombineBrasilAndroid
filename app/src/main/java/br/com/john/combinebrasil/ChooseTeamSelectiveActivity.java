@@ -97,7 +97,7 @@ public class ChooseTeamSelectiveActivity extends AppCompatActivity {
         if(Services.isOnline(ChooseTeamSelectiveActivity.this)) {
             hideNotConnect();
             showProgress(getString(R.string.update_teams));
-            String url = Constants.URL + Constants.API_TEAMS;
+            String url = Constants.URL + Constants.API_TEAMS+"?isStarTeam=true";
             Connection task = new Connection(url, 0, Constants.CALLED_GET_TEAM, false, ChooseTeamSelectiveActivity.this);
             task.callByJsonStringRequest();
         }

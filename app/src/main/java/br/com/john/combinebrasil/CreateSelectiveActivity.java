@@ -15,9 +15,11 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.shawnlin.numberpicker.NumberPicker;
@@ -31,10 +33,13 @@ import java.util.Date;
 
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
+import br.com.john.combinebrasil.Services.Mask;
+import br.com.john.combinebrasil.Services.MaskHeight;
 import br.com.john.combinebrasil.Services.Services;
 
 public class CreateSelectiveActivity extends AppCompatActivity{
-    EditText editTitle, editNotes;
+    Switch switchPay;
+    EditText editTitle, editNotes, editPrice;
     TextView textDate, textSecondDate, textThirdDate;
     LinearLayout linearProgress;
     Button btnCreateSelective, btnCancelDate, btnConfirmDate, btnConfirmTime, btnCancelTime;
@@ -71,6 +76,8 @@ public class CreateSelectiveActivity extends AppCompatActivity{
         imgAddSecondDate = (ImageView) findViewById(R.id.img_add_second_date);
         imgAddThirdDate = (ImageView) findViewById(R.id.img_add_third_date);
         editTitle = (EditText) findViewById(R.id.edit_title);
+        editPrice = (EditText) findViewById(R.id.edit_selective_price);
+        switchPay = (Switch) findViewById(R.id.switch_pay);
 
         editNotes = (EditText) findViewById(R.id.edit_notes);
         btnCreateSelective = (Button) findViewById(R.id.btn_create_selective);
@@ -99,6 +106,11 @@ public class CreateSelectiveActivity extends AppCompatActivity{
         btnConfirmTime.setOnClickListener(clickConfirmTime);
         btnCreateSelective.setOnLongClickListener(longCreateSelective);
         textSecondDate.addTextChangedListener(textChangeSecond);
+
+        switchPay.setOnCheckedChangeListener(changedListenerSwitchPay);
+
+        TextWatcher mask = MaskHeight.insert("##,##", editPrice);
+        editPrice.addTextChangedListener(mask);
 
         final View activityRootView = findViewById(R.id.activity_create_selective);
         activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -183,6 +195,7 @@ public class CreateSelectiveActivity extends AppCompatActivity{
             AllActivities.hashInfoSelective.put("dateThird", textThirdDate.getText().toString());
         AllActivities.hashInfoSelective.put("title",editTitle.getText().toString());
         AllActivities.hashInfoSelective.put("notes",editNotes.getText().toString());
+        AllActivities.hashInfoSelective.put("price",switchPay.isChecked() ? editPrice.getText().toString() : "");
         startActivity(i);
 
     }
@@ -449,6 +462,17 @@ public class CreateSelectiveActivity extends AppCompatActivity{
                 editNotes.setText("levar tenis, short preto");
             }
             return true;
+        }
+    };
+
+    private Switch.OnCheckedChangeListener changedListenerSwitchPay = new Switch.OnCheckedChangeListener(){
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked)
+                editPrice.setVisibility(View.VISIBLE);
+            else
+                editPrice.setVisibility(View.GONE);
         }
     };
 

@@ -33,7 +33,7 @@ import br.com.john.combinebrasil.Services.Mask;
 import br.com.john.combinebrasil.Services.Services;
 
 public class LocalSelectiveActivity extends AppCompatActivity {
-    EditText editCep, editComplement, editCity, editNeighborhood, editState,editStreet;
+    EditText editCep, editComplement, editCity, editNeighborhood, editState,editStreet, editNumber;
     TextView textProgress;
     Toolbar toolbar;
     Button btnCreateSelective;
@@ -58,6 +58,7 @@ public class LocalSelectiveActivity extends AppCompatActivity {
         editCity = (EditText) findViewById(R.id.edit_city);
         editNeighborhood = (EditText) findViewById(R.id.edit_neighborhood);
         editStreet = (EditText) findViewById(R.id.edit_street);
+        editNumber = (EditText) findViewById(R.id.edit_number);
         btnCreateSelective = (Button) findViewById(R.id.btn_create_selective);
 
         btnCreateSelective.setOnClickListener(clickCreateSelective);
@@ -214,6 +215,7 @@ public class LocalSelectiveActivity extends AppCompatActivity {
         i = new Intent(LocalSelectiveActivity.this, CreateSelectiveActivity.class);
         AllActivities.hashInfoSelective.put("cep",editCep.getText().toString());
         AllActivities.hashInfoSelective.put("street",editStreet.getText().toString());
+        AllActivities.hashInfoSelective.put("number", editNumber.getText().toString());
         AllActivities.hashInfoSelective.put("neighborhood",editNeighborhood.getText().toString());
         AllActivities.hashInfoSelective.put("state",editState.getText().toString());
         AllActivities.hashInfoSelective.put("city",editCity.getText().toString());

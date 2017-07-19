@@ -131,7 +131,7 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 list.get(holder.getAdapterPosition()).setSelected(isChecked);
                 showOrHideRemove();
-                verifyTetsDefault(holder.getAdapterPosition());
+                verifyTestDefault(holder.getAdapterPosition());
             }
         });
         if(holder!=null && !holderList.contains(holder))
@@ -139,7 +139,7 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
 
     }
 
-    private void showOrHideRemove(){
+    public static void showOrHideRemove(){
         int count = 0;
         for (TestTypes testType : list){
             if(testType.isSelected())
@@ -155,7 +155,7 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
         }
     }
 
-    private void verifyTetsDefault(int position){
+    private void verifyTestDefault(int position){
         if(list.get(position).isDefaultTest()){
             if(!list.get(position).isSelected()){
                 Random rnd = new Random();
