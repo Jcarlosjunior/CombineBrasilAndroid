@@ -153,6 +153,7 @@ public class HistoricPlayersSelectiveActivity extends AppCompatActivity {
             inflateRecycler(athletes, values);
         }
     }
+
     private void inflateRecycler(ArrayList<Athletes> athletes, String[] ids){
         recyclerPlayers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapterListAthletes = new AdapterRecyclerAthletesInfo(HistoricPlayersSelectiveActivity.this, athletes, ids);

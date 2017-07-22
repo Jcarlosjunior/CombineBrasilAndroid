@@ -1148,6 +1148,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return item;
     }
 
+    public User getUserByToken(String token) {
+        this.openDataBase();
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selectQuery = "SELECT * FROM " + Constants.TABLE_USER+" WHERE "+Constants.USER_TOKEN+"='"+token+"' LIMIT 1";
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        User item = new User();
+
+        if (c.moveToFirst()) {
+            item = new User(
+                    c.getString(c.getColumnIndex(Constants.USER_ID)),
+                    c.getString(c.getColumnIndex(Constants.USER_NAME)),
+                    c.getString(c.getColumnIndex(Constants.USER_EMAIL)),
+                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.USER_ISADMIN))),
+                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.USER_CANWRITE))),
+                    c.getString(c.getColumnIndex(Constants.USER_TOKEN))
+            );
+        } else {
+            item = null;
+        }
+        c.close();
+        db.close();
+
+        return item;
+    }
+
     public Athletes getAthleteById(String idPlayer){
         this.openDataBase();
         String selectQuery = "SELECT DISTINCT * FROM "+ Constants.TABLE_ATHLETES +

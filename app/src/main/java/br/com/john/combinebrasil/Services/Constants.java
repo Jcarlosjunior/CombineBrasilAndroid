@@ -35,6 +35,8 @@ public class Constants {
     public static final String API_TESTS = "api/tests";
     public static final String API_USERS = "api/users";
     public static final String API_SELECTIVE_ATHLETES_SEARCH = "api/selectiveAthletes/search";
+    public static final String API_USER_SELECTIVE = "api/userSelective";
+    public static final String API_USER_SELECTIVE_SEARCH = "api/userSelective/search";
 
     /*
     **************************CHAMADAS DO VOLLEY***********************************
@@ -51,6 +53,7 @@ public class Constants {
     public static final String CALLED_GET_TEAM= "getTeam";
     public static final String CALLED_GET_TESTTYPES= "getTestTypes";
     public static final String CALLED_GET_CEP= "GET_CEP";
+    public static final String CALLED_GET_USER_SELECTIVE= "GET_USER_SELECTIVE";
 
     public static final String CALLED_POST_TESTS = "calledPostTests";
 
@@ -202,6 +205,13 @@ public class Constants {
     public static final String TESTS_USER = "user";
     public static final String TESTS_SYNC = "sync";
     public static final String TESTS_CANSYNC = "canSync";
+
+   /*****************************USERXSELECTIVE**************************************/
+   public static final String USER_SELECTIVE = "userSelective";
+   public static final String USER_SELECTIVE_ID = "_id";
+   public static final String USER_SELECTIVE_USER = "user";
+   public static final String USER_SELECTIVE_SELECTIVE = "selective";
+   public static final String USER_SELECTIVE_IS_ADMIN = "isAdmin";
 
    public static final String CEP = "cep";
    public static final String STREET = "logradouro";

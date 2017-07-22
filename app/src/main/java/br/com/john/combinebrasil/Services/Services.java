@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.CreateAccountAthleteActivity;
 import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.CronometerActivity;
@@ -532,5 +533,11 @@ public class Services {
             e.printStackTrace();
             return  null;
         }
+    }
+
+    public static String getIdUser(Activity act){
+        DatabaseHelper db = new DatabaseHelper(act);
+        User user = db.getUserByToken(SharedPreferencesAdapter.getValueStringSharedPreferences(act, Constants.USER_TOKEN));
+        return user.getId();
     }
 }

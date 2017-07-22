@@ -14,6 +14,7 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
+import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -27,7 +28,9 @@ import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Connection.Connection;
+import br.com.john.combinebrasil.Connection.JSONServices.CreateJSON;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
+import br.com.john.combinebrasil.Connection.Posts.PostCreateSelective;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
@@ -46,6 +49,7 @@ public class MenuActivity extends AppCompatActivity {
     ConstraintLayout constraintDialogEnterSelective, constraintNotConnection, constraintProgress;
     private static Selective selective;
     private static Activity act;
+    public static final int METHOD_USER_SELECTIVES=3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -216,7 +220,7 @@ public class MenuActivity extends AppCompatActivity {
                         DatabaseHelper db = new DatabaseHelper(MenuActivity.this);
                         db.deleteTable(Constants.TABLE_SELECTIVES);
                         db.addSelective(selective);
-                        Services.messageAlert(this, "Mensagem", "Parabéns, você acaba de entrar na " + selective.getTitle(), "CODE_OK");
+                        callCreateUserSelective(selective);
                     } else
                         Services.messageAlert(MenuActivity.this, "Aviso", "O código inserido não existe.", "hide");
                 } catch (Exception e) {
@@ -228,8 +232,40 @@ public class MenuActivity extends AppCompatActivity {
                 Services.messageAlert(MenuActivity.this, "Aviso", "O código inserido não existe.", "hide");
         }else
             Services.messageAlert(MenuActivity.this, "Aviso", "O código inserido não existe.", "hide");
-
     }
+
+    private void callCreateUserSelective(Selective selective){
+        if(Services.isOnline(this)){
+            showProgress("Configurando usuário na seletiva...");
+            createUserSelective();
+        }
+        else
+            constraintNotConnection.setVisibility(View.VISIBLE);
+    }
+
+    private void createUserSelective(){
+        String url = Constants.URL + Constants.API_USER_SELECTIVE;
+        PostCreateSelective post = new PostCreateSelective();
+        post.setActivity(MenuActivity.this);
+        post.setMethod(METHOD_USER_SELECTIVES);
+        post.setObjPut(CreateJSON.createObjectUserSelectives(selective.getId(), Services.getIdUser(this), true));
+        post.execute(url);
+    }
+
+    public static void returnCreateUserSelective(Activity act, String status, String result){
+        ((MenuActivity)act).returnCreateUserSelective(status, result);
+    }
+    private void returnCreateUserSelective(String status, String result){
+        constraintProgress.setVisibility(View.GONE);
+        if(status.toUpperCase().equals("OK")){
+            try {
+                Services.messageAlert(this, "Mensagem", "Parabéns, você acaba de entrar na " + selective.getTitle(), "CODE_OK");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     private void openSelective(Selective selective){
         DatabaseHelper db = new DatabaseHelper(this);

@@ -575,6 +575,7 @@ public class DeserializerJsonElements {
         }
         return testses;
     }
+
     public Tests getTestObject() {
         Tests test = new Tests();
         try {
@@ -627,6 +628,47 @@ public class DeserializerJsonElements {
             Log.i("ERROR: getPositions", e.getMessage());
         }
         return tests;
+    }
+
+    /*************************************
+     *USER_SELECTIVE
+     *************************************/
+
+    public ArrayList<Selective> getUserSelectives() {
+        ArrayList<Selective> selectives = new ArrayList<Selective>();
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+
+            if (jsonArray.length() > 0) {
+                for (int i = 0; i <= jsonArray.length() - 1; i++) {
+                    JSONObject json = new JSONObject(jsonArray.getString(i));
+                    JSONObject jsonSelective = new JSONObject(json.getString(Constants.USER_SELECTIVE_SELECTIVE));
+                    Selective obj = new Selective(
+                            jsonSelective.optString(Constants.SELECTIVES_ID),
+                            jsonSelective.optString(Constants.SELECTIVES_TITLE),
+                            jsonSelective.optString(Constants.SELECTIVES_TEAM),
+                            jsonSelective.optString(Constants.SELECTIVES_DATE),
+                            jsonSelective.optString(Constants.SELECTIVES_CODESELECTIVE),
+                            jsonSelective.optBoolean(Constants.SELECTIVES_CANSYNC, false),
+                            jsonSelective.optString(Constants.SELECTIVES_CITY),
+                            jsonSelective.optString(Constants.SELECTIVES_NEIGHBORHOOD),
+                            jsonSelective.optString(Constants.SELECTIVES_STATE),
+                            jsonSelective.optString(Constants.SELECTIVES_STREET),
+                            jsonSelective.optString(Constants.SELECTIVES_POSTALCODE),
+                            jsonSelective.optString(Constants.SELECTIVES_NOTE),
+                            jsonSelective.optString(Constants.SELECTIVES_ADDRESS)
+                    );
+                    jsonSelective = json.getJSONObject(Constants.USER_SELECTIVE_USER);
+                    obj.setUser(jsonSelective.getString(Constants.USER_NAME));
+
+                    selectives.add(obj);
+                }
+            }
+        } catch (JSONException e) {
+            selectives = null;
+            Log.i("ERROR: getPositions", e.getMessage());
+        }
+        return selectives;
     }
 
     /**********************************CEP**********************************/

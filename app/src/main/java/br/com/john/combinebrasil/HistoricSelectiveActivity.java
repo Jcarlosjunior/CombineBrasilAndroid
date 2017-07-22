@@ -27,6 +27,10 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,6 +40,7 @@ import br.com.john.combinebrasil.AdapterList.AdapterRecyclerSelectives;
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
+import br.com.john.combinebrasil.Connection.Posts.PostAsyncTask;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Services;
@@ -57,6 +62,8 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
     AdapterRecyclerSelectives adapterSelectives;
 
     ArrayList<Selective> selectives;
+
+    public static Selective SELECTIVE_CLICKED;
 
     Date dateInit, dateEnd;
     int daysFilter = 0;
@@ -149,9 +156,12 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
     private void getAllSelectives(){
         if(Services.isOnline(HistoricSelectiveActivity.this)) {
             linearProgress.setVisibility(View.VISIBLE);
-            String url = Constants.URL + Constants.API_SELECTIVES;
-            Connection task = new Connection(url, 0, Constants.CALLED_GET_SELECTIVE, false, HistoricSelectiveActivity.this);
-            task.callByJsonStringRequest();
+            String url = Constants.URL + Constants.API_USER_SELECTIVE_SEARCH;
+            PostAsyncTask post = new PostAsyncTask();
+            post.setActivity(HistoricSelectiveActivity.this);
+            post.setObjPut(querySearchData());
+            post.setWhoCalled(Constants.CALLED_GET_USER_SELECTIVE);
+            post.execute(url);
         }
     }
 
@@ -163,7 +173,7 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
         linearProgress.setVisibility(GONE);
         if(status == 200 || status == 201) {
             DeserializerJsonElements des = new DeserializerJsonElements(response);
-            selectives = des.getSelectives();
+            selectives = des.getUserSelectives();
             try{
                 if (selectives!=null)
                     recordingSelectives(selectives);
@@ -198,6 +208,22 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
         adapterSelectives = new AdapterRecyclerSelectives(HistoricSelectiveActivity.this, arraySelectives, values);
         recyclerSelectives.setVisibility(View.VISIBLE);
         recyclerSelectives.setAdapter(adapterSelectives);
+    }
+
+    private JSONObject querySearchData() {
+        JSONObject object = new JSONObject();
+        try {
+            JSONObject jsonQuery = new JSONObject();
+            jsonQuery.put(Constants.USER_SELECTIVE_USER, Services.getIdUser(this));
+            object.put("query", jsonQuery);
+            JSONArray jsonDates = new JSONArray();
+            jsonDates.put(Constants.USER_SELECTIVE_SELECTIVE);
+            jsonDates.put(Constants.USER_SELECTIVE_USER);
+            object.put("populate", jsonDates);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
     }
 
     private void searchSelective(String search){
@@ -243,7 +269,7 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
     private void onClickSelective(int position){
         //constraintInfoSelective.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, MenuHistoricSelectiveActivity.class);
-        intent.putExtra("id_selective", selectives.get(position).getId());
+        this.SELECTIVE_CLICKED = selectives.get(position);
         startActivity(intent);
         //showInfoSelective(selectives.get(position));
     }

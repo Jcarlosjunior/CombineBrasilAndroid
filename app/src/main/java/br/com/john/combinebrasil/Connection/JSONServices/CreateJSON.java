@@ -97,6 +97,20 @@ public class CreateJSON {
         return object;
     }
 
+    public static JSONObject createObjectUserSelectives(String selective, String user, boolean isAdmin) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put(Constants.USER_SELECTIVE_SELECTIVE, selective);
+            object.put(Constants.USER_SELECTIVE_USER, user);
+            object.put(Constants.USER_SELECTIVE_IS_ADMIN, isAdmin);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
     public static JSONObject createObjectTeam(Team team) {
         JSONObject object = new JSONObject();
         try {

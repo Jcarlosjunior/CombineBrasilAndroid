@@ -27,6 +27,7 @@ import java.util.HashMap;
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerTestInfo;
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.TestTypes;
+import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.JSONServices.CreateJSON;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostCreateSelective;
@@ -35,6 +36,7 @@ import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
 import br.com.john.combinebrasil.Services.Services;
+import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
 
 import static br.com.john.combinebrasil.TestSelectiveActivity.messageSelectiveCreate;
 
@@ -53,7 +55,7 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
     public static Activity act;
     String code = "", id="";
     ArrayList<String> testChooses;
-    public static final int METHOD_CREATE_SELECTVE = 0, METHOD_TESTS_SELECTIVE =1;
+    public static final int METHOD_CREATE_SELECTVE = 0, METHOD_TESTS_SELECTIVE =1, METHOD_USER_SELECTIVES=2;
     CheckBox checkBoxTerms;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -335,6 +337,40 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
         constraintProgress.setVisibility(View.GONE);
         if(response.toUpperCase().equals("OK")){
             try {
+                callCreateUserSelective();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void callCreateUserSelective(){
+        if(Services.isOnline(this)){
+            constraintProgress.setVisibility(View.VISIBLE);
+            textProgress.setText("Configurando usuário na seletiva...");
+            createUserSelective();
+        }
+        else
+            constraintNotConnection.setVisibility(View.VISIBLE);
+    }
+
+    private void createUserSelective(){
+        String url = Constants.URL + Constants.API_USER_SELECTIVE;
+        PostCreateSelective post = new PostCreateSelective();
+        post.setActivity(InfoSelectiveCreateActivity.this);
+        post.setMethod(METHOD_USER_SELECTIVES);
+        post.setObjPut(CreateJSON.createObjectUserSelectives(id, Services.getIdUser(this), true));
+        post.execute(url);
+    }
+
+    public static void returnCreateUserSelective(Activity act, String status, String result){
+        ((InfoSelectiveCreateActivity)act).returnCreateUserSelective(status, result);
+    }
+
+    private void returnCreateUserSelective(String status, String result){
+        constraintProgress.setVisibility(View.GONE);
+        if(status.toUpperCase().equals("OK")){
+            try {
                 Intent i = new Intent(InfoSelectiveCreateActivity.this, SelectiveCreatedSuccessActivity.class);
                 i.putExtra("code", code);
                 i.putExtra("id_selective", id);
@@ -363,6 +399,7 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
     private Selective createObjectSelective() {
         String date = Services.convertDate(hashMapSelective.get("date"));
         Selective selective = new Selective();
+        selective.setUser(Services.getIdUser(this));
         selective.setTeam(hashMapSelective.get("team"));
         selective.setTitle(hashMapSelective.get("title"));
         selective.setCity(hashMapSelective.get("city"));
@@ -386,15 +423,7 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
                 ") - "+hashMapSelective.get("complement");
     }
 
-    private String returnCodeSelective(){
-        DatabaseHelper db = new DatabaseHelper(this);
-        db.openDataBase();
-        return  String.format(hashMapSelective.get("title").toString().substring(0,2)
-                +db.getNameTeamByIdTeam(hashMapSelective.get("team").toString()).toString().substring(0,2)
-                +hashMapSelective.get("date").toString().substring(0,2)).trim().toUpperCase();
-    }
-
-    private View.OnClickListener btnClickedTryAgain = new View.OnClickListener(){
+      private View.OnClickListener btnClickedTryAgain = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
                 callCreateSelective();

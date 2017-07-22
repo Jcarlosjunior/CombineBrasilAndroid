@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -40,9 +41,10 @@ import br.com.john.combinebrasil.Services.Services;
 public class MenuHistoricSelectiveActivity extends AppCompatActivity {
     Toolbar toolbar;
     ImageView imageItemPlayers, imageItemRanking,imageTeam;
-    String id = "";
     Selective selective;
     Team team;
+
+    TextView textNameTeam, textNameSelective, textPriceSelective, textDateSelective, textAddressSelective, textObservationSelective;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,15 +68,23 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
         imageItemRanking = (ImageView) findViewById(R.id.image_item_ranking);
         imageTeam = (ImageView) findViewById(R.id.image_team);
 
+        textNameTeam = (TextView) findViewById(R.id.text_team);
+        textNameSelective = (TextView) findViewById(R.id.text_name_selective_details);
+        textPriceSelective = (TextView) findViewById(R.id.text_price_selective);
+        textDateSelective = (TextView) findViewById(R.id.text_date_selective_details);
+        textAddressSelective = (TextView) findViewById(R.id.text_local_selective_details);
+        textObservationSelective = (TextView) findViewById(R.id.text_observation_selective_details);
+
         imageItemPlayers.setOnClickListener(clickedPlayers);
         imageItemRanking.setOnClickListener(clickedGrade);
 
-
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
-             id = extras.getString("id_selective");
-            callInfoSelective();
+            // id = extras.getString("id_selective");
+
         }
+
+        callInfoSelective();
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -98,10 +108,10 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
         if(Services.isOnline(this)){
             hideNotConnect();
             //hideSoft();
-            DatabaseHelper db = new DatabaseHelper(this);
-            this.selective = db.getSelectiveFromId(id);
+            //DatabaseHelper db = new DatabaseHelper(this);
+            //this.selective = db.getSelectiveFromId(id);
+            this.selective = HistoricSelectiveActivity.SELECTIVE_CLICKED;
             getTeamSelective();
-
         }
         else
             showToNoConnect();
@@ -130,39 +140,9 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
             ArrayList<Team> teams = des.getTeam();
             if(teams!= null && teams.size()>0) {
                 team = teams.get(0);
-                showTeam(team);
+                showDetailsSelective();
             }
         }
-    }
-
-    private void showTeam(Team team){
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar_image_team);
-        progressBar.setVisibility(View.VISIBLE);
-        String urlImage = "http://www.combinebrasil.com/img/og-ima.png";
-        if(team.getUrlImage() != null && !(team.getUrlImage().equals("")))
-            urlImage = team.getUrlImage();
-
-        Picasso.with(this)
-            .load(urlImage)
-            .into(imageTeam,  new ImageLoadedCallback(progressBar) {
-                @Override
-                public void onSuccess() {
-                    if (progressBar != null) {
-                        progressBar.setVisibility(View.GONE);
-                        roundedImage();
-                    }
-                }
-                @Override
-                public void onError(){
-                    progressBar.setVisibility(View.GONE);
-                }
-            });
-    }
-
-    private void roundedImage(){
-        Bitmap bitmap = ((BitmapDrawable)imageTeam.getDrawable()).getBitmap();
-        bitmap = ImageConverter.getRoundedCornerBitmap(bitmap, 200);
-        imageTeam.setImageBitmap(bitmap);
     }
 
     private void hideNotConnect(){
@@ -196,8 +176,6 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
         });
     }
 
-
-
     private View.OnClickListener clickedPlayers = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
@@ -217,13 +195,13 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
         switch (choose){
             case 0 :
                 intent = new Intent(this, HistoricPlayersSelectiveActivity.class);
-                intent.putExtra("id_selective", id);
+                intent.putExtra("id_selective", selective.getId());
                 intent.putExtra("id_team", team.getId());
                 startActivity(intent);
                 break;
             case 1 :
                 intent = new Intent(this, HistoricPlayersSelectiveActivity.class);
-                intent.putExtra("id_selective", id);
+                intent.putExtra("id_selective", selective.getId());
                 intent.putExtra("id_team", team.getId());
                 startActivity(intent);
                 break;
@@ -237,5 +215,48 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
         }
     };
 
+    private void showDetailsSelective(){
+        textNameTeam.setText(team.getName());
+        textNameSelective.setText(selective.getTitle());
+        String price = "Foi cobrado R$"+selective.getPrice()+" reais por inscrição";
+        textPriceSelective.setText(price.replaceAll(".",","));
+        textAddressSelective.setText(selective.getAddress());
+        textDateSelective.setText(selective.getDate());
+        textObservationSelective.setText(selective.getObservation());
+        showTeam(team);
+    }
+
+    private void showTeam(Team team){
+        String urlImage = "http://www.combinebrasil.com/img/og-ima.png";
+        if(team.getUrlImage() != null && !(team.getUrlImage().equals("")))
+            urlImage = team.getUrlImage();
+        showImageTeam(urlImage);
+    }
+
+    private void showImageTeam(String urlImage){
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar_image_team);
+        progressBar.setVisibility(View.VISIBLE);
+        Picasso.with(this)
+                .load(urlImage)
+                .into(imageTeam,  new ImageLoadedCallback(progressBar) {
+                    @Override
+                    public void onSuccess() {
+                        if (progressBar != null) {
+                            progressBar.setVisibility(View.GONE);
+                            roundedImage();
+                        }
+                    }
+                    @Override
+                    public void onError(){
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+    }
+
+    private void roundedImage(){
+        Bitmap bitmap = ((BitmapDrawable)imageTeam.getDrawable()).getBitmap();
+        bitmap = ImageConverter.getRoundedCornerBitmap(bitmap, 200);
+        imageTeam.setImageBitmap(bitmap);
+    }
 
 }

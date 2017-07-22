@@ -26,6 +26,7 @@ import java.io.UnsupportedEncodingException;
 
 import br.com.john.combinebrasil.CreateSelectiveActivity;
 import br.com.john.combinebrasil.InfoSelectiveCreateActivity;
+import br.com.john.combinebrasil.MenuActivity;
 import br.com.john.combinebrasil.RegisterActivity;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.TestSelectiveActivity;
@@ -43,6 +44,10 @@ public class PostCreateSelective extends PostBase {
             InfoSelectiveCreateActivity.returnCreateSelective(activity, resp, result);
         else if(method == InfoSelectiveCreateActivity.METHOD_TESTS_SELECTIVE)
             InfoSelectiveCreateActivity.returnCreateTestsSelective(activity, resp, result);
+        else if(method == InfoSelectiveCreateActivity.METHOD_TESTS_SELECTIVE)
+            InfoSelectiveCreateActivity.returnCreateUserSelective(activity, resp, result);
+        else if(method == MenuActivity.METHOD_USER_SELECTIVES)
+            MenuActivity.returnCreateUserSelective(activity, resp, result);
     }
 
 }

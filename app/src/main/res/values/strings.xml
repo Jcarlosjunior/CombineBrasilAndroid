@@ -67,6 +67,8 @@
     <string name="director">Nome do representante</string>
     <string name="cortar">Cortar</string>
     <string name="historic">Histórico</string>
+    <string name="results_tests">Resultados por Testes</string>
+    <string name="positions_player">Posições para o atleta</string>
 
     <string name="inscrever">Inscreva-se e melhore suas seletivas</string>
     <string name="testes">Testes</string>

@@ -18,7 +18,9 @@ public class Selective {
     private String PostalCode;
     private String Notes;
     private String Address;
-    private String Admin;
+    private String User;
+    private int Price;
+    private String observation;
 
     public Selective() {
     }
@@ -143,11 +145,27 @@ public class Selective {
         Address = address;
     }
 
-    public String getAdmin() {
-        return Admin;
+    public String getUser() {
+        return User;
     }
 
-    public void setAdmin(String admin) {
-        Admin = admin;
+    public void setUser(String user) {
+        User = user;
+    }
+
+    public int getPrice() {
+        return Price;
+    }
+
+    public void setPrice(int price) {
+        Price = price;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
     }
 }
