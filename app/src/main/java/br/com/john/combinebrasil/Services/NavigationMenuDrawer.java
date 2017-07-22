@@ -5,31 +5,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.StringRes;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.holder.BadgeStyle;
-import com.mikepenz.materialdrawer.holder.StringHolder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
@@ -40,11 +29,7 @@ import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.squareup.picasso.Picasso;
 
-import java.net.URI;
-
 import br.com.john.combinebrasil.Classes.User;
-import br.com.john.combinebrasil.CreateAccountAthlete;
-import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.MenuActivity;
 import br.com.john.combinebrasil.R;
 
@@ -52,14 +37,14 @@ import br.com.john.combinebrasil.R;
  * Created by GTAC on 05/12/2016.
  */
 
-public class NavigationDrawer {
+public class NavigationMenuDrawer {
     Activity mActivity;
     Bundle savedInstanceState;
     Toolbar mToolbar;
     private static boolean userIsAdmin;
     private User user;
 
-    public NavigationDrawer(Bundle savedInstanceState, Activity mActivity, Toolbar mToolbar, boolean userIsAdmin, User user){
+    public NavigationMenuDrawer(Bundle savedInstanceState, Activity mActivity, Toolbar mToolbar, boolean userIsAdmin, User user){
         this.savedInstanceState = savedInstanceState;
         this.mActivity = mActivity;
         this.mToolbar = mToolbar;
@@ -68,13 +53,10 @@ public class NavigationDrawer {
     }
 
     public void createNavigationAccess() {
-        PrimaryDrawerItem itemHome = new PrimaryDrawerItem().withIdentifier(0).withName(R.string.home).withIcon(FontAwesome.Icon.faw_home);
-        SecondaryDrawerItem itemPerfil = new SecondaryDrawerItem().withIdentifier(1).withName(R.string.meu_perfil).withIcon(FontAwesome.Icon.faw_user);
-        SecondaryDrawerItem itemAddRegister = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.cadastrar_atleta).withIcon(FontAwesome.Icon.faw_user_plus);
-        SecondaryDrawerItem itemUpdate = new SecondaryDrawerItem().withIdentifier(3).withName(R.string.update).withIcon(FontAwesome.Icon.faw_refresh);
-        SecondaryDrawerItem itemHelp = new SecondaryDrawerItem().withIdentifier(4).withName(R.string.help).withIcon(FontAwesome.Icon.faw_question_circle);
+        PrimaryDrawerItem itemPerfil = new PrimaryDrawerItem().withIdentifier(0).withName(R.string.meu_perfil).withIcon(FontAwesome.Icon.faw_user);
+        SecondaryDrawerItem itemHelp = new SecondaryDrawerItem().withIdentifier(1).withName(R.string.help).withIcon(FontAwesome.Icon.faw_question_circle);
 
-        PrimaryDrawerItem itemExit = new PrimaryDrawerItem().withName(R.string.exit).withIdentifier(5)
+        PrimaryDrawerItem itemExit = new PrimaryDrawerItem().withName(R.string.exit).withIdentifier(2)
                 .withTextColorRes(R.color.color_primary).withIcon(FontAwesome.Icon.faw_sign_out)
                 .withIconColorRes(R.color.color_primary).withSelectedTextColorRes(R.color.black)
                 .withSelectedIconColorRes(R.color.black).withSelectedBackgroundAnimated(true);
@@ -119,10 +101,7 @@ public class NavigationDrawer {
                 .withAccountHeader(headerResult)
                 .withActionBarDrawerToggle(true)
                 .addDrawerItems(
-                        itemHome,
                         itemPerfil,
-                        itemAddRegister,
-                        itemUpdate,
                         itemHelp
                 )
                 .withStickyFooterDivider(true)
@@ -145,43 +124,20 @@ public class NavigationDrawer {
     private void clickItemMenu(int position, IDrawerItem drawerItem){
         Intent intent;
         switch (position) {
-            case 0://Home
-                if (this.userIsAdmin) {
-                    intent = new Intent(mActivity, MenuActivity.class);
-                    mActivity.startActivity(intent);
-                    mActivity.finish();
-                }
+            case 0://Meu Prefil
+                   // intent = new Intent(mActivity, UserPerfilAcitivity.class);
+                  //  mActivity.startActivity(intent);
+                  //  mActivity.finish();
                 break;
-            case 1://Meu Perfil
-                if (this.userIsAdmin) {
-                    intent = new Intent(mActivity, MenuActivity.class);
-                    mActivity.startActivity(intent);
-                    mActivity.finish();
-                }
+            case 1://Ajuda
+                 //   intent = new Intent(mActivity, HelpActivity.class);
+                 //   mActivity.startActivity(intent);
+                //    mActivity.finish();
                 break;
-            case 2://Cadastrar Atleta
-                if (this.userIsAdmin) {
-                    intent = new Intent(mActivity, CreateAccountAthlete.class);
-                    mActivity.startActivity(intent);
-                }
-                break;
-            case 3://Atualizar
-                if (this.userIsAdmin) {
-                    intent = new Intent(mActivity, MenuActivity.class);
-                    mActivity.startActivity(intent);
-                    mActivity.finish();
-                }
-                break;
-            case 4://Ajuda
-                if (this.userIsAdmin) {
-                    intent = new Intent(mActivity, MenuActivity.class);
-                    mActivity.startActivity(intent);
-                    mActivity.finish();
-                }
-                break;
-            case -1://Ajuda
+            case -1://Sair
                 new MessageOptions(mActivity, "Logout", "Ao sair todos os dados serão excluídos do aplicativo, deseja realmente sair?", "exit");
-            break;
+                break;
+
         }
     }
 

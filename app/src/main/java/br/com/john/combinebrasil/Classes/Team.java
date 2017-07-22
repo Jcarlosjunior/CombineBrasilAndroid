@@ -16,15 +16,19 @@ public class Team {
     private String PhoneNumber;
     private String SocialLink;
     private String Training;
-    private String urlImage;
+    private String UrlImage;
 
     public Team(){}
 
-    public Team(String id, String name, String city, String modality) {
+    public Team(String id, String name, String city, String modality, String socialLink, String presidentName, String email, String urlImage) {
         Id = id;
         Name = name;
         City = city;
         Modality = modality;
+        SocialLink = socialLink;
+        PresidentName = presidentName;
+        Email = email;
+        UrlImage = urlImage;
     }
 
     public String getId() {
@@ -116,10 +120,10 @@ public class Team {
     }
 
     public String getUrlImage() {
-        return urlImage;
+        return UrlImage;
     }
 
     public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
+        this.UrlImage = urlImage;
     }
 }

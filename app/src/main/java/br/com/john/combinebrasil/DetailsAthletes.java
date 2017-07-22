@@ -1,6 +1,5 @@
 package br.com.john.combinebrasil;
 
-import android.app.Service;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,8 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Positions;
@@ -111,7 +108,7 @@ public class DetailsAthletes extends AppCompatActivity {
     };
 
     private void editAthlete(){
-        Intent intent = new Intent(DetailsAthletes.this, CreateAccountAthlete.class);
+        Intent intent = new Intent(DetailsAthletes.this, CreateAccountAthleteActivity.class);
         intent.putExtra("EditAthlete", true);
         intent.putExtra("id_player",extras.getString("id_player"));
         startActivity(intent);

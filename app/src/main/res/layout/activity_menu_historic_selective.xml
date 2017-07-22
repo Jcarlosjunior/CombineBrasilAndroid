@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/activity_menu"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/white"
+android:animateLayoutChanges="true"
+tools:context="br.com.john.combinebrasil.MenuHistoricSelectiveActivity">
+
+<include
+    android:id="@+id/toolbar"
+    layout="@layout/toolbar_default"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_team"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:minHeight="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:layout_editor_absoluteY="0dp"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="0dp"
+        android:animateLayoutChanges="true"
+        android:src="@drawable/icon_nfl"
+        android:padding="10dp"
+        android:background="@drawable/background_circle"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/text_team"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_primary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:text="@string/team"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/image_team" />
+    <ProgressBar
+        android:id="@+id/progressBar_image_team"
+        android:layout_width="0dp"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_marginBottom="8dp"
+        android:animateLayoutChanges="true"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2" />
+
+    <android.support.constraint.ConstraintLayout
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:background="@color/color_primary"
+    android:id="@+id/constraint_not_connection"
+    android:clickable="true"
+    android:visibility="gone"
+    android:animateLayoutChanges="true"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_branco"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:id="@+id/imageView4"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:alpha="0.5"/>
+
+    <ImageView
+        android:id="@+id/image_not_connect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_no_wifi"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_message_not_connect"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:layout_constraintVertical_bias="0.65" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="32dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="32dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:text="@string/no_connection"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:id="@+id/txt_message_not_connect"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_try_again_connect" />
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/try_again"
+        android:textColor="@color/color_primary"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:background="@drawable/background_button_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="32dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/btn_try_again_connect" />
+</android.support.constraint.ConstraintLayout>
+
+<android.support.constraint.ConstraintLayout
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:background="@color/grey_transparent"
+    android:visibility="gone"
+    android:clickable="true"
+    android:id="@+id/constraint_progress"
+    android:animateLayoutChanges="true"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_border"
+        android:layout_marginRight="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="32dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="32dp" />
+
+        <TextView
+            android:id="@+id/text_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update_teams"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/dark"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="32dp" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_team"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/text_detalhes_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="48dp"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp"
+                android:layout_marginStart="48dp"
+                android:padding="8dp"
+                android:text="@string/detalhes"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_team_choose" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginStart="24dp"
+                android:src="@drawable/ic_show_more_line"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_detalhes_info"
+                tools:ignore="MissingConstraints"
+                android:id="@+id/img_show_more_detalhes"
+                app:layout_constraintHorizontal_bias="0.0" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_details"
+                android:visibility="gone"
+                android:layout_width="0dp"
+                android:layout_marginStart="48dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_show_more_detalhes"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/price_selective"
+                    android:textColor="@color/color_primary"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:id="@+id/textView16"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:id="@+id/text_price_selective"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="das"
+                    android:singleLine="false"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/textView16"
+                    android:layout_marginLeft="8dp"
+                    app:layout_constraintTop_toTopOf="@+id/textView16"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/name_title"
+                    android:textColor="@color/color_primary"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toTopOf="@+id/text_name_selective_details"
+                    android:layout_marginLeft="0dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:id="@+id/textView8"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:id="@+id/text_name_selective_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="das"
+                    android:singleLine="false"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintLeft_toRightOf="@+id/textView8"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="7dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_price_selective"
+                    app:layout_constraintHorizontal_bias="0.0" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date_selective"
+                    android:textColor="@color/color_primary"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:id="@+id/textView9"
+                    app:layout_constraintTop_toTopOf="@+id/text_date_selective_details"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:id="@+id/text_date_selective_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="das"
+                    android:singleLine="false"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_name_selective_details"
+                    app:layout_constraintLeft_toRightOf="@+id/textView9"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/address"
+                    android:textColor="@color/color_primary"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:id="@+id/textView10"
+                    app:layout_constraintTop_toTopOf="@+id/text_local_selective_details"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:id="@+id/text_local_selective_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="das"
+                    android:singleLine="false"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_date_selective_details"
+                    app:layout_constraintLeft_toRightOf="@+id/textView10"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/neighborhood"
+                    android:textColor="@color/color_primary"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:id="@+id/textView11"
+                    app:layout_constraintTop_toTopOf="@+id/text_neighborhood_selective_details"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:id="@+id/text_neighborhood_selective_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="das"
+                    android:singleLine="false"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_local_selective_details"
+                    app:layout_constraintLeft_toRightOf="@+id/textView11"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/city"
+                    android:textColor="@color/color_primary"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:id="@+id/textView12"
+                    app:layout_constraintTop_toTopOf="@+id/text_city_selective_details"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:id="@+id/text_city_selective_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="das"
+                    android:singleLine="false"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_neighborhood_selective_details"
+                    app:layout_constraintLeft_toRightOf="@+id/textView12"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/city"
+                    android:textColor="@color/color_primary"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:id="@+id/textView13"
+                    app:layout_constraintTop_toTopOf="@+id/text_cep_selective_details"
+                    android:layout_marginStart="8dp" />
+
+                <TextView
+                    android:id="@+id/text_cep_selective_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="das"
+                    android:singleLine="false"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_city_selective_details"
+                    app:layout_constraintLeft_toRightOf="@+id/textView13"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/text_observacoes_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="48dp"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp"
+                android:layout_marginStart="48dp"
+                android:padding="8dp"
+                android:text="@string/observacoes"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/constraint_details" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginStart="24dp"
+                android:src="@drawable/ic_show_more_line"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_observacoes_info"
+                tools:ignore="MissingConstraints"
+                android:id="@+id/img_show_more_observacoes"
+                app:layout_constraintHorizontal_bias="0.0" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginEnd="48dp"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp"
+                android:layout_marginStart="48dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@+id/img_show_more_observacoes"
+                android:id="@+id/text_observations_details"
+                android:text="dasdasdasdsa"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/image_item_jogadores"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/image_item_ranking"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_observations_details"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/item_menu_jogadores" />
+
+            <ImageView
+                android:id="@+id/image_item_ranking"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@drawable/item_menu_notas"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="8dp" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
+

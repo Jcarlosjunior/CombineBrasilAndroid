@@ -1,20 +1,15 @@
 package br.com.john.combinebrasil.Services;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.IOException;
-
 import br.com.john.combinebrasil.AthletesActivity;
-import br.com.john.combinebrasil.CreateAccountAthlete;
+import br.com.john.combinebrasil.CreateAccountAthleteActivity;
 import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
 import br.com.john.combinebrasil.LoginActivity;
@@ -42,9 +37,7 @@ public class MessageOptions {
         builder.setView(view);
 
         TextView textTitle = (TextView) view.findViewById(R.id.text_title_message_option);
-
         TextView textAlert = (TextView) view.findViewById(R.id.text_alert_message_option);
-
         Button negativeButton = (Button) view.findViewById(R.id.button_negative_message);
         Button positiveButton = (Button) view.findViewById(R.id.button_positive_message);
         LinearLayout linear = (LinearLayout) view.findViewById(R.id.linear_message_option);
@@ -99,7 +92,7 @@ public class MessageOptions {
             MainActivity.returnMessageOptions(act, whoCalled);
         }
         else if(act.getClass().getSimpleName().equals(Constants.LOGIN_CREATEACCOUNTATHLETE)){
-            CreateAccountAthlete.createAthleteOff(act);
+            CreateAccountAthleteActivity.createAthleteOff(act);
         }
         else if(act.getClass().getSimpleName().equals(Constants.TIMER_ACTIVITY)){
             TimerActivity.returnOption(act, whoCalled);

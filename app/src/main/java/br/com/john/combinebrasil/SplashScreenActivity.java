@@ -47,8 +47,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         catch (NoSuchAlgorithmException e) {
 
         }
-
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

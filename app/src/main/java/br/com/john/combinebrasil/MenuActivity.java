@@ -3,7 +3,9 @@ package br.com.john.combinebrasil;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +13,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -24,14 +26,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Selective;
-import br.com.john.combinebrasil.Classes.Team;
-import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
-import br.com.john.combinebrasil.Services.NavigationDrawer;
+import br.com.john.combinebrasil.Services.NavigationMenuDrawer;
 import br.com.john.combinebrasil.Services.Services;
 import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
 
@@ -40,11 +40,12 @@ public class MenuActivity extends AppCompatActivity {
     private ImageView linearEnterSelective;
     private ImageView linearHistoricSelective;
     Toolbar toolbar;
-    NavigationDrawer navigationDrawer;
+    NavigationMenuDrawer navigationDrawer;
     EditText editCode;
     Button btnConfirmCode;
     ConstraintLayout constraintDialogEnterSelective, constraintNotConnection, constraintProgress;
     private static Selective selective;
+    private static Activity act;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +63,7 @@ public class MenuActivity extends AppCompatActivity {
         ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
         imgSearch.setVisibility(View.GONE);
         TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
-        textTitle.setText(R.string.register);
+        textTitle.setText(R.string.menu);
 
         linearCreateSelective = (ImageView) findViewById(R.id.linear_create_selective);
         linearCreateSelective.setOnClickListener(clickCreateSelective);
@@ -72,7 +73,6 @@ public class MenuActivity extends AppCompatActivity {
 
         linearHistoricSelective = (ImageView) findViewById(R.id.linear_historic_selective);
         linearHistoricSelective.setOnClickListener(clickHistoricSelective);
-
 
         editCode = (EditText) findViewById(R.id.edit_code);
         btnConfirmCode = (Button) findViewById(R.id.btn_confirm_code);
@@ -88,8 +88,31 @@ public class MenuActivity extends AppCompatActivity {
         DatabaseHelper db = new DatabaseHelper(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        navigationDrawer = new NavigationDrawer(savedInstanceState, this, toolbar, true, db.getUser());
+        navigationDrawer = new NavigationMenuDrawer(savedInstanceState, this, toolbar, true, db.getUser());
         navigationDrawer.createNavigationAccess();
+
+        act = MenuActivity.this;
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+
+        double heightMax = width/1.86;
+        Float.parseFloat(String.format("%.0f",heightMax));
+        int height = (int) heightMax;
+
+        linearCreateSelective.getLayoutParams().height = height;
+        linearCreateSelective.setMinimumHeight(height);
+        linearCreateSelective.setMaxHeight(height);
+
+        linearEnterSelective.getLayoutParams().height = height;
+        linearEnterSelective.setMinimumHeight(height);
+        linearEnterSelective.setMaxHeight(height);
+
+        linearHistoricSelective.getLayoutParams().height = height;
+        linearHistoricSelective.setMinimumHeight(height);
+        linearHistoricSelective.setMaxHeight(height);
     }
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -184,28 +207,38 @@ public class MenuActivity extends AppCompatActivity {
         hideProgress();
         if(status == 200 || status == 201) {
             DeserializerJsonElements des = new DeserializerJsonElements(response);
-            Selective selective = des.getSelectives().get(0);
-                try{
-                    if (selective!=null) {
+            ArrayList<Selective> selectives = des.getSelectives();
+            if(selectives!= null && selectives.size()>0) {
+                try {
+                    Selective selective = des.getSelectives().get(0);
+                    if (selective != null) {
                         this.selective = selective;
                         DatabaseHelper db = new DatabaseHelper(MenuActivity.this);
                         db.deleteTable(Constants.TABLE_SELECTIVES);
                         db.addSelective(selective);
-                        Services.messageAlert(this, "Mensagem","Parabéns, você acaba de entrar na "+selective.getTitle(),"CODE_OK");
-                }
-                else
+                        Services.messageAlert(this, "Mensagem", "Parabéns, você acaba de entrar na " + selective.getTitle(), "CODE_OK");
+                    } else
+                        Services.messageAlert(MenuActivity.this, "Aviso", "O código inserido não existe.", "hide");
+                } catch (Exception e) {
                     Services.messageAlert(MenuActivity.this, "Aviso", "O código inserido não existe.", "hide");
-            }catch (Exception e){
-                Log.i("Exception: ", e.getMessage());}
+                    Log.i("Exception: ", e.getMessage());
+                }
+            }
+            else
+                Services.messageAlert(MenuActivity.this, "Aviso", "O código inserido não existe.", "hide");
         }else
             Services.messageAlert(MenuActivity.this, "Aviso", "O código inserido não existe.", "hide");
 
     }
 
     private void openSelective(Selective selective){
+        DatabaseHelper db = new DatabaseHelper(this);
+        db.addSelective(selective);
         AllActivities.isSync = true;
         Intent i = new Intent(MenuActivity.this, MainActivity.class);
-        i.putExtra("id_selective",selective.getId());
+        i.putExtra(Constants.SELECTIVES_ID_ENTER,selective.getId());
+        SharedPreferencesAdapter.setEnterSelectiveSharedPreferences(this, true);
+        SharedPreferencesAdapter.setValueStringSharedPreferences(this, Constants.SELECTIVES_CODESELECTIVE, selective.getCodeSelective());
         startActivity(i);
         this.finish();
     }
@@ -265,5 +298,9 @@ public class MenuActivity extends AppCompatActivity {
         if(constraintDialogEnterSelective.getVisibility()==View.VISIBLE)
             constraintDialogEnterSelective.setVisibility(View.GONE);
         else this.finish();
+    }
+
+    public static void finishActity (){
+        ((MenuActivity)act).finish();
     }
 }

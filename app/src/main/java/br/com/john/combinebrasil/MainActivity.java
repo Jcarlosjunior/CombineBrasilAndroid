@@ -10,30 +10,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.SelectiveAthletes;
 import br.com.john.combinebrasil.Classes.TestTypes;
-import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
@@ -41,21 +34,18 @@ import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.AppSectionsPagerAdapter;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.DatabaseHelper;
-import br.com.john.combinebrasil.Services.NavigationDrawer;
+import br.com.john.combinebrasil.Services.NavigationTestsDrawer;
 import br.com.john.combinebrasil.Services.Services;
 import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
-import br.com.john.combinebrasil.Services.SyncDatabase;
 
 public class MainActivity extends AppCompatActivity {
     private AppSectionsPagerAdapter mAppSectionsPagerAdapter;
     ViewPager mViewPagerHome;
     public static ConstraintLayout constraintProgress, constraintNoConnection;
     public static TextView textProgress;
-    //private LinearLayout linearAddAthlete;
-    //private EditText editCodeUser, editCodeAthlete, editNameAthlete;
-    //private Button btnAdd, btnCancel;
+
     Toolbar toolbar;
-    NavigationDrawer navigationDrawer;
+    NavigationTestsDrawer navigationDrawer;
 
     ArrayList<SelectiveAthletes> sele=null;
 
@@ -72,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         DatabaseHelper db = new DatabaseHelper(this);
         User user = db.getUser();
-        navigationDrawer = new NavigationDrawer(savedInstanceState, this, toolbar, true, user);
+        boolean isAdmin = db.getSelective().getAdmin()!=null ? db.getSelective().getAdmin().equals(user.getId()) : false;
+        navigationDrawer = new NavigationTestsDrawer(savedInstanceState, this, toolbar, user, isAdmin);
         navigationDrawer.createNavigationAccess();
 
         LinearLayout linearBacktoolbar = (LinearLayout) findViewById(R.id.linear_back_button);
@@ -130,24 +121,24 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if(AllActivities.isSync)
-            this.syncAll();
+           this.callTests();
         verifyDate();
-    }
 
-    private void syncAll(){
+    }
+    private void callTests(){
         if(Services.isOnline(MainActivity.this)) {
             constraintProgress.setVisibility(View.VISIBLE);
-            textProgress.setText("Atualizando Seletiva");
+            textProgress.setText("Gerando testes...");
             DatabaseHelper db = new DatabaseHelper(MainActivity.this);
             Selective sel = db.getSelective();
             String url = Constants.URL + Constants.API_SELECTIVE_TESTTYPES+"?"+Constants.TESTS_SELECTIVE+"="+sel.getId();
-            //String url = Constants.URL + Constants.API_TESTTYPES;
             Connection task = new Connection(url, 0, Constants.CALLED_GET_TESTTYPES,  false, MainActivity.this);
             task.callByJsonStringRequest();
         }
         else
             constraintNoConnection.setVisibility(View.VISIBLE);
     }
+
     public static void testResponse(Activity act,String response, int status) {
         ((MainActivity)act).testResponse(response, status);
     }
@@ -161,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<TestTypes> tests = des.getSelectiveTestType();
                 DatabaseHelper db = new DatabaseHelper(MainActivity.this);
                 db.openDataBase();
+                db.deleteTable(Constants.TABLE_TESTTYPES);
                 db.addTestTypes(tests);
                 db.close();
                 MainActivity.finishSync(MainActivity.this);
@@ -209,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
             User user = db.getUser();
             if(user!=null){
                 if(user.getIsAdmin()){
-                    Intent i = new Intent(MainActivity.this, CreateAccountAthlete.class);
+                    Intent i = new Intent(MainActivity.this, CreateAccountAthleteActivity.class);
                     startActivity(i);
                 }
                 else{
@@ -247,9 +239,11 @@ public class MainActivity extends AppCompatActivity {
         if(whoCalled.equals("update")){
             updateAthletes();
         }
-
         else if(whoCalled.equals("exit")){
             exit();
+        }
+        else if(whoCalled.equals("exit_selective")){
+            exit_selective();
         }
     }
 
@@ -257,6 +251,20 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferencesAdapter.cleanAllShared(this);
         this.deleteDatabase(Constants.NAME_DATABASE);
         Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+        this.finish();
+    }
+
+    private void exit_selective(){
+        SharedPreferencesAdapter.clearData(this, Constants.SELECTIVES_ID_ENTER);
+        SharedPreferencesAdapter.clearData(this, Constants.SELECTIVES_CODESELECTIVE);
+        SharedPreferencesAdapter.setEnterSelectiveSharedPreferences(this,false);
+        DatabaseHelper db = new DatabaseHelper(this);
+        db.deleteTable(Constants.TABLE_SELECTIVES);
+        db.deleteTable(Constants.TABLE_ATHLETES);
+        db.deleteTable(Constants.TABLE_TESTTYPES);
+        db.deleteTable(Constants.TABLE_TESTS);
+        Intent i = new Intent(this, MenuActivity.class);
         startActivity(i);
         this.finish();
     }

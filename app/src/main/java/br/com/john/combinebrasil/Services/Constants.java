@@ -34,6 +34,7 @@ public class Constants {
     public static final String API_TEAMUSERS = "api/teamUsers";
     public static final String API_TESTS = "api/tests";
     public static final String API_USERS = "api/users";
+    public static final String API_SELECTIVE_ATHLETES_SEARCH = "api/selectiveAthletes/search";
 
     /*
     **************************CHAMADAS DO VOLLEY***********************************
@@ -79,7 +80,7 @@ public class Constants {
     public static final String MAIN_ACTIVITY = "MainActivity";
     public static final String TIMER_ACTIVITY = "TimerActivity";
     public static final String LOGIN_ACTIVITY = "LoginActivity";
-    public static final String LOGIN_CREATEACCOUNTATHLETE = "CreateAccountAthlete";
+    public static final String LOGIN_CREATEACCOUNTATHLETE = "CreateAccountAthleteActivity";
     public static final String SYNC_ACTIVITY = "SyncActivity";
 
     //SHARED PREFERENCES
@@ -150,6 +151,7 @@ public class Constants {
     public static final String SELECTIVES_CITY = "city";
     public static final String SELECTIVES_STATE = "state";
     public static final String SELECTIVES_STREET = "street";
+    public static final String SELECTIVES_ID_ENTER = "id_selective";
 
     /****************************** TEAM TABLE***************************************/
 
@@ -165,6 +167,7 @@ public class Constants {
     public static final String TEAM_PHONENUMBER = "phoneNumber";
     public static final String TEAM_SOCIAL_LINK = "socialLink";
     public static final String TEAM_TRAININGSCHEDULE = "trainingSchedule";
+    public static final String TEAM_URL_IMAGE = "urlImage";
 
     /****************************** TEAM USERS TABLE***************************************/
 

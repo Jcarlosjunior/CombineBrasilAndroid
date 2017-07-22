@@ -24,6 +24,7 @@ public class Athletes{
     String PhoneNumber;
     boolean Sync;
     boolean TermsAccepted;
+    private String URLImage;
 
     public Athletes(){}
 
@@ -165,5 +166,13 @@ public class Athletes{
 
     public void setTermsAccepted(boolean termsAccepted) {
         TermsAccepted = termsAccepted;
+    }
+
+    public String getURLImage() {
+        return URLImage;
+    }
+
+    public void setURLImage(String URLImage) {
+        this.URLImage = URLImage;
     }
 }

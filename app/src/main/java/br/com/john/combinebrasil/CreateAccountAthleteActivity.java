@@ -1,16 +1,13 @@
 package br.com.john.combinebrasil;
 
 import android.app.Activity;
-import android.app.Service;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,23 +16,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.UUID;
 
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.Positions;
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.SelectiveAthletes;
-import br.com.john.combinebrasil.Classes.Team;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostAthleteAsyncTask;
@@ -47,7 +40,7 @@ import br.com.john.combinebrasil.Services.MaskHeight;
 import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.Services;
 
-public class CreateAccountAthlete extends AppCompatActivity {
+public class CreateAccountAthleteActivity extends AppCompatActivity {
     MaterialBetterSpinner spinnerDay, spinnerMonth, spinnerYear, spinnerPosition;
     Toolbar toolbar;
     EditText editTextName, editTextCPF, editTextPhone, editTextHeight, editTextWeihgt, editEmail, editAddress;
@@ -159,7 +152,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
     };
 
     private void verifyConnection(){
-        if(Services.isOnline(CreateAccountAthlete.this)){
+        if(Services.isOnline(CreateAccountAthleteActivity.this)){
             linearCreate.setVisibility(View.VISIBLE);
             linearNoConnection.setVisibility(View.GONE);
         }
@@ -170,7 +163,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
     }
 
     private void editAthlete(){
-        DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+        DatabaseHelper db = new DatabaseHelper(CreateAccountAthleteActivity.this);
         Athletes athlete = db.getAthleteById(idAthlete);
 
         checked = true;
@@ -237,30 +230,30 @@ public class CreateAccountAthlete extends AppCompatActivity {
                        if(editAthlete){
                            String url = Constants.URL + Constants.API_ATHLETES+"/"+idAthlete;
                            PutAthlete post = new PutAthlete();
-                           post.setActivity(CreateAccountAthlete.this);
+                           post.setActivity(CreateAccountAthleteActivity.this);
                            post.setObjPut(createObject());
                            post.setPlay(true);
                            post.execute(url);
                        }else {
                            String url = Constants.URL + Constants.API_ATHLETES;
                            PostAthleteAsyncTask post = new PostAthleteAsyncTask();
-                           post.setActivity(CreateAccountAthlete.this);
+                           post.setActivity(CreateAccountAthleteActivity.this);
                            post.setObjPut(createObject());
                            post.setPlay(true);
                            post.execute(url);
                        }
                    } else
-                       new MessageOptions(CreateAccountAthlete.this, "Mensagem", "Você está offline, deseja salvar o usuário offline? Você deverá sincronizar com os outros avaliadores.","createUserOff");
+                       new MessageOptions(CreateAccountAthleteActivity.this, "Mensagem", "Você está offline, deseja salvar o usuário offline? Você deverá sincronizar com os outros avaliadores.","createUserOff");
 
                }
            }
            else
-               Services.messageAlert(CreateAccountAthlete.this, "Aviso", "Para continuar, é necessário que o atleta aceite os termos de uso.", "");
+               Services.messageAlert(CreateAccountAthleteActivity.this, "Aviso", "Para continuar, é necessário que o atleta aceite os termos de uso.", "");
        }
     }
 
     public static void createAthleteOff (Activity act){
-        ((CreateAccountAthlete)act).createAthleteOff();
+        ((CreateAccountAthleteActivity)act).createAthleteOff();
     }
 
     private void createAthleteOff(){
@@ -269,28 +262,28 @@ public class CreateAccountAthlete extends AppCompatActivity {
             SelectiveAthletes selectiveAthlete = createSelectiveAthletes(athlete);
             athlete.setCode(selectiveAthlete.getInscriptionNumber());
 
-            DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+            DatabaseHelper db = new DatabaseHelper(CreateAccountAthleteActivity.this);
             long res = db.addAthlete(athlete);
             if (res == 0) {
                 Athletes obj = db.getAthleteByValue(Constants.ATHLETES_CPF, athlete.getCPF());
                 if(obj != null)
-                    Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "CPF do usuário já esta cadastrado.", "");
+                    Services.messageAlert(CreateAccountAthleteActivity.this, "Mensagem", "CPF do usuário já esta cadastrado.", "");
                 else{
                     obj = db.getAthleteByValue(Constants.ATHLETES_EMAIL, athlete.getEmail());
                     if(obj != null)
-                        Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "E-mail do usuário já esta cadastrado.", "");
+                        Services.messageAlert(CreateAccountAthleteActivity.this, "Mensagem", "E-mail do usuário já esta cadastrado.", "");
                     else{
                         obj = db.getAthleteByValue(Constants.ATHLETES_CODE, athlete.getCode());
                         if(obj != null)
-                            Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "Código já cadastrado.", "");
+                            Services.messageAlert(CreateAccountAthleteActivity.this, "Mensagem", "Código já cadastrado.", "");
                     }
-                    Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "Erro ao cadastrar!", "");
+                    Services.messageAlert(CreateAccountAthleteActivity.this, "Mensagem", "Erro ao cadastrar!", "");
                 }
             }
 
             db.addSelectiveAthlete(selectiveAthlete);
 
-            Services.messageAlert(CreateAccountAthlete.this, "Concluído", "Atleta criado, o código do atleta é "+selectiveAthlete.getInscriptionNumber()+". Informe aos outros avaliadores.", "");
+            Services.messageAlert(CreateAccountAthleteActivity.this, "Concluído", "Atleta criado, o código do atleta é "+selectiveAthlete.getInscriptionNumber()+". Informe aos outros avaliadores.", "");
             clearForm();
         }catch (Exception e){
             e.printStackTrace();
@@ -300,7 +293,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private SelectiveAthletes createSelectiveAthletes(Athletes athlete){
         SelectiveAthletes selectiveAthlete;
         try {
-            DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+            DatabaseHelper db = new DatabaseHelper(CreateAccountAthleteActivity.this);
             Selective selective = db.getSelective();
             ArrayList<SelectiveAthletes> selectivesAthletes = db.getSelectivesAthletes();
             String numCode = "";
@@ -427,7 +420,7 @@ public class CreateAccountAthlete extends AppCompatActivity {
     }
 
     public static void afterSendAthlete(Activity act, String ret, String response){
-        ((CreateAccountAthlete)act).afterPost(ret, response);
+        ((CreateAccountAthleteActivity)act).afterPost(ret, response);
     }
 
     private void afterPost(String ret, String response){
@@ -453,15 +446,15 @@ public class CreateAccountAthlete extends AppCompatActivity {
             if(json.getInt("code") ==  11000)
                 saveAthlete(json.getString("op"));
             else
-                Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
+                Services.messageAlert(CreateAccountAthleteActivity.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
 
         }catch(JSONException e){
             e.printStackTrace();
             try {
                 json = new JSONObject(result);
-                Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "Atleta não cadastrado\n" + json.getString("message"), "");
+                Services.messageAlert(CreateAccountAthleteActivity.this, "Mensagem", "Atleta não cadastrado\n" + json.getString("message"), "");
             } catch (JSONException e1) {
-                Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
+                Services.messageAlert(CreateAccountAthleteActivity.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
                 e1.printStackTrace();
             }
         }
@@ -469,14 +462,14 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
     private void updateAthlete(String response){
         String url = Constants.URL + Constants.API_ATHLETES+"?"+Constants.ATHLETES_ID+"="+idAthlete;
-        Connection task = new Connection(url, 0, "updateAthleteAccount",false, CreateAccountAthlete.this);
+        Connection task = new Connection(url, 0, "updateAthleteAccount",false, CreateAccountAthleteActivity.this);
         task.callByJsonStringRequest();
 
         LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
         linearProgress.setVisibility(View.VISIBLE);
     }
     public static void returnAccountAthlete(Activity act, String response){
-        ((CreateAccountAthlete)act).returnAccountAthlete(response);
+        ((CreateAccountAthleteActivity)act).returnAccountAthlete(response);
     }
     private void returnAccountAthlete(String response){
 
@@ -486,13 +479,13 @@ public class CreateAccountAthlete extends AppCompatActivity {
         DeserializerJsonElements des = new DeserializerJsonElements(response);
         athlete = des.getAthlete();
         if(athlete!=null){
-            DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+            DatabaseHelper db = new DatabaseHelper(CreateAccountAthleteActivity.this);
             SelectiveAthletes seletive = db.getSelectiveAthletesFromAthlete(athlete.getId());
             athlete.setCode(seletive.getInscriptionNumber());
             db.updateAthlete(athlete);
         }
 
-        Services.messageAlert(CreateAccountAthlete.this, "Mensagem","Atleta autalizado","updateAthelete");
+        Services.messageAlert(CreateAccountAthleteActivity.this, "Mensagem","Atleta autalizado","updateAthelete");
     }
 
     private void saveAthlete(String response){
@@ -501,15 +494,15 @@ public class CreateAccountAthlete extends AppCompatActivity {
 
         DeserializerJsonElements des = new DeserializerJsonElements(response);
         athlete = des.getObjAthlete();
-        DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+        DatabaseHelper db = new DatabaseHelper(CreateAccountAthleteActivity.this);
 
         try {
             if (!db.existAthleteByCPF(athlete.getCPF()))
                 createCode(athlete.getId());
             else
-                Services.messageAlert(CreateAccountAthlete.this, "Aviso", "Ops, esse atleta já esta cadastrado na seletiva", "");
+                Services.messageAlert(CreateAccountAthleteActivity.this, "Aviso", "Ops, esse atleta já esta cadastrado na seletiva", "");
         }catch (NullPointerException e){
-            Services.messageAlert(CreateAccountAthlete.this, "Aviso", "Ops, esse atleta já esta cadastrado na seletiva", "");
+            Services.messageAlert(CreateAccountAthleteActivity.this, "Aviso", "Ops, esse atleta já esta cadastrado na seletiva", "");
         }
     }
 
@@ -517,14 +510,14 @@ public class CreateAccountAthlete extends AppCompatActivity {
         String url = Constants.URL + Constants.API_SELECTIVEATHLETES;
 
         PostAthleteAsyncTask post = new PostAthleteAsyncTask();
-        post.setActivity(CreateAccountAthlete.this);
+        post.setActivity(CreateAccountAthleteActivity.this);
         post.setObjPut(createObjectSelectiveAthletes(idAthlete));
         post.setPlay(false);
         post.execute(url);
     }
 
     private JSONObject createObjectSelectiveAthletes(String athlete) {
-        DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+        DatabaseHelper db = new DatabaseHelper(CreateAccountAthleteActivity.this);
         Selective selective = db.getSelective();
         ArrayList<SelectiveAthletes> selectivesAthletes = db.getSelectivesAthletes();
 
@@ -558,14 +551,14 @@ public class CreateAccountAthlete extends AppCompatActivity {
     }
 
     public static void afterSendSelectiveAthlete(Activity act, String response, String result){
-        ((CreateAccountAthlete)act).afterSendSelectiveAthlete(response, result);
+        ((CreateAccountAthleteActivity)act).afterSendSelectiveAthlete(response, result);
     }
 
     private void afterSendSelectiveAthlete(String response, String result){
         LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
         linearProgress.setVisibility(View.GONE);
         if(response.equals("FAIL")) {
-            Services.messageAlert(CreateAccountAthlete.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
+            Services.messageAlert(CreateAccountAthleteActivity.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
         }
         else if(response.equals("OK")) {
             DeserializerJsonElements des = new DeserializerJsonElements(result);
@@ -573,12 +566,12 @@ public class CreateAccountAthlete extends AppCompatActivity {
             if(item==null)
                 item = des.getObjSelectiveAthlete();
 
-            DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+            DatabaseHelper db = new DatabaseHelper(CreateAccountAthleteActivity.this);
             db.addSelectiveAthlete(item);
             athlete.setCode(item.getInscriptionNumber());
             long ret = db.addAthlete(athlete);
             if(ret!=0){
-                Services.messageAlert(CreateAccountAthlete.this, "Salvo", "Atleta cadastrado com sucesso. O código do atleta é "+athlete.getCode(), "POSTATHLETE");
+                Services.messageAlert(CreateAccountAthleteActivity.this, "Salvo", "Atleta cadastrado com sucesso. O código do atleta é "+athlete.getCode(), "POSTATHLETE");
             }
         }
     }
@@ -601,14 +594,14 @@ public class CreateAccountAthlete extends AppCompatActivity {
     }
 
     public static void update(Activity act){
-        ((CreateAccountAthlete)act).update();
+        ((CreateAccountAthleteActivity)act).update();
     }
     private void update(){
         this.finish();
     }
 
     public static void finished(Activity act){
-        ((CreateAccountAthlete)act).finished();
+        ((CreateAccountAthleteActivity)act).finished();
     }
 
     public void finished(){
@@ -647,12 +640,12 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private View.OnClickListener btnBackClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            CreateAccountAthlete.this.finish();
+            CreateAccountAthleteActivity.this.finish();
         }
     };
 
     private void inflateSpinnerPosition(){
-        DatabaseHelper db = new DatabaseHelper(CreateAccountAthlete.this);
+        DatabaseHelper db = new DatabaseHelper(CreateAccountAthleteActivity.this);
         positions = new ArrayList<Positions>();
         positions = db.getPositions();
 
@@ -747,13 +740,13 @@ public class CreateAccountAthlete extends AppCompatActivity {
     private boolean validaBirthday(){
         boolean ver = false;
         if(spinnerDay.getText().toString().equals(""))
-            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Dia de nascimento inválido","");
+            Services.messageAlert(CreateAccountAthleteActivity.this, "Alerta","Dia de nascimento inválido","");
         else if(spinnerMonth.getText().toString().equals(""))
-            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Mês de nascimento inválido","");
+            Services.messageAlert(CreateAccountAthleteActivity.this, "Alerta","Mês de nascimento inválido","");
         else if(spinnerYear.getText().toString().equals(""))
-            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Mês de nascimento inválido","");
+            Services.messageAlert(CreateAccountAthleteActivity.this, "Alerta","Mês de nascimento inválido","");
         else if(spinnerPosition.getText().toString().equals(""))
-            Services.messageAlert(CreateAccountAthlete.this, "Alerta","Selecione uma posição desejada","");
+            Services.messageAlert(CreateAccountAthleteActivity.this, "Alerta","Selecione uma posição desejada","");
         else
             ver=true;
         return ver;

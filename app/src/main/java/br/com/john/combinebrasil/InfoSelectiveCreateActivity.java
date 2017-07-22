@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -50,7 +51,7 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
     boolean isAcceptedPrivacy;
     HashMap<String, String> hashMapSelective;
     public static Activity act;
-    String code = "";
+    String code = "", id="";
     ArrayList<String> testChooses;
     public static final int METHOD_CREATE_SELECTVE = 0, METHOD_TESTS_SELECTIVE =1;
     CheckBox checkBoxTerms;
@@ -108,6 +109,7 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
         textDetailsInfo.setOnClickListener(btnShowMoteDetails);
         textObservationInfo.setOnClickListener(btnShowMoteObservation);
         textTestsInfo.setOnClickListener(btnShowMoteTests);
+        textTermsPrivacy.setText(Html.fromHtml(Constants.TERMS_TEXT));
 
         btnTryAgain.setOnClickListener(btnClickedTryAgain);
         btnFinish.setOnClickListener(btnCreateSelectiveClickListener);
@@ -295,16 +297,14 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
     private void returnCreateSelective(String response, String result){
         constraintProgress.setVisibility(View.GONE);
         if(response.toUpperCase().equals("OK")){
-            try {
-                JSONObject json = new JSONObject(result);
-                DeserializerJsonElements des = new DeserializerJsonElements(result);
-                Selective selective = des.getSelective();
-                code = json.getString(Constants.SELECTIVES_CODESELECTIVE);
-                callPostTestsSelective(selective);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            DatabaseHelper db = new DatabaseHelper(this);
+            DeserializerJsonElements des = new DeserializerJsonElements(result);
+            Selective selective = des.getSelective();
+            db.deleteTable(Constants.TABLE_SELECTIVES);
+            db.addSelective(selective);
+            code = selective.getCodeSelective();
+            id = selective.getId();
+            callPostTestsSelective(selective);
         }
     }
 
@@ -337,6 +337,7 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
             try {
                 Intent i = new Intent(InfoSelectiveCreateActivity.this, SelectiveCreatedSuccessActivity.class);
                 i.putExtra("code", code);
+                i.putExtra("id_selective", id);
                 startActivity(i);
             } catch (Exception e) {
                 e.printStackTrace();

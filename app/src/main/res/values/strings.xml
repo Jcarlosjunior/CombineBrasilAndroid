@@ -11,6 +11,7 @@
     <string name="nao_inscrito">Não é inscrito?</string>
     <string name="registre_se">Registre-se agora!</string>
     <string name="register">Cadastrar</string>
+    <string name="menu">Menu</string>
     <string name="register_facebook">Cadastrar com facebook</string>
     <string name="nome">Nome</string>
     <string name="email">E-mail</string>
@@ -19,8 +20,10 @@
     <string name="home">Home</string>
     <string name="meu_perfil">Meu Perfil</string>
     <string name="cadastrar_atleta">Cadastrar Atleta</string>
+    <string name="info_seletiva">Info. Seletiva</string>
     <string name="update">Atualizar</string>
     <string name="help">Ajuda</string>
+    <string name="exit_selective">Fechar Seletiva</string>
     <string name="entre_seletiva">Entrar em uma seletiva</string>
     <string name="codigo">Código</string>
     <string name="enter_selective">Para ser avaliador de uma seletiva, digite o código informado ao adminstrador</string>
@@ -55,6 +58,7 @@
     <string name="aceito">Aceito</string>
     <string name="create_selective_success">Seletiva criada</string>
     <string name="voltar_ao_menu">Voltar ao Menu</string>
+    <string name="go_to_selective">Ir para a seletiva</string>
     <string name="title_tests">Os testes</string>
     <string name="number_picker_formatter">0</string>
     <string name="text_tests_default">Ao escolher nossos testes, existem alguns testes padrões, que já estarão selecionados. Com esses testes padrões, conseguimos extrair o máximo de análises e certezas ao informar as posições corentes dos atletas. Para realizar a seletiva do seu, você poderá customizar os testes, porém certifique-se de que o testes selecionados seguem o modelo homolodado Combine Brasil Seletivas.</string>
@@ -62,6 +66,7 @@
     <string name="required">Campo obrigatório</string>
     <string name="director">Nome do representante</string>
     <string name="cortar">Cortar</string>
+    <string name="historic">Histórico</string>
 
     <string name="inscrever">Inscreva-se e melhore suas seletivas</string>
     <string name="testes">Testes</string>
@@ -125,6 +130,9 @@
     <string name="admin_selective">Criador da Seletiva</string>
     <string name="selective_pay">Cobrar Inscrição?</string>
     <string name="selective_price">Preço da inscrição R$</string>
+    <string name="your_code">Código da seletiva</string>
+    <string name="shared_code">Parabéns, sua seletiva foi criada com sucesso.
+Agora, você como um bom administrador, deve recrutar os avaliadores da seletiva, passando o código para que eles possam logar futuramente na sua seletiva.  Toque no código e compartilhe com os avaliadores</string>
 
 
     <!--

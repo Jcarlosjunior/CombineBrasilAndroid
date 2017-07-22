@@ -2,7 +2,6 @@ package br.com.john.combinebrasil.Services;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -14,11 +13,8 @@ import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -26,21 +22,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
-import br.com.john.combinebrasil.CreateAccountAthlete;
-import br.com.john.combinebrasil.CreateSelectiveActivity;
+import br.com.john.combinebrasil.CreateAccountAthleteActivity;
 import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.CronometerActivity;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
@@ -112,10 +102,10 @@ public class Services {
                 ResultsOnlyOneActivity.finished(activity);
         }
         else if(whoCalled.toUpperCase().equals("POSTATHLETE")){
-            CreateAccountAthlete.finished(activity);
+            CreateAccountAthleteActivity.finished(activity);
         }
         else if (whoCalled.equals("updateAthelete"))
-            CreateAccountAthlete.update(activity);
+            CreateAccountAthleteActivity.update(activity);
         else if(activity.getClass().getSimpleName().equals(Constants.TIMER_ACTIVITY))
             TimerActivity.returnOption(activity, whoCalled);
         else if (whoCalled.equals("exit")){

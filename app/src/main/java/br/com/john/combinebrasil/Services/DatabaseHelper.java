@@ -302,7 +302,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ContentValues values = new ContentValues();
                 values.put(Constants.SELECTIVES_ID, obj.getId());
                 values.put(Constants.SELECTIVES_TITLE, obj.getTitle());
-                values.put(Constants.SELECTIVES_TEAM, this.getNameTeamByIdTeam(obj.getTeam()));
+                values.put(Constants.SELECTIVES_TEAM, obj.getTeam());
                 values.put(Constants.SELECTIVES_DATE, obj.getDate());
                 values.put(Constants.SELECTIVES_CODESELECTIVE, obj.getCodeSelective());
                 values.put(Constants.SELECTIVES_CANSYNC, obj.getDate());
@@ -815,7 +815,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getString(c.getColumnIndex(Constants.TEAM_ID)),
                     c.getString(c.getColumnIndex(Constants.TEAM_NAME)),
                     c.getString(c.getColumnIndex(Constants.TEAM_CITY)),
-                    c.getString(c.getColumnIndex(Constants.TEAM_MODALITY))
+                    c.getString(c.getColumnIndex(Constants.TEAM_MODALITY)),
+                    c.getString(c.getColumnIndex(Constants.TEAM_SOCIAL_LINK)),
+                    c.getString(c.getColumnIndex(Constants.TEAM_PRESIDENTNAME)),
+                    c.getString(c.getColumnIndex(Constants.TEAM_EMAIL)),
+                    c.getString(c.getColumnIndex(Constants.TEAM_URL_IMAGE))
             );
 
         } else {

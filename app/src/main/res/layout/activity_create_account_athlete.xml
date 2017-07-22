@@ -4,7 +4,7 @@
     android:id="@+id/activity_create_account_athlete"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.john.combinebrasil.CreateAccountAthlete">
+    tools:context="br.com.john.combinebrasil.CreateAccountAthleteActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

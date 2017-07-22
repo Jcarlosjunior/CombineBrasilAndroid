@@ -6,23 +6,20 @@ package br.com.john.combinebrasil.Connection;
 
 import android.app.Activity;
 import android.util.Log;
-import android.view.View;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.ChooseTeamSelectiveActivity;
-import br.com.john.combinebrasil.CreateAccountAthlete;
-import br.com.john.combinebrasil.CreateSelectiveActivity;
+import br.com.john.combinebrasil.CreateAccountAthleteActivity;
 import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
 import br.com.john.combinebrasil.EnterSelectiveActivity;
+import br.com.john.combinebrasil.HistoricPlayersSelectiveActivity;
 import br.com.john.combinebrasil.HistoricSelectiveActivity;
 import br.com.john.combinebrasil.LocalSelectiveActivity;
 import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.MenuActivity;
+import br.com.john.combinebrasil.MenuHistoricSelectiveActivity;
 import br.com.john.combinebrasil.ResultsOnlyOneActivity;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.SyncDatabase;
@@ -51,7 +48,7 @@ public class ReturnResponse {
         try {
             if (!response.equals(null) || response.length() <= 0) {
                 if(whoCalled.equals("updateAthleteAccount")) {
-                    CreateAccountAthlete.returnAccountAthlete(activity, response);
+                    CreateAccountAthleteActivity.returnAccountAthlete(activity, response);
                 }
 
                 if(whoCalled.equals("UPDATE_TEST")) {
@@ -86,6 +83,8 @@ public class ReturnResponse {
                 else if (whoCalled.equals(Constants.CALLED_GET_TEAM)) {
                     if(activity.getClass().getSimpleName().equals("ChooseTeamSelectiveActivity"))
                         ChooseTeamSelectiveActivity.returnGetAllTeams(activity, response, statuCode);
+                    else if(activity.getClass().getSimpleName().equals("MenuHistoricSelectiveActivity"))
+                        MenuHistoricSelectiveActivity.returnGetTeamSelective(activity, response, statuCode);
                     else
                         SyncDatabase.teamResponse(response);
                 }
@@ -95,6 +94,8 @@ public class ReturnResponse {
                 else if (whoCalled.equals(Constants.CALLED_GET_ATHLETES)) {
                     if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
                         SyncAthleteActivity.athletesResponse(activity, response);
+                    else if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
+                        HistoricPlayersSelectiveActivity.returnGetPlayers(activity, response, statuCode);
                     else
                         SyncDatabase.athletesResponse(response);
                 }

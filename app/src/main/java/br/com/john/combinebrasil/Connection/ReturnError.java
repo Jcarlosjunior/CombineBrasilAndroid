@@ -4,22 +4,19 @@ package br.com.john.combinebrasil.Connection;
  * Created by GTAC on 18/10/2016.
  */
 import android.app.Activity;
-import android.util.Log;
-import android.view.View;
 
 import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.ChooseTeamSelectiveActivity;
-import br.com.john.combinebrasil.CreateAccountAthlete;
-import br.com.john.combinebrasil.CreateSelectiveActivity;
 import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.EnterSelectiveActivity;
+import br.com.john.combinebrasil.HistoricPlayersSelectiveActivity;
 import br.com.john.combinebrasil.HistoricSelectiveActivity;
 import br.com.john.combinebrasil.LocalSelectiveActivity;
 import br.com.john.combinebrasil.LoginActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.MenuActivity;
+import br.com.john.combinebrasil.MenuHistoricSelectiveActivity;
 import br.com.john.combinebrasil.Services.Constants;
-import br.com.john.combinebrasil.Services.SyncDatabase;
 import br.com.john.combinebrasil.SyncAthleteActivity;
 import br.com.john.combinebrasil.TestSelectiveActivity;
 
@@ -37,7 +34,7 @@ public class ReturnError {
 
     public void goTo(String whoCalled, Activity activity, String message, int statusError) {
             if(whoCalled.equals(Constants.CALLED_POST_ATHLETES)){
-                //CreateAccountAthlete.returnPostAthlete(activity, message, statusError);
+                //CreateAccountAthleteActivity.returnPostAthlete(activity, message, statusError);
             }
             else if(whoCalled.equals(Constants.CALLED_LOGIN)){
                 LoginActivity.afterLogin(message, activity, statusError);
@@ -95,6 +92,14 @@ public class ReturnError {
             else if (whoCalled.equals(Constants.CALLED_GET_TEAM)) {
                 if(activity.getClass().getSimpleName().equals("ChooseTeamSelectiveActivity"))
                     ChooseTeamSelectiveActivity.returnGetAllTeams(activity, message, statusError);
+                else if(activity.getClass().getSimpleName().equals("MenuHistoricSelectiveActivity"))
+                    MenuHistoricSelectiveActivity.returnGetTeamSelective(activity, message, statusError);
+            }
+
+            else if(whoCalled.equals(Constants.CALLED_GET_ATHLETES)){
+                 if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
+                    HistoricPlayersSelectiveActivity.returnGetPlayers(activity, message, statusError);
+
             }
     }
 }

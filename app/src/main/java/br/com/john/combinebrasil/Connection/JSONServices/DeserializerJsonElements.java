@@ -201,6 +201,44 @@ public class DeserializerJsonElements {
         }
         return athlete;
     }
+
+    public ArrayList<Athletes> getAthletesInSelective() {
+        ArrayList<Athletes> AthletesList = new ArrayList<Athletes>();
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+
+            for (int i = 0; i <= jsonArray.length() - 1; i++) {
+                JSONObject json = new JSONObject(jsonArray.getString(i));
+                try {
+                    json = json.getJSONObject(Constants.SELECTIVEATHLETES_ATHLETE);
+                    Athletes athletesEntity = new Athletes(
+                            json.optString(Constants.ATHLETES_ID),
+                            json.optString(Constants.ATHLETES_NAME),
+                            json.optString(Constants.ATHLETES_BIRTHDAY),
+                            json.optString(Constants.ATHLETES_CPF),
+                            json.optString(Constants.ATHLETES_ADDRESS),
+                            json.optString(Constants.ATHLETES_DESIRABLE_POSITION),
+                            json.optDouble(Constants.ATHLETES_HEIGHT),
+                            json.optDouble(Constants.ATHLETES_WEIGHT),
+                            json.optString(Constants.ATHLETES_CREATEDAT),
+                            json.optString(Constants.ATHLETES_UPDATEAT),
+                            "",
+                            json.optString(Constants.ATHLETES_EMAIL),
+                            json.optString(Constants.ATHLETES_PHONE),
+                            true,
+                            json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true)
+                    );
+                    AthletesList.add(athletesEntity);
+                }catch (JSONException jsonExc){
+                    Log.i("JSON ERROR", jsonExc.toString());
+                }
+            }
+
+        } catch (JSONException jsonExc) {
+            Log.i("JSON ERROR", jsonExc.toString());
+        }
+        return AthletesList;
+    }
     /***************************************
      * POSITIONS
      ********************************************/
@@ -420,10 +458,14 @@ public class DeserializerJsonElements {
                 for (int i = 0; i <= jsonArray.length() - 1; i++) {
                     JSONObject json = new JSONObject(jsonArray.getString(i));
                     Team obj = new Team(
-                            json.optString(Constants.TEAM_ID),
-                            json.optString(Constants.TEAM_NAME),
-                            json.optString(Constants.TEAM_CITY),
-                            json.optString(Constants.TEAM_MODALITY)
+                            json.optString(Constants.TEAM_ID, ""),
+                            json.optString(Constants.TEAM_NAME, ""),
+                            json.optString(Constants.TEAM_CITY, ""),
+                            json.optString(Constants.TEAM_MODALITY, ""),
+                            json.optString(Constants.TEAM_SOCIAL_LINK, ""),
+                            json.optString(Constants.TEAM_PRESIDENTNAME, ""),
+                            json.optString(Constants.TEAM_EMAIL, ""),
+                            json.optString(Constants.TEAM_URL_IMAGE, "")
                     );
 
                     teams.add(obj);

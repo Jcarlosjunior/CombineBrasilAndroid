@@ -43,7 +43,7 @@
             android:name=".CronometerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".CreateAccountAthlete"
+            android:name=".CreateAccountAthleteActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DetailsAthletes"
@@ -105,7 +105,10 @@
             android:name=".InfoSelectiveCreateActivity"
             android:label="@string/title_activity_info_selective_create"
             android:theme="@style/AppTheme" />
-        <activity android:name=".SelectiveCreatedSuccessActivity"></activity>
+        <activity android:name=".SelectiveCreatedSuccessActivity" />
+        <activity android:name=".MenuHistoricSelectiveActivity" />
+        <activity android:name=".HistoricPlayersSelectiveActivity" />
+        <activity android:name=".HistoricPlayerActivity"></activity>
     </application>
 
 </manifest>

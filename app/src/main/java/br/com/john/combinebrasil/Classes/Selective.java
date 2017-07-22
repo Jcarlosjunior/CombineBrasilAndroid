@@ -18,6 +18,7 @@ public class Selective {
     private String PostalCode;
     private String Notes;
     private String Address;
+    private String Admin;
 
     public Selective() {
     }
@@ -140,5 +141,13 @@ public class Selective {
 
     public void setAddress(String address) {
         Address = address;
+    }
+
+    public String getAdmin() {
+        return Admin;
+    }
+
+    public void setAdmin(String admin) {
+        Admin = admin;
     }
 }

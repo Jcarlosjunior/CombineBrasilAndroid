@@ -2,6 +2,7 @@ package br.com.john.combinebrasil;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -240,8 +241,11 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
         ((HistoricSelectiveActivity) act).onClickSelective(position);
     }
     private void onClickSelective(int position){
-        constraintInfoSelective.setVisibility(View.VISIBLE);
-        showInfoSelective(selectives.get(position));
+        //constraintInfoSelective.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, MenuHistoricSelectiveActivity.class);
+        intent.putExtra("id_selective", selectives.get(position).getId());
+        startActivity(intent);
+        //showInfoSelective(selectives.get(position));
     }
 
     private void showInfoSelective(Selective selective){
