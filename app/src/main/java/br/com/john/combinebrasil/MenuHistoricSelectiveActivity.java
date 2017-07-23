@@ -200,12 +200,65 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case 1 :
-                intent = new Intent(this, HistoricPlayersSelectiveActivity.class);
+                showChooseRanking();
+                break;
+        }
+    }
+
+    private void showChooseRanking(){
+        ConstraintLayout constraint = (ConstraintLayout) findViewById(R.id.constraint_choose_ranking);
+        Button button = (Button)findViewById(R.id.button_cancel_ranking);
+        constraint.setVisibility(View.VISIBLE);
+        button.setOnClickListener(hideChooseRaking);
+
+        ConstraintLayout constraintTests = (ConstraintLayout) findViewById(R.id.constraint_ranking_tests);
+        ConstraintLayout constraintPosition = (ConstraintLayout) findViewById(R.id.constraint_ranking_positions);
+        constraintTests.setOnClickListener(clickedRankingTests);
+        constraintPosition.setOnClickListener(clickedRankingPositions);
+
+    }
+
+    private View.OnClickListener hideChooseRaking = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ConstraintLayout constraint = (ConstraintLayout) findViewById(R.id.constraint_choose_ranking);
+            constraint.setVisibility(View.GONE);
+        }
+    };
+
+    private View.OnClickListener clickedRankingTests = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            clickChooseRanking(0);
+        }
+    };
+    private View.OnClickListener clickedRankingPositions = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            clickChooseRanking(1);
+        }
+    };
+
+    private void clickChooseRanking(int choose){
+        Intent intent = new Intent();
+        ConstraintLayout constraint = (ConstraintLayout) findViewById(R.id.constraint_choose_ranking);
+        constraint.setVisibility(View.GONE);
+        switch (choose){
+            case 0 :
+                intent = new Intent(this, HistoricRankingTestsActivity.class);
                 intent.putExtra("id_selective", selective.getId());
                 intent.putExtra("id_team", team.getId());
                 startActivity(intent);
                 break;
+            case 1 :
+                intent = new Intent(this, HistoricRankingPositionsActivity.class);
+                intent.putExtra("id_selective", selective.getId());
+                intent.putExtra("id_team", team.getId());
+                startActivity(intent);
+                break;
+
         }
+
     }
 
     private View.OnClickListener clickedBack = new View.OnClickListener() {
@@ -218,12 +271,21 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
     private void showDetailsSelective(){
         textNameTeam.setText(team.getName());
         textNameSelective.setText(selective.getTitle());
-        String price = "Foi cobrado R$"+selective.getPrice()+" reais por inscrição";
-        textPriceSelective.setText(price.replaceAll(".",","));
-        textAddressSelective.setText(selective.getAddress());
-        textDateSelective.setText(selective.getDate());
-        textObservationSelective.setText(selective.getObservation());
+        textPriceSelective.setText(selective.getPrice()>0?"Foi cobrado R$"+String.valueOf(selective.getId()).replace(".",",")+" reais por inscrição":"Inscrições gratuitas");
+        textAddressSelective.setText(selective.getCity());
+        textDateSelective.setText(returnDateTime(selective.getDate()));
+        textObservationSelective.setText(selective.getNotes());
         showTeam(team);
+    }
+
+    private String returnDateTime(String dateTime){
+        dateTime = dateTime.replace("[","").replace("]","");
+        String year = dateTime.substring(1, 5);
+        String month = dateTime.substring(6, 8);
+        String day = dateTime.substring(9, 11);
+        String hour = dateTime.substring(12, 17);
+
+        return day + "/" + month + "/" + year+" às "+hour+" horas";
     }
 
     private void showTeam(Team team){
@@ -258,5 +320,4 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
         bitmap = ImageConverter.getRoundedCornerBitmap(bitmap, 200);
         imageTeam.setImageBitmap(bitmap);
     }
-
 }

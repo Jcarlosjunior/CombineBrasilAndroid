@@ -392,7 +392,6 @@ public class Services {
         return milisseconds;
     }
 
-
     public static NotificationCompat.Builder buildNotificationCommon(final Activity _context) {
         Log.i("NOTIFICATION","SOUNDS");
 

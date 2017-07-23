@@ -377,6 +377,7 @@ public class CreateSelectiveActivity extends AppCompatActivity{
             clickAddDate();
         }
     };
+
     private void clickAddDate(){
         showDate(textSecondDate, imgAddSecondDate);
         imgAddDate.setVisibility(View.INVISIBLE);

@@ -133,6 +133,12 @@
     <string name="selective_pay">Cobrar Inscrição?</string>
     <string name="selective_price">Preço da inscrição R$</string>
     <string name="your_code">Código da seletiva</string>
+    <string name="ranking_selective">Ranking da Seletiva</string>
+    <string name="ranking_by_tests">Ranking por Testes</string>
+    <string name="ranking_by_positions">Ranking por Posições</string>
+    <string name="list_geral">Ver lista geral</string>
+
+
     <string name="shared_code">Parabéns, sua seletiva foi criada com sucesso.
 Agora, você como um bom administrador, deve recrutar os avaliadores da seletiva, passando o código para que eles possam logar futuramente na sua seletiva.  Toque no código e compartilhe com os avaliadores</string>
 

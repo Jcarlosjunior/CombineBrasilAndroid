@@ -108,7 +108,9 @@
         <activity android:name=".SelectiveCreatedSuccessActivity" />
         <activity android:name=".MenuHistoricSelectiveActivity" />
         <activity android:name=".HistoricPlayersSelectiveActivity" />
-        <activity android:name=".HistoricPlayerActivity"></activity>
+        <activity android:name=".HistoricPlayerActivity" />
+        <activity android:name=".HistoricRankingTestsActivity" />
+        <activity android:name=".HistoricRankingPositionsActivity"></activity>
     </application>
 
 </manifest>

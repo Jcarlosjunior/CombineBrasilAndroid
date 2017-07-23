@@ -64,7 +64,7 @@ public class ReturnResponse {
                     LoginActivity.afterLogin(response, activity, statuCode);
                 }
                 else if (whoCalled.equals(Constants.CALLED_GET_USER)) {
-                    SyncDatabase.userResponse(response);
+                    LoginActivity.returnGetDataUser(activity,response,statuCode);
                 }
                 else if (whoCalled.equals(Constants.CALLED_GET_TEAMUSERS)) {
                     SyncDatabase.teamUsersResponse(response);

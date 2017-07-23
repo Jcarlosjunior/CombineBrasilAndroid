@@ -1,5 +1,7 @@
 package br.com.john.combinebrasil.Connection.JSONServices;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +48,6 @@ public class CreateJSON {
             object.put(Constants.SELECTIVES_STATE, selective.getState());
             object.put(Constants.SELECTIVES_NOTE, selective.getNotes());
             object.put(Constants.SELECTIVES_ADDRESS, selective.getAddress());
-            //object.put(Constants.SELECTIVES_CODESELECTIVE, selective.getCodeSelective());
             object.put(Constants.SELECTIVES_CANSYNC, selective.getCanSync());
 
             JSONArray jsonDates = new JSONArray();
@@ -127,4 +128,5 @@ public class CreateJSON {
         }
         return object;
     }
+
 }

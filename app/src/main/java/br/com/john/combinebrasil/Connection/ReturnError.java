@@ -39,6 +39,9 @@ public class ReturnError {
             else if(whoCalled.equals(Constants.CALLED_LOGIN)){
                 LoginActivity.afterLogin(message, activity, statusError);
             }
+            else if (whoCalled.equals(Constants.CALLED_GET_USER)) {
+                LoginActivity.returnGetDataUser(activity,message,statusError);
+            }
 
             else if (whoCalled.equals(Constants.CALLED_GET_SELECTIVE)){
                 if(activity.getClass().getSimpleName().equals("EnterSelectiveActivity"))

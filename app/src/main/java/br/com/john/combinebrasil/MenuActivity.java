@@ -45,7 +45,7 @@ public class MenuActivity extends AppCompatActivity {
     Toolbar toolbar;
     NavigationMenuDrawer navigationDrawer;
     EditText editCode;
-    Button btnConfirmCode;
+    Button btnConfirmCode, btnCloseCode;
     ConstraintLayout constraintDialogEnterSelective, constraintNotConnection, constraintProgress;
     private static Selective selective;
     private static Activity act;
@@ -80,6 +80,8 @@ public class MenuActivity extends AppCompatActivity {
 
         editCode = (EditText) findViewById(R.id.edit_code);
         btnConfirmCode = (Button) findViewById(R.id.btn_confirm_code);
+        btnCloseCode = (Button) findViewById(R.id.btn_close_code);
+        btnCloseCode.setOnClickListener(clickHideEnterSelective);
         btnConfirmCode.setOnClickListener(clickConfirmEnterSelective);
         btnConfirmCode.setOnLongClickListener(clickLongConfirmSelective);
         constraintDialogEnterSelective =(ConstraintLayout) findViewById(R.id.constraint_dialog_code);
@@ -172,6 +174,7 @@ public class MenuActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             hideSoft();
+            editCode.setText("");
             constraintDialogEnterSelective.setVisibility(View.GONE);
         }
     };
@@ -263,6 +266,9 @@ public class MenuActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        else{
+            Services.messageAlert(MenuActivity.this, "Aviso", "O código inserido não existe.", "hide");
         }
     }
 

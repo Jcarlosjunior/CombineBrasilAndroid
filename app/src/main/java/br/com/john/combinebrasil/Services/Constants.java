@@ -36,7 +36,9 @@ public class Constants {
     public static final String API_USERS = "api/users";
     public static final String API_SELECTIVE_ATHLETES_SEARCH = "api/selectiveAthletes/search";
     public static final String API_USER_SELECTIVE = "api/userSelective";
-    public static final String API_USER_SELECTIVE_SEARCH = "api/userSelective/search";
+    public static final String API_USER_SELECTIVE_SEARCH = "api/selectiveUsers/search";
+    public static final String API_RESULTS_SELECTIVE_ATHLETES_SEARCH = "api/resultSelective/search";
+    public static final String API_SELECTIVE_TEST_TYPES_SEARCH = "api/selectiveTestTypes/search";
 
     /*
     **************************CHAMADAS DO VOLLEY***********************************
@@ -54,6 +56,8 @@ public class Constants {
     public static final String CALLED_GET_TESTTYPES= "getTestTypes";
     public static final String CALLED_GET_CEP= "GET_CEP";
     public static final String CALLED_GET_USER_SELECTIVE= "GET_USER_SELECTIVE";
+    public static final String CALLED_RESULTS_ATHLETE= "GET_RESULTS_ATHLETE";
+    public static final String CALLED_GET_TEST_TYPES= "GET_TEST_TYPES";
 
     public static final String CALLED_POST_TESTS = "calledPostTests";
 

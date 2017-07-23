@@ -551,22 +551,24 @@ public class DeserializerJsonElements {
             JSONArray jsonArray = new JSONArray(response);
             if (jsonArray.length() > 0) {
                 for (int i = 0; i <= jsonArray.length() - 1; i++) {
-                    JSONObject json = new JSONObject(jsonArray.getString(i));
-                    json = new JSONObject(json.getString("testType"));
+                    try {
+                        JSONObject json = new JSONObject(jsonArray.getString(i));
+                        json = new JSONObject(json.getString("testType"));
 
-                    TestTypes obj = new TestTypes(
-                            json.optString(Constants.TESTTYPES_ID),
-                            json.optString(Constants.TESTTYPES_NAME),
-                            json.optString(Constants.TESTTYPES_ATTEMPTSLIMIT),
-                            json.optBoolean(Constants.TESTTYPES_VISIBLETOREPORT),
-                            json.optString(Constants.TESTTYPES_DESCRIPTION),
-                            json.optString(Constants.TESTTYPES_VALUETYPES),
-                            json.optString(Constants.TESTTYPES_ICONIMAGEURL),
-                            json.optString(Constants.TESTTYPES_TUTORIALIMAGEURL)
-                    );
-
+                        TestTypes obj = new TestTypes(
+                                json.optString(Constants.TESTTYPES_ID),
+                                json.optString(Constants.TESTTYPES_NAME),
+                                json.optString(Constants.TESTTYPES_ATTEMPTSLIMIT),
+                                json.optBoolean(Constants.TESTTYPES_VISIBLETOREPORT),
+                                json.optString(Constants.TESTTYPES_DESCRIPTION),
+                                json.optString(Constants.TESTTYPES_VALUETYPES),
+                                json.optString(Constants.TESTTYPES_ICONIMAGEURL),
+                                json.optString(Constants.TESTTYPES_TUTORIALIMAGEURL)
+                        );
                         testses.add(obj);
-
+                    }catch (JSONException ex){
+                        Log.i("SelectiveTestType-Exc.", ex.getMessage());
+                    }
                 }
             }
         } catch (JSONException e) {
@@ -641,27 +643,31 @@ public class DeserializerJsonElements {
 
             if (jsonArray.length() > 0) {
                 for (int i = 0; i <= jsonArray.length() - 1; i++) {
-                    JSONObject json = new JSONObject(jsonArray.getString(i));
-                    JSONObject jsonSelective = new JSONObject(json.getString(Constants.USER_SELECTIVE_SELECTIVE));
-                    Selective obj = new Selective(
-                            jsonSelective.optString(Constants.SELECTIVES_ID),
-                            jsonSelective.optString(Constants.SELECTIVES_TITLE),
-                            jsonSelective.optString(Constants.SELECTIVES_TEAM),
-                            jsonSelective.optString(Constants.SELECTIVES_DATE),
-                            jsonSelective.optString(Constants.SELECTIVES_CODESELECTIVE),
-                            jsonSelective.optBoolean(Constants.SELECTIVES_CANSYNC, false),
-                            jsonSelective.optString(Constants.SELECTIVES_CITY),
-                            jsonSelective.optString(Constants.SELECTIVES_NEIGHBORHOOD),
-                            jsonSelective.optString(Constants.SELECTIVES_STATE),
-                            jsonSelective.optString(Constants.SELECTIVES_STREET),
-                            jsonSelective.optString(Constants.SELECTIVES_POSTALCODE),
-                            jsonSelective.optString(Constants.SELECTIVES_NOTE),
-                            jsonSelective.optString(Constants.SELECTIVES_ADDRESS)
-                    );
-                    jsonSelective = json.getJSONObject(Constants.USER_SELECTIVE_USER);
-                    obj.setUser(jsonSelective.getString(Constants.USER_NAME));
+                    try {
+                        JSONObject json = new JSONObject(jsonArray.getString(i));
+                        JSONObject jsonSelective = new JSONObject(json.getString(Constants.USER_SELECTIVE_SELECTIVE));
+                        Selective obj = new Selective(
+                                jsonSelective.optString(Constants.SELECTIVES_ID),
+                                jsonSelective.optString(Constants.SELECTIVES_TITLE),
+                                jsonSelective.optString(Constants.SELECTIVES_TEAM),
+                                jsonSelective.optString(Constants.SELECTIVES_DATE),
+                                jsonSelective.optString(Constants.SELECTIVES_CODESELECTIVE),
+                                jsonSelective.optBoolean(Constants.SELECTIVES_CANSYNC, false),
+                                jsonSelective.optString(Constants.SELECTIVES_CITY),
+                                jsonSelective.optString(Constants.SELECTIVES_NEIGHBORHOOD),
+                                jsonSelective.optString(Constants.SELECTIVES_STATE),
+                                jsonSelective.optString(Constants.SELECTIVES_STREET),
+                                jsonSelective.optString(Constants.SELECTIVES_POSTALCODE),
+                                jsonSelective.optString(Constants.SELECTIVES_NOTE),
+                                jsonSelective.optString(Constants.SELECTIVES_ADDRESS)
+                        );
+                        jsonSelective = json.getJSONObject(Constants.USER_SELECTIVE_USER);
+                        obj.setUser(jsonSelective.getString(Constants.USER_NAME));
 
-                    selectives.add(obj);
+                        selectives.add(obj);
+                    }catch(JSONException e){
+                        Log.i("JSONException", e.getMessage());
+                    }
                 }
             }
         } catch (JSONException e) {

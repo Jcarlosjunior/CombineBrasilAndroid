@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import br.com.john.combinebrasil.Classes.User;
+import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostLogin;
 import br.com.john.combinebrasil.Services.AllActivities;
@@ -51,6 +52,7 @@ public class LoginActivity extends Activity {
     public static android.support.constraint.ConstraintLayout linearProgress;
     String id, name, email, gender, birthday;
     boolean isLoginFb = false;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,20 +155,45 @@ public class LoginActivity extends Activity {
     public void validaLogin(String response) {
         linearProgress.setVisibility(View.GONE);
         DeserializerJsonElements des = new DeserializerJsonElements(response);
-        User user = des.getLogin();
+        user = des.getLogin();
 
-        saveUser(user);
-
-        Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
-        AllActivities.isSync = true;
-        startActivity(intent);
-        finish();
+        callGetDataUser(user);
     }
-    private void saveUser(User user){
+
+    private void callGetDataUser(User user){
         SharedPreferencesAdapter.setLoggedSharedPreferences(LoginActivity.this, true);
         SharedPreferencesAdapter.setValueStringSharedPreferences(LoginActivity.this, Constants.LOGIN_EMAIL, user.getEmail());
         SharedPreferencesAdapter.setValueStringSharedPreferences(LoginActivity.this, Constants.USER_TOKEN, user.getToken());
 
+        linearProgress.setVisibility(View.VISIBLE);
+        String url = Constants.URL+Constants.API_USERS+"?"+Constants.USER_EMAIL+"="+user.getEmail();
+        Connection connection = new Connection(url, 0, Constants.CALLED_GET_USER, false, LoginActivity.this);
+        connection.callByJsonStringRequest();
+    }
+
+    public static void returnGetDataUser(Activity act, String response, int status){
+        ((LoginActivity)act).returnGetDataUser(response, status);
+    }
+
+    private void returnGetDataUser(String response, int status){
+        linearProgress.setVisibility(View.GONE);
+        if(status==200||status==201){
+            DeserializerJsonElements des = new DeserializerJsonElements(response);
+            User user = des.getUsers();
+
+            this.user.setName(user.getName());
+            this.user.setId(user.getId());
+
+            saveUser(this.user);
+
+            Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+            AllActivities.isSync = true;
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    private void saveUser(User user){
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => " + c.getTime());
 

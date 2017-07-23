@@ -267,11 +267,9 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
         ((HistoricSelectiveActivity) act).onClickSelective(position);
     }
     private void onClickSelective(int position){
-        //constraintInfoSelective.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, MenuHistoricSelectiveActivity.class);
         this.SELECTIVE_CLICKED = selectives.get(position);
         startActivity(intent);
-        //showInfoSelective(selectives.get(position));
     }
 
     private void showInfoSelective(Selective selective){

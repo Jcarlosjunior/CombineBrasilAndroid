@@ -122,11 +122,6 @@ public class HistoricPlayersSelectiveActivity extends AppCompatActivity {
             athletes = des.getAthletesInSelective();
             if(athletes.size()>0){
                 recordingSelectives(athletes);
-                String [] ids = new String[athletes.size()];
-                for(int i = 0; i<=athletes.size()-1; i++){
-                    ids[i] = athletes.get(i).getId();
-                }
-                inflateRecycler(athletes, ids);
             }
         }
     }

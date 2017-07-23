@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         DatabaseHelper db = new DatabaseHelper(this);
         User user = db.getUser();
-        boolean isAdmin = db.getSelective().getAdmin()!=null ? db.getSelective().getAdmin().equals(user.getId()) : false;
+        boolean isAdmin = db.getSelective().getUser()!=null ? db.getSelective().getUser().equals(user.getId()) : false;
         navigationDrawer = new NavigationTestsDrawer(savedInstanceState, this, toolbar, user, isAdmin);
         navigationDrawer.createNavigationAccess();
 

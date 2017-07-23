@@ -115,13 +115,6 @@ public class PostBase extends AsyncTask<String, String, String> {
         this.objPut = objPut;
     }
 
-    public JSONObject getObjPut(){
-        return objPut;
-    }
-    public JSONObject getObj(){
-        return obj;
-    }
-
     public Context getContext() {
         return context;
     }
@@ -136,13 +129,6 @@ public class PostBase extends AsyncTask<String, String, String> {
 
     public void setActivity(Activity activity) {
         this.activity = activity;
-    }
-
-    private String checkIfNull(String string){
-        if(string == null) {
-            string = "";
-        }
-        return string;
     }
 
     public String getWhoCalled() {
