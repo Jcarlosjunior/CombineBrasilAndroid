@@ -110,7 +110,8 @@
         <activity android:name=".HistoricPlayersSelectiveActivity" />
         <activity android:name=".HistoricPlayerActivity" />
         <activity android:name=".HistoricRankingTestsActivity" />
-        <activity android:name=".HistoricRankingPositionsActivity"></activity>
+        <activity android:name=".HistoricRankingPositionsActivity" />
+        <activity android:name=".PerfilUserActivity"></activity>
     </application>
 
 </manifest>

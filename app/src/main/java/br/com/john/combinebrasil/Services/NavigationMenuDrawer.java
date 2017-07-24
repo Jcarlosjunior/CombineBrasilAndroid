@@ -31,6 +31,7 @@ import com.squareup.picasso.Picasso;
 
 import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.MenuActivity;
+import br.com.john.combinebrasil.PerfilUserActivity;
 import br.com.john.combinebrasil.R;
 
 /**
@@ -101,8 +102,8 @@ public class NavigationMenuDrawer {
                 .withAccountHeader(headerResult)
                 .withActionBarDrawerToggle(true)
                 .addDrawerItems(
-                        itemPerfil,
-                        itemHelp
+                        itemPerfil
+                        //,itemHelp
                 )
                 .withStickyFooterDivider(true)
                 .addStickyDrawerItems(itemExit)
@@ -124,12 +125,12 @@ public class NavigationMenuDrawer {
     private void clickItemMenu(int position, IDrawerItem drawerItem){
         Intent intent;
         switch (position) {
-            case 0://Meu Prefil
-                   // intent = new Intent(mActivity, UserPerfilAcitivity.class);
-                  //  mActivity.startActivity(intent);
-                  //  mActivity.finish();
+            case 1://Meu Prefil
+                    intent = new Intent(mActivity, PerfilUserActivity.class);
+                    mActivity.startActivity(intent);
+                    //mActivity.finish();
                 break;
-            case 1://Ajuda
+            case 2://Ajuda
                  //   intent = new Intent(mActivity, HelpActivity.class);
                  //   mActivity.startActivity(intent);
                 //    mActivity.finish();

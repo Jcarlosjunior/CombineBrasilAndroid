@@ -5,8 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
-    android:layout_margin="8sp"
+    android:layout_marginTop="8sp"
+    android:layout_marginRight="8sp"
+    android:layout_marginLeft="8sp"
     android:padding="24dp"
+    android:id="@+id/constraint_group_view_holder"
     android:background="@drawable/background_border">
 
     <TextView

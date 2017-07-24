@@ -9,6 +9,8 @@
     android:background="@drawable/background_line_list"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
+    android:layout_marginRight="8sp"
+    android:layout_marginLeft="8sp"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:animateLayoutChanges="true">

@@ -58,10 +58,8 @@ public class HistoricPlayersSelectiveActivity extends AppCompatActivity {
         LinearLayout btnMenu = (LinearLayout) findViewById(R.id.linear_menu_button);
         btnMenu.setVisibility(View.GONE);
         LinearLayout linearAddAccount = (LinearLayout) findViewById(R.id.linear_add_account);
-        linearAddAccount.setVisibility(View.VISIBLE);
+        linearAddAccount.setVisibility(View.GONE);
         linearAddAccount.setOnClickListener(clickedFilter);
-        ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
-        imgSearch.setImageDrawable(this.getDrawable(R.drawable.ic_filter_list_white_24dp));
         TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
         textTitle.setText(R.string.players);
 
@@ -200,6 +198,7 @@ public class HistoricPlayersSelectiveActivity extends AppCompatActivity {
     private void onClickListItem(int position){
         Athletes athlete = athletes.get(position);
         Intent intent = new Intent(this, HistoricPlayerActivity.class);
+        HistoricPlayerActivity.athlete = athlete;
         intent.putExtra("id_athlete", athlete.getId());
         intent.putExtra("id_selective", idSelective);
         startActivity(intent);

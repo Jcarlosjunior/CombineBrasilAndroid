@@ -1206,7 +1206,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             athlete = null;
         }
-        c.close();
+            c.close();
         this.close();
         return athlete;
     }

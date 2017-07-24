@@ -1,4 +1,4 @@
-package br.com.john.combinebrasil.AdapterList.ExpandableRecycler;
+package br.com.john.combinebrasil.AdapterList.ExpandableRecyclerPositions;
 
 import android.app.Activity;
 import android.support.constraint.ConstraintLayout;
@@ -42,6 +42,7 @@ public class GroupFatherViewHolder extends GroupViewHolder {
         txtTitleName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_top, 0);
         constraintBg.setBackground(act.getResources().getDrawable(R.drawable.background_border));
     }
+
     public void setGroupName(ExpandableGroup group) {
         txtTitleName.setText(group.getTitle());
     }

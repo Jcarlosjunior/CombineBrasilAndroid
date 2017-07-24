@@ -5,6 +5,9 @@
 
     <string name="User">Usuário</string>
     <string name="Password">Senha</string>
+    <string name="pswd_now">Senha atual</string>
+    <string name="pswd_new">Nova Senha</string>
+    <string name="pswd_comfirm">Confirme a Senha</string>
     <string name="confirm_password">Confirme a senha</string>
     <string name="Entrar">Entrar</string>
     <string name="entrar_facebook">Entrar com o Facebook</string>
@@ -137,6 +140,7 @@
     <string name="ranking_by_tests">Ranking por Testes</string>
     <string name="ranking_by_positions">Ranking por Posições</string>
     <string name="list_geral">Ver lista geral</string>
+    <string name="change_pswd">Trocar senha</string>
 
 
     <string name="shared_code">Parabéns, sua seletiva foi criada com sucesso.

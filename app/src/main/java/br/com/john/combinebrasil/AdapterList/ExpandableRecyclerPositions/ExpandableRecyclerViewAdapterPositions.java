@@ -1,4 +1,4 @@
-package br.com.john.combinebrasil.AdapterList.ExpandableRecycler;
+package br.com.john.combinebrasil.AdapterList.ExpandableRecyclerPositions;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -16,11 +16,11 @@ import br.com.john.combinebrasil.R;
  * Created by GTAC on 24/07/2017.
  */
 
-public class ExpandableRecyclerViewAdapterTests extends ExpandableRecyclerViewAdapter<GroupFatherViewHolder, ChildItemViewHolder> {
+public class ExpandableRecyclerViewAdapterPositions extends ExpandableRecyclerViewAdapter<GroupFatherViewHolder, ChildItemViewHolder> {
 
     private Activity activity;
 
-    public ExpandableRecyclerViewAdapterTests(Activity activity, List<? extends ExpandableGroup> groups) {
+    public ExpandableRecyclerViewAdapterPositions(Activity activity, List<? extends ExpandableGroup> groups) {
         super(groups);
         this.activity = activity;
     }
@@ -43,7 +43,7 @@ public class ExpandableRecyclerViewAdapterTests extends ExpandableRecyclerViewAd
 
     @Override
     public void onBindChildViewHolder(ChildItemViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
-        final ChildItemTests phone = ((GroupFatherTests) group).getItems().get(childIndex);
+        final ChildItemPositions phone = ((GroupFatherPositions) group).getItems().get(childIndex);
         holder.onBind(phone,group);
     }
 

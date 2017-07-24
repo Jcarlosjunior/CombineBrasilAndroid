@@ -47,6 +47,7 @@ public class HistoricPlayerActivity extends AppCompatActivity {
     TextView textNamePlayer, textEmailPlayer, textPhonePlayer, textBirthdayPlayer, textAddressPlayer, textHeightPlayer, textWeightPlayer;
     ImageView imagePlayer;
     RecyclerView recyclerTests, recyclerPositions;
+    public static Athletes athlete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,36 +83,40 @@ public class HistoricPlayerActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras !=null){
-            idAthlete = extras.getString("id_athlete");
+            idAthlete = athlete.getId();
+            showInfoAthlete(this.athlete);
+
             idSelective = extras.getString("id_selective");
-            callInfoSelectivePlayer();
+            //callInfoSelectivePlayer();
             callResultsAthletes();
         }
     }
 
     private void callInfoSelectivePlayer(){
-        DatabaseHelper db = new DatabaseHelper(this);
-        Athletes athlete = db.getAthleteById(idAthlete);
-        showInfoAthlete(athlete);
+        //DatabaseHelper db = new DatabaseHelper(this);
+        //Athletes athlete = db.getAthleteById(idAthlete);
+        showInfoAthlete(this.athlete);
     }
 
     private void showInfoAthlete(Athletes athlete){
-        textNamePlayer.setText(athlete.getName());
-        textAddressPlayer.setText("Mora "+athlete.getAddress());
-        textEmailPlayer.setText(athlete.getEmail());
-        textPhonePlayer.setText(athlete.getPhoneNumber());
-        textBirthdayPlayer.setText("Nascido em "+returnDateTime(athlete.getBirthday()));
-        textHeightPlayer.setText(String.valueOf(athlete.getHeight()).replace(".",",") +" metros");
-        textWeightPlayer.setText(String.valueOf(athlete.getWeight()).replace(".",",")+" Kg");
+        if(athlete!=null) {
+            textNamePlayer.setText(athlete.getName());
+            textAddressPlayer.setText("Mora " + athlete.getAddress());
+            textEmailPlayer.setText(athlete.getEmail());
+            textPhonePlayer.setText(athlete.getPhoneNumber());
+            textBirthdayPlayer.setText("Nascido em " + returnDateTime(athlete.getBirthday()));
+            textHeightPlayer.setText(String.valueOf(athlete.getHeight()).replace(".", ",") + " metros");
+            textWeightPlayer.setText(String.valueOf(athlete.getWeight()).replace(".", ",") + " Kg");
 
-        showImageAthlete((athlete.getURLImage()!=null&&!athlete.getURLImage().isEmpty())?athlete.getURLImage():"https://scontent.fsjk2-1.fna.fbcdn.net/v/t1.0-9/17553779_1335695839811094_3378390160014516983_n.jpg?oh=81e4c17d65ebcab4b7e3142e662ddc9e&oe=59F8FAD6");
+            showImageAthlete((athlete.getURLImage() != null && !athlete.getURLImage().isEmpty()) ? athlete.getURLImage() : "https://scontent.fsjk2-1.fna.fbcdn.net/v/t1.0-9/17553779_1335695839811094_3378390160014516983_n.jpg?oh=81e4c17d65ebcab4b7e3142e662ddc9e&oe=59F8FAD6");
+        }
     }
 
     private String returnDateTime(String dateTime){
         dateTime = dateTime.replace("[","").replace("]","");
-        String year = dateTime.substring(1, 5);
-        String month = dateTime.substring(6, 8);
-        String day = dateTime.substring(9, 11);
+        String year = dateTime.substring(0, 4);
+        String month = dateTime.substring(5, 7);
+        String day = dateTime.substring(8, 10);
 
         return day + "/" + month + "/" + year;
     }

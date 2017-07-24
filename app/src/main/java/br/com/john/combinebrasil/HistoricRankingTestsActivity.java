@@ -59,8 +59,8 @@ public class HistoricRankingTestsActivity extends AppCompatActivity {
         btnMenu.setVisibility(View.GONE);
         LinearLayout linearAddAccount = (LinearLayout) findViewById(R.id.linear_add_account);
         linearAddAccount.setVisibility(View.GONE);
-        ImageView imgSearch = (ImageView) findViewById(R.id.imagePesquisarToolbar);
-        imgSearch.setImageDrawable(this.getDrawable(R.drawable.ic_filter_list_white_24dp));
+        ImageView imgSearch = (ImageView) findViewById(R.id.img_delete);
+        imgSearch.setVisibility(View.GONE);
         TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
         textTitle.setText(R.string.players);
 
