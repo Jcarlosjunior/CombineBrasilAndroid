@@ -38,30 +38,11 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="parent">
-                <Button
-                    android:id="@+id/button_list_gearal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16sp"
-                    android:background="@drawable/background_button_white"
-                    android:textColor="@color/color_primary"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:textSize="14sp"
-                    android:text="@string/list_geral"
-                    android:layout_marginRight="8dp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginLeft="8dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="8dp" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_ranking"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16sp"
-                    app:layout_constraintTop_toBottomOf="@+id/button_list_gearal"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -69,27 +50,6 @@
             </android.support.constraint.ConstraintLayout>
 
         </ScrollView>
-
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraint_recycler"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:animateLayoutChanges="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_tests"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

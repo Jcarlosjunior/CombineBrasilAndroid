@@ -66,7 +66,9 @@ public class HistoricRankingTestsActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
-            callGetTestTypes(extras.getString("id_selective"));
+            //callGetTestTypes(extras.getString("id_selective"));
+
+            inflateDataTests();
         }
     }
 
@@ -119,8 +121,22 @@ public class HistoricRankingTestsActivity extends AppCompatActivity {
         recycler.setAdapter(adapter);
     }
 
-    private void inflateDataTests(ArrayList<Tests> tests){
-        tests = orderAlphabeticTests(tests);
+    private ArrayList<Tests> inflateFalseDatasTests(int cont){
+        ArrayList<Tests> tests = new ArrayList<Tests>();
+        for(int i=0; i<=10; i++){
+            Tests test =  new Tests();
+            test.setAthlete("Atleta "+i);
+            test.setType(String.valueOf(cont));
+            test.setFirstValue(i);
+            test.setUser("User "+i);
+            test.setId(String.valueOf(i));
+            tests.add(test);
+        }
+        return tests;
+    }
+
+    private void inflateDataTests(){
+    /*    tests = orderAlphabeticTests(tests);
         groupFathers = new ArrayList<GroupFatherTests>();
         childItens = new ArrayList<ChildItemTests>();
         String type = tests.get(0).getType();
@@ -133,6 +149,17 @@ public class HistoricRankingTestsActivity extends AppCompatActivity {
             }
         }
 
+        inflateExpandableRecycler();*/
+        //childItens = new ArrayList<ChildItemTests>();
+        groupFathers = new ArrayList<GroupFatherTests>();
+        for(int i = 0; i<=3; i++){
+            childItens = new ArrayList<ChildItemTests>();
+            ArrayList<Tests> testsArrayList = inflateFalseDatasTests(i);
+            for(Tests test : testsArrayList){
+                childItens.add(new ChildItemTests(test));
+            }
+            groupFathers.add(new GroupFatherTests(testsArrayList.get(i).getType(), childItens));
+        }
         inflateExpandableRecycler();
     }
 

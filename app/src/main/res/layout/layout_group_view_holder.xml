@@ -5,18 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
-    android:background="@android:color/white">
+    android:layout_margin="8sp"
+    android:padding="24dp"
+    android:background="@drawable/background_border">
 
     <TextView
         android:id="@+id/txt_title_group"
+        android:animateLayoutChanges="true"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:drawablePadding="5dp"
         android:drawableRight="@drawable/arrow_down"
         android:gravity="left|center"
-        android:padding="16dp"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:text="Titulo"
         android:singleLine="true"
