@@ -1,5 +1,7 @@
 package br.com.john.combinebrasil.Classes;
 
+import android.os.Parcelable;
+
 /**
  * Created by GTAC on 19/10/2016.
  */

@@ -60,6 +60,7 @@ dependencies {
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
     compile 'net.gotev:uploadservice:2.1'
     compile 'de.hdodenhof:circleimageview:1.2.1'
+    compile 'com.thoughtbot:expandablerecyclerview:1.3'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC0'
 }
