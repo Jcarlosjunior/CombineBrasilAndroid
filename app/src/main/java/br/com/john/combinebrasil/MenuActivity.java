@@ -49,7 +49,7 @@ public class MenuActivity extends AppCompatActivity {
     ConstraintLayout constraintDialogEnterSelective, constraintNotConnection, constraintProgress;
     private static Selective selective;
     private static Activity act;
-    public static final int METHOD_USER_SELECTIVES=3;
+    public static final int METHOD_USER_SELECTIVES=3, METHOD_VERIFY_USER_SELECTIVES = 6;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -240,10 +240,39 @@ public class MenuActivity extends AppCompatActivity {
     private void callCreateUserSelective(Selective selective){
         if(Services.isOnline(this)){
             showProgress("Configurando usuário na seletiva...");
-            createUserSelective();
+            verifyUserSective();
         }
         else
             constraintNotConnection.setVisibility(View.VISIBLE);
+    }
+
+    private void verifyUserSective(){
+        String url = Constants.URL + Constants.API_USER_SELECTIVE_SEARCH;
+        PostCreateSelective post = new PostCreateSelective();
+        post.setActivity(MenuActivity.this);
+        post.setMethod(METHOD_VERIFY_USER_SELECTIVES);
+        post.setObjPut(CreateJSON.queryObjectUserSelectives(selective.getId(), Services.getIdUser(this)));
+        post.execute(url);
+    }
+
+    public static void returnVerifyUserSelective(Activity act, String result, int status){
+        ((MenuActivity)act).returnVerifyUserSelective(result, status);
+    }
+
+    private void returnVerifyUserSelective(String result, int status){
+        if(status == 200 || status == 201){
+            if(!result.equals("[]")){
+                try {
+                    Services.messageAlert(this, "Mensagem", "Parabéns, você acaba de entrar na " + selective.getTitle(), "CODE_OK");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+                createUserSelective();
+        }
+        else
+            createUserSelective();
     }
 
     private void createUserSelective(){
@@ -258,6 +287,7 @@ public class MenuActivity extends AppCompatActivity {
     public static void returnCreateUserSelective(Activity act, String status, String result){
         ((MenuActivity)act).returnCreateUserSelective(status, result);
     }
+
     private void returnCreateUserSelective(String status, String result){
         constraintProgress.setVisibility(View.GONE);
         if(status.toUpperCase().equals("OK")){
@@ -271,7 +301,6 @@ public class MenuActivity extends AppCompatActivity {
             Services.messageAlert(MenuActivity.this, "Aviso", "O código inserido não existe.", "hide");
         }
     }
-
 
     private void openSelective(Selective selective){
         DatabaseHelper db = new DatabaseHelper(this);

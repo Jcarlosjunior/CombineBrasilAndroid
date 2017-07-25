@@ -10,6 +10,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 
+import net.gotev.uploadservice.ContentType;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -18,6 +20,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -61,6 +64,7 @@ public class PostBase extends AsyncTask<String, String, String> {
 
         post.setHeader("content-type", "application/json");
         post.setHeader("Accept", "application/json");
+        post.setHeader("Accept-Charset","utf-8");
         post.setHeader("app-authorization", Constants.AUTHENTICATION);
 
         String userToken = SharedPreferencesAdapter.getValueStringSharedPreferences(getActivity(), Constants.USER_TOKEN);
@@ -71,14 +75,14 @@ public class PostBase extends AsyncTask<String, String, String> {
 
         StringEntity entity = null;
         try {
-            entity = new StringEntity(objPut.toString());
+            entity = new StringEntity(objPut.toString(), HTTP.UTF_8);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return e.getMessage();
         }
-        post.setEntity(entity);
-        HttpResponse response = null;
         try {
+            post.setEntity(entity);
+            HttpResponse response = null;
             response = client.execute(post);
             statusCode =response.getStatusLine().getStatusCode();
             if(statusCode==201 || statusCode ==200)

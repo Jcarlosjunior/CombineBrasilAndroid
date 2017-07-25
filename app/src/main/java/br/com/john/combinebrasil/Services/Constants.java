@@ -35,7 +35,7 @@ public class Constants {
     public static final String API_TESTS = "api/tests";
     public static final String API_USERS = "api/users";
     public static final String API_SELECTIVE_ATHLETES_SEARCH = "api/selectiveAthletes/search";
-    public static final String API_USER_SELECTIVE = "api/userSelective";
+    public static final String API_USER_SELECTIVE = "api/selectiveUsers";
     public static final String API_USER_SELECTIVE_SEARCH = "api/selectiveUsers/search";
     public static final String API_RESULTS_SELECTIVE_ATHLETES_SEARCH = "api/resultSelective/search";
     public static final String API_SELECTIVE_TEST_TYPES_SEARCH = "api/selectiveTestTypes/search";
@@ -211,11 +211,11 @@ public class Constants {
     public static final String TESTS_CANSYNC = "canSync";
 
    /*****************************USERXSELECTIVE**************************************/
-   public static final String USER_SELECTIVE = "userSelective";
+   public static final String USER_SELECTIVE = "selectiveUsers";
    public static final String USER_SELECTIVE_ID = "_id";
    public static final String USER_SELECTIVE_USER = "user";
    public static final String USER_SELECTIVE_SELECTIVE = "selective";
-   public static final String USER_SELECTIVE_IS_ADMIN = "isAdmin";
+   public static final String USER_SELECTIVE_IS_ADMIN = "isSelectiveAdmin";
 
    public static final String CEP = "cep";
    public static final String STREET = "logradouro";

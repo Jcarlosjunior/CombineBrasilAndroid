@@ -280,7 +280,7 @@ public class InfoSelectiveCreateActivity extends AppCompatActivity {
                 constraintNotConnection.setVisibility(View.VISIBLE);
         }
         else
-            constraintPrivacy.setVisibility(View.VISIBLE);
+            Services.messageAlert(this, "Atenção","Para criar a seletiva, você deve aceitar os termos de uso.","hide");
     }
 
     private void createSelective(){

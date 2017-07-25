@@ -112,6 +112,22 @@ public class CreateJSON {
         return object;
     }
 
+    public static JSONObject queryObjectUserSelectives(String selective, String user) {
+        JSONObject object = new JSONObject();
+        try {
+            JSONObject jsonQuery = new JSONObject();
+            jsonQuery.put(Constants.USER_SELECTIVE_SELECTIVE, selective);
+            jsonQuery.put(Constants.USER_SELECTIVE_USER, user);
+            object.put("query", jsonQuery);
+            JSONArray jsonDates = new JSONArray();
+            jsonDates.put(" ");
+            object.put("populate", jsonDates);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
     public static JSONObject createObjectTeam(Team team) {
         JSONObject object = new JSONObject();
         try {

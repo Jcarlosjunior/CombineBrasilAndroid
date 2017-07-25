@@ -44,8 +44,10 @@ public class PostCreateSelective extends PostBase {
             InfoSelectiveCreateActivity.returnCreateSelective(activity, resp, result);
         else if(method == InfoSelectiveCreateActivity.METHOD_TESTS_SELECTIVE)
             InfoSelectiveCreateActivity.returnCreateTestsSelective(activity, resp, result);
-        else if(method == InfoSelectiveCreateActivity.METHOD_TESTS_SELECTIVE)
+        else if(method == InfoSelectiveCreateActivity.METHOD_USER_SELECTIVES)
             InfoSelectiveCreateActivity.returnCreateUserSelective(activity, resp, result);
+        else if(method == MenuActivity.METHOD_VERIFY_USER_SELECTIVES)
+            MenuActivity.returnVerifyUserSelective(activity, result, statusCode);
         else if(method == MenuActivity.METHOD_USER_SELECTIVES)
             MenuActivity.returnCreateUserSelective(activity, resp, result);
     }
