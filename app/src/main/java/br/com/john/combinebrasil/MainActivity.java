@@ -9,12 +9,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +34,7 @@ import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
+import br.com.john.combinebrasil.Connection.Posts.PostAsyncTask;
 import br.com.john.combinebrasil.Services.AllActivities;
 import br.com.john.combinebrasil.Services.AppSectionsPagerAdapter;
 import br.com.john.combinebrasil.Services.Constants;
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager mViewPagerHome;
     public static ConstraintLayout constraintProgress, constraintNoConnection;
     public static TextView textProgress;
+    public static final int METHOD_ATHLETE_SELECTIVE_GET=1231;
 
     Toolbar toolbar;
     NavigationTestsDrawer navigationDrawer;
@@ -69,20 +75,8 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout linearBacktoolbar = (LinearLayout) findViewById(R.id.linear_back_button);
         linearBacktoolbar.setVisibility(View.GONE);
 
-        //LinearLayout linearAddAccount = (LinearLayout) findViewById(R.id.linear_add_account);
-        //linearAddAccount.setOnClickListener(clickAddAccount);
-
-        //linearAddAthlete = (LinearLayout) findViewById(R.id.linear_add_athlete);
-        //linearAddAthlete.setVisibility(View.GONE);
-
-        //editCodeAthlete = (EditText) findViewById(R.id.edit_code_athlete);
-        //editCodeUser = (EditText) findViewById(R.id.edit_code_selective);
-        //editNameAthlete = (EditText) findViewById(R.id.edit_name_add);
-
-        //btnAdd = (Button) findViewById(R.id.button_add_athlete);
-        //btnCancel = (Button) findViewById(R.id.button_cancel);
-        //btnAdd.setOnClickListener(clickAddAthlete);
-        //btnCancel.setOnClickListener(closeAddAthlete);
+        LinearLayout linearAdd = (LinearLayout) findViewById(R.id.linear_add_account);
+        linearAdd.setOnClickListener(clickAddAccount);
 
         constraintNoConnection = (ConstraintLayout) findViewById(R.id.constraint_not_connection);
         constraintProgress = (ConstraintLayout) findViewById(R.id.constraint_progress);
@@ -120,15 +114,15 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
             }
         }
-        if(AllActivities.isSync)
+        if(!verifyDate()) {
            this.callTests();
-        verifyDate();
+        }
 
     }
     private void callTests(){
         if(Services.isOnline(MainActivity.this)) {
             constraintProgress.setVisibility(View.VISIBLE);
-            textProgress.setText("Gerando testes...");
+            textProgress.setText("Verificando testes...");
             DatabaseHelper db = new DatabaseHelper(MainActivity.this);
             Selective sel = db.getSelective();
             String url = Constants.URL + Constants.API_SELECTIVE_TESTTYPES+"?"+Constants.TESTS_SELECTIVE+"="+sel.getId();
@@ -166,10 +160,77 @@ public class MainActivity extends AppCompatActivity {
     public static void finishSync(Activity act){
         ((MainActivity)act).finishSync();
     }
+
     private void finishSync(){
-        PlayersFragment.callInflateAthletes();
         TestsFragment.callInflateTests();
+        callPlayersSelective();
     }
+
+    private void callPlayersSelective(){
+        constraintProgress.setVisibility(View.VISIBLE);
+        textProgress.setText("Verificando atletas...");
+        String url = Constants.URL+Constants.API_SELECTIVE_ATHLETES_SEARCH;
+        PostAsyncTask post = new PostAsyncTask();
+        post.setActivity(this);
+        post.setContext(this);
+        post.setMethod(METHOD_ATHLETE_SELECTIVE_GET);
+        post.setWhoCalled("METHOD_ATHLETE_SELECTIVE_GET");
+        post.setObjPut(createObjAthleteSelectiveGet());
+        post.execute(url);
+    }
+
+    private JSONObject createObjAthleteSelectiveGet(){
+        JSONObject jsonObject = new JSONObject();
+        try{
+            DatabaseHelper db = new DatabaseHelper(MainActivity.this);
+            Selective sel = db.getSelective();
+
+            JSONObject query = new JSONObject();
+            query.put("selective", sel.getId());
+            jsonObject.put("query", query);
+
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.put("athlete");
+
+            jsonObject.put("populate", jsonArray);
+
+        }catch (Exception ex){
+            Log.i("Exception", ex.getMessage());
+        }
+
+        return jsonObject;
+    }
+
+    public static void returnGetAthleteSelective(Activity act, String response, int status){
+        ((MainActivity)act).returnGetAthleteSelective(response, status);
+    }
+    private void returnGetAthleteSelective(String result, int status){
+        constraintProgress.setVisibility(View.GONE);
+        if(status == 200 || status ==201) {
+            try {
+                JSONArray jsonArray = new JSONArray(result);
+                for(int i=0; i<=jsonArray.length()-1;i++){
+
+                    String strAthlete = jsonArray.getJSONObject(i).getString("athlete");
+                    JSONObject jsonObject = new JSONObject(strAthlete);
+                    jsonObject.put(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER,
+                            jsonArray.getJSONObject(i).getString(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER));
+
+                    DatabaseHelper db = new DatabaseHelper(this);
+                    DeserializerJsonElements des = new DeserializerJsonElements(jsonObject.toString());
+                    db.addAthlete(des.getObjAthlete());
+                }
+
+                PlayersFragment.callInflateAthletes();
+            } catch (Exception ex) {
+                Log.i("GetAthleteSelective", ex.getMessage());
+            }
+        }
+    }
+
+
+
+
 
     /************************** CLICK LIST **********************************/
     public static void onClickItemList(Activity activity, int positionArray, String id){
@@ -194,24 +255,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    /*private View.OnClickListener clickAddAccount = new View.OnClickListener() {
+    private View.OnClickListener clickAddAccount = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            DatabaseHelper db = new DatabaseHelper(MainActivity.this);
-            User user = db.getUser();
-            if(user!=null){
-                if(user.getIsAdmin()){
-                    Intent i = new Intent(MainActivity.this, CreateAccountAthleteActivity.class);
-                    startActivity(i);
-                }
-                else{
-                    clearForm();
-                    linearAddAthlete.setVisibility(View.VISIBLE);
-                }
-
-            }
+            Intent i = new Intent(MainActivity.this, CreateAccountAthleteActivity.class);
+            startActivity(i);
         }
-    };*/
+    };
 
     @Override
     public void onBackPressed() {
@@ -556,7 +606,8 @@ public class MainActivity extends AppCompatActivity {
         editCodeAthlete.setText("");
     }*/
 
-    private void verifyDate(){
+    private boolean verifyDate(){
+        boolean ret = false;
         try {
             String dateLogin = SharedPreferencesAdapter.getValueStringSharedPreferences(MainActivity.this, Constants.DATE_LOGIN);
             Calendar c = Calendar.getInstance();
@@ -570,11 +621,13 @@ public class MainActivity extends AppCompatActivity {
             long diff = date2.getTime() - date1.getTime();
             System.out.println ("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
             if(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)>=3){
+                ret = true;
                 Services.messageAlert(MainActivity.this, "Mensagem","A sua versão de teste expirou.","exit");
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return ret;
     }
 
 

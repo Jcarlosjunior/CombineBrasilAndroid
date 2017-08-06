@@ -139,11 +139,11 @@ public class MenuActivity extends AppCompatActivity {
 
     private void enabledOrDisabledBtn(Button btn, boolean isEnabled){
         if(isEnabled){
-            btn.setEnabled(true);
+            //btn.setEnabled(true);
             btn.setAlpha(1);
         }
         else{
-            btn.setEnabled(false);
+            //btn.setEnabled(false);
             btn.setAlpha(0.5f);
         }
     }
@@ -181,14 +181,15 @@ public class MenuActivity extends AppCompatActivity {
     private View.OnClickListener clickConfirmEnterSelective = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            callEnterSelective();
+            if(editCode.getText().length()>=4)
+                callEnterSelective();
         }
     };
     private View.OnLongClickListener clickLongConfirmSelective = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
             if(Constants.debug)
-                editCode.setText("SELCOMBINE");
+                editCode.setText("SELETIVA_COMBINE");
             return true;
         }
     };

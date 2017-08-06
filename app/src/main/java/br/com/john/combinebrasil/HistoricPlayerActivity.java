@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -20,18 +21,25 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import junit.framework.Test;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+import br.com.john.combinebrasil.AdapterList.AdapterRecyclerPositions;
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerResultsTest;
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerTestInfo;
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerTests;
 import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.Positions;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.CreateJSON;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostAsyncTask;
@@ -87,14 +95,17 @@ public class HistoricPlayerActivity extends AppCompatActivity {
             showInfoAthlete(this.athlete);
 
             idSelective = extras.getString("id_selective");
-            //callInfoSelectivePlayer();
-            callResultsAthletes();
+            callInfoSelectivePlayer();
+            //callResultsAthletes();
         }
     }
 
     private void callInfoSelectivePlayer(){
-        //DatabaseHelper db = new DatabaseHelper(this);
-        //Athletes athlete = db.getAthleteById(idAthlete);
+        showProgress("Baixando resultados dos atletas");
+        String url = Constants.URL+Constants.API_SELECTIVES+"/"+idSelective+"/result/athlete/"+idAthlete;
+        Connection con = new Connection(url, 0, Constants.CALLED_RESULTS_ATHLETE, false, this);
+        con.callByJsonStringRequest();
+
         showInfoAthlete(this.athlete);
     }
 
@@ -168,9 +179,60 @@ public class HistoricPlayerActivity extends AppCompatActivity {
     private void returnGetResultsSelectiveAthlete(String result, int status){
         hideProgress();
         if(status == 200 || status == 201){
-            DeserializerJsonElements des = new DeserializerJsonElements(result);
-            ArrayList<Tests> tests = des.getTest();
+            desesrializerJson(result);
+        }
+    }
 
+    private void desesrializerJson(String response){
+        try {
+            JSONObject json = new JSONObject(response);
+            JSONArray jsonTests = json.getJSONArray("tests");
+            ArrayList<Tests> tests = new ArrayList<>();
+            for(int i=0;i<=jsonTests.length()-1;i++) {
+                try {
+                    DeserializerJsonElements des = new DeserializerJsonElements(jsonTests.getString(i));
+                    Tests test = des.getTestObject();
+
+                    test.setAthlete(jsonTests.getJSONObject(i).getJSONObject("athlete").getString("name"));
+                    test.setType(jsonTests.getJSONObject(i).getJSONObject("type").getString("name"));
+                    tests.add(test);
+                }catch(Exception ex){
+                    Log.i("Exception", ex.getMessage());
+                }
+            }
+
+
+            JSONArray jsonPositions = json.getJSONArray("positions");
+            ArrayList<Positions> arrayPositions=new ArrayList<>();
+            String positions = "";
+            for(int i=0;i<=jsonPositions.length()-1;i++){
+                try {
+                    Positions position = new Positions();
+                    position.setID("");
+                    position.setNAME(jsonPositions.getJSONObject(i).getString("name"));
+                    position.setDESCRIPTION(jsonPositions.getJSONObject(i).getString("point"));
+                    arrayPositions.add(position);
+
+                    positions = positions + jsonPositions.getJSONObject(i).getString("name") + ", ";
+                }catch(Exception ex) {
+                    Log.i("Exception", ex.getMessage());
+                }
+            }
+
+            Collections.sort(arrayPositions, new FishNameComparator());
+
+            positions = positions.substring(0, positions.length()-2);
+            initInflatePositions(arrayPositions);
+            initInflateTests(tests);
+        }catch (Exception ex){
+            Log.i("Exception", ex.getMessage());
+        }
+    }
+
+    public class FishNameComparator implements Comparator<Positions>
+    {
+        public int compare(Positions left, Positions right) {
+            return left.getDESCRIPTION().compareTo(right.getDESCRIPTION());
         }
     }
 
@@ -182,6 +244,8 @@ public class HistoricPlayerActivity extends AppCompatActivity {
             }
             inflateTests(tests, values);
         }
+        else
+            recyclerTests.setVisibility(View.GONE);
     }
 
     private void inflateTests(ArrayList<Tests> tests, String[] values){
@@ -189,6 +253,25 @@ public class HistoricPlayerActivity extends AppCompatActivity {
         recyclerTests.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerTests.setVisibility(View.VISIBLE);
         recyclerTests.setAdapter(adapter);
+    }
+
+    private void initInflatePositions(ArrayList<Positions> positions){
+        if(positions!=null && positions.size()>0){
+            String[] values = new String[positions.size()];
+            for(int i=0; i<=positions.size()-1; i++){
+                values[i] = positions.get(i).getDESCRIPTION();
+            }
+            inflatePositions(positions, values);
+        }
+        else
+            recyclerPositions.setVisibility(View.GONE);
+    }
+
+    private void inflatePositions(ArrayList<Positions> positions, String[] values){
+        AdapterRecyclerPositions adapter = new AdapterRecyclerPositions(this, positions, values);
+        recyclerPositions.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerPositions.setVisibility(View.VISIBLE);
+        recyclerPositions.setAdapter(adapter);
     }
 
     private JSONObject querySearchData() {

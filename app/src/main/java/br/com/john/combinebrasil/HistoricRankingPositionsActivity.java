@@ -30,6 +30,7 @@ import br.com.john.combinebrasil.AdapterList.ExpandableRecyclerPositions.Expanda
 import br.com.john.combinebrasil.AdapterList.ExpandableRecyclerPositions.GroupFatherPositions;
 import br.com.john.combinebrasil.Classes.RankingPositions;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostAsyncTask;
 import br.com.john.combinebrasil.Services.Constants;
@@ -58,12 +59,11 @@ public class HistoricRankingPositionsActivity extends AppCompatActivity {
         ImageView imgSearch = (ImageView) findViewById(R.id.img_delete);
         imgSearch.setVisibility(View.GONE);
         TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
-        textTitle.setText(R.string.position);
+        textTitle.setText("Ranking por Posições");
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
-            //callGetTestTypes(extras.getString("id_selective"));
-
+            callGetTestTypes(extras.getString("id_selective"));
             inflateDataTests();
         }
 
@@ -77,12 +77,9 @@ public class HistoricRankingPositionsActivity extends AppCompatActivity {
     }
 
     private void getTestTypes(String idSelective) {
-        String url = Constants.URL + Constants.API_SELECTIVE_TEST_TYPES_SEARCH;
-        PostAsyncTask post = new PostAsyncTask();
-        post.setObjPut(queryJson(idSelective));
-        post.setWhoCalled(Constants.CALLED_GET_TEST_TYPES);
-        post.setActivity(this);
-        post.execute(url);
+        String url = Constants.URL + Constants.API_SELECTIVES+"/"+idSelective+"/result";
+        Connection con = new Connection(url, 0, Constants.CALLED_GET_POSITIONS_RESULT, false, this);
+        con.callByJsonStringRequest();
     }
 
     public static void returnGetTestTypes(Activity act, String response, int status){
@@ -133,21 +130,6 @@ public class HistoricRankingPositionsActivity extends AppCompatActivity {
     }
 
     private void inflateDataTests(){
-    /*    tests = orderAlphabeticTests(tests);
-        groupFathers = new ArrayList<GroupFatherTests>();
-        childItens = new ArrayList<ChildItemTests>();
-        String type = tests.get(0).getType();
-        for(Tests test : tests){
-            if(test.equals(type))
-                childItens.add(new ChildItemTests(test));
-            else{
-                type = test.getType();
-                groupFathers.add(new GroupFatherTests(test.getType(), childItens));
-            }
-        }
-
-        inflateExpandableRecycler();*/
-        //childItens = new ArrayList<ChildItemTests>();
         groupFathers = new ArrayList<GroupFatherPositions>();
         for(int i = 0; i<=3; i++){
             childItens = new ArrayList<ChildItemPositions>();

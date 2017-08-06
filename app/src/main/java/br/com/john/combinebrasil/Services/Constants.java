@@ -58,6 +58,8 @@ public class Constants {
     public static final String CALLED_GET_USER_SELECTIVE= "GET_USER_SELECTIVE";
     public static final String CALLED_RESULTS_ATHLETE= "GET_RESULTS_ATHLETE";
     public static final String CALLED_GET_TEST_TYPES= "GET_TEST_TYPES";
+    public static final String CALLED_GET_POSITIONS_RESULT= "GET_POSITIONS_RESULT";
+    public static final String CALLED_GET_SUBSCRIBERS= "GET_SUBSCRIBERS";
 
     public static final String CALLED_POST_TESTS = "calledPostTests";
 
@@ -117,6 +119,7 @@ public class Constants {
     public static final String ATHLETES_CODE = "code";
     public static final String ATHLETES_SYNC = "sync";
     public static final String ATHLETES_TERMSACCEPTED = "termsAccepted";
+    public static final String ATHLETES_IMAGE_URL = "imageUrl";
 
     /*******************************USER TABLE ***********************************/
     public static final String TABLE_USER = "User";

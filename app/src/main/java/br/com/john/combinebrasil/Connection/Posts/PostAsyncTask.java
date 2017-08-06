@@ -5,6 +5,7 @@ import br.com.john.combinebrasil.HistoricPlayersSelectiveActivity;
 import br.com.john.combinebrasil.HistoricRankingTestsActivity;
 import br.com.john.combinebrasil.HistoricSelectiveActivity;
 import br.com.john.combinebrasil.LoginActivity;
+import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.MenuActivity;
 import br.com.john.combinebrasil.Services.Constants;
 
@@ -25,6 +26,10 @@ public class PostAsyncTask extends PostBase{
             HistoricPlayerActivity.returnGetResultsSelectiveAthlete(activity, result, statusCode);
         else if(whoCalled.equals(Constants.CALLED_GET_TEST_TYPES))
             HistoricRankingTestsActivity.returnGetTestTypes(activity, result, statusCode);
+        else if(method== MainActivity.METHOD_ATHLETE_SELECTIVE_GET){
+            if(activity.getClass().getSimpleName().equals("MainActivity"))
+                MainActivity.returnGetAthleteSelective(activity, result, statusCode);
+        }
         else
             LoginActivity.afterLogin(result, activity, statusCode);
     }

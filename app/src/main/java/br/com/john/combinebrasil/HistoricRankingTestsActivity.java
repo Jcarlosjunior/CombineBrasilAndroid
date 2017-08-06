@@ -25,14 +25,19 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerAthletesInfo;
 import br.com.john.combinebrasil.AdapterList.AdapterRecyclerTests;
 import br.com.john.combinebrasil.AdapterList.ExpandableRecycler.ChildItemTests;
 import br.com.john.combinebrasil.AdapterList.ExpandableRecycler.ExpandableRecyclerViewAdapterTests;
 import br.com.john.combinebrasil.AdapterList.ExpandableRecycler.GroupFatherTests;
+import br.com.john.combinebrasil.Classes.Athletes;
+import br.com.john.combinebrasil.Classes.ResultTest;
+import br.com.john.combinebrasil.Classes.ResultTestsAthletes;
 import br.com.john.combinebrasil.Classes.TestTypes;
 import br.com.john.combinebrasil.Classes.Tests;
+import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
 import br.com.john.combinebrasil.Connection.Posts.PostAsyncTask;
 import br.com.john.combinebrasil.Services.AllActivities;
@@ -66,9 +71,7 @@ public class HistoricRankingTestsActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
-            //callGetTestTypes(extras.getString("id_selective"));
-
-            inflateDataTests();
+            callGetTestTypes(extras.getString("id_selective"));
         }
     }
 
@@ -80,12 +83,9 @@ public class HistoricRankingTestsActivity extends AppCompatActivity {
     }
 
     private void getTestTypes(String idSelective) {
-        String url = Constants.URL + Constants.API_SELECTIVE_TEST_TYPES_SEARCH;
-        PostAsyncTask post = new PostAsyncTask();
-        post.setObjPut(queryJson(idSelective));
-        post.setWhoCalled(Constants.CALLED_GET_TEST_TYPES);
-        post.setActivity(this);
-        post.execute(url);
+        String url = Constants.URL + Constants.API_SELECTIVES+"/"+idSelective+"/result";
+        Connection con = new Connection(url, 0, Constants.CALLED_GET_TEST_TYPES, false, this);
+        con.callByJsonStringRequest();
     }
 
     public static void returnGetTestTypes(Activity act, String response, int status){
@@ -95,70 +95,17 @@ public class HistoricRankingTestsActivity extends AppCompatActivity {
     private void returnGetTestTypes(String response, int status){
         hideProgress();
         if(status==200||status==201){
-            DeserializerJsonElements des = new DeserializerJsonElements(response);
-            testTypes = des.getSelectiveTestType();
-            callInflateRecycler();
+            DeserializerJsonElements des = new DeserializerJsonElements(null);
+            ArrayList<ResultTestsAthletes> arraylist = des.deserializerResultsSelectiveHistoric(response);
+            inflateDataTests(arraylist);
         }
     }
 
-    private void callInflateRecycler(){
-        if(testTypes!=null && testTypes.size()>0){
-            String[] values = new String[testTypes.size()];
-            for(int i=0; i<=testTypes.size()-1; i++)
-                values[i] = testTypes.get(i).getId();
+    private void inflateDataTests(ArrayList<ResultTestsAthletes> arraylist){
 
-            inflateRecycler(values);
-        }
-    }
-
-    private void inflateRecycler(String[] values){
-        RecyclerView recycler = (RecyclerView) findViewById(R.id.recycler_ranking);
-        recycler.setHasFixedSize(true);
-        recycler.setItemAnimator(new DefaultItemAnimator());
-        recycler.setLayoutManager(new GridLayoutManager(this, 2));//numero de colunas
-        AdapterRecyclerTests adapter = new AdapterRecyclerTests(HistoricRankingTestsActivity.this, testTypes, values);
-        recycler.setVisibility(View.VISIBLE);
-        recycler.setAdapter(adapter);
-    }
-
-    private ArrayList<Tests> inflateFalseDatasTests(int cont){
-        ArrayList<Tests> tests = new ArrayList<Tests>();
-        for(int i=0; i<=10; i++){
-            Tests test =  new Tests();
-            test.setAthlete("Atleta "+i);
-            test.setType(String.valueOf(cont));
-            test.setFirstValue(i);
-            test.setUser("User "+i);
-            test.setId(String.valueOf(i));
-            tests.add(test);
-        }
-        return tests;
-    }
-
-    private void inflateDataTests(){
-    /*    tests = orderAlphabeticTests(tests);
         groupFathers = new ArrayList<GroupFatherTests>();
-        childItens = new ArrayList<ChildItemTests>();
-        String type = tests.get(0).getType();
-        for(Tests test : tests){
-            if(test.equals(type))
-                childItens.add(new ChildItemTests(test));
-            else{
-                type = test.getType();
-                groupFathers.add(new GroupFatherTests(test.getType(), childItens));
-            }
-        }
-
-        inflateExpandableRecycler();*/
-        //childItens = new ArrayList<ChildItemTests>();
-        groupFathers = new ArrayList<GroupFatherTests>();
-        for(int i = 0; i<=3; i++){
-            childItens = new ArrayList<ChildItemTests>();
-            ArrayList<Tests> testsArrayList = inflateFalseDatasTests(i);
-            for(Tests test : testsArrayList){
-                childItens.add(new ChildItemTests(test));
-            }
-            groupFathers.add(new GroupFatherTests(testsArrayList.get(i).getType(), childItens));
+        for(int i = 0; i<=arraylist.size()-1; i++){
+            groupFathers.add(new GroupFatherTests(arraylist.get(i).getType().getName(), arraylist.get(i).getTests()));
         }
         inflateExpandableRecycler();
     }

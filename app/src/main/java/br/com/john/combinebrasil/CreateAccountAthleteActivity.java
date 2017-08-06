@@ -1,6 +1,7 @@
 package br.com.john.combinebrasil;
 
 import android.app.Activity;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -51,9 +52,10 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
     TextView textTerms, bodyTextTerms;
     CheckBox checkTerms;
     Button btnClose;
-    LinearLayout linearTerms, linearCreate, linearNoConnection;
+    ConstraintLayout constraintTerms, constraintNoConnection;
     boolean checked = false, editAthlete = false;
     String idAthlete;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,9 +69,9 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
         LinearLayout btnBack = (LinearLayout) findViewById(R.id.linear_back_button);
         btnBack.setOnClickListener(btnBackClickListener);
 
-        linearCreate = (LinearLayout) findViewById(R.id.linear_create);
-        linearNoConnection = (LinearLayout) findViewById(R.id.linear_no_connection);
-        linearNoConnection.setOnClickListener(clickedVerifyConnection);
+        constraintNoConnection = (ConstraintLayout) findViewById(R.id.constraint_not_connection);
+
+        constraintNoConnection.setOnClickListener(clickedVerifyConnection);
 
         editTextName = (EditText) findViewById(R.id.edit_name_add);
         editTextCPF = (EditText) findViewById(R.id.edit_cpf_add);
@@ -89,7 +91,7 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
         textTerms = (TextView) findViewById(R.id.text_terms);
         checkTerms = (CheckBox) findViewById(R.id.check_terms);
         btnClose = (Button) findViewById(R.id.button_close);
-        linearTerms = (LinearLayout) findViewById(R.id.linear_terms);
+        constraintTerms = (ConstraintLayout) findViewById(R.id.constraint_temrs);
 
         textTerms.setOnClickListener(clickOpenTerms);
         btnClose.setOnClickListener(closeTerms);
@@ -117,7 +119,7 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
         });
 
         inflateSpinnerDay();
-        inflateSpinnerPosition();
+        //inflateSpinnerPosition();
 
         Mask maskCpf = new Mask("###.###.###-##", editTextCPF);
         editTextCPF.addTextChangedListener(maskCpf);
@@ -153,12 +155,10 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
 
     private void verifyConnection(){
         if(Services.isOnline(CreateAccountAthleteActivity.this)){
-            linearCreate.setVisibility(View.VISIBLE);
-            linearNoConnection.setVisibility(View.GONE);
+            constraintNoConnection.setVisibility(View.GONE);
         }
         else{
-            linearCreate.setVisibility(View.GONE);
-            linearNoConnection.setVisibility(View.VISIBLE);
+            constraintNoConnection.setVisibility(View.VISIBLE);
         }
     }
 
@@ -175,11 +175,11 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
         editTextPhone.setText(athlete.getPhoneNumber());
         editTextHeight.setText(String.format("%.2f", athlete.getHeight()).replace(".",","));
         editTextWeihgt.setText(String.format("%.0f",athlete.getWeight()).replace(".",","));
-        Positions position = db.getPositiomById(athlete.getDesirablePosition());
-        if(position!=null)
-            spinnerPosition.setText(position.getNAME());
-        else
-            spinnerPosition.setText("");
+        //Positions position = db.getPositiomById(athlete.getDesirablePosition());
+        //if(position!=null)
+          //  spinnerPosition.setText(position.getNAME());
+        //else
+          //  spinnerPosition.setText("");
         String birthday = Services.convertDate(athlete.getBirthday());
         if(!birthday.isEmpty()){
             String day = birthday.substring(0,2);
@@ -225,8 +225,8 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
            if(validaBirthday()) {
                if (checked == true) {
                    if (Services.isOnline(this)) {
-                       LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
-                       linearProgress.setVisibility(View.VISIBLE);
+                       ConstraintLayout progress = (ConstraintLayout) findViewById(R.id.constraint_progress);
+                       progress.setVisibility(View.VISIBLE);
                        if(editAthlete){
                            String url = Constants.URL + Constants.API_ATHLETES+"/"+idAthlete;
                            PutAthlete post = new PutAthlete();
@@ -356,7 +356,8 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
                     editEmail.getText().toString(),
                     editTextPhone.getText().toString(),
                     false,
-                    true
+                    true,
+                    " "
                     );
         }
         catch (Exception e){
@@ -424,7 +425,7 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
     }
 
     private void afterPost(String ret, String response){
-        LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
+        ConstraintLayout linearProgress = (ConstraintLayout) findViewById(R.id.constraint_progress);
         linearProgress.setVisibility(View.GONE);
             if(ret.equals("FAIL"))
                 verifyErrorCreate(response);
@@ -465,7 +466,7 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
         Connection task = new Connection(url, 0, "updateAthleteAccount",false, CreateAccountAthleteActivity.this);
         task.callByJsonStringRequest();
 
-        LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
+        ConstraintLayout linearProgress = (ConstraintLayout) findViewById(R.id.constraint_progress);
         linearProgress.setVisibility(View.VISIBLE);
     }
     public static void returnAccountAthlete(Activity act, String response){
@@ -473,7 +474,7 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
     }
     private void returnAccountAthlete(String response){
 
-        LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
+        ConstraintLayout linearProgress = (ConstraintLayout) findViewById(R.id.constraint_progress);
         linearProgress.setVisibility(View.GONE);
 
         DeserializerJsonElements des = new DeserializerJsonElements(response);
@@ -489,7 +490,7 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
     }
 
     private void saveAthlete(String response){
-        LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
+        ConstraintLayout linearProgress = (ConstraintLayout) findViewById(R.id.constraint_progress);
         linearProgress.setVisibility(View.GONE);
 
         DeserializerJsonElements des = new DeserializerJsonElements(response);
@@ -555,7 +556,7 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
     }
 
     private void afterSendSelectiveAthlete(String response, String result){
-        LinearLayout linearProgress = (LinearLayout) findViewById(R.id.linear_progress_add);
+        ConstraintLayout linearProgress = (ConstraintLayout) findViewById(R.id.constraint_progress);
         linearProgress.setVisibility(View.GONE);
         if(response.equals("FAIL")) {
             Services.messageAlert(CreateAccountAthleteActivity.this, "Mensagem", "Atleta não cadastrado\n" + result, "");
@@ -788,14 +789,14 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
     private View.OnClickListener clickOpenTerms = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            linearTerms.setVisibility(View.VISIBLE);
+            constraintTerms.setVisibility(View.VISIBLE);
         }
     };
 
     private  View.OnClickListener closeTerms = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            linearTerms.setVisibility(View.GONE);
+            constraintTerms.setVisibility(View.GONE);
         }
     };
 }

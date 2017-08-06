@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -44,12 +47,12 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
         this.list = list;
     }
     static class ViewHolder {
-        LinearLayout linearBackground;
+        ConstraintLayout linearBackground;
         TextView textNamePlayer;
         TextView textFirstResult;
         TextView textSecondResult;
         TextView textCode;
-        ImageView imgStatus;
+        ImageView imgAthlete;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -63,12 +66,12 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.layout_list_players, null);
             viewHolder = new ViewHolder();
-            viewHolder.linearBackground = (LinearLayout) convertView.findViewById(R.id.linear_list_players);
+            viewHolder.linearBackground = (ConstraintLayout) convertView.findViewById(R.id.linear_list_players);
             viewHolder.textNamePlayer = (TextView) convertView.findViewById(R.id.text_name_player_list);
             viewHolder.textFirstResult = (TextView) convertView.findViewById(R.id.text_first_result_list);
             viewHolder.textSecondResult = (TextView) convertView.findViewById(R.id.text_second_result_list);
             viewHolder.textCode = (TextView) convertView.findViewById(R.id.text_code_list);
-            viewHolder.imgStatus = (ImageView) convertView.findViewById(R.id.img_status_players);
+            viewHolder.imgAthlete = (ImageView) convertView.findViewById(R.id.image_athlete);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -84,18 +87,11 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
         viewHolder.textFirstResult.setText("");
         viewHolder.textSecondResult.setText("");
         viewHolder.textCode.setText(list.get(position).getCode());
+        Picasso.with(activity).load(list.get(position).getURLImage()).into(viewHolder.imgAthlete);
 
         DatabaseHelper db = new DatabaseHelper(activity);
         db.openDataBase();
-        Tests test = db.getTestFromAthleteAndType(list.get(position).getId(),AllActivities.testSelected);
-       if(!isAthletes){
-           if(test!=null)
-               viewHolder.imgStatus.setImageDrawable(activity.getDrawable(R.drawable.check));
-           else
-               viewHolder.imgStatus.setVisibility(View.GONE);
-       }
-        else
-           viewHolder.imgStatus.setVisibility(View.GONE);
+
 
         return convertView;
     }

@@ -68,7 +68,7 @@ public class HistoricPlayersSelectiveActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
-            idSelective = Constants.debug ? "589e11e401bf3d0011a30962" : extras.getString("id_selective");
+            idSelective = extras.getString("id_selective");
             callListPlayers();
         }
     }

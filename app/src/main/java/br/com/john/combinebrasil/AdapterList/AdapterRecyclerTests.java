@@ -10,6 +10,8 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -52,16 +56,14 @@ public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTe
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView txtName;
-        public TextView txtStatus;
-        public LinearLayout listItem;
+        public ConstraintLayout listItem;
         public ImageView imageIcon;
 
         public ViewHolder(View v) {
             super(v);
             txtName = (TextView) v.findViewById(R.id.firstLine);
-            txtStatus = (TextView) v.findViewById(R.id.text_status);
             imageIcon = (ImageView) v.findViewById(R.id.icon);
-            listItem = (LinearLayout)v.findViewById(R.id.linear_list);
+            listItem = (ConstraintLayout)v.findViewById(R.id.linear_list);
 
             //listItem.setOnClickListener((View.OnClickListener)listItemListener);
             //progressBar.setOnClickListener((View.OnClickListener) progressBarListener);
@@ -106,7 +108,7 @@ public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTe
 
         holder.txtName.setText(list.get(position).getName());
 
-        holder.txtStatus.setText(getCountAthletes(list.get(position).getId()));
+       //holder.txtStatus.setText(getCountAthletes(list.get(position).getId()));
 
         holder.listItem.setOnClickListener(new OnClickListener() {
             @Override
@@ -117,7 +119,11 @@ public class AdapterRecyclerTests extends RecyclerView.Adapter<AdapterRecyclerTe
             }
         });
 
-        chosseIcon(list.get(position).getIconImageURL(), holder.imageIcon);
+        Picasso.with(homeActivity)
+                .load("https://static.wixstatic.com/media/7a9595_0ea9d79f24244487945fb2db5a83a538~mv2.png/v1/fill/w_211,h_249,al_c,usm_0.66_1.00_0.01/7a9595_0ea9d79f24244487945fb2db5a83a538~mv2.png")
+                .into(holder.imageIcon);
+
+        //chosseIcon(list.get(position).getIconImageURL(), holder.imageIcon);
     }
     //o metodo abaixo serve para remover um elemento da lista ao clicar no mesmo
 
