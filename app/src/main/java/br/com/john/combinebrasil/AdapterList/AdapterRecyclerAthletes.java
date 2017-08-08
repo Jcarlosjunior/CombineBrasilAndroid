@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -51,24 +54,20 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        LinearLayout linearBackground;
-        LinearLayout linearStatus;
+        ConstraintLayout linearBackground;
         TextView textNamePlayer;
         TextView textFirstResult;
         TextView textSecondResult;
         TextView textCode;
-        ImageView imgStatus;
-        TextView textStatus;
+        ImageView imgAthlete;
         public ViewHolder(View v) {
             super(v);
-            linearBackground = (LinearLayout) v.findViewById(R.id.linear_list_players);
-            linearStatus = (LinearLayout) v.findViewById(R.id.linear_img_status);
+            linearBackground = (ConstraintLayout) v.findViewById(R.id.linear_list_players);
             textNamePlayer = (TextView) v.findViewById(R.id.text_name_player_list);
             textFirstResult = (TextView) v.findViewById(R.id.text_first_result_list);
             textSecondResult = (TextView) v.findViewById(R.id.text_second_result_list);
             textCode = (TextView) v.findViewById(R.id.text_code_list);
-            imgStatus = (ImageView) v.findViewById(R.id.img_status_players);
-            textStatus = (TextView) v.findViewById(R.id.text_status);
+            imgAthlete = (ImageView) v.findViewById(R.id.image_athlete);
         }
     }
 
@@ -98,7 +97,7 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
         holder.textSecondResult.setText("");
         holder.textSecondResult.setVisibility(View.GONE);
         holder.textCode.setText(list.get(position).getCode());
-        holder.textStatus.setVisibility(View.GONE);
+        Picasso.with(activity).load(list.get(position).getURLImage()).into(holder.imgAthlete);
 
         DatabaseHelper db = new DatabaseHelper(activity);
         db.openDataBase();
@@ -106,17 +105,6 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
 
         if(test!=null) {
             TestTypes type = db.getTestTypeFromId(test.getType());
-            if(test.getCanSync()) {
-                holder.linearStatus.setVisibility(View.VISIBLE);
-                holder.textStatus.setVisibility(View.VISIBLE);
-                if(Services.convertIntInBool(test.getSync()))
-                    holder.textStatus.setText("Exercício já sincronizado");
-                else
-                    holder.textStatus.setText("Exercício pronto pra ser sincronizado");
-            }
-            else {
-                holder.linearStatus.setVisibility(View.GONE);
-            }
 
             if (type.getValueType().toLowerCase().equals("corrida") || type.getValueType().toLowerCase().equals("tempo")){
                 holder.textFirstResult.setText(Services.convertInTime(test.getFirstValue()));
@@ -132,8 +120,6 @@ public class AdapterRecyclerAthletes extends RecyclerView.Adapter<AdapterRecycle
                 holder.textSecondResult.setText(Services.convertCentimetersinMeters(test.getSecondValue()));
             }
         }
-        else
-            holder.linearStatus.setVisibility(View.GONE);
     }
 
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,7 +54,8 @@ public class AthletesActivity extends AppCompatActivity {
     private EditText editSearch;
     private ImageView imgOrder;
     private Button btnCancel, buttonSync;
-    private LinearLayout linearOrder, linearNotSearch, linearSync, linearProgress;
+    private LinearLayout linearOrder, linearSync;
+    ConstraintLayout linearNotSearch, linearProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +76,9 @@ public class AthletesActivity extends AppCompatActivity {
         listViewPlayers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         linearOrder = (LinearLayout) findViewById(R.id.linear_order_by);
-        linearNotSearch = (LinearLayout) findViewById(R.id.linear_search_null);
+        linearNotSearch = (ConstraintLayout) findViewById(R.id.linear_search_null);
         linearSync = (LinearLayout) findViewById(R.id.linear_sync);
-        linearProgress = (LinearLayout) findViewById(R.id.linear_progress);
+        linearProgress = (ConstraintLayout) findViewById(R.id.linear_progress);
 
         editSearch = (EditText) findViewById(R.id.edit_search);
         textOptionName = (TextView) findViewById(R.id.text_option_order_name);
@@ -130,8 +132,9 @@ public class AthletesActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.length()>0)
                     searchPlayer(s.toString());
-                else
-                    showList(athletesArrayList);
+                else {
+                    callInflateAthletes();
+                }
             }
 
             @Override

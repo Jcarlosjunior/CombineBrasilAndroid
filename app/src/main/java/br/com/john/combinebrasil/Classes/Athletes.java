@@ -30,7 +30,7 @@ public class Athletes{
 
     public Athletes(String id, String name, String birthday, String cpf, String address, String desirablePosition,
                     double height, double weight, String createdAt,
-                    String updateAt, String code, String email, String phoneNumber, boolean sync, boolean termsAccepted) {
+                    String updateAt, String code, String email, String phoneNumber, boolean sync, boolean termsAccepted, String urlImage) {
         Id = id;
         Name = name;
         Birthday = birthday;
@@ -46,6 +46,7 @@ public class Athletes{
         this.PhoneNumber = phoneNumber;
         Sync = sync;
         TermsAccepted = termsAccepted;
+        this.URLImage = urlImage;
     }
 
     public String getId() {

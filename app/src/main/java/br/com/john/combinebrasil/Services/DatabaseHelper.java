@@ -191,6 +191,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     values.put(Constants.ATHLETES_PHONE, obj.getPhoneNumber());
                     values.put(Constants.ATHLETES_SYNC, Services.convertBoolInInt(obj.getSync()));
                     values.put(Constants.ATHLETES_TERMSACCEPTED, Services.convertBoolInInt(obj.getTermsAccepted()));
+                    values.put(Constants.ATHLETES_IMAGE_URL, obj.getURLImage());
 
                     ret = myDataBase.insert(Constants.TABLE_ATHLETES, null, values);
                 }
@@ -224,6 +225,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.ATHLETES_PHONE, athlete.getPhoneNumber());
                 values.put(Constants.ATHLETES_SYNC, Services.convertBoolInInt(athlete.getSync()));
                 values.put(Constants.ATHLETES_TERMSACCEPTED, Services.convertBoolInInt(athlete.getTermsAccepted()));
+                values.put(Constants.ATHLETES_IMAGE_URL, athlete.getURLImage());
 
                 return ret = myDataBase.insert(Constants.TABLE_ATHLETES, null, values);
 
@@ -581,7 +583,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             c.getString(c.getColumnIndex(Constants.ATHLETES_EMAIL)),
                             c.getString(c.getColumnIndex(Constants.ATHLETES_PHONE)),
                             Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_SYNC))),
-                            Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_TERMSACCEPTED)))
+                            Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_TERMSACCEPTED))),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_IMAGE_URL))
                     );
                     itens.add(obj);
                 } while (c.moveToNext());
@@ -1006,12 +1009,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ", athletes."+Constants.ATHLETES_CODE+
                     ", athletes."+Constants.ATHLETES_SYNC+
                     ", athletes."+Constants.ATHLETES_TERMSACCEPTED+
+                    ", athletes."+Constants.ATHLETES_IMAGE_URL+
                     " FROM "
                     + Constants.TABLE_ATHLETES+" as athletes INNER JOIN "
                     +Constants.TABLE_TESTS
                     +" as tests ON athletes."+Constants.TESTS_ID+" = tests."
                     +Constants.TESTS_ATHLETE+" WHERE tests."+Constants.TESTS_TYPE+
-                    " ='"+idTest+"' and "+Constants.TESTS_CANSYNC+"=1";
+                    " ='"+idTest+"' and "+Constants.TESTS_CANSYNC+"=1"
+                    ;
 
             Cursor c = myDataBase.rawQuery(selectQuery, null);
 
@@ -1036,7 +1041,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             c.getString(c.getColumnIndex(Constants.ATHLETES_EMAIL)),
                             c.getString(c.getColumnIndex(Constants.ATHLETES_PHONE)),
                             Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_SYNC))),
-                            Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_TERMSACCEPTED)))
+                            Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_TERMSACCEPTED))),
+                            c.getString(c.getColumnIndex(Constants.ATHLETES_IMAGE_URL))
                     );
                     itens.add(obj);
                 } while (c.moveToNext());
@@ -1201,7 +1207,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getString(c.getColumnIndex(Constants.ATHLETES_EMAIL)),
                     c.getString(c.getColumnIndex(Constants.ATHLETES_PHONE)),
                     Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_SYNC))),
-                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_TERMSACCEPTED)))
+                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_TERMSACCEPTED))),
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_IMAGE_URL))
             );
         } else {
             athlete = null;
@@ -1236,7 +1243,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     c.getString(c.getColumnIndex(Constants.ATHLETES_EMAIL)),
                     c.getString(c.getColumnIndex(Constants.ATHLETES_PHONE)),
                     Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_SYNC))),
-                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_TERMSACCEPTED)))
+                    Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_TERMSACCEPTED))),
+                    c.getString(c.getColumnIndex(Constants.ATHLETES_IMAGE_URL))
             );
         } else {
             athlete = null;
@@ -1535,7 +1543,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.ATHLETES_EMAIL)),
                         c.getString(c.getColumnIndex(Constants.ATHLETES_PHONE)),
                         Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_SYNC))),
-                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_TERMSACCEPTED)))
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.ATHLETES_TERMSACCEPTED))),
+                        c.getString(c.getColumnIndex(Constants.ATHLETES_IMAGE_URL))
                 );
                 athletes.add(athlete);
             }while(c.moveToNext());

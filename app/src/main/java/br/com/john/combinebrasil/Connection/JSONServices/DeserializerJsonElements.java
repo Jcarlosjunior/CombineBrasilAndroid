@@ -8,9 +8,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import br.com.john.combinebrasil.AdapterList.ExpandableRecycler.ChildItemTests;
 import br.com.john.combinebrasil.Classes.Athletes;
 import br.com.john.combinebrasil.Classes.CEP;
 import br.com.john.combinebrasil.Classes.Positions;
+import br.com.john.combinebrasil.Classes.ResultTest;
+import br.com.john.combinebrasil.Classes.ResultTestsAthletes;
 import br.com.john.combinebrasil.Classes.Selective;
 import br.com.john.combinebrasil.Classes.SelectiveAthletes;
 import br.com.john.combinebrasil.Classes.Team;
@@ -128,7 +131,8 @@ public class DeserializerJsonElements {
                         json.optString(Constants.ATHLETES_EMAIL),
                         json.optString(Constants.ATHLETES_PHONE),
                         true,
-                        json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true)
+                        json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true),
+                        json.optString(Constants.ATHLETES_IMAGE_URL)
                 );
                 AthletesList.add(athletesEntity);
             }
@@ -162,7 +166,8 @@ public class DeserializerJsonElements {
                         json.optString(Constants.ATHLETES_EMAIL),
                         json.optString(Constants.ATHLETES_PHONE),
                         true,
-                        json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true)
+                        json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true),
+                        json.optString(Constants.ATHLETES_IMAGE_URL)
                 );
             }
         } catch (JSONException jsonExc) {
@@ -189,11 +194,12 @@ public class DeserializerJsonElements {
                         json.optDouble(Constants.ATHLETES_WEIGHT),
                         json.optString(Constants.ATHLETES_CREATEDAT),
                         json.optString(Constants.ATHLETES_UPDATEAT),
-                        "",
+                        json.optString(Constants.SELECTIVEATHLETES_INSCRIPTIONNUMBER),
                         json.optString(Constants.ATHLETES_EMAIL),
                         json.optString(Constants.ATHLETES_PHONE),
                         true,
-                        json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true)
+                        json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true),
+                        json.optString(Constants.ATHLETES_IMAGE_URL)
                 );
         } catch (JSONException jsonExc) {
             Log.i("JSON ERROR", jsonExc.toString());
@@ -226,7 +232,8 @@ public class DeserializerJsonElements {
                             json.optString(Constants.ATHLETES_EMAIL),
                             json.optString(Constants.ATHLETES_PHONE),
                             true,
-                            json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true)
+                            json.optBoolean(Constants.ATHLETES_TERMSACCEPTED, true),
+                            json.optString(Constants.ATHLETES_IMAGE_URL)
                     );
                     AthletesList.add(athletesEntity);
                 }catch (JSONException jsonExc){
@@ -694,4 +701,81 @@ public class DeserializerJsonElements {
         }
         return cep;
     }
+
+    /***************************RESULTS SELECTIVES*************************/
+    public ArrayList<ResultTestsAthletes> deserializerResultsSelectiveHistoric(String response){
+        ArrayList<ResultTestsAthletes> arraylistHash=new ArrayList<>();
+        try{
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("byTestType");
+            for (int i=0; i<=jsonArray.length()-1;i++) {
+                try {
+                    TestTypes type = new TestTypes();
+
+                    JSONObject json = jsonArray.getJSONObject(i);
+
+                    type.setId(json.optString("type"));
+                    type.setName(json.optString("name"));
+
+                    JSONArray jsonArrayTests = json.getJSONArray("tests");
+
+                    ArrayList<ChildItemTests> tests = new ArrayList<>();
+
+                    for (int x = 0; x <= jsonArrayTests.length() - 1; x++) {
+                        String strAthlete = jsonArrayTests.getJSONObject(x).optString("athlete", "");
+                        tests.add(getResultTests(jsonArrayTests.getJSONObject(x),
+                                strAthlete.equals("")||strAthlete.equals("null") ? new JSONObject() : new JSONObject(strAthlete)));
+                    }
+                    arraylistHash.add(new ResultTestsAthletes(type, tests));
+                }catch(Exception ex){
+                    Log.i("Exception", ex.getMessage());
+                }
+            }
+
+
+        }catch(Exception ex){
+            String message = ex.getMessage();
+            Log.i("Exception", message);
+        }
+        return arraylistHash;
+    }
+
+    private ChildItemTests getResultTests(JSONObject jsonTest, JSONObject jsonAthlete) throws JSONException {
+        ChildItemTests test = new ChildItemTests();
+
+        test.setId(jsonTest.optString("_id"));
+        test.setName(jsonTest.getJSONObject("type").optString("name"));
+        test.setFirstResult(jsonTest.optInt("firstValue"));
+        test.setSecondResult(jsonTest.optInt("secondValue"));
+        test.setPosition(jsonTest.optInt("position"));
+        test.setRaiting(jsonTest.optInt("rating"));
+        test.setType("");
+        test.setUser(jsonTest.optString("user"));
+        test.setValueType(jsonTest.getJSONObject("type").optString(Constants.TESTTYPES_VALUETYPES).toLowerCase());
+
+        if(jsonAthlete!=null && jsonAthlete.toString().replace("{","").replace("}","").length()>0) {
+            test.setIdAthlete(jsonAthlete.optString(Constants.ATHLETES_ID));
+            test.setNameAthlete(jsonAthlete.optString(Constants.ATHLETES_NAME));
+            test.setImageURL(jsonAthlete.optString(Constants.ATHLETES_IMAGE_URL));
+        }
+        else{
+            test.setIdAthlete("");
+            test.setNameAthlete("");
+        }
+
+        test.setPositions(getPositionsResults(jsonTest.getJSONArray("positionPoints")));
+
+        return test;
+    }
+
+    private String getPositionsResults(JSONArray jsonPositions) throws JSONException {
+        String positions = "";
+
+        for(int p=0;p<=jsonPositions.length()-1;p++)
+            positions =positions + jsonPositions.getJSONObject(p).optString("positionName")+", ";
+
+        return positions.length()>2?positions.substring(0, positions.length()-2) : positions;
+    }
+
+
 }

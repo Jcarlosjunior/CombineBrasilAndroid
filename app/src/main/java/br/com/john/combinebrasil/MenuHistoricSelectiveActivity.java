@@ -26,6 +26,9 @@ import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 
 import br.com.john.combinebrasil.Classes.Selective;
@@ -44,7 +47,7 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
     Selective selective;
     Team team;
 
-    TextView textNameTeam, textNameSelective, textPriceSelective, textDateSelective, textAddressSelective, textObservationSelective;
+    TextView textNameTeam, textNameSelective, textPriceSelective, textDateSelective, textAddressSelective, textObservationSelective, textSubscribers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +77,7 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
         textDateSelective = (TextView) findViewById(R.id.text_date_selective_details);
         textAddressSelective = (TextView) findViewById(R.id.text_local_selective_details);
         textObservationSelective = (TextView) findViewById(R.id.text_observation_selective_details);
+        textSubscribers = (TextView) findViewById(R.id.text_subscribers_selective_details);
 
         imageItemPlayers.setOnClickListener(clickedPlayers);
         imageItemRanking.setOnClickListener(clickedGrade);
@@ -107,9 +111,6 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
     private void callInfoSelective(){
         if(Services.isOnline(this)){
             hideNotConnect();
-            //hideSoft();
-            //DatabaseHelper db = new DatabaseHelper(this);
-            //this.selective = db.getSelectiveFromId(id);
             this.selective = HistoricSelectiveActivity.SELECTIVE_CLICKED;
             getTeamSelective();
         }
@@ -141,6 +142,35 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
             if(teams!= null && teams.size()>0) {
                 team = teams.get(0);
                 showDetailsSelective();
+                getNumberSubscribers();
+            }
+        }
+    }
+
+    private void getNumberSubscribers(){
+        showProgress(getString(R.string.verify_selective));
+        if(Services.isOnline(this)){
+            hideNotConnect();
+            String url = Constants.URL + Constants.API_SELECTIVEATHLETES+"?selective="+this.selective.getId();
+            Connection task = new Connection(url, 0, Constants.CALLED_GET_SUBSCRIBERS, false, MenuHistoricSelectiveActivity.this);
+            task.callByJsonStringRequest();
+        }
+        else
+            showToNoConnect();
+    }
+
+    public static void returnGetSubscriber(Activity act, String response, int status){
+        ((MenuHistoricSelectiveActivity)act).returnGetSubscriber(response, status);
+    }
+
+    private void returnGetSubscriber(String result, int status){
+        hideProgress();
+        if(status == 200 || status == 201){
+            try {
+                JSONArray json = new JSONArray(result);
+                textSubscribers.setText(json.length()+" atletas inscritos");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }

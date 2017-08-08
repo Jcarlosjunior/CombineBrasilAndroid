@@ -10,46 +10,63 @@ import br.com.john.combinebrasil.Classes.Tests;
  */
 
 public class ChildItemTests implements Parcelable {
-    private String name;
-    private String Id;
     private String Type;
-    private String Athlete;
-    private String Selective;
-    private long FirstValue;
-    private long SecondValue;
-    private float Rating;
+    private String IdAthlete;
+    private String NameAthlete;
+    private String Id;
+    private String name;
+    private int FirstResult;
+    private int SecondResult;
+    private int Raiting;
+    private int Position;
+    private String Positions;
     private String Wingspan;
     private String User;
+    private float Rating;
+    private String ImageURL;
+    private String ValueType;
 
     public ChildItemTests(Parcel in) {
         name = in.readString();
     }
 
-    public ChildItemTests(String name, String id, String type, String athlete, String selective, long firstValue, long secondValue, float rating, String wingspan, String user) {
-        this.name = name;
-        Id = id;
+    public ChildItemTests() {
+    }
+
+    public static Creator<ChildItemTests> getCREATOR() {
+        return CREATOR;
+    }
+
+    public ChildItemTests(String type, String idAthlete, String nameAthlete, String id, String name, int firstResult, int secondResult, int raiting, int position, String positions, String wingspan, String user, float rating, String imageURL) {
         Type = type;
-        Athlete = athlete;
-        Selective = selective;
-        FirstValue = firstValue;
-        SecondValue = secondValue;
-        Rating = rating;
+        IdAthlete = idAthlete;
+        NameAthlete = nameAthlete;
+        Id = id;
+        this.name = name;
+        FirstResult = firstResult;
+        SecondResult = secondResult;
+        Raiting = raiting;
+        Position = position;
+        Positions = positions;
         Wingspan = wingspan;
         User = user;
+        Rating = rating;
+        ImageURL = imageURL;
     }
 
     public  ChildItemTests(Tests tests){
         this.name = tests.getType();
         Id = getId();
         Type = tests.getType();;
-        Athlete = tests.getAthlete();
-        Selective = tests.getAthlete();
-        FirstValue = tests.getFirstValue();
-        SecondValue = tests.getSecondValue();
+        IdAthlete = tests.getAthlete();
+        Rating = tests.getRating();
+        FirstResult = (int)tests.getFirstValue();
+        SecondResult = (int)tests.getSecondValue();
         Rating = tests.getRating();
         Wingspan = tests.getWingspan();
         User = tests.getUser();
     }
+
     public String getName() {
         return name;
     }
@@ -74,44 +91,60 @@ public class ChildItemTests implements Parcelable {
         Type = type;
     }
 
-    public String getAthlete() {
-        return Athlete;
+    public String getIdAthlete() {
+        return IdAthlete;
     }
 
-    public void setAthlete(String athlete) {
-        Athlete = athlete;
+    public void setIdAthlete(String idAthlete) {
+        IdAthlete = idAthlete;
     }
 
-    public String getSelective() {
-        return Selective;
+    public String getNameAthlete() {
+        return NameAthlete;
     }
 
-    public void setSelective(String selective) {
-        Selective = selective;
+    public void setNameAthlete(String nameAthlete) {
+        NameAthlete = nameAthlete;
     }
 
-    public long getFirstValue() {
-        return FirstValue;
+    public int getFirstResult() {
+        return FirstResult;
     }
 
-    public void setFirstValue(long firstValue) {
-        FirstValue = firstValue;
+    public void setFirstResult(int firstResult) {
+        FirstResult = firstResult;
     }
 
-    public long getSecondValue() {
-        return SecondValue;
+    public int getSecondResult() {
+        return SecondResult;
     }
 
-    public void setSecondValue(long secondValue) {
-        SecondValue = secondValue;
+    public void setSecondResult(int secondResult) {
+        SecondResult = secondResult;
     }
 
-    public float getRating() {
-        return Rating;
+    public int getRaiting() {
+        return Raiting;
     }
 
-    public void setRating(float rating) {
-        Rating = rating;
+    public void setRaiting(int raiting) {
+        Raiting = raiting;
+    }
+
+    public int getPosition() {
+        return Position;
+    }
+
+    public void setPosition(int position) {
+        Position = position;
+    }
+
+    public String getPositions() {
+        return Positions;
+    }
+
+    public void setPositions(String positions) {
+        Positions = positions;
     }
 
     public String getWingspan() {
@@ -128,6 +161,30 @@ public class ChildItemTests implements Parcelable {
 
     public void setUser(String user) {
         User = user;
+    }
+
+    public float getRating() {
+        return Rating;
+    }
+
+    public void setRating(float rating) {
+        Rating = rating;
+    }
+
+    public String getImageURL() {
+        return ImageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        ImageURL = imageURL;
+    }
+
+    public String getValueType() {
+        return ValueType;
+    }
+
+    public void setValueType(String valueType) {
+        ValueType = valueType;
     }
 
     @Override

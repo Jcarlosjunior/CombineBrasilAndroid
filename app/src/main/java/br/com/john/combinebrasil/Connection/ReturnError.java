@@ -9,7 +9,10 @@ import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.ChooseTeamSelectiveActivity;
 import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.EnterSelectiveActivity;
+import br.com.john.combinebrasil.HistoricPlayerActivity;
 import br.com.john.combinebrasil.HistoricPlayersSelectiveActivity;
+import br.com.john.combinebrasil.HistoricRankingPositionsActivity;
+import br.com.john.combinebrasil.HistoricRankingTestsActivity;
 import br.com.john.combinebrasil.HistoricSelectiveActivity;
 import br.com.john.combinebrasil.LocalSelectiveActivity;
 import br.com.john.combinebrasil.LoginActivity;
@@ -86,11 +89,12 @@ public class ReturnError {
                 else if(activity.getClass().getSimpleName().equals("MainActivity"))
                     MainActivity.testResponse(activity, message, statusError);
             }
-            else if(whoCalled.equals(Constants.CALLED_GET_CEP))
-                if(activity.getClass().getSimpleName().equals("LocalSelectiveActivity"))
+            else if(whoCalled.equals(Constants.CALLED_GET_CEP)) {
+                if (activity.getClass().getSimpleName().equals("LocalSelectiveActivity"))
                     LocalSelectiveActivity.returnCEP(activity, message, statusError);
-                else if(activity.getClass().getSimpleName().equals("CreateTeamActivity"))
+                else if (activity.getClass().getSimpleName().equals("CreateTeamActivity"))
                     CreateTeamActivity.returnCEP(activity, message, statusError);
+            }
 
             else if (whoCalled.equals(Constants.CALLED_GET_TEAM)) {
                 if(activity.getClass().getSimpleName().equals("ChooseTeamSelectiveActivity"))
@@ -98,11 +102,22 @@ public class ReturnError {
                 else if(activity.getClass().getSimpleName().equals("MenuHistoricSelectiveActivity"))
                     MenuHistoricSelectiveActivity.returnGetTeamSelective(activity, message, statusError);
             }
+            else if(whoCalled.equals(Constants.CALLED_GET_SUBSCRIBERS))
+                MenuHistoricSelectiveActivity.returnGetSubscriber(activity, message, statusError);
+
+            else if(whoCalled.equals(Constants.CALLED_GET_POSITIONS_RESULT))
+                HistoricRankingPositionsActivity.returnGetTestTypes(activity, message, statusError);
 
             else if(whoCalled.equals(Constants.CALLED_GET_ATHLETES)){
                  if (activity.getClass().getSimpleName().equals("SyncAthleteActivity"))
                     HistoricPlayersSelectiveActivity.returnGetPlayers(activity, message, statusError);
 
             }
+            else if(whoCalled.equals(Constants.CALLED_RESULTS_ATHLETE)){
+                    if(activity.getClass().getSimpleName().equals("HistoricPlayerActivity"));
+                    HistoricPlayerActivity.returnGetResultsSelectiveAthlete(activity, message, statusError);
+            }
+            else if(whoCalled.equals(Constants.CALLED_GET_TEST_TYPES))
+                HistoricRankingTestsActivity.returnGetTestTypes(activity, message, statusError);
     }
 }

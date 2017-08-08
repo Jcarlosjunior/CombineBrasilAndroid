@@ -13,7 +13,10 @@ import br.com.john.combinebrasil.CreateAccountAthleteActivity;
 import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.CronometerOnlyOneActivity;
 import br.com.john.combinebrasil.EnterSelectiveActivity;
+import br.com.john.combinebrasil.HistoricPlayerActivity;
 import br.com.john.combinebrasil.HistoricPlayersSelectiveActivity;
+import br.com.john.combinebrasil.HistoricRankingPositionsActivity;
+import br.com.john.combinebrasil.HistoricRankingTestsActivity;
 import br.com.john.combinebrasil.HistoricSelectiveActivity;
 import br.com.john.combinebrasil.LocalSelectiveActivity;
 import br.com.john.combinebrasil.LoginActivity;
@@ -156,6 +159,16 @@ public class ReturnResponse {
                     else if(activity.getClass().getSimpleName().equals("CreateTeamActivity"))
                         CreateTeamActivity.returnCEP(activity, response, statuCode);
                 }
+                else if(whoCalled.endsWith(Constants.CALLED_RESULTS_ATHLETE)){
+                    if(activity.getClass().getSimpleName().equals("HistoricPlayerActivity"));
+                    HistoricPlayerActivity.returnGetResultsSelectiveAthlete(activity, response, statuCode);
+                }
+                else if(whoCalled.equals(Constants.CALLED_GET_SUBSCRIBERS))
+                    MenuHistoricSelectiveActivity.returnGetSubscriber(activity, response, statuCode);
+                else if(whoCalled.equals(Constants.CALLED_GET_POSITIONS_RESULT))
+                    HistoricRankingPositionsActivity.returnGetTestTypes(activity, response, statuCode);
+                else if(whoCalled.equals(Constants.CALLED_GET_TEST_TYPES))
+                    HistoricRankingTestsActivity.returnGetTestTypes(activity, response, statuCode);
             }
         } catch (Exception e) {
             Log.i("ERRO", e.toString());
