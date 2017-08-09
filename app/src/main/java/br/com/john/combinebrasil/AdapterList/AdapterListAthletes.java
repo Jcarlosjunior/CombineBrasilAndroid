@@ -87,7 +87,10 @@ public class AdapterListAthletes extends ArrayAdapter<String> {
         viewHolder.textFirstResult.setText("");
         viewHolder.textSecondResult.setText("");
         viewHolder.textCode.setText(list.get(position).getCode());
-        Picasso.with(activity).load(list.get(position).getURLImage()).into(viewHolder.imgAthlete);
+        String url = !list.get(position).getURLImage().equals("")?list.get(position).getURLImage():"https://images.vexels.com/media/users/3/131988/isolated/lists/bdddce6b399e0b4b6a09aed763849530-rugby-player-celebrating-silhouette.png";
+        Picasso.with(activity)
+                .load(url)
+                .into(viewHolder.imgAthlete);
 
         DatabaseHelper db = new DatabaseHelper(activity);
         db.openDataBase();
