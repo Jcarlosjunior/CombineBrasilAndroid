@@ -1,6 +1,7 @@
 package br.com.john.combinebrasil;
 
 import android.app.Activity;
+import android.app.Service;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,6 +42,7 @@ import br.com.john.combinebrasil.Services.Mask;
 import br.com.john.combinebrasil.Services.MaskHeight;
 import br.com.john.combinebrasil.Services.MessageOptions;
 import br.com.john.combinebrasil.Services.Services;
+import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
 
 public class CreateAccountAthleteActivity extends AppCompatActivity {
     MaterialBetterSpinner spinnerDay, spinnerMonth, spinnerYear, spinnerPosition;
@@ -107,19 +110,17 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
         checkTerms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkTerms.isChecked()) {
+                if (checkTerms.isChecked())
                     checked = true;
-                    textTerms.setVisibility(View.GONE);
-                }
-                else {
+
+                else
                     checked = false;
-                    textTerms.setVisibility(View.VISIBLE);
-                }
+
             }
         });
 
         inflateSpinnerDay();
-        //inflateSpinnerPosition();
+        getAllPositions();
 
         Mask maskCpf = new Mask("###.###.###-##", editTextCPF);
         editTextCPF.addTextChangedListener(maskCpf);
@@ -170,16 +171,16 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
         textTerms.setVisibility(View.GONE);
         editTextName.setText(athlete.getName());
         editTextCPF.setText(athlete.getCPF());
-        editAddress.setText(athlete.getAddress());
+        //editAddress.setText(athlete.getAddress());
         editEmail.setText(athlete.getEmail());
         editTextPhone.setText(athlete.getPhoneNumber());
         editTextHeight.setText(String.format("%.2f", athlete.getHeight()).replace(".",","));
         editTextWeihgt.setText(String.format("%.0f",athlete.getWeight()).replace(".",","));
-        //Positions position = db.getPositiomById(athlete.getDesirablePosition());
-        //if(position!=null)
-          //  spinnerPosition.setText(position.getNAME());
-        //else
-          //  spinnerPosition.setText("");
+        Positions position = db.getPositiomById(athlete.getDesirablePosition());
+        if(position!=null)
+            spinnerPosition.setText(position.getNAME());
+        else
+            spinnerPosition.setText("");
         String birthday = Services.convertDate(athlete.getBirthday());
         if(!birthday.isEmpty()){
             String day = birthday.substring(0,2);
@@ -202,7 +203,7 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
         public boolean onLongClick(View v) {
             editTextName.setText("Atleta");
             editTextCPF.setText("43242343243");
-            editAddress.setText("Rua do Atleta");
+            //editAddress.setText("Rua do Atleta");
             editEmail.setText("atleta@atletinha.com");
             editTextPhone.setText("12988888888");
 
@@ -227,6 +228,8 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
                    if (Services.isOnline(this)) {
                        ConstraintLayout progress = (ConstraintLayout) findViewById(R.id.constraint_progress);
                        progress.setVisibility(View.VISIBLE);
+                       TextView textProgress = (TextView) findViewById(R.id.text_progress);
+                       textProgress.setText("Criando atleta");
                        if(editAthlete){
                            String url = Constants.URL + Constants.API_ATHLETES+"/"+idAthlete;
                            PutAthlete post = new PutAthlete();
@@ -338,8 +341,8 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
             double height = Double.parseDouble(editTextHeight.getText().toString().replaceAll(",", "."));
             double weight = Double.parseDouble(editTextWeihgt.getText().toString().replaceAll(",", "."));
 
-            if (!(editAddress.getText().toString().trim().isEmpty()))
-                address = editAddress.getText().toString();
+            //if (!(editAddress.getText().toString().trim().isEmpty()))
+              //  address = editAddress.getText().toString();
 
             athletes = new Athletes(
                     UUID.randomUUID().toString(),
@@ -644,6 +647,41 @@ public class CreateAccountAthleteActivity extends AppCompatActivity {
             CreateAccountAthleteActivity.this.finish();
         }
     };
+
+    private void getAllPositions(){
+        String positions = SharedPreferencesAdapter.getValueStringSharedPreferences(this, "POSITIONS");
+        if(positions==null||!positions.equals("OK")||positions.equals("")) {
+            if (Services.isOnline(this)) {
+                ConstraintLayout progress = (ConstraintLayout) findViewById(R.id.constraint_progress);
+                progress.setVisibility(View.VISIBLE);
+                TextView textProgress = (TextView) findViewById(R.id.text_progress);
+                textProgress.setText("Configurando posições");
+                String url = Constants.URL + Constants.API_POSITIONS;
+                Connection con = new Connection(url, 0, Constants.CALLED_GET_POSITIONS, false, this);
+                con.callByJsonStringRequest();
+            } else
+                constraintNoConnection.setVisibility(View.VISIBLE);
+        }
+        else
+            inflateSpinnerPosition();
+    }
+
+    public static void returnGetAllPositions(Activity act, String response, int status){
+        ((CreateAccountAthleteActivity)act).returnGetAllPositions(response, status);
+    }
+    private void returnGetAllPositions(String response, int status){
+        ConstraintLayout progress = (ConstraintLayout) findViewById(R.id.constraint_progress);
+        progress.setVisibility(View.GONE);
+        if(status == 200 || status == 201){
+            DeserializerJsonElements des = new DeserializerJsonElements(response);
+            DatabaseHelper db = new DatabaseHelper(this);
+            db.addPositions(des.getPositions());
+            SharedPreferencesAdapter.setValueStringSharedPreferences(this, "POSITIONS", "OK");
+            inflateSpinnerPosition();
+        }
+        else
+            Services.messageAlert(this, "Erro", "Erro ao tentar configurar posições", "");
+    }
 
     private void inflateSpinnerPosition(){
         DatabaseHelper db = new DatabaseHelper(CreateAccountAthleteActivity.this);

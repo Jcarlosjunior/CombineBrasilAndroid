@@ -7,6 +7,7 @@ import android.app.Activity;
 
 import br.com.john.combinebrasil.AthletesActivity;
 import br.com.john.combinebrasil.ChooseTeamSelectiveActivity;
+import br.com.john.combinebrasil.CreateAccountAthleteActivity;
 import br.com.john.combinebrasil.CreateTeamActivity;
 import br.com.john.combinebrasil.EnterSelectiveActivity;
 import br.com.john.combinebrasil.HistoricPlayerActivity;
@@ -44,6 +45,10 @@ public class ReturnError {
             }
             else if (whoCalled.equals(Constants.CALLED_GET_USER)) {
                 LoginActivity.returnGetDataUser(activity,message,statusError);
+            }
+            else if(whoCalled.equals(Constants.CALLED_GET_POSITIONS)){
+                if(activity.getClass().getSimpleName().equals("CreateAccountAthleteActivity"))
+                    CreateAccountAthleteActivity.returnGetAllPositions(activity, message, statusError);
             }
 
             else if (whoCalled.equals(Constants.CALLED_GET_SELECTIVE)){

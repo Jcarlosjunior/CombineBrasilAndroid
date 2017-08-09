@@ -400,7 +400,7 @@ public class CreateTeamActivity extends AppCompatActivity {
     }
 
     private ArrayAdapter<String> inflateModality(){
-        String[] spinnerMonthValues  = {"Flag X5", "Flag X8", "Full Pad", "No Pad"};
+        String[] spinnerMonthValues  = {"Flag X5", "Flag X8", "Full Pad", "No Pad", "Beach Football"};
         ArrayAdapter<String> arrayModality = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerMonthValues);
         return arrayModality;
     }
@@ -420,7 +420,18 @@ public class CreateTeamActivity extends AppCompatActivity {
             if(!editCity.getText().toString().isEmpty()){
                 ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraint_local_add_team);
                 constraintLayout.setVisibility(View.GONE);
-                textAddress.setText(editCity.getText().toString());
+
+                String address= editCity.getText().toString();
+
+                if((!editCep.getText().toString().isEmpty())
+                        &&(!editNeighborhood.getText().toString().isEmpty())
+                        &&(!editStreet.getText().toString().isEmpty())
+                        &&(!editNumber.getText().toString().isEmpty())
+                        &&(!editState.getText().toString().isEmpty()))
+                    address = editCep.getText().toString()+" ("+editNeighborhood.getText().toString()+" - "+editCity.getText().toString()
+                            +", "+editStreet.getText().toString()+" "+editNumber.getText().toString()+" - "+editState.getText().toString()+")";
+
+                textAddress.setText(address);
             }
             else
                 Toast.makeText(CreateTeamActivity.this, "Você deve preencher pelo menos a cidade", Toast.LENGTH_SHORT).show();

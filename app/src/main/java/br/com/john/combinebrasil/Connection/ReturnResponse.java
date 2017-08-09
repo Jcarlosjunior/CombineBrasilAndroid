@@ -102,8 +102,12 @@ public class ReturnResponse {
                     else
                         SyncDatabase.athletesResponse(response);
                 }
-                else if (whoCalled.equals(Constants.CALLED_GET_POSITIONS))
-                    SyncDatabase.positionsResponse(response);
+                else if (whoCalled.equals(Constants.CALLED_GET_POSITIONS)) {
+                    if(activity.getClass().getSimpleName().equals("CreateAccountAthleteActivity"))
+                        CreateAccountAthleteActivity.returnGetAllPositions(activity, response, statuCode);
+                    else
+                        SyncDatabase.positionsResponse(response);
+                }
                 else if (whoCalled.equals(Constants.CALLED_GET_TESTTYPES)) {
                     if(activity.getClass().getSimpleName().equals("TestSelectiveActivity"))
                         TestSelectiveActivity.returnUpdateTests(activity, statuCode, response);

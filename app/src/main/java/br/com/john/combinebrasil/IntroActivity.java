@@ -34,12 +34,12 @@ public class IntroActivity extends AppIntro {
 
         // Instead of fragments, you can also use our default slide
         // Just set a title, description, background and image. AppIntro will do the rest.
-        addSlide(AppIntroFragment.newInstance("Testes protocolados", "Você tem na sua mão, testes de alto padrão que conseguirão avaliar o rencimento e qualificação dos atletas", R.drawable.tests_protocol, Color.parseColor("#3E50B4")));
-        addSlide(AppIntroFragment.newInstance("Verifique os dados de atletas", "Não perca tempo perguntando, apenas verifique no app",  R.drawable.icon_person, Color.parseColor("#FF5722")));
-        addSlide(AppIntroFragment.newInstance("Ache fácilmente o atleta na fila", "Faça uma pesquisa rápida de quem irá fazer teste, pelo nome ou código", R.drawable.icon_search_name_code, Color.parseColor("#673AB7")));
+        addSlide(AppIntroFragment.newInstance("Testes protocolados", "Você tem na sua mão, testes de alto padrão que conseguirão avaliar o crescimento e qualificação dos atletas", R.drawable.tests_protocol, Color.parseColor("#3E50B4")));
+        addSlide(AppIntroFragment.newInstance("Verifique os dados de atletas", "Não perca tempo, apenas verifique no app",  R.drawable.icon_person, Color.parseColor("#FF5722")));
+        addSlide(AppIntroFragment.newInstance("Ache fácilmente o atleta na fila", "Encontre rapidammente os atelteas que irão realizar sua seletiva", R.drawable.icon_search_name_code, Color.parseColor("#673AB7")));
         addSlide(AppIntroFragment.newInstance("Avalie a perfomance", "Além do resultado do teste para o atleta, avalie a perfomance de como ele executou o teste", R.drawable.icon_qualification, Color.parseColor("#00BCD4")));
         addSlide(AppIntroFragment.newInstance("Dados armazenados na núvem", "Salve com seguranças os dados dos testes com conexão de internet", R.drawable.icon_sync_all, Color.parseColor("#F44336")));
-        addSlide(AppIntroFragment.newInstance("Relatórios prontos", "Terminando a seletiva, relatórios são criados mostrando os resultados e qualificando atletas", R.drawable.icon_report, Color.parseColor("#4CAF50")));
+        addSlide(AppIntroFragment.newInstance("Relatórios prontos", "Sua seletivas se tornam relatórios na palma da sua mão", R.drawable.icon_report, Color.parseColor("#4CAF50")));
         num=5;
         color = new int[6];
         color[0] = Color.parseColor("#3E50B4");

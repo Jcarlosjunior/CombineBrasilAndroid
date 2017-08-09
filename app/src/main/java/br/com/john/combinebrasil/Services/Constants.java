@@ -170,7 +170,7 @@ public class Constants {
     public static final String TEAM_NAME = "name";
     public static final String TEAM_CITY = "city";
     public static final String TEAM_MODALITY = "modality";
-    public static final String TEAM_ADDRESS = "addres";
+    public static final String TEAM_ADDRESS = "address";
     public static final String TEAM_FOUNDATION = "foundation";
     public static final String TEAM_PRESIDENTNAME= "presidentName";
     public static final String TEAM_EMAIL = "email";
