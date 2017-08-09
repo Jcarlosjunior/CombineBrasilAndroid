@@ -81,6 +81,8 @@ public class LoginActivity extends Activity {
         }
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+
+         RegisterActivity.actLogin = this;
     }
 
     private View.OnClickListener onClickRegister = new View.OnClickListener(){
@@ -117,6 +119,9 @@ public class LoginActivity extends Activity {
             }
         }
         return ver;
+    }
+    public static void callLogin(Activity act, String user, String pswd){
+        ((LoginActivity)act) .callLogin(user, pswd);
     }
 
     private void callLogin(String user, String pswd) {

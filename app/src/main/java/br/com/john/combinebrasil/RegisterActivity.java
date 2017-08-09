@@ -39,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText editUser, editEmail, editPassword, editConfirmPassword;
     Button btnRegister, btnRegisterFacebook;
     ConstraintLayout linearProgress;
+    public static Activity actLogin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,7 +126,9 @@ public class RegisterActivity extends AppCompatActivity {
     private void afterRegisterUser(String response, String result){
         linearProgress.setVisibility(View.GONE);
         if(response.equals("OK")){
-            Services.messageAlert(RegisterActivity.this, "Mensagem", "Usuário foi criado com sucesso.", "REGISTER_USER");
+            LoginActivity.callLogin(actLogin, editEmail.getText().toString().toLowerCase(), editPassword.getText().toString());
+
+            this.finish();
         }
         else
             verifyErrorRegister(result);
@@ -137,8 +140,12 @@ public class RegisterActivity extends AppCompatActivity {
             json = new JSONObject(result);
             String detail = json.getString("detail");
             json = new JSONObject(detail);
-            if(json.getInt("code") ==  11000)
-                saveUser(json.getString("op"));
+            if(json.getInt("code") ==  11000) {
+                LoginActivity.callLogin(actLogin, editEmail.getText().toString().toLowerCase(), editPassword.getText().toString());
+
+                this.finish();
+            }
+                //saveUser(json.getString("op"));
             else {
                 Services.messageAlert(RegisterActivity.this, "Mensagem", "Usuário não cadastrado\n" + result, "");
             }
@@ -156,16 +163,22 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
     }
+
     private void saveUser(String response){
         DeserializerJsonElements des = new DeserializerJsonElements(response);
         User user = des.getObjectsUser();
 
         SharedPreferencesAdapter.setLoggedSharedPreferences(RegisterActivity.this, true);
         SharedPreferencesAdapter.setValueStringSharedPreferences(RegisterActivity.this, Constants.LOGIN_EMAIL, user.getEmail());
+        SharedPreferencesAdapter.setValueStringSharedPreferences(RegisterActivity.this, Constants.USER_TOKEN, user.getToken());
+
+        DatabaseHelper db = new DatabaseHelper(this);
+        db.addUser(user);
 
         getTimeLogin();
 
         callMainActivity();
+
     }
 
     private void getTimeLogin(){
