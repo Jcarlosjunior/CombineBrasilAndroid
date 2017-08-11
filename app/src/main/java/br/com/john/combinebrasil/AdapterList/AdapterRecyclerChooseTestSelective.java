@@ -161,7 +161,7 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
                 Random rnd = new Random();
                 int color = Color.argb(15, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
                 for (int x = 0; x<=list.size()-1;x++ ) {
-                    if(list.get(x).getEquivalentTest() == list.get(position).getEquivalentTest()){
+                    if(list.get(x).getSiblingTestType().equals(list.get(position).getSiblingTestType())){
                         if(x<holderList.size())
                             holderList.get(x).listItem.setBackgroundColor(color);//holder.listItem.setBackgroundColor(color);
                     }
@@ -169,7 +169,7 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
             }
             else{
                 for (int x = 0; x<=list.size()-1;x++ ) {
-                    if(list.get(x).getEquivalentTest() == list.get(position).getEquivalentTest()){
+                    if(list.get(x).getSiblingTestType().equals(list.get(position).getSiblingTestType())){
                         if(x<holderList.size())
                             holderList.get(x).listItem.setBackground(act.getDrawable(R.drawable.background_line_list));
                     }

@@ -36,7 +36,7 @@ public class TestSelectiveActivity extends AppCompatActivity {
     public static ConstraintLayout constraintInfoTest;
     TextView textProgress, textTestRequired, textTestRecommended, textTestAdditional;
     Toolbar toolbar;
-    RecyclerView recyclerViewTests, recyclerViewRecommended, recyclerViewAdditional;
+    RecyclerView recyclerViewTestsRequired, recyclerViewRecommended, recyclerViewAdditional;
     public static Button btnNextPass, btnCloseMessage;
     Button btnTryAgain;
     ArrayList<TestTypes> tests;
@@ -63,7 +63,8 @@ public class TestSelectiveActivity extends AppCompatActivity {
         imgSearch.setVisibility(View.GONE);
         LinearLayout btnBack = (LinearLayout) findViewById(R.id.linear_back_button);
         btnBack.setOnClickListener(btnBackClickListener);
-        recyclerViewTests = (RecyclerView) findViewById(R.id.recycler_tests_selective);
+
+        recyclerViewTestsRequired = (RecyclerView) findViewById(R.id.recycler_tests_selective);
         recyclerViewRecommended = (RecyclerView) findViewById(R.id.recycler_tests_recommended);
         recyclerViewAdditional = (RecyclerView) findViewById(R.id.recycler_tests_additional);
 
@@ -81,6 +82,10 @@ public class TestSelectiveActivity extends AppCompatActivity {
         btnNextPass.setVisibility(View.GONE);
         btnCloseMessage=(Button) findViewById(R.id.btn_close_message_tests);
         btnCloseMessage.setOnClickListener(clickMessageDefault);
+
+        textTestRequired.setOnClickListener(clickTestsRequireds);
+        textTestRecommended.setOnClickListener(clickTestsRecommended);
+        textTestAdditional.setOnClickListener(clickTestsAdditional);
 
         hashMapSelective = AllActivities.hashInfoSelective;
 
@@ -170,10 +175,10 @@ public class TestSelectiveActivity extends AppCompatActivity {
                 valuesRequireds[i] = testsRequireds.get(i).getId();
             String valuesRecommended[] = new String[testsRecommended.size()];
             for(int i=0; i<=testsRecommended.size()-1;i++)
-                valuesRequireds[i] = testsRecommended.get(i).getId();
+                valuesRecommended[i] = testsRecommended.get(i).getId();
             String valuesAdditional[] = new String[testsAdditional.size()];
             for(int i=0; i<=testsAdditional.size()-1;i++)
-                valuesRequireds[i] = testsAdditional.get(i).getId();
+                valuesAdditional[i] = testsAdditional.get(i).getId();
             inflateRecyclerViewRequired(valuesRequireds);
             inflateRecyclerViewRecommended(valuesRecommended);
             inflateRecyclerViewAdditional(valuesAdditional);
@@ -182,29 +187,29 @@ public class TestSelectiveActivity extends AppCompatActivity {
     }
 
     private void inflateRecyclerViewRequired(String[] values){
-        recyclerViewTests.setHasFixedSize(true);
-        recyclerViewTests.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewTests.setLayoutManager(new GridLayoutManager(this, 1));
+        recyclerViewTestsRequired.setHasFixedSize(true);
+        recyclerViewTestsRequired.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewTestsRequired.setLayoutManager(new GridLayoutManager(this, 1));
         adapterRecyclerTestsRequired = new AdapterRecyclerChooseTestSelective(TestSelectiveActivity.this, testsRequireds, values);
         adapterRecyclerTestsRequired.valuesID = new String[values.length];
-        recyclerViewTests.setAdapter(adapterRecyclerTestsRequired);
+        recyclerViewTestsRequired.setAdapter(adapterRecyclerTestsRequired);
     }
 
     private void inflateRecyclerViewRecommended(String[] values){
-        recyclerViewTests.setHasFixedSize(true);
-        recyclerViewTests.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewTests.setLayoutManager(new GridLayoutManager(this, 1));
+        recyclerViewRecommended.setHasFixedSize(true);
+        recyclerViewRecommended.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewRecommended.setLayoutManager(new GridLayoutManager(this, 1));
         adapterRecyclerTestsRecommended = new AdapterRecyclerChooseTestSelective(TestSelectiveActivity.this, testsRecommended, values);
         adapterRecyclerTestsRecommended.valuesID = new String[values.length];
-        recyclerViewTests.setAdapter(adapterRecyclerTestsRecommended);
+        recyclerViewRecommended.setAdapter(adapterRecyclerTestsRecommended);
     }
     private void inflateRecyclerViewAdditional(String[] values){
-        recyclerViewTests.setHasFixedSize(true);
-        recyclerViewTests.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewTests.setLayoutManager(new GridLayoutManager(this, 1));
+        recyclerViewRecommended.setHasFixedSize(true);
+        recyclerViewRecommended.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewRecommended.setLayoutManager(new GridLayoutManager(this, 1));
         adapterRecyclerTestsAdditional = new AdapterRecyclerChooseTestSelective(TestSelectiveActivity.this, testsAdditional, values);
         adapterRecyclerTestsAdditional.valuesID = new String[values.length];
-        recyclerViewTests.setAdapter(adapterRecyclerTestsAdditional);
+        recyclerViewRecommended.setAdapter(adapterRecyclerTestsAdditional);
     }
 
 
@@ -326,4 +331,34 @@ public class TestSelectiveActivity extends AppCompatActivity {
         ConstraintLayout constraint = (ConstraintLayout) findViewById(R.id.constraint_message_test_default);
         constraint.setVisibility(View.GONE);
     }
+
+    private View.OnClickListener clickTestsRequireds = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(recyclerViewTestsRequired.getVisibility() == View.VISIBLE)
+                recyclerViewTestsRequired.setVisibility(View.GONE);
+            else
+                recyclerViewTestsRequired.setVisibility(View.VISIBLE);
+        }
+    };
+
+    private View.OnClickListener clickTestsRecommended = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(recyclerViewRecommended.getVisibility() == View.VISIBLE)
+                recyclerViewRecommended.setVisibility(View.GONE);
+            else
+                recyclerViewRecommended.setVisibility(View.VISIBLE);
+        }
+    };
+    private View.OnClickListener clickTestsAdditional = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(recyclerViewAdditional.getVisibility() == View.VISIBLE)
+                recyclerViewAdditional.setVisibility(View.GONE);
+            else
+                recyclerViewAdditional.setVisibility(View.VISIBLE);
+        }
+    };
+
 }
