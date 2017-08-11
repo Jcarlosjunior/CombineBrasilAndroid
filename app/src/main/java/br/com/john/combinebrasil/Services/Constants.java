@@ -197,6 +197,9 @@ public class Constants {
     public static final String TESTTYPES_VALUETYPES= "valueType";
     public static final String TESTTYPES_ICONIMAGEURL= "iconImageUrl";
     public static final String TESTTYPES_TUTORIALIMAGEURL= "tutorialImageUrl";
+    public static final String TESTTYPES_REQUIRED_TO_REPORT= "requiredToReport";
+    public static final String TESTTYPES_MAIN_TEST= "mainTest";
+    public static final String TESTTYPES_SIBLING_TEST_TYPE= "siblingTestType";
     public static final String TESTTYPES_SELECTIVE= "testTypes";
 
     /************************************TESTS*******************************************/

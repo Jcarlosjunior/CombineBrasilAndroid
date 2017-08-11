@@ -67,7 +67,7 @@ public class HistoricRankingTestsActivity extends AppCompatActivity {
         ImageView imgSearch = (ImageView) findViewById(R.id.img_delete);
         imgSearch.setVisibility(View.GONE);
         TextView textTitle = (TextView) findViewById(R.id.text_title_toolbar);
-        textTitle.setText(R.string.players);
+        textTitle.setText("Ranking por Testes");
 
         Bundle extras = getIntent().getExtras();
         if(extras!=null){

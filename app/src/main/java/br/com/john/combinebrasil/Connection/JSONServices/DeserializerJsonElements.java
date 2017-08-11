@@ -498,13 +498,16 @@ public class DeserializerJsonElements {
                     JSONObject json = new JSONObject(jsonArray.getString(i));
                     TestTypes obj = new TestTypes(
                             json.optString(Constants.TESTTYPES_ID),
-                            json.optString(Constants.TESTTYPES_NAME),
-                            json.optString(Constants.TESTTYPES_ATTEMPTSLIMIT),
-                            json.optBoolean(Constants.TESTTYPES_VISIBLETOREPORT),
-                            json.optString(Constants.TESTTYPES_DESCRIPTION),
-                            json.optString(Constants.TESTTYPES_VALUETYPES),
-                            json.optString(Constants.TESTTYPES_ICONIMAGEURL),
-                            json.optString(Constants.TESTTYPES_TUTORIALIMAGEURL)
+                            json.optString(Constants.TESTTYPES_NAME, ""),
+                            json.optString(Constants.TESTTYPES_ATTEMPTSLIMIT, ""),
+                            json.optBoolean(Constants.TESTTYPES_VISIBLETOREPORT, false),
+                            json.optString(Constants.TESTTYPES_DESCRIPTION, ""),
+                            json.optString(Constants.TESTTYPES_VALUETYPES, ""),
+                            json.optString(Constants.TESTTYPES_ICONIMAGEURL, ""),
+                            json.optString(Constants.TESTTYPES_TUTORIALIMAGEURL, ""),
+                            json.optString(Constants.TESTTYPES_SIBLING_TEST_TYPE, ""),
+                            json.optBoolean(Constants.TESTTYPES_REQUIRED_TO_REPORT, false),
+                            json.optBoolean(Constants.TESTTYPES_MAIN_TEST, false)
                     );
 
                     teams.add(obj);
@@ -570,7 +573,10 @@ public class DeserializerJsonElements {
                                 json.optString(Constants.TESTTYPES_DESCRIPTION),
                                 json.optString(Constants.TESTTYPES_VALUETYPES),
                                 json.optString(Constants.TESTTYPES_ICONIMAGEURL),
-                                json.optString(Constants.TESTTYPES_TUTORIALIMAGEURL)
+                                json.optString(Constants.TESTTYPES_TUTORIALIMAGEURL),
+                                json.optString(Constants.TESTTYPES_SIBLING_TEST_TYPE),
+                                json.optBoolean(Constants.TESTTYPES_REQUIRED_TO_REPORT),
+                                json.optBoolean(Constants.TESTTYPES_MAIN_TEST)
                         );
                         testses.add(obj);
                     }catch (JSONException ex){

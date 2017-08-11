@@ -30,6 +30,14 @@ public class ChildItemPositions implements Parcelable {
         this.Description = positions.getDESCRIPTION();
     }
 
+    public ChildItemPositions(String name, String id_Position, String id_athlete, String position, String description) {
+        this.name = name;
+        Id_Position = id_Position;
+        Id_athlete = id_athlete;
+        Position = position;
+        Description = description;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);

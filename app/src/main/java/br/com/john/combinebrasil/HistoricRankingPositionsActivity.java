@@ -29,6 +29,7 @@ import br.com.john.combinebrasil.AdapterList.ExpandableRecyclerPositions.ChildIt
 import br.com.john.combinebrasil.AdapterList.ExpandableRecyclerPositions.ExpandableRecyclerViewAdapterPositions;
 import br.com.john.combinebrasil.AdapterList.ExpandableRecyclerPositions.GroupFatherPositions;
 import br.com.john.combinebrasil.Classes.RankingPositions;
+import br.com.john.combinebrasil.Classes.ResultTest;
 import br.com.john.combinebrasil.Classes.Tests;
 import br.com.john.combinebrasil.Connection.Connection;
 import br.com.john.combinebrasil.Connection.JSONServices.DeserializerJsonElements;
@@ -64,7 +65,6 @@ public class HistoricRankingPositionsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if(extras!=null){
             callGetTestTypes(extras.getString("id_selective"));
-            inflateDataTests();
         }
 
     }
@@ -72,11 +72,11 @@ public class HistoricRankingPositionsActivity extends AppCompatActivity {
     private void callGetTestTypes(String idSelective){
         if(Services.isOnline(this)){
             showProgress();
-            getTestTypes(idSelective);
+            getPositions(idSelective);
         }
     }
 
-    private void getTestTypes(String idSelective) {
+    private void getPositions(String idSelective) {
         String url = Constants.URL + Constants.API_SELECTIVES+"/"+idSelective+"/result";
         Connection con = new Connection(url, 0, Constants.CALLED_GET_POSITIONS_RESULT, false, this);
         con.callByJsonStringRequest();
@@ -90,8 +90,37 @@ public class HistoricRankingPositionsActivity extends AppCompatActivity {
         hideProgress();
         if(status==200||status==201){
             DeserializerJsonElements des = new DeserializerJsonElements(response);
-            //positions = des.getPositions();
-            callInflateRecycler();
+            createObjectPositions(response);
+        }
+    }
+
+    private void createObjectPositions(String response){
+        try{
+            ArrayList<GroupFatherPositions> groupFather = new ArrayList<>();
+            ArrayList<ChildItemPositions> childPosition = new ArrayList<>();
+            JSONObject json = new JSONObject(response);
+            JSONArray jsonArray = json.getJSONArray("byPositions");
+            for(int i=0; i<=jsonArray.length()-1;i++){
+                childPosition = new ArrayList<>();
+                json = jsonArray.getJSONObject(i);
+                String namePos= (json.optString("key"));
+                JSONArray jsonAthletes = json.getJSONArray("athletes");
+                for(int x = 0;x<=jsonAthletes.length()-1; x++){
+                    json = jsonAthletes.getJSONObject(x);
+                    String nameAthlete =  json.getString("name");
+                    JSONArray jsonPositions = json.getJSONArray("otherOptions");
+                    String positions="";
+                    for(int p=0; p<=jsonPositions.length()-1;p++){
+                        positions  = positions + jsonPositions.getJSONObject(p).getString("name")+", ";
+                    }
+                    childPosition.add(new ChildItemPositions(nameAthlete, "","",positions.substring(0,positions.length()-2),"#"+x+1));
+                }
+                groupFather.add(new GroupFatherPositions(namePos, childPosition));
+            }
+            inflateDataTests(groupFather);
+        }catch(Exception ex){
+            Log.i("Exception", ex.getMessage());
+
         }
     }
 
@@ -129,8 +158,8 @@ public class HistoricRankingPositionsActivity extends AppCompatActivity {
         return tests;
     }
 
-    private void inflateDataTests(){
-        groupFathers = new ArrayList<GroupFatherPositions>();
+    private void inflateDataTests(ArrayList<GroupFatherPositions> positions){
+        /*groupFathers = new ArrayList<GroupFatherPositions>();
         for(int i = 0; i<=3; i++){
             childItens = new ArrayList<ChildItemPositions>();
             ArrayList<RankingPositions> testsArrayList = inflateFalseDatasTests(i);
@@ -138,7 +167,8 @@ public class HistoricRankingPositionsActivity extends AppCompatActivity {
                 childItens.add(new ChildItemPositions(position));
             }
             groupFathers.add(new GroupFatherPositions(testsArrayList.get(i).getPOSITION(), childItens));
-        }
+        }*/
+        groupFathers = positions;
         inflateExpandableRecycler();
     }
 

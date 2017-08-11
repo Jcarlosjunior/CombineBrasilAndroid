@@ -34,13 +34,16 @@ public class TestSelectiveActivity extends AppCompatActivity {
     public static final String messageSelectiveCreate = "SELECTIVE_CREATE_OK";
     ConstraintLayout linearProgress, linearNotConnection;
     public static ConstraintLayout constraintInfoTest;
-    TextView textProgress;
+    TextView textProgress, textTestRequired, textTestRecommended, textTestAdditional;
     Toolbar toolbar;
-    RecyclerView recyclerViewTests;
+    RecyclerView recyclerViewTests, recyclerViewRecommended, recyclerViewAdditional;
     public static Button btnNextPass, btnCloseMessage;
     Button btnTryAgain;
     ArrayList<TestTypes> tests;
-    AdapterRecyclerChooseTestSelective adapterRecyclerTests;
+    ArrayList<TestTypes> testsRequireds;
+    ArrayList<TestTypes> testsRecommended;
+    ArrayList<TestTypes> testsAdditional;
+    AdapterRecyclerChooseTestSelective adapterRecyclerTestsRequired, adapterRecyclerTestsRecommended, adapterRecyclerTestsAdditional;
     public static LinearLayout linearDelete;
     private static Activity act;
 
@@ -61,10 +64,15 @@ public class TestSelectiveActivity extends AppCompatActivity {
         LinearLayout btnBack = (LinearLayout) findViewById(R.id.linear_back_button);
         btnBack.setOnClickListener(btnBackClickListener);
         recyclerViewTests = (RecyclerView) findViewById(R.id.recycler_tests_selective);
+        recyclerViewRecommended = (RecyclerView) findViewById(R.id.recycler_tests_recommended);
+        recyclerViewAdditional = (RecyclerView) findViewById(R.id.recycler_tests_additional);
 
         linearNotConnection = (ConstraintLayout) findViewById(R.id.constraint_not_connection);
         linearProgress = (ConstraintLayout) findViewById(R.id.constraint_progress);
         textProgress = (TextView) findViewById(R.id.text_progress);
+        textTestRequired = (TextView) findViewById(R.id.text_tests_required);
+        textTestRecommended = (TextView) findViewById(R.id.text_tests_recommended);
+        textTestAdditional = (TextView) findViewById(R.id.text_tests_additional);
         constraintInfoTest = (ConstraintLayout) findViewById(R.id.constraint_info_test);
         btnTryAgain = (Button) findViewById(R.id.btn_try_again_connect);
         btnTryAgain.setOnClickListener(clickListenerTryAgain);
@@ -114,8 +122,10 @@ public class TestSelectiveActivity extends AppCompatActivity {
         DeserializerJsonElements des = new DeserializerJsonElements(result);
         tests = des.getTestTypes();
         try{
-            if (tests!=null)
+            if (tests!=null){
                 recordingTests();
+            }
+
         }catch (Exception e){}
     }
 
@@ -130,39 +140,74 @@ public class TestSelectiveActivity extends AppCompatActivity {
     }
 
     private void inflateTests(){
+        testsRequireds = new ArrayList<>();
+        testsRecommended = new ArrayList<>();
+        testsAdditional = new ArrayList<>();
+
         if(!(tests == null || tests.size()==0)){
-            String[] values = new String[tests.size()];
             for(int i=0; i <=tests.size()-1; i++){
                 tests.get(i).setDefaultTest(i<=7 ? true : false);
-
                 if(tests.get(i).isDefaultTest())
                     tests.get(i).setSelected(true);
                 else
                     tests.get(i).setSelected(false);
 
-                if(i%2 > 0) {
-                    tests.get(i).setEquivalentTest(1);
+                if(i%2 > 0)
                     tests.get(i).setIconImageURL("http://jeremybeynon.com/wp-content/uploads/2014/12/nfl-logo.jpg");
-                }
-                else {
-                    tests.get(i).setEquivalentTest(2);
+                else
                     tests.get(i).setIconImageURL("http://pontepretagorilas.com.br/wp-content/uploads/2017/04/timthumb-1-128x128.png");
-                }
-                values[i] = tests.get(i).getId();
+
+                if(tests.get(i).isMainTest()&&tests.get(i).isRequiredToReport() && tests.get(i).getSiblingTestType().isEmpty())
+                    testsRequireds.add(tests.get(i));
+                else if(tests.get(i).isMainTest()&&tests.get(i).isRequiredToReport() && !tests.get(i).getSiblingTestType().isEmpty())
+                    testsRecommended.add(tests.get(i));
+                else
+                    testsAdditional.add(tests.get(i));
             }
-            inflateRecyclerView(values);
-            adapterRecyclerTests.showOrHideRemove();
+
+            String valuesRequireds[] = new String[testsRequireds.size()];
+            for(int i=0; i<=testsRequireds.size()-1;i++)
+                valuesRequireds[i] = testsRequireds.get(i).getId();
+            String valuesRecommended[] = new String[testsRecommended.size()];
+            for(int i=0; i<=testsRecommended.size()-1;i++)
+                valuesRequireds[i] = testsRecommended.get(i).getId();
+            String valuesAdditional[] = new String[testsAdditional.size()];
+            for(int i=0; i<=testsAdditional.size()-1;i++)
+                valuesRequireds[i] = testsAdditional.get(i).getId();
+            inflateRecyclerViewRequired(valuesRequireds);
+            inflateRecyclerViewRecommended(valuesRecommended);
+            inflateRecyclerViewAdditional(valuesAdditional);
+            adapterRecyclerTestsRequired.showOrHideRemove();
         }
     }
 
-    private void inflateRecyclerView(String[] values){
+    private void inflateRecyclerViewRequired(String[] values){
         recyclerViewTests.setHasFixedSize(true);
         recyclerViewTests.setItemAnimator(new DefaultItemAnimator());
         recyclerViewTests.setLayoutManager(new GridLayoutManager(this, 1));
-        adapterRecyclerTests = new AdapterRecyclerChooseTestSelective(TestSelectiveActivity.this, tests, values);
-        adapterRecyclerTests.valuesID = new String[values.length];
-        recyclerViewTests.setAdapter(adapterRecyclerTests);
+        adapterRecyclerTestsRequired = new AdapterRecyclerChooseTestSelective(TestSelectiveActivity.this, testsRequireds, values);
+        adapterRecyclerTestsRequired.valuesID = new String[values.length];
+        recyclerViewTests.setAdapter(adapterRecyclerTestsRequired);
     }
+
+    private void inflateRecyclerViewRecommended(String[] values){
+        recyclerViewTests.setHasFixedSize(true);
+        recyclerViewTests.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewTests.setLayoutManager(new GridLayoutManager(this, 1));
+        adapterRecyclerTestsRecommended = new AdapterRecyclerChooseTestSelective(TestSelectiveActivity.this, testsRecommended, values);
+        adapterRecyclerTestsRecommended.valuesID = new String[values.length];
+        recyclerViewTests.setAdapter(adapterRecyclerTestsRecommended);
+    }
+    private void inflateRecyclerViewAdditional(String[] values){
+        recyclerViewTests.setHasFixedSize(true);
+        recyclerViewTests.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewTests.setLayoutManager(new GridLayoutManager(this, 1));
+        adapterRecyclerTestsAdditional = new AdapterRecyclerChooseTestSelective(TestSelectiveActivity.this, testsAdditional, values);
+        adapterRecyclerTestsAdditional.valuesID = new String[values.length];
+        recyclerViewTests.setAdapter(adapterRecyclerTestsAdditional);
+    }
+
+
 
     private View.OnClickListener clickedRemoveTests= new View.OnClickListener(){
 
@@ -174,10 +219,10 @@ public class TestSelectiveActivity extends AppCompatActivity {
 
     private void removeAllTests(){
         int count =0;
-        for (TestTypes test : adapterRecyclerTests.list){
+        for (TestTypes test : adapterRecyclerTestsRequired.list){
             if(test.isSelected()) {
                 test.setSelected(false);
-                adapterRecyclerTests.notifyItemChanged(count);
+                adapterRecyclerTestsRequired.notifyItemChanged(count);
             }
             count++;
         }
@@ -201,7 +246,7 @@ public class TestSelectiveActivity extends AppCompatActivity {
 
         ArrayList<String> testsChoose = new ArrayList<>();
 
-        for (TestTypes test :  adapterRecyclerTests.list) {
+        for (TestTypes test :  adapterRecyclerTestsRequired.list) {
             if(test.isSelected())
                 testsChoose.add(test.getId());
         }

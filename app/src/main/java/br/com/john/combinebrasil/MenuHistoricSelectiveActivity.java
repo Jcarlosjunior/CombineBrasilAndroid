@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
+import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,12 +43,12 @@ import br.com.john.combinebrasil.Services.ImageLoadedCallback;
 import br.com.john.combinebrasil.Services.Services;
 
 public class MenuHistoricSelectiveActivity extends AppCompatActivity {
+    public static Selective SELECTIVE_CLICKED;
     Toolbar toolbar;
     ImageView imageItemPlayers, imageItemRanking,imageTeam;
     Selective selective;
     Team team;
-
-    TextView textNameTeam, textNameSelective, textPriceSelective, textDateSelective, textAddressSelective, textObservationSelective, textSubscribers;
+    TextView textNameTeam, textNameSelective, textPriceSelective, textDateSelective, textAddressSelective, textObservationSelective, textSubscribers, textReport;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,15 +79,11 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
         textAddressSelective = (TextView) findViewById(R.id.text_local_selective_details);
         textObservationSelective = (TextView) findViewById(R.id.text_observation_selective_details);
         textSubscribers = (TextView) findViewById(R.id.text_subscribers_selective_details);
+        textReport = (TextView) findViewById(R.id.text_donwload_report);
+        textReport.setOnClickListener(clickTextReport);
 
         imageItemPlayers.setOnClickListener(clickedPlayers);
         imageItemRanking.setOnClickListener(clickedGrade);
-
-        Bundle extras = getIntent().getExtras();
-        if(extras!=null){
-            // id = extras.getString("id_selective");
-
-        }
 
         callInfoSelective();
 
@@ -111,7 +108,7 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
     private void callInfoSelective(){
         if(Services.isOnline(this)){
             hideNotConnect();
-            this.selective = HistoricSelectiveActivity.SELECTIVE_CLICKED;
+            this.selective = SELECTIVE_CLICKED;
             getTeamSelective();
         }
         else
@@ -350,4 +347,14 @@ public class MenuHistoricSelectiveActivity extends AppCompatActivity {
         bitmap = ImageConverter.getRoundedCornerBitmap(bitmap, 200);
         imageTeam.setImageBitmap(bitmap);
     }
+
+    private View.OnClickListener clickTextReport = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String url = Constants.URL+"selectives/"+selective.getId()+"/renderResult";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        }
+    };
 }

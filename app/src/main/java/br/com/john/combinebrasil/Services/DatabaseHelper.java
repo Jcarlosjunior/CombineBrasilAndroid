@@ -330,7 +330,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(Constants.SELECTIVES_ID, obj.getId());
             values.put(Constants.SELECTIVES_TITLE, obj.getTitle());
-            values.put(Constants.SELECTIVES_TEAM, this.getNameTeamByIdTeam(obj.getTeam()));
+            values.put(Constants.SELECTIVES_TEAM, obj.getTeam());
             values.put(Constants.SELECTIVES_DATE, obj.getDate());
             values.put(Constants.SELECTIVES_CODESELECTIVE, obj.getCodeSelective());
             values.put(Constants.SELECTIVES_CANSYNC, obj.getDate());
@@ -419,6 +419,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(Constants.TESTTYPES_VALUETYPES, obj.getValueType());
                 values.put(Constants.TESTTYPES_ICONIMAGEURL, obj.getIconImageURL());
                 values.put(Constants.TESTTYPES_TUTORIALIMAGEURL, obj.getTutorialImageURL());
+                values.put(Constants.TESTTYPES_REQUIRED_TO_REPORT, obj.isRequiredToReport());
+                values.put(Constants.TESTTYPES_MAIN_TEST, obj.isMainTest());
+                values.put(Constants.TESTTYPES_SIBLING_TEST_TYPE, obj.getSiblingTestType());
 
                 ret = myDataBase.insert(Constants.TABLE_TESTTYPES, null, values);
             }
@@ -1077,8 +1080,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_DESCRIPTION)),
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_VALUETYPES)),
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_ICONIMAGEURL)),
-                        c.getString(c.getColumnIndex(Constants.TESTTYPES_TUTORIALIMAGEURL))
-                );
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_TUTORIALIMAGEURL)),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_SIBLING_TEST_TYPE)),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_REQUIRED_TO_REPORT))),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_MAIN_TEST)))
+                        );
 
                 itens.add(obj);
             } while (c.moveToNext());
@@ -1291,7 +1297,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_DESCRIPTION)),
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_VALUETYPES)),
                         c.getString(c.getColumnIndex(Constants.TESTTYPES_ICONIMAGEURL)),
-                        c.getString(c.getColumnIndex(Constants.TESTTYPES_TUTORIALIMAGEURL))
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_TUTORIALIMAGEURL)),
+                        c.getString(c.getColumnIndex(Constants.TESTTYPES_SIBLING_TEST_TYPE)),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_REQUIRED_TO_REPORT))),
+                        Services.convertIntInBool(c.getInt(c.getColumnIndex(Constants.TESTTYPES_MAIN_TEST)))
                 );
             } else {
                 test = null;

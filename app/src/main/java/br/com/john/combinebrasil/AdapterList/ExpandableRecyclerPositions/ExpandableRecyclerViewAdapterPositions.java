@@ -36,7 +36,7 @@ public class ExpandableRecyclerViewAdapterPositions extends ExpandableRecyclerVi
     @Override
     public ChildItemViewHolder onCreateChildViewHolder(ViewGroup parent, final int viewType) {
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.layout_child_view_holder, parent, false);
+        View view = inflater.inflate(R.layout.layout_item_position_selective, parent, false);
 
         return new ChildItemViewHolder(view, activity);
     }

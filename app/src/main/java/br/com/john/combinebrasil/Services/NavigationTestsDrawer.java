@@ -23,6 +23,7 @@ import br.com.john.combinebrasil.Classes.User;
 import br.com.john.combinebrasil.CreateAccountAthleteActivity;
 import br.com.john.combinebrasil.MainActivity;
 import br.com.john.combinebrasil.MenuActivity;
+import br.com.john.combinebrasil.MenuHistoricSelectiveActivity;
 import br.com.john.combinebrasil.R;
 
 /**
@@ -131,12 +132,12 @@ public class NavigationTestsDrawer {
             case 2://Meu Perfil
                // intent = new Intent(mActivity, PerfilUserActivity.class);
              //   mActivity.startActivity(intent);
-             //   mActivity.finish();
                 break;
             case 3://Informação Seletiva
-                // intent = new Intent(mActivity, InfoSelectiveActivity.class);
-           //     mActivity.startActivity(intent);
-           //     mActivity.finish();
+                intent = new Intent(mActivity, MenuHistoricSelectiveActivity.class);
+                DatabaseHelper db = new DatabaseHelper(mActivity);
+                MenuHistoricSelectiveActivity.SELECTIVE_CLICKED =  db.getSelective();
+                mActivity.startActivity(intent);
                 break;
             case 4://Cadastrar Usuário
                 intent = new Intent(mActivity, CreateAccountAthleteActivity.class);

@@ -15,7 +15,9 @@ public class TestTypes {
     private String TutorialImageURL;
     private boolean Selected;
     private boolean DefaultTest;
-    private int EquivalentTest;
+    private String SiblingTestType;
+    private boolean RequiredToReport;
+    private boolean MainTest;
 
     public TestTypes(){
         VisibleToReport = false;
@@ -23,7 +25,9 @@ public class TestTypes {
         DefaultTest = false;
     }
 
-    public TestTypes(String id, String name, String attemptsLimit, boolean visibleToReport, String description, String valueType, String iconImageURL, String tutorialImageURL) {
+    public TestTypes(String id, String name, String attemptsLimit, boolean visibleToReport,
+                     String description, String valueType, String iconImageURL, String tutorialImageURL,
+                     String siblingTestType, boolean requiredToReport, boolean mainTest) {
         Id = id;
         Name = name;
         AttemptsLimit = attemptsLimit;
@@ -32,6 +36,9 @@ public class TestTypes {
         ValueType = valueType;
         IconImageURL = iconImageURL;
         TutorialImageURL = tutorialImageURL;
+        SiblingTestType = siblingTestType;
+        RequiredToReport = requiredToReport;
+        MainTest = mainTest;
     }
 
     public String getId() {
@@ -114,11 +121,31 @@ public class TestTypes {
         DefaultTest = defaultTest;
     }
 
-    public int getEquivalentTest() {
-        return EquivalentTest;
+    public boolean isVisibleToReport() {
+        return VisibleToReport;
     }
 
-    public void setEquivalentTest(int equivalentTest) {
-        EquivalentTest = equivalentTest;
+    public String getSiblingTestType() {
+        return SiblingTestType;
+    }
+
+    public void setSiblingTestType(String siblingTestType) {
+        SiblingTestType = siblingTestType;
+    }
+
+    public boolean isRequiredToReport() {
+        return RequiredToReport;
+    }
+
+    public void setRequiredToReport(boolean requiredToReport) {
+        RequiredToReport = requiredToReport;
+    }
+
+    public boolean isMainTest() {
+        return MainTest;
+    }
+
+    public void setMainTest(boolean mainTest) {
+        MainTest = mainTest;
     }
 }

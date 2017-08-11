@@ -362,7 +362,6 @@ public class MenuActivity extends AppCompatActivity {
     public static void returnMessageAlert(Activity act, String whoCalled){
         if(whoCalled.equals("CODE_OK"))
             ((MenuActivity)act).openSelective(selective);
-
     }
 
     @Override

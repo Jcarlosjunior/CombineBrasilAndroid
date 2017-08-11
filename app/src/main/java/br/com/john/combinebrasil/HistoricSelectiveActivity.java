@@ -268,7 +268,7 @@ public class HistoricSelectiveActivity extends AppCompatActivity {
     }
     private void onClickSelective(int position){
         Intent intent = new Intent(this, MenuHistoricSelectiveActivity.class);
-        this.SELECTIVE_CLICKED = selectives.get(position);
+        MenuHistoricSelectiveActivity.SELECTIVE_CLICKED = selectives.get(position);
         startActivity(intent);
     }
 

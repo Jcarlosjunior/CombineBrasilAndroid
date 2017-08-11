@@ -72,6 +72,9 @@
     <string name="historic">Histórico</string>
     <string name="results_tests">Resultados por Testes</string>
     <string name="positions_player">Posições para o atleta</string>
+    <string name="test_required">Testes Obrigatórios</string>
+    <string name="test_recommended">Testes Recomendados</string>
+    <string name="test_additional">Testes Adicionais</string>
 
     <string name="inscrever">Inscreva-se e melhore suas seletivas</string>
     <string name="testes">Testes</string>

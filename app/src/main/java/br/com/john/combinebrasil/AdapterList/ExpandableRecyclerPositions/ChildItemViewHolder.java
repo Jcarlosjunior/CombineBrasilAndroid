@@ -16,26 +16,22 @@ import br.com.john.combinebrasil.R;
  */
 
 public class ChildItemViewHolder  extends ChildViewHolder {
-
     private TextView txtTitleName;
-    private TextView txtResult;
-    private ImageView imageIcon;
+    private TextView txtOtherPositions;
+    private TextView txtPosition;
     private Activity Act;
 
     public ChildItemViewHolder(View itemView, Activity act) {
         super(itemView);
-        imageIcon = (ImageView) itemView.findViewById(R.id.icon);
+        txtPosition = (TextView) itemView.findViewById(R.id.text_position);
         txtTitleName = (TextView) itemView.findViewById(R.id.text_name_test);
-        txtResult = (TextView) itemView.findViewById(R.id.text_result_test);
+        txtOtherPositions = (TextView) itemView.findViewById(R.id.text_other_positiions);
         Act = act;
     }
 
     public void onBind(ChildItemPositions position, ExpandableGroup group) {
         txtTitleName.setText(position.getName());
-        txtResult.setText(String.valueOf(position.getPosition()));
-
-        Picasso.with(Act)
-                .load("http://cdn.bleacherreport.net/images/team_logos/328x328/nfl.png")
-                .into(imageIcon);
+        txtOtherPositions.setText(String.valueOf(position.getPosition()));
+        txtPosition.setText(position.getDescription());
     }
 }

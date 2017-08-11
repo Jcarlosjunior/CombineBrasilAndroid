@@ -90,7 +90,6 @@ public class Connection extends AppCompatActivity {
                             return "API indisponível, tente novamente mais tarde";
                         }
                     }
-
                 }){
 
 
