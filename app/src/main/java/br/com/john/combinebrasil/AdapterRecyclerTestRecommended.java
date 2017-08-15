@@ -1,47 +1,29 @@
-package br.com.john.combinebrasil.AdapterList;
+package br.com.john.combinebrasil;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
-import junit.framework.Test;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 import br.com.john.combinebrasil.Classes.TestTypes;
-import br.com.john.combinebrasil.R;
-import br.com.john.combinebrasil.Services.Constants;
-import br.com.john.combinebrasil.TestSelectiveActivity;
 
 /**
- * Created by GTAC on 24/04/2017.
+ * Created by GTAC on 14/08/2017.
  */
 
-
-public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<AdapterRecyclerChooseTestSelective.ViewHolder> {
+public class AdapterRecyclerTestRecommended extends RecyclerView.Adapter<AdapterRecyclerTestRecommended.ViewHolder> {
     private String[] values;
     public static String[] valuesID;
     public static ArrayList<TestTypes> list;
@@ -50,7 +32,7 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
     private static ArrayList<TestTypes> testsChoose;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AdapterRecyclerChooseTestSelective(Activity act, ArrayList<TestTypes> list, String[] values) {
+    public AdapterRecyclerTestRecommended(Activity act, ArrayList<TestTypes> list, String[] values) {
         super();
         this.list = list;
         this.values = values;
@@ -97,9 +79,9 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
 
     // Create new views (invoked by the layout manager)
     @Override
-    public AdapterRecyclerChooseTestSelective.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterRecyclerTestRecommended.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_test_choose, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_test_recommended, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -132,12 +114,13 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
                 list.get(holder.getAdapterPosition()).setSelected(isChecked);
                 TestSelectiveActivity.checkClick(list.get(position).getId());
                 TestSelectiveActivity.showOrHideRemove();
-                //verifyTestDefault(holder.getAdapterPosition());
+                verifyTestDefault(holder.getAdapterPosition());
 
             }
         });
         if(holder!=null && !holderList.contains(holder))
             holderList.add(holder);
+
     }
 
     private void verifyTestDefault(int position){
@@ -162,7 +145,6 @@ public class AdapterRecyclerChooseTestSelective extends RecyclerView.Adapter<Ada
             }
         }
     }
-
     @Override
     public int getItemCount() {
         return (null != list ? list.size() : 0);

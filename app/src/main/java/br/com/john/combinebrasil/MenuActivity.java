@@ -151,8 +151,8 @@ public class MenuActivity extends AppCompatActivity {
     private View.OnClickListener clickCreateSelective = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //Intent intent = new Intent(MenuActivity.this, ChooseTeamSelectiveActivity.class);
-            Intent intent = new Intent(MenuActivity.this, TestSelectiveActivity.class);
+            Intent intent = new Intent(MenuActivity.this, ChooseTeamSelectiveActivity.class);
+            //Intent intent = new Intent(MenuActivity.this, TestSelectiveActivity.class);
             startActivity(intent);
         }
     };

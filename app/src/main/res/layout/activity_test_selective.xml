@@ -8,171 +8,197 @@ android:background="@color/white"
 tools:context="br.com.john.combinebrasil.TestSelectiveActivity"
 android:animateLayoutChanges="true">
 
-
-
-
-<include
-    android:id="@+id/include"
-    layout="@layout/toolbar_default"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:visibility="visible"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/text_view1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:textAllCaps="true"
-        android:textSize="16sp"
-        android:textColor="@color/color_primary"
-        android:text="@string/selecionar_testes"
-        android:textStyle="bold"
-        android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
-
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginStart="48dp"
-        android:src="@drawable/create_selective_pass_four"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view1"
-        android:id="@+id/imageView3"
-        app:layout_constraintHorizontal_bias="0.0" />
-
-    <ScrollView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:layout_constraintBottom_toTopOf="@+id/button_next_pass">
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/text_tests_required"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/test_required"
-                android:textSize="14sp"
-                android:textColor="@color/black"
-                android:layout_marginStart="16sp"
-                android:paddingStart="16sp"
-                android:paddingEnd="16sp"
-                android:paddingTop="8sp"
-                android:paddingBottom="8sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_tests_selective"
-                android:visibility="visible"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:dividerHeight="0dp"
-                android:scrollbars="vertical"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="-1dp"
-                app:layout_constraintTop_toBottomOf="@+id/text_tests_required"
-                app:layout_constraintHorizontal_bias="0.0" />
-            <TextView
-                android:id="@+id/text_tests_recommended"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/test_recommended"
-                android:textSize="14sp"
-                android:textColor="@color/black"
-                android:layout_marginStart="16sp"
-                android:paddingStart="16sp"
-                android:paddingEnd="16sp"
-                android:paddingTop="8sp"
-                android:paddingBottom="8sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_tests_selective"
-                app:layout_constraintHorizontal_bias="0.0"/>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_tests_recommended"
-                android:visibility="visible"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:dividerHeight="0dp"
-                android:scrollbars="vertical"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/text_tests_recommended"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <TextView
-                android:id="@+id/text_tests_additional"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/test_additional"
-                android:textSize="14sp"
-                android:textColor="@color/black"
-                android:layout_marginStart="16sp"
-                android:paddingStart="16sp"
-                android:paddingEnd="16sp"
-                android:paddingTop="8sp"
-                android:paddingBottom="8sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_tests_recommended"
-                app:layout_constraintHorizontal_bias="0.0"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_tests_additional"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:dividerHeight="0dp"
-                android:scrollbars="vertical"
-                android:visibility="visible"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/text_tests_additional"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintVertical_bias="1.0" />
-
-        </android.support.constraint.ConstraintLayout>
-
-    </ScrollView>
-
-
-
-    <Button
-        android:id="@+id/button_next_pass"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/proximo_passo"
-        android:textColor="@color/white"
-        android:background="@drawable/background_button_blue"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="32dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="32dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp" />
+        >
+        <include
+            android:id="@+id/include"
+            layout="@layout/toolbar_default"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textAllCaps="true"
+            android:textSize="16sp"
+            android:textColor="@color/color_primary"
+            android:text="@string/selecionar_testes"
+            android:textStyle="bold"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/include" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginStart="48dp"
+            android:src="@drawable/create_selective_pass_four"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view1"
+            android:id="@+id/imageView3"
+            app:layout_constraintHorizontal_bias="0.0" />
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3"
+            app:layout_constraintBottom_toTopOf="@+id/button_next_pass"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0">
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/text_tests_required"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_border"
+                    android:text="@string/test_required"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingStart="16sp"
+                    android:paddingEnd="16sp"
+                    android:paddingTop="16sp"
+                    android:paddingBottom="16sp"
+                    android:drawableLeft="@drawable/ic_add"
+                    android:drawablePadding="10sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_tests_selective"
+                    android:visibility="gone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:dividerHeight="0dp"
+                    android:scrollbars="vertical"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:paddingStart="16sp"
+                    android:paddingEnd="16sp"
+                    app:layout_constraintTop_toBottomOf="@+id/text_tests_required"
+                    app:layout_constraintHorizontal_bias="0.0" />
+                <TextView
+                    android:id="@+id/text_tests_recommended"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test_recommended"
+                    android:background="@drawable/background_border"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingStart="16sp"
+                    android:paddingEnd="16sp"
+                    android:paddingTop="16sp"
+                    android:paddingBottom="16sp"
+                    android:drawableLeft="@drawable/ic_add"
+                    android:drawablePadding="10sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_tests_selective"
+                    app:layout_constraintHorizontal_bias="0.0"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_tests_recommended"
+                    android:visibility="gone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:dividerHeight="0dp"
+                    android:scrollbars="vertical"
+                    android:paddingStart="16sp"
+                    android:paddingEnd="16sp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_tests_recommended"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <TextView
+                    android:id="@+id/text_tests_additional"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test_additional"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/background_border"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingStart="16sp"
+                    android:paddingEnd="16sp"
+                    android:paddingTop="16sp"
+                    android:paddingBottom="16sp"
+                    android:drawableLeft="@drawable/ic_add"
+                    android:drawablePadding="10sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_tests_recommended"
+                    app:layout_constraintHorizontal_bias="0.0"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_tests_additional"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:dividerHeight="0dp"
+                    android:scrollbars="vertical"
+                    android:visibility="gone"
+                    android:paddingStart="16sp"
+                    android:paddingEnd="16sp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_tests_additional"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintVertical_bias="1.0" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/button_next_pass"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/proximo_passo"
+            android:textColor="@color/white"
+            android:background="@drawable/background_button_blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="32dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="32dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
@@ -256,19 +282,19 @@ android:animateLayoutChanges="true">
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/grey_transparent"
-            android:visibility="gone"
-            android:clickable="true"
-            android:id="@+id/constraint_progress"
-            android:animateLayoutChanges="true"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/grey_transparent"
+        android:visibility="gone"
+        android:clickable="true"
+        android:id="@+id/constraint_progress"
+        android:animateLayoutChanges="true"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.constraint.ConstraintLayout
+        <android.support.constraint.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_border"
@@ -325,12 +351,12 @@ android:animateLayoutChanges="true">
         <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="48dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginEnd="32dp"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/background_border"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
