@@ -12,8 +12,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
@@ -27,6 +29,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -50,6 +53,9 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -57,11 +63,14 @@ import org.w3c.dom.Text;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import br.com.john.combinebrasil.Classes.CEP;
 import br.com.john.combinebrasil.Classes.Selective;
@@ -74,6 +83,7 @@ import br.com.john.combinebrasil.Connection.Posts.PostTeamAsyncTask;
 import br.com.john.combinebrasil.Services.Constants;
 import br.com.john.combinebrasil.Services.Mask;
 import br.com.john.combinebrasil.Services.Services;
+import br.com.john.combinebrasil.Services.SharedPreferencesAdapter;
 
 import static android.R.attr.bitmap;
 
@@ -331,6 +341,11 @@ public class CreateTeamActivity extends AppCompatActivity {
         if(resp.toUpperCase().equals("OK")){
             try {
                 JSONObject json = new JSONObject(result);
+                String id = json.getString(Constants.TEAM_ID);
+                String team = json.getString(Constants.TEAM_NAME);
+                uploadImageTeam(id, team);
+                DeserializerJsonElements des = new DeserializerJsonElements(result);
+
                 Services.messageAlert(CreateTeamActivity.this, "Mensagem","Equipe criada com sucesso","exitTeam");
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -338,6 +353,69 @@ public class CreateTeamActivity extends AppCompatActivity {
         }
         else
             verifyError(result);
+    }
+
+    private void uploadImageTeam(String id, String team){
+        String url = Constants.URL+Constants.API_TEAMS+"/"+id+"/upload";
+        //Uri uri = saveImage(team);
+        //if(uri!=null) {
+            uploadMultipart(mCropImageUri, url, team);
+            //imageUpload(uri.toString(), url);
+        //}
+
+    }
+
+    public void uploadMultipart(Uri filePath, String url, String name ) {
+        //getting the actual path of the image
+        //String path = getPath(filePath);
+
+        //Uploading code
+        try {
+            String uploadId = UUID.randomUUID().toString();
+
+            String userToken = SharedPreferencesAdapter.getValueStringSharedPreferences(this, Constants.USER_TOKEN);
+
+            //Creating a multi part request
+            String multi = new MultipartUploadRequest(this, uploadId, url)
+                    .addFileToUpload(filePath.getPath(), "file") //Adding file
+                    .addHeader("app-authorization", Constants.AUTHENTICATION)
+                    .addHeader("authorization", userToken)
+                    .setUtf8Charset()
+                    .setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+
+            multi.toString();
+
+        } catch (Exception exc) {
+            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private Uri saveImage(String nameImage){
+        Bitmap bm = ((BitmapDrawable)imageTeam.getDrawable()).getBitmap();
+        OutputStream fOut = null;
+        Uri outputFileUri = null;
+        try {
+            File root = new File(Environment.getExternalStorageDirectory()
+                    + File.separator + "CombineBrasil" + File.separator);
+            root.mkdirs();
+            File sdImageMainDirectory = new File(root, nameImage+".jpg");
+            outputFileUri = Uri.fromFile(sdImageMainDirectory);
+            fOut = new FileOutputStream(sdImageMainDirectory);
+        } catch (Exception e) {
+            Toast.makeText(this, "Error occured. Please try again later.",
+                    Toast.LENGTH_SHORT).show();
+        }
+        try {
+            bm.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+        } catch (Exception e) {
+            Log.i("Excepsion", e.getMessage());
+        }
+        return outputFileUri;
     }
 
     public static void returnMessage(Activity act, String methodCalled){
@@ -533,6 +611,7 @@ public class CreateTeamActivity extends AppCompatActivity {
 
             if (!requirePermissions) {
                 imageCrop.setImageUriAsync(imageUri);
+                mCropImageUri = imageUri;
             }
         }
     }
